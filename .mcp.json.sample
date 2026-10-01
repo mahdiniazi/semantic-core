@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "project-monitor": {
+      "command": "node",
+      "args": ["<PATH_TO_MCP_SERVER>/pg_mcp_server.js"],
+      "env": {
+        "DATABASE_URL": "postgresql://USER:PASSWORD@localhost:5432/project_monitor"
+      }
+    }
+  }
+}
