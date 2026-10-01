@@ -1,0 +1,3342 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قانون اساسی پروژه — نسخه ۵.۰</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<style>
+:root{
+  --navy:#16202e; --navy-2:#1f2c40; --gold:#b8901f; --gold-soft:#f4e9c8;
+  --ink:#1c222b; --ink-soft:#3a4553; --muted:#6b7684;
+  --line:#d8dde3; --line-soft:#eceff3;
+  --bg:#ffffff; --bg-soft:#f6f8fa; --bg-warm:#fbf7ec;
+  --success:#1e6f4a; --success-soft:#f0faf5;
+  --danger:#a8281f; --danger-soft:#fff5f4;
+  --blue:#2b5b8c; --blue-soft:#eef4fb;
+  --purple:#5a3aa6; --purple-soft:#f7f4fd;
+  --radius:8px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:"Vazirmatn","Vazir","IRANSans","Segoe UI",Tahoma,sans-serif;
+  background:#e9ecef;color:var(--ink);
+  font-size:10.5pt;line-height:1.9;
+  direction:rtl;text-align:right;-webkit-font-smoothing:antialiased;
+}
+.sheet{
+  background:var(--bg);width:210mm;min-height:297mm;
+  margin:10mm auto;padding:20mm 20mm 22mm 20mm;
+  position:relative;box-shadow:0 4px 24px rgba(0,0,0,.12);overflow:hidden;
+}
+.running-head{
+  position:absolute;top:10mm;right:20mm;left:20mm;
+  font-size:8.5pt;color:var(--muted);
+  display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:3mm;border-bottom:.5pt solid var(--line-soft);
+}
+.running-head .rh-left{color:var(--navy);font-weight:600;}
+.running-foot{
+  position:absolute;bottom:10mm;right:20mm;left:20mm;
+  font-size:8.5pt;color:var(--muted);
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:3mm;border-top:.5pt solid var(--line-soft);
+}
+.page-num{font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;}
+
+/* جلد */
+.cover{
+  background:linear-gradient(160deg,#0f1826 0%,#16202e 55%,#1f2c40 100%);
+  color:#fff;display:flex;flex-direction:column;justify-content:center;
+  padding:28mm 22mm;position:relative;overflow:hidden;
+}
+.cover::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:6mm;
+  background:linear-gradient(90deg,var(--gold) 0%,#e0b74a 50%,var(--gold) 100%);
+}
+.cover::after{
+  content:"";position:absolute;bottom:0;left:0;right:0;height:2mm;background:var(--gold);
+}
+.cover .badge{
+  display:inline-block;font-size:9pt;letter-spacing:3px;color:var(--gold);
+  border:1pt solid var(--gold);padding:2mm 5mm;border-radius:2px;
+  margin-bottom:14mm;align-self:flex-start;font-weight:800;
+}
+.cover h1{
+  font-size:34pt;line-height:1.25;font-weight:800;
+  margin:0 0 6mm 0;color:#fff;letter-spacing:-.5px;
+}
+.cover h1 .accent{color:var(--gold);}
+.cover .subtitle{
+  font-size:12.5pt;line-height:1.9;color:#c7cfda;
+  max-width:150mm;margin:0 0 18mm 0;
+}
+.cover .meta{
+  border-top:1pt solid rgba(255,255,255,.18);padding-top:6mm;
+  display:grid;grid-template-columns:1fr 1fr;gap:4mm 8mm;font-size:10pt;
+}
+.cover .meta dt{color:var(--gold);font-size:8.5pt;letter-spacing:1px;margin-bottom:1mm;font-weight:800;}
+.cover .meta dd{margin:0;color:#e6ebf2;font-weight:500;}
+
+/* فهرست */
+.toc-part{
+  font-weight:800;color:var(--gold);font-size:10pt;letter-spacing:1px;
+  margin:5mm 0 2mm 0;padding-bottom:1mm;border-bottom:1pt solid var(--gold-soft);
+}
+.toc-list{list-style:none;padding:0;margin:0;}
+.toc-list li{
+  display:flex;align-items:baseline;padding:1.8mm 0;
+  font-size:10pt;border-bottom:.5pt dotted var(--line);
+}
+.toc-list li .t{color:var(--ink);}
+.toc-list li .d{flex:1;margin:0 3mm;border-bottom:1px dotted #d8dde3;transform:translateY(-2px);}
+.toc-list li .p{color:var(--muted);font-size:9pt;font-variant-numeric:tabular-nums;font-weight:700;}
+
+/* تیترها */
+h1,h2,h3,h4{color:var(--navy);font-weight:800;line-height:1.45;page-break-after:avoid;break-after:avoid;}
+h2{
+  font-size:17pt;margin:0 0 5mm 0;padding-bottom:3mm;
+  border-bottom:1.5pt solid var(--navy);position:relative;
+}
+h2::after{
+  content:"";position:absolute;bottom:-1.5pt;right:0;
+  width:22mm;height:1.5pt;background:var(--gold);
+}
+h3{font-size:12.5pt;margin:6mm 0 3mm 0;color:var(--navy-2);}
+h4{font-size:11pt;margin:5mm 0 2mm 0;color:var(--ink);}
+p{margin:0 0 3mm 0;text-align:justify;}
+
+.principle-tag{
+  display:inline-block;font-size:9pt;letter-spacing:2px;color:var(--gold);
+  font-weight:700;border:1pt solid var(--gold);
+  padding:1.2mm 3.5mm;border-radius:2px;margin-bottom:4mm;
+}
+
+/* لیست‌ها */
+ul,ol{padding-right:6mm;margin:0 0 3.5mm 0;}
+li{margin-bottom:1.5mm;}
+ul li::marker{color:var(--gold);}
+ol li::marker{color:var(--gold);font-weight:700;}
+ul.checks{list-style:none;padding-right:0;}
+ul.checks li{position:relative;padding-right:7mm;}
+ul.checks li::before{content:"✓";position:absolute;right:0;top:0;color:var(--success);font-weight:800;}
+ul.cross{list-style:none;padding-right:0;}
+ul.cross li{position:relative;padding-right:7mm;}
+ul.cross li::before{content:"✕";position:absolute;right:0;top:0;color:var(--danger);font-weight:800;}
+
+/* جعبه‌ها */
+.box{
+  border:1pt solid var(--line);border-right:3pt solid var(--navy);
+  background:var(--bg-soft);border-radius:var(--radius);
+  padding:4.5mm 5.5mm;margin:4mm 0;
+  page-break-inside:avoid;break-inside:avoid;
+}
+.box .box-title{
+  font-weight:900;color:var(--navy);font-size:10pt;
+  margin:0 0 2mm 0;letter-spacing:.3px;
+  display:flex;align-items:center;gap:2mm;
+}
+.box .box-title .icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:5mm;height:5mm;border-radius:50%;
+  background:var(--navy);color:#fff;font-size:8pt;font-weight:900;
+}
+.box p:last-child{margin-bottom:0;}
+.box.gold{background:var(--bg-warm);border-color:#ead9a3;border-right-color:var(--gold);}
+.box.gold .box-title{color:var(--gold);}
+.box.gold .box-title .icon{background:var(--gold);}
+.box.green{background:var(--success-soft);border-color:#c7e6d6;border-right-color:var(--success);}
+.box.green .box-title{color:var(--success);}
+.box.green .box-title .icon{background:var(--success);}
+.box.red{background:var(--danger-soft);border-color:#efd0cd;border-right-color:var(--danger);}
+.box.red .box-title{color:var(--danger);}
+.box.red .box-title .icon{background:var(--danger);}
+.box.blue{background:var(--blue-soft);border-color:#cfe0f3;border-right-color:var(--blue);}
+.box.blue .box-title{color:var(--blue);}
+.box.blue .box-title .icon{background:var(--blue);}
+.box.purple{background:var(--purple-soft);border-color:#ddd3f0;border-right-color:var(--purple);}
+.box.purple .box-title{color:var(--purple);}
+.box.purple .box-title .icon{background:var(--purple);}
+.box.navy{
+  background:linear-gradient(135deg,#16202e 0%,#1f2c40 100%);
+  color:#e6ebf2;border-color:#0f1826;border-right-color:var(--gold);
+}
+.box.navy .box-title,.box.navy strong{color:#fff;}
+.box.navy .box-title .icon{background:var(--gold);}
+.box.navy code{background:rgba(255,255,255,.08);color:var(--gold-soft);}
+
+/* اصل برجسته */
+.axiom{
+  background:var(--navy);color:#fff;border-radius:var(--radius);
+  padding:5.5mm 6.5mm;margin:5mm 0;
+  border-right:4pt solid var(--gold);page-break-inside:avoid;
+}
+.axiom .label{
+  display:block;color:var(--gold);font-size:8.5pt;
+  letter-spacing:2px;margin-bottom:2mm;font-weight:800;
+}
+.axiom p{color:#e6ebf2;margin:0;font-size:10.5pt;line-height:1.9;}
+
+/* زنجیره */
+.chain{
+  display:flex;flex-wrap:wrap;align-items:center;gap:2mm 0;
+  margin:4mm 0;font-size:9.5pt;page-break-inside:avoid;
+}
+.chain .node{
+  background:#fff;border:1pt solid var(--line);border-radius:6px;
+  padding:1.8mm 3.5mm;color:var(--navy);font-weight:600;white-space:nowrap;
+}
+.chain .arrow{color:var(--gold);font-weight:800;padding:0 2mm;font-size:11pt;}
+
+/* جداول */
+table{
+  width:100%;border-collapse:collapse;margin:4.5mm 0;
+  font-size:9.5pt;page-break-inside:avoid;
+}
+thead th{
+  background:var(--navy);color:#fff;font-weight:700;
+  padding:2.8mm 3.5mm;text-align:right;
+  border:1pt solid var(--navy);font-size:9.5pt;
+}
+tbody td{
+  padding:2.4mm 3.5mm;border:1pt solid var(--line);
+  vertical-align:top;color:var(--ink-soft);line-height:1.7;
+}
+tbody tr:nth-child(even){background:var(--bg-soft);}
+tbody td:first-child{color:var(--navy);font-weight:700;}
+
+/* کد و دیاگرام */
+code{
+  font-family:"Vazirmatn Code","Consolas","Courier New",monospace;
+  background:var(--bg-soft);border:1pt solid var(--line-soft);
+  border-radius:3px;padding:.3mm 1.8mm;font-size:9pt;color:var(--navy);
+  direction:ltr;display:inline-block;
+}
+.diagram{
+  background:#111c29;color:#eaf0f6;padding:4.5mm 5.5mm;border-radius:8px;
+  font-family:"Vazirmatn Code","Consolas","Courier New",monospace;
+  direction:ltr;text-align:left;line-height:1.75;font-size:9pt;
+  margin:4.5mm 0;overflow:auto;page-break-inside:avoid;
+  border-right:3pt solid var(--gold);white-space:pre;
+}
+
+.small{font-size:9pt;color:var(--muted);}
+.lead{font-size:10.5pt;color:var(--ink-soft);line-height:1.95;}
+hr.ornament{border:none;text-align:center;margin:6mm 0;height:auto;}
+hr.ornament::before{content:"❖ ❖ ❖";color:var(--gold);letter-spacing:6px;font-size:10pt;}
+.page-break{page-break-before:always;break-before:page;}
+.avoid-break{page-break-inside:avoid;break-inside:avoid;}
+
+@media screen and (max-width:840px){
+  body{background:#fff;}
+  .sheet{width:100%;min-height:auto;margin:0;padding:12mm 6mm 14mm 6mm;box-shadow:none;border-radius:0;}
+  .running-head,.running-foot{position:static;margin:0 0 5mm 0;}
+  .running-foot{margin:6mm 0 0 0;}
+  .cover{padding:14mm 8mm;}
+  .cover h1{font-size:22pt;}
+  .cover .meta{grid-template-columns:1fr;}
+  table{display:block;overflow-x:auto;font-size:9pt;}
+  th,td{min-width:120px;}
+  .diagram{font-size:8pt;padding:3mm;}
+}
+@page{size:A4;margin:18mm 18mm 20mm 18mm;}
+@media print{
+  html,body{background:#fff;font-size:10pt;line-height:1.8;}
+  .sheet{
+    width:auto;min-height:auto;margin:0;padding:0;
+    box-shadow:none;page-break-after:always;break-after:page;overflow:visible;
+  }
+  .sheet:last-child{page-break-after:auto;}
+  .running-head,.running-foot{display:none;}
+  .cover{padding:20mm 15mm;min-height:260mm;display:flex;page-break-after:always;}
+  .page-break{page-break-before:always;}
+  h2,h3,h4{page-break-after:avoid;}
+  .box,.axiom,table,.chain,.diagram,.avoid-break{page-break-inside:avoid;}
+  a{color:inherit;text-decoration:none;}
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+  .no-print{display:none !important;}
+}
+.print-hint{
+  position:fixed;bottom:16px;left:16px;background:var(--navy);color:#fff;
+  padding:9px 16px;border-radius:6px;font-size:10pt;
+  box-shadow:0 4px 14px rgba(0,0,0,.2);z-index:9999;cursor:pointer;
+  border:none;font-family:inherit;font-weight:600;
+}
+.print-hint:hover{background:var(--navy-2);}
+@media print{.print-hint{display:none;}}
+@media screen and (max-width:840px){.print-hint{bottom:10px;left:10px;padding:7px 12px;font-size:9pt;}}
+</style>
+</head>
+<body>
+
+<button class="print-hint no-print" onclick="window.print()">🖨️ چاپ / ذخیره PDF</button>
+
+<!-- ==================== جلد ==================== -->
+<section class="sheet cover">
+  <span class="badge">PROJECT CONSTITUTION • v5.0</span>
+  <h1>قانون اساسی <span class="accent">پروژه</span></h1>
+  <p class="subtitle">
+    چارچوب بنیادین برای مدل‌سازی دانش، استدلال تشخیص و ساخت سامانه‌ای قابل اتکا
+    در برق و الکترونیک خودرو. هر اصل با توضیح، مثال و پرسش‌های کاربردی همراه شده
+    تا مرز میان قانون اساسی و تصمیم‌های اجرایی روشن بماند.
+  </p>
+  <dl class="meta">
+    <div><dt>نسخه</dt><dd>۵.۰ — ویراسته و بسط‌یافته</dd></div>
+    <div><dt>مبنای بازطراحی</dt><dd>نسخه‌های ۲.۰، ۳.۰ و ۴.۰</dd></div>
+    <div><dt>وضعیت سند</dt><dd>قرارداد منطقی رشد پروژه</dd></div>
+    <div><dt>حوزه کاربرد</dt><dd>برق و الکترونیک خودرو</dd></div>
+  </dl>
+</section>
+
+<!-- ==================== شناسنامه و فهرست ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">شناسنامه و فهرست</span>
+  </header>
+
+  <h2>این سند چیست</h2>
+  <p>
+    این سند، لایه حاکم پروژه است. وظیفه آن تعیین چیزهایی است که اگر
+    تغییر کنند، هویت و منطق پروژه تغییر می‌کند. سند برنامه پیاده‌سازی
+    نیست، فهرست فناوری نیست، برنامه زمانی نیست و مدل درآمدی نیست.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>معیار پذیرش هر اصل</p>
+    <p style="margin:0;">
+      هر اصل باید دو ویژگی داشته باشد: قابل اعمال باشد و قابل نقض‌سنجی
+      باشد. گزاره‌ای که صرفاً یک انتخاب خوب یا یک عدد هدف است، جای آن
+      در لایه‌های پایین‌تر است.
+    </p>
+  </div>
+
+  <h3>معماری لایه‌ها</h3>
+  <p>
+    پروژه از چند لایه تشکیل شده که هر لایه تصمیم‌های خاص خود را دارد.
+    تصمیم لایه بالاتر، چارچوب لایه پایین‌تر را مشخص می‌کند. اما
+    تصمیم لایه پایین‌تر نباید بی‌دلیل به لایه بالاتر منتقل شود.
+  </p>
+  <div class="chain">
+    <span class="node">قانون اساسی</span><span class="arrow">←</span>
+    <span class="node">مدل دامنه</span><span class="arrow">←</span>
+    <span class="node">حاکمیت دانش</span><span class="arrow">←</span>
+    <span class="node">مدل تشخیص</span><span class="arrow">←</span>
+    <span class="node">مشخصات سامانه</span><span class="arrow">←</span>
+    <span class="node">تصمیم‌های معماری</span><span class="arrow">←</span>
+    <span class="node">پیاده‌سازی / برش عمودی</span>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>مثال از جابه‌جایی نادرست</p>
+    <p style="margin:0;">
+      اگر در قانون اساسی نوشته شود «پایگاه داده باید PostgreSQL باشد»،
+      این یک تصمیم معماری است که در جای نادرست قرار گرفته. اما اگر
+      نوشته شود «واقعیت مشاهده‌شده باید از انتظار جدا بماند»، این یک
+      اصل حاکم است که هویت پروژه را تعیین می‌کند.
+    </p>
+  </div>
+
+  <hr class="ornament">
+
+  <h2>فهرست</h2>
+  <ol class="toc-list">
+    <li><span class="t">اصل ۱ — مأموریت و معیار موفقیت</span><span class="d"></span><span class="p">۳</span></li>
+    <li><span class="t">اصل ۲ — واقعیت، مدل و عدم قطعیت</span><span class="d"></span><span class="p">۵</span></li>
+    <li><span class="t">اصل ۳ — هستی‌شناسی و تفکیک مفاهیم</span><span class="d"></span><span class="p">۷</span></li>
+    <li><span class="t">اصل ۴ — شرایط، وضعیت، بافت و گونه خودرو</span><span class="d"></span><span class="p">۹</span></li>
+    <li><span class="t">اصل ۵ — ساختار، اتصال و مسیرهای فیزیکی</span><span class="d"></span><span class="p">۱۱</span></li>
+    <li><span class="t">اصل ۶ — اصل برق خودرو</span><span class="d"></span><span class="p">۱۳</span></li>
+    <li><span class="t">اصل ۷ — سیگنال، مشاهده و اندازه‌گیری</span><span class="d"></span><span class="p">۱۵</span></li>
+    <li><span class="t">اصل ۸ — منشأ، مرجع و شواهد</span><span class="d"></span><span class="p">۱۷</span></li>
+    <li><span class="t">اصل ۹ — منطق تشخیص و فرضیه‌ها</span><span class="d"></span><span class="p">۱۹</span></li>
+    <li><span class="t">اصل ۱۰ — آزمون و انتخاب اقدام بعدی</span><span class="d"></span><span class="p">۲۱</span></li>
+    <li><span class="t">اصل ۱۱ — تشخیص، تعمیر و راستی‌آزمایی</span><span class="d"></span><span class="p">۲۳</span></li>
+    <li><span class="t">اصل ۱۲ — معماری نرم‌افزار و داده</span><span class="d"></span><span class="p">۲۵</span></li>
+    <li><span class="t">اصل ۱۳ — چرخه به‌روزرسانی دانش</span><span class="d"></span><span class="p">۲۷</span></li>
+    <li><span class="t">اصل ۱۴ — ایمنی، مسئولیت و مرز تصمیم</span><span class="d"></span><span class="p">۲۹</span></li>
+    <li><span class="t">اصل ۱۵ — مقیاس‌پذیری و برش عمودی</span><span class="d"></span><span class="p">۳۱</span></li>
+    <li><span class="t">اصل ۱۶ — اقتصاد، حقوق و مالکیت دانش</span><span class="d"></span><span class="p">۳۳</span></li>
+    <li><span class="t">اصل ۱۷ — حاکمیت تغییر و دروازه‌ها</span><span class="d"></span><span class="p">۳۵</span></li>
+    <li><span class="t">ممنوعیت‌ها و اصل نهایی</span><span class="d"></span><span class="p">۳۷</span></li>
+    <li><span class="t">معماری اسناد و مرزها</span><span class="d"></span><span class="p">۳۹</span></li>
+  </ol>
+
+  <footer class="running-foot">
+    <span>نسخه ۵.۰</span>
+    <span class="page-num">۲</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱ — مأموریت</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 01</span>
+  <h2>مأموریت و معیار موفقیت</h2>
+
+  <p class="lead">
+    هر پروژه تشخیصی، در ابتدا باید به یک پرسش پاسخ دهد: موفقیت
+    دقیقاً به چه معناست؟ بدون پاسخ روشن، هر تلاشی می‌تواند
+    «موفق» به‌نظر بیاید اما به نتیجه ملموس نرسد.
+  </p>
+
+  <h3>مأموریت</h3>
+  <p>
+    پروژه باید دانش برق و الکترونیک خودرو را به دانشی قابل انتساب،
+    قابل توضیح، قابل آزمون، قابل ردیابی و قابل انتقال تبدیل کند؛
+    نه صرفاً به انباشت اطلاعات یا «مورد» (Case).
+  </p>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>پنج ویژگی دانش قابل اتکا</p>
+    <p style="margin:0;">
+      <strong>قابل انتساب:</strong> می‌دانیم این گزاره از کجا آمده و
+      به کدام خودرو و شرایط مربوط است.
+      <br>
+      <strong>قابل توضیح:</strong> می‌توان با استدلال روشن گفت چرا این
+      گزاره پذیرفته شده.
+      <br>
+      <strong>قابل آزمون:</strong> می‌توان آزمونی طراحی کرد که این
+      گزاره را رد یا تأیید کند.
+      <br>
+      <strong>قابل ردیابی:</strong> می‌توان مسیر رسیدن به این گزاره را
+      بازسازی کرد.
+      <br>
+      <strong>قابل انتقال:</strong> می‌توان آن را به خودرو و شرایط
+      مشابه منتقل کرد.
+    </p>
+  </div>
+
+  <h3>واحد ارزش</h3>
+  <p>
+    واحد اصلی ارزش، «توانایی کاهش فضای خطا با یک اقدام یا مشاهده
+    مؤثر» است. تعداد رکورد، صفحه، قاعده یا مورد، به‌تنهایی معیار
+    موفقیت نیست.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>چرا محتوا، معیار موفقیت نیست</p>
+    <p style="margin:0;">
+      یک پایگاه داده می‌تواند هزاران فایل و ویدیو و متن داشته باشد،
+      اما اگر نتوان از آن‌ها یک «اقدام بعدی» استخراج کرد، ارزش
+      عملی ندارد. آنچه ارزش می‌آفریند، توانایی کاهش فضای خطاست،
+      نه حجم اطلاعات.
+    </p>
+  </div>
+
+  <h3>زنجیره پایه</h3>
+  <p>
+    سامانه تشخیص، از یک زنجیره پیوسته ساخته می‌شود که در آن هر
+    گام، گام بعدی را ممکن می‌کند. این زنجیره در طول این سند
+    مبنا قرار می‌گیرد:
+  </p>
+
+  <div class="chain">
+    <span class="node">نشانه</span><span class="arrow">←</span>
+    <span class="node">انحراف</span><span class="arrow">←</span>
+    <span class="node">رفتار مورد انتظار</span><span class="arrow">←</span>
+    <span class="node">نقش / قابلیت</span><span class="arrow">←</span>
+    <span class="node">ساختار</span><span class="arrow">←</span>
+    <span class="node">فرضیه</span><span class="arrow">←</span>
+    <span class="node">مشاهده</span><span class="arrow">←</span>
+    <span class="node">آزمون</span><span class="arrow">←</span>
+    <span class="node">شواهد</span><span class="arrow">←</span>
+    <span class="node">تصمیم</span><span class="arrow">←</span>
+    <span class="node">تعمیر</span><span class="arrow">←</span>
+    <span class="node">راستی‌آزمایی</span><span class="arrow">←</span>
+    <span class="node">یادگیری</span>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%;">گام</th>
+        <th>معنا</th>
+        <th style="width:26%;">نمونه</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>نشانه</td><td>آنچه از دید کاربر یا سامانه قابل مشاهده است.</td><td>«موتور صبح‌ها دیر روشن می‌شود».</td></tr>
+      <tr><td>انحراف</td><td>اختلاف میان آنچه هست و آنچه باید باشد.</td><td>ولتاژ استارت زیر بار پایین‌تر از مرجع.</td></tr>
+      <tr><td>رفتار مورد انتظار</td><td>آنچه باید رخ دهد.</td><td>فن در دمای ۹۵°C روشن شود.</td></tr>
+      <tr><td>نقش / قابلیت</td><td>چه چیزی مسئول این رفتار است.</td><td>رله، قابلیت سوئیچینگ دارد.</td></tr>
+      <tr><td>ساختار</td><td>مسیر فیزیکی که رفتار را ممکن می‌کند.</td><td>B+ ← فیوز ← رله ← فن ← زمین.</td></tr>
+      <tr><td>فرضیه</td><td>توضیح نامطمئن برای نشانه.</td><td>«احتمالاً رله در سرما کند عمل می‌کند».</td></tr>
+      <tr><td>مشاهده</td><td>آنچه با ابزار یا حواس ثبت شده.</td><td>«رله ۳۰ ثانیه دیر بسته شد».</td></tr>
+      <tr><td>آزمون</td><td>اقدامی برای تفکیک فرضیه‌ها.</td><td>تعویض رله با یک رله سالم.</td></tr>
+      <tr><td>شواهد</td><td>نتیجه‌ای که فرضیه را تقویت یا تضعیف می‌کند.</td><td>«با رله جدید، فن در ۲ ثانیه روشن شد».</td></tr>
+      <tr><td>تصمیم</td><td>انتخاب عمل بر اساس شواهد.</td><td>«رله معیوب تعویض شود».</td></tr>
+      <tr><td>تعمیر</td><td>مداخله برای رفع علت.</td><td>تعویض رله R5.</td></tr>
+      <tr><td>راستی‌آزمایی</td><td>اثبات بازگشت رفتار مورد انتظار.</td><td>فن در دمای ۹۵°C در ۲ ثانیه روشن می‌شود.</td></tr>
+      <tr><td>یادگیری</td><td>ثبت تجربه به‌صورت قابل انتساب.</td><td>«رله‌های این نسل، در سرما کند عمل می‌کنند».</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال کاربردی — دو روش ثبت تجربه</p>
+    <p style="margin:0;">
+      <strong>روش اول:</strong> ثبت جمله «رله عوض شد، درست شد».
+      این جمله قابل انتساب نیست؛ نمی‌دانیم به کدام Variant،
+      چه شرایطی و چه فرضیه‌های رقیبی مربوط بوده است.
+      <br><br>
+      <strong>روش دوم:</strong> ثبت جمله‌ای مانند: «در خودروی X،
+      Variant A، دما ۲°C، رله R5 در زمان فرمان ۳۰ ثانیه دیر
+      بسته شد؛ با تعویض رله، زمان بستن به ۲ ثانیه کاهش یافت؛
+      فرضیه‌های رقیب (ولتاژ فرمان، اتصال پایه ۸۵) رد شد».
+      این جمله قابل انتساب، قابل ردیابی و قابل انتقال است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۳</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱ — ادامه</span>
+  </header>
+
+  <h3>چرا این زنجیره، پیوسته است؟</h3>
+  <p>
+    هر گام از این زنجیره، بدون گام قبلی بی‌معناست. اگر نداشته باشیم
+    «رفتار مورد انتظار»، نمی‌توانیم «انحراف» را تعریف کنیم. اگر
+    نداشته باشیم «ساختار»، نمی‌توانیم فرضیه بسازیم. اگر «فرضیه»
+    نداشته باشیم، آزمون هدفمند ممکن نیست.
+  </p>
+  <p>
+    در پروژه‌های تشخیصی، رایج‌ترین خطا این است که از «نشانه» مستقیم
+    به «تعمیر» می‌پریم. در آن حالت، همه گام‌های میانی حذف می‌شوند و
+    تصمیم، حاصل حدس است نه استدلال.
+  </p>
+
+  <div class="diagram">مسیر درست (گام‌به‌گام):
+
+  نشانه → انحراف → رفتار مورد انتظار → ساختار → فرضیه
+        → آزمون → شواهد → تصمیم → تعمیر → راستی‌آزمایی
+
+مسیر نادرست (پرش علّی):
+
+  نشانه → تعمیر
+
+نتیجه مسیر نادرست:
+  - تعویض قطعات سالم
+  - بازگشت مکرر خرابی
+  - نبود دانش قابل استفاده دوباره</div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام‌های رایج در این اصل</p>
+    <p style="margin:0;">
+      <strong>دام اول:</strong> یکی گرفتن «محتوا» با «دانش». حجم بالای
+      فایل و ویدیو، معیار موفقیت نیست.
+      <br>
+      <strong>دام دوم:</strong> یکی گرفتن «محتوا» با «تجربه قابل انتقال».
+      تجربه‌ای که شرط، مرجع و استدلال خود را حمل نمی‌کند، قابل
+      انتقال نیست.
+      <br>
+      <strong>دام سوم:</strong> یکی گرفتن «تعداد بالای Case» با «کیفیت
+      تشخیص». یک Case با استدلال روشن، ارزشش از صدها Case بدون
+      استدلال بیشتر است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۴</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۲ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۲ — واقعیت و مدل</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 02</span>
+  <h2>واقعیت، مدل و عدم قطعیت</h2>
+
+  <p class="lead">
+    پیش از هر ادعای تشخیصی، باید روشن شود چه چیزی «واقعیت خودرو»
+    است و چه چیزی «بازنمایی ما از آن». این تفکیک، پایه همه
+    استدلال‌های بعدی است.
+  </p>
+
+  <h3>واقعیت ≠ مدل</h3>
+  <p>
+    الگوریتم، هوش مصنوعی، قاعده، پایگاه داده و خروجی‌ها، بازنمایی
+    واقعیت‌اند. هیچ‌کدام بدون تعیین منشأ و دامنه، خودِ واقعیت خودرو
+    محسوب نمی‌شوند.
+  </p>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>سه سطح بازنمایی</p>
+    <p style="margin:0;">
+      <strong>سطح اول — داده خام:</strong> ولتاژی که یک سنسور دما
+      می‌خواند، مثلاً ۴.۲V. این یک عدد خام است، بدون تفسیر.
+      <br>
+      <strong>سطح دوم — تفسیر:</strong> ECU این عدد را به ۹۸ درجه
+      سانتی‌گراد ترجمه می‌کند. حالا یک ادعای معنادار داریم، اما
+      همچنان بازنمایی است.
+      <br>
+      <strong>سطح سوم — نتیجه تشخیصی:</strong> ECU کد P0217 ثبت
+      می‌کند. این نتیجه از سطح دوم ساخته شده، اما خودش
+      سطح دیگری از بازنمایی است.
+      <br><br>
+      در هیچ‌کدام از این سه سطح، به واقعیت فیزیکی خودرو دسترسی
+      مستقیم نداریم. آنچه داریم، بازنمایی‌های به‌هم‌پیوسته‌اند.
+    </p>
+  </div>
+
+  <h3>وضعیت موجود ≠ مرجع</h3>
+  <p>
+    آنچه در خودرو مشاهده شده باید از آنچه انتظار می‌رود جدا بماند.
+    اختلاف، ابتدا یک واقعیت است؛ سپس باید علت اختلاف بررسی شود.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — دو مقدار در دو جایگاه</p>
+    <p style="margin:0;">
+      <strong>وضعیت موجود:</strong> ولتاژ Pin ۳۰ رله در هنگام Cranking
+      در دمای ۲°C برابر ۹.۱V است.
+      <br>
+      <strong>مرجع:</strong> در همین Variant و همین Context،
+      انتظار می‌رود حداقل ۱۱.۵V باشد.
+      <br><br>
+      خودِ اختلاف (۲.۴V) یک واقعیت است، نه یک علت. علت
+      می‌تواند در باتری، در اتصال زمین، در سیم یا در خود
+      رله باشد. تا زمانی که این دو را از هم جدا نگه نداریم،
+      نمی‌توانیم درباره علت استدلال کنیم.
+    </p>
+  </div>
+
+  <h3>قطعیت درجه‌دار</h3>
+  <p>
+    ادعاهای تجربی باید دامنه، منشأ، زمان اعتبار و سطح اطمینان
+    داشته باشند. «نمی‌دانیم» و «هنوز تفکیک نشده» حالت‌های معتبرند.
+  </p>
+
+  <div class="box purple">
+    <p class="box-title"><span class="icon">★</span>طیف قطعیت</p>
+    <p style="margin:0;">
+      یک گزاره تشخیصی می‌تواند در یکی از این حالت‌ها باشد:
+      <br>
+      <strong>محتمل قوی</strong> — <strong>محتمل</strong> —
+      <strong>ممکن</strong> — <strong>نامشخص</strong> —
+      <strong>ردشده</strong> — <strong>تأییدشده</strong> —
+      <strong>نمی‌دانیم</strong>.
+      <br><br>
+      یکی گرفتن این حالت‌ها، یعنی از دست دادن دقت در تصمیم.
+      یک گزاره «ممکن» نمی‌تواند به اندازه یک گزاره «تأییدشده»
+      در تصمیم‌گیری وزن داشته باشد.
+    </p>
+  </div>
+
+  <h3>شاهد منفرد کافی نیست</h3>
+  <p>
+    شاهد میدانی می‌تواند نظریه را اصلاح کند، اما یک مشاهده منفرد
+    بر خطای اندازه‌گیری، تعمیر قبلی، گونه خودرو یا شرایط محیطی
+    مقدم نیست.
+  </p>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — DTC یک واقعیت نیست</p>
+    <p style="margin:0;">
+      یک DTC می‌گوید «ECU چنین چیزی تشخیص داده»، نه «واقعاً چنین
+      چیزی هست». ECU می‌تواند درست تشخیص بدهد یا در تشخیص دچار
+      خطا شود. تا زمانی که آزمون بیرونی انجام نشود، DTC یک
+      بازنمایی است، نه واقعیت خودرو.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۵</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۲ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۲ — ادامه</span>
+  </header>
+
+  <h3>چرا پذیرش «نمی‌دانیم» اهمیت دارد؟</h3>
+  <p>
+    اگر «نمی‌دانیم» را به‌عنوان یک حالت معتبر نپذیریم، مجبور
+    می‌شویم حدس بزنیم. حدس زده‌شده در سامانه، بعداً به‌عنوان
+    حقیقت استفاده می‌شود و این خطا به بقیه استدلال‌ها سرایت
+    می‌کند.
+  </p>
+  <p>
+    در حالی که «نمی‌دانیم» یک حالت صادقانه و قابل پردازش است
+    که به آزمون بیشتر دعوت می‌کند. سامانه‌ای که «نمی‌دانیم»
+    را می‌پذیرد، می‌تواند بپرسد «چه آزمونی این ابهام را
+    کاهش می‌دهد؟». سامانه‌ای که نمی‌پذیرد، مجبور است
+    همیشه یک پاسخ قطعی بدهد، حتی اگر غلط باشد.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — چرا یک شاهد کافی نیست</p>
+    <p style="margin:0;">
+      فرض کنید در یک خودرو مشاهده شده که آمپر مصرف در حالت
+      Sleep بالاتر از حد معمول است. یک تعمیرکار ممکن است
+      نتیجه بگیرد «پس باتری خراب است».
+      <br><br>
+      اما این مشاهده می‌تواند چند علت داشته باشد:
+      <br>
+      • یک مصرف‌کننده فراموش‌شده (چراغ صندوق، ضبط) روشن مانده.
+      <br>
+      • یک رله چسبیده و جریان می‌کشد.
+      <br>
+      • یک ماژول در بیدار ماندن گیر کرده.
+      <br>
+      • ابزار اندازه‌گیری دقت کافی ندارد.
+      <br>
+      • این مقدار در این Variant نرمال است.
+      <br><br>
+      با یک شاهد نمی‌توان بین این احتمالات یکی را برگزید.
+      برای تفکیک، به آزمون‌های بیشتر و شواهد متنوع نیاز است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۶</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۳ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۳ — هستی‌شناسی</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 03</span>
+  <h2>هستی‌شناسی و تفکیک مفاهیم</h2>
+
+  <p class="lead">
+    برای توصیف خودرو، به واژگان دقیق نیاز داریم. چهار مفهوم
+    پایه وجود دارد که اگر با هم ادغام شوند، در داده و استدلال
+    ابهام ایجاد می‌شود.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th style="width:28%;">مفهوم</th><th>تعریف</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>موجودیت <code>Entity</code></td>
+        <td>موجودیت فیزیکی یا منطقی قابل اشاره؛ مانند ECU، سنسور، رله یا یک وضعیت منطقی.</td>
+      </tr>
+      <tr>
+        <td>سیگنال / رابط <code>Signal</code></td>
+        <td>نقطه یا قرارداد تعامل با محیط؛ از مسیر توان و زمین تا خط سیگنال یا ارتباط شبکه.</td>
+      </tr>
+      <tr>
+        <td>نقش <code>Role</code></td>
+        <td>نقشی که یک موجودیت در یک بافت ایفا می‌کند؛ نقش، ذات فیزیکی قطعه نیست.</td>
+      </tr>
+      <tr>
+        <td>قابلیت / کارکرد <code>Capability</code></td>
+        <td>قابلیت یا نتیجه‌ای که از تعامل اجزا و نقش‌ها حاصل می‌شود؛ الزاماً یک قطعه منفرد نیست.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>چرا این چهار مفهوم باید جدا بمانند</p>
+    <p style="margin:0;">
+      یک رله را در نظر بگیرید. همان رله می‌تواند در یک بافت
+      نقش «سوئیچ توان» داشته باشد و در بافت دیگر نقش
+      «جداکننده». اگر «نقش» را با «قطعه» یکی بگیریم،
+      برای هر نقش، یک قطعه خیالی جدید می‌سازیم.
+      <br><br>
+      در نگاه اول، این کار شاید ساده به‌نظر برسد. اما
+      در عمل، باعث تکرار داده، پیچیدگی ساختار و از
+      دست رفتن قابلیت استفاده دوباره می‌شود.
+    </p>
+  </div>
+
+  <h3>مثال — یک ECU، چهار مفهوم</h3>
+  <p>
+    ECU موتور یک خودرو را در نظر بگیرید:
+  </p>
+  <div class="box green">
+    <p style="margin:0;">
+      <strong>Entity:</strong> ECU، یک قطعه فیزیکی قابل تعویض،
+      با شماره قطعه و نسخه سخت‌افزار مشخص.
+      <br>
+      <strong>Signal/Interface:</strong> کانکتور ECU، پین‌ها،
+      خطوط CAN، خطوط سیگنال سنسورها.
+      <br>
+      <strong>Role:</strong> در بافت Running، نقش Control +
+      Sensing + Communication دارد. در بافت Programming،
+      نقش Programmable دارد. در بافت Sleep، نقش Idle دارد.
+      <br>
+      <strong>Capability:</strong> کنترل زمان‌بندی احتراق،
+      تشخیص خطا، مدیریت مصرف سوخت.
+    </p>
+  </div>
+
+  <div class="axiom">
+    <span class="label">نکته اصلاحی</span>
+    <p>
+      «هر مفهوم فقط در یک سطح» بیش از حد سخت‌گیرانه است.
+      یک Entity می‌تواند حامل یک Role باشد. خطای منطقی
+      زمانی رخ می‌دهد که این رابطه پنهان بماند یا با هم
+      یکی فرض شود.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام پنهان شدن Role در Entity</p>
+    <p style="margin:0;">
+      فرض کنید در یک پایگاه داده، جدولی برای ECU داریم و در آن
+      یک ستون نوشته شده «نقش: کنترلر». این ساختار نمی‌تواند چند
+      نقش را برای یک ECU در بافت‌های مختلف ذخیره کند. اگر
+      بعداً بخواهیم بگوییم «همین ECU در حالت Programming
+      نقش دیگری دارد»، باید سطر جدید بسازیم یا ستون اضافه
+      کنیم.
+      <br><br>
+      راه درست: Entity و Role جدا باشند و یک رابطه میانی با
+      ذکر بافت، آن‌ها را به هم متصل کند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۷</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۳ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۳ — ادامه</span>
+  </header>
+
+  <h3>مثال — «سیم» و تغییر نقش</h3>
+  <p>
+    یک سیم مسی در خودرو را در نظر بگیرید. سیم، یک Entity فیزیکی
+    است و هویت آن ثابت. اما نقشی که ایفا می‌کند می‌تواند
+    متفاوت باشد:
+  </p>
+  <ul>
+    <li>در مسیر تغذیه، نقش <strong>انتقال توان</strong> دارد.</li>
+    <li>در مسیر سیگنال، نقش <strong>حامل سیگنال</strong> دارد.</li>
+    <li>در نقطه اتصال، نقش <strong>مسیر بازگشت</strong> دارد.</li>
+    <li>در یک سپر، نقش <strong>محافظ الکترومغناطیسی</strong> دارد.</li>
+  </ul>
+  <p>
+    سیم یکی است؛ نقش‌ها متفاوت. اگر نقش را با قطعه یکی بگیریم،
+    برای هر نقش، یک قطعه جدید اختراع می‌کنیم.
+  </p>
+
+  <h3>مثال — Capability به‌عنوان مفهومی انتزاعی</h3>
+  <p>
+    تفاوت Capability با قطعه، در جنس آن است. یک قطعه فیزیکی
+    است، اما Capability انتزاعی است. مثلاً «تأمین توان پایدار
+    برای ECU» یک Capability است. این Capability از همکاری
+    چند قطعه (باتری، فیوز، رله، سیم، بدنه) پدید می‌آید و
+    در هیچ جایی به‌عنوان یک قطعه فروخته نمی‌شود.
+  </p>
+  <p>
+    چرا این تفکیک اهمیت دارد؟ چون در تشخیص، وقتی چیزی کار
+    نمی‌کند، پرسش درست این نیست «کدام قطعه خراب است؟»،
+    بلکه این است: «کدام Capability شکسته است؟» و پس
+    از آن: «این Capability از کدام قطعات و نقش‌ها ساخته
+    شده که یکی از آن‌ها مقصر است؟».
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Capabilityهای یک مدار فن</p>
+    <p style="margin:0;">
+      در مدار فن رادیاتور، Capabilityهای زیر قابل شناسایی است:
+      <br>
+      • تأمین توان کنترل‌شده — رله، جریان را از باتری به فن وصل می‌کند.
+      <br>
+      • تشخیص دما — ECU دما را از سنسور می‌خواند.
+      <br>
+      • پردازش و فرمان — ECU تصمیم می‌گیرد و فرمان می‌فرستد.
+      <br>
+      • چرخش مکانیکی — موتور فن هوا را جابه‌جا می‌کند.
+      <br>
+      • بازگشت جریان — جریان از مسیر زمین برمی‌گردد.
+      <br><br>
+      هر یک از این‌ها یک Capability است که از ترکیب چند قطعه
+      پدید می‌آید. اگر فن کار نمی‌کند، باید بپرسیم کدام
+      Capability شکسته است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۸</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۴ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۴ — شرایط و بافت</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 04</span>
+  <h2>شرایط، وضعیت، بافت و گونه خودرو</h2>
+
+  <p class="lead">
+    یک عدد به‌تنهایی معنا ندارد. «ولتاژ ۱۲.۴V» می‌تواند در یک
+    خودرو نرمال، در خودروی دیگر بحرانی و در شرایط سومی
+    کاملاً بی‌ربط باشد. تفاوت، در بافت است.
+  </p>
+
+  <div class="chain" style="justify-content:center;">
+    <span class="node">Condition</span>
+    <span class="arrow">+</span>
+    <span class="node">State</span>
+    <span class="arrow">+</span>
+    <span class="node">Context</span>
+    <span class="arrow">←</span>
+    <span class="node">Observation</span>
+  </div>
+
+  <h3>State — حالت گسسته</h3>
+  <p>
+    State یک وضعیت گسسته و معنادار است که خودرو یا یک Entity
+    در یک بازه زمانی در آن قرار دارد. Stateها محدود و
+    شمارش‌پذیرند: OFF، IGNITION_ON، CRANKING، RUNNING،
+    SLEEP، PROGRAMMING.
+  </p>
+
+  <h3>Condition — شرط زمینه‌ای</h3>
+  <p>
+    Condition یک عامل یا شرط پیوسته است که بر رفتار اثر
+    می‌گذارد: دما، بار، دور موتور، ولتاژ باتری، رطوبت،
+    لرزش. Conditionها می‌توانند هر مقداری در یک بازه
+    بگیرند.
+  </p>
+
+  <h3>Context — ترکیب معنایی</h3>
+  <p>
+    Context ترکیب State و Conditionها به‌همراه هویت و
+    گونه خودرو است. Context پاسخ این پرسش است: این
+    گزاره دقیقاً در چه بافتی معتبر است؟
+  </p>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>چرا State و Condition از هم جدا هستند</p>
+    <p style="margin:0;">
+      اگر Condition را به State تبدیل کنیم، تعداد Stateها
+      به‌شدت افزایش می‌یابد. باید Stateهایی مثل
+      RUNNING_45C، RUNNING_46C، RUNNING_47C و… بسازیم
+      که در عمل بی‌فایده است. راه درست این است که
+      Stateهای گسسته و معنادار جدا نگه داشته شوند
+      و Conditionها به‌عنوان مقدار جداگانه ثبت شوند.
+    </p>
+  </div>
+
+  <h3>قانون گونه خودرو</h3>
+  <p>
+    هر قاعده، مقدار مرجع رفتار و نقشه پایه‌ها در صورت وابستگی
+    باید به گونه مناسب متصل باشد. تعمیم از یک خودرو به همه
+    خودروها ممنوع است، مگر شواهد کافی برای تعمیم وجود
+    داشته باشد.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>چهار سطح بافت</p>
+    <p style="margin:0;">
+      <strong>سطح ۱ — Vehicle Identity:</strong> یک خودروی مشخص
+      با VIN یا شماره شاسی.
+      <br>
+      <strong>سطح ۲ — Variant:</strong> تیپ، موتور، گیربکس،
+      سال ساخت، بازار هدف.
+      <br>
+      <strong>سطح ۳ — Configuration:</strong> ECU نصب‌شده،
+      نسخه نرم‌افزار، کالیبراسیون، تجهیزات اضافی.
+      <br>
+      <strong>سطح ۴ — Context لحظه‌ای:</strong> State + Conditionها
+      + شرایط محیطی.
+      <br><br>
+      تشخیص دقیق، نیازمند دانستن هر چهار سطح است.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — یک عدد، سه تفسیر</p>
+    <p style="margin:0;">
+      عدد «۱۲.۴V» به‌تنهایی چه معنایی دارد؟ بسته به بافت،
+      تفسیر آن کاملاً متفاوت است:
+      <br><br>
+      • در State=OFF، دمای ۲۵°C: مقدار نرمال باتری سالم.
+      <br>
+      • در State=CRANKING، دمای ۲۵°C: مقدار قابل قبول
+      اما در مرز پایین.
+      <br>
+      • در State=CRANKING، دمای ۲°C: مقدار نگران‌کننده،
+      نشانه ضعف باتری یا افت مسیر.
+      <br><br>
+      بدون Context، این عدد یک داده خام است، نه یک
+      Observation قابل استفاده.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — تعمیم از یک Variant به همه</p>
+    <p style="margin:0;">
+      تعمیم مقدار مرجع از یک خودرو به خودروی دیگر با نام
+      مشابه، یکی از شایع‌ترین ریشه‌های خطا در تشخیص
+      است. اگر Variant متفاوت باشد (ECU دیگر، فیوزبندی
+      متفاوت، مسیر سیم‌کشی متفاوت)، مقدار مرجع هم
+      می‌تواند متفاوت باشد. نتیجه: یا سالم را معیوب
+      می‌بینیم یا معیوب را سالم.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۹</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۴ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۴ — ادامه</span>
+  </header>
+
+  <h3>پیامدهای عملی «قانون گونه خودرو»</h3>
+  <p>
+    این قانون کوتاه، سه پیامد مهم دارد.
+  </p>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>پیامد اول — در داده</p>
+    <p style="margin:0;">
+      هر قاعده‌ای که در سامانه ثبت می‌شود، باید یک فیلد
+      دامنه داشته باشد که بگوید در کدام Variant معتبر
+      است. اگر این فیلد نباشد، همان قاعده به‌طور پنهان
+      به همه Variantها تعمیم داده می‌شود.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>پیامد دوم — در استدلال</p>
+    <p style="margin:0;">
+      هنگام تصمیم‌گیری، سامانه باید فقط قواعدی را به کار
+      ببرد که دامنه‌شان با Variant خودروی فعلی تطبیق
+      دارد. اگر سامانه این کار را نکند، ممکن است قاعده‌ای
+      را از Variant دیگر اعمال کند و به تصمیم نادرست
+      برسد.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>پیامد سوم — در یادگیری</p>
+    <p style="margin:0;">
+      اگر روزی شواهد کافی جمع شد که نشان دهد یک قاعده
+      در دو Variant با یک مقدار کار می‌کند، می‌توان
+      دامنه را گسترش داد. اما این تصمیم باید مبتنی
+      بر شواهد باشد، نه مبتنی بر حدس.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — اندازه‌گیری با Context کامل</p>
+    <p style="margin:0;">
+      یک Observation کامل، می‌تواند این شکل را داشته باشد:
+      <br><br>
+      «ولتاژ Pin ۳۰ رله R5، نسبت به منفی باتری،
+      با مولتی‌متر Fluke ۱۷، در خودروی X، Variant A،
+      State=CRANKING، دمای محیط ۲°C، بار کامل استارت،
+      به مدت ۳۰ ثانیه = ۹.۱V».
+      <br><br>
+      با این Context، یک عدد خام به یک Observation
+      قابل استدلال تبدیل می‌شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۱۰</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۵ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۵ — ساختار و مسیر</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 05</span>
+  <h2>ساختار، اتصال و مسیرهای فیزیکی</h2>
+
+  <p class="lead">
+    مدل تشخیص نباید فقط «چه قطعه‌ای؟» را ببیند؛ باید مسیر
+    تحقق رفتار را ببیند. بیشتر خرابی‌ها در برق خودرو،
+    در مسیر رخ می‌دهند، نه در قطعه.
+  </p>
+
+  <h3>چهار خانواده مسیر</h3>
+  <p>
+    در برق خودرو، تقریباً همه رفتارها در یکی از این چهار
+    خانواده مسیر رخ می‌دهند. شناخت هر خانواده، به تحلیل
+    هدفمند کمک می‌کند.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th style="width:22%;">حوزه</th><th>مسیر</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>توان</td>
+        <td>منبع توان → حفاظت → سوئیچ / رله → بار → زمین</td>
+      </tr>
+      <tr>
+        <td>سیگنال</td>
+        <td>منبع سیگنال → شرط‌سازی → ورودی ECU → پردازش → فرمان</td>
+      </tr>
+      <tr>
+        <td>خروجی ECU</td>
+        <td>خروجی ECU → درایور → عملگر → اثر فیزیکی → بازخورد</td>
+      </tr>
+      <tr>
+        <td>شبکه</td>
+        <td>گره ↔ CAN / LIN / سایر باس‌ها ↔ گره</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>چرا مسیرها را از هم جدا می‌کنیم</p>
+    <p style="margin:0;">
+      اگر همه مسیرها را در یک الگوی واحد مدل کنیم، به
+      سردرگمی می‌رسیم. چون ماهیت آن‌ها متفاوت است.
+      <br><br>
+      <strong>مسیر توان:</strong> یک‌طرفه و پرقدرت. هدف
+      انتقال انرژی است. مقاومت و افت ولتاژ در آن
+      مهم‌اند.
+      <br>
+      <strong>مسیر سیگنال:</strong> می‌تواند دوطرفه و
+      کم‌قدرت باشد. هدف انتقال اطلاعات است. نویز و
+      شکل موج در آن مهم‌اند.
+      <br>
+      <strong>مسیر خروجی ECU:</strong> میانی است، ترکیبی
+      از سیگنال و توان. اگر این مسیر خراب شود، عملگر
+      نمی‌تواند کار کند، حتی اگر همه اجزای دیگر
+      سالم باشند.
+      <br>
+      <strong>مسیر شبکه:</strong> گره‌محور است. تفاوتش
+      با بقیه در این است که «چه کسی خراب است» را
+      نمی‌توان به یک سیم خاص نسبت داد.
+    </p>
+  </div>
+
+  <h3>مثال — یک مدار فن، چند مسیر</h3>
+  <p>
+    وقتی فن رادیاتور کار نمی‌کند، نگاه مسیری می‌گوید:
+  </p>
+  <div class="diagram">مسیر توان:
+باتری ← فیوز F12 ← Pin ۳۰ رله ← کنتاکت داخلی
+      ← Pin ۸۷ ← پایه مثبت فن ← جاروبک‌های فن
+      ← پایه منفی فن ← نقطه اتصال G3
+      ← بدنه خودرو ← منفی باتری
+
+مسیر فرمان:
+سنسور دما ← سیم سیگنال ← ورودی ECU ← پردازش
+         ← خروجی ECU ← Pin ۸۵ رله
+
+مسیر شبکه:
+پیام CAN «درخواست فن» از BCM به ECU
+
+مسیر بازگشت:
+پایه منفی فن ← نقطه اتصال G3 ← بدنه ← منفی باتری</div>
+
+  <div class="box navy">
+    <p class="box-title">رابطه بنیادی</p>
+    <p style="margin:0;color:#fff;">
+      رابطه ساختاری + جهت + وابستگی + بافت =
+      <strong>توپولوژی قابل استفاده</strong>
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>چهار جزء توپولوژی</p>
+    <p style="margin:0;">
+      <strong>رابطه ساختاری:</strong> چه چیزی به چه چیزی
+      متصل است.
+      <br>
+      <strong>جهت:</strong> جریان یا سیگنال از کدام سمت
+      به کدام سمت می‌رود.
+      <br>
+      <strong>وابستگی:</strong> چه قطعاتی به وضعیت قطعات
+      دیگر وابسته‌اند.
+      <br>
+      <strong>بافت:</strong> در کدام Variant و Context
+      این ساختار معتبر است.
+      <br><br>
+      توپولوژی بدون این چهار، توصیف ناقصی از مدار است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۱۱</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۵ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۵ — ادامه</span>
+  </header>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام قطعه‌محوری</p>
+    <p style="margin:0;">
+      وقتی می‌گوییم «این قطعه خراب است»، ذهن به سمت
+      «تعویض» می‌رود. اما در بیشتر مواقع، قطعه سالم
+      است و مسیر شکسته است. مثلاً رله سالم است، اما
+      ولتاژی که به آن می‌رسد به دلیل افت روی سیم،
+      کافی نیست.
+      <br><br>
+      نگاه قطعه‌محور، در داده به شکل «جدول قطعات
+      معیوب» ظاهر می‌شود. نگاه مسیری، به شکل «شبکه
+      ای از مسیرها که می‌توانند یک‌به‌یک بررسی شوند».
+      <br><br>
+      برای تشخیص دقیق، باید ابتدا مسیر را تحلیل کرد،
+      سپس به قطعه رسید.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — تفاوت دو نگاه</p>
+    <p style="margin:0;">
+      <strong>نگاه قطعه‌محور:</strong> «فن کار نمی‌کند، پس
+      فن خراب است» → تعویض فن → اگر مشکل حل نشد،
+      نوبت رله → اگر حل نشد، نوبت فیوز → …
+      <br><br>
+      <strong>نگاه مسیری:</strong> «فن کار نمی‌کند. کدام
+      Capability شکسته است؟» → «مسیر توان، مسیر فرمان
+      یا مسیر بازگشت؟» → آزمون تفکیک‌کننده: اتصال
+      مستقیم فن به باتری → اگر چرخید، فن سالم است و
+      مشکل در فرمان یا بازگشت است → آزمون بعدی:
+      چک Pin ۸۵ در زمان فرمان → …
+      <br><br>
+      نگاه مسیری، با دو آزمون هدفمند به علت می‌رسد.
+      نگاه قطعه‌محور، ممکن است چند تعویض بی‌مورد
+      انجام دهد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۱۲</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۶ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۶ — اصل برق خودرو</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 06</span>
+  <h2>اصل برق خودرو</h2>
+
+  <div class="axiom">
+    <span class="label">اصل بنیادین</span>
+    <p>
+      وجود ولتاژ روی یک نقطه به‌تنهایی اثبات سلامت مسیر نیست.
+    </p>
+  </div>
+
+  <p class="lead">
+    این جمله کوتاه، ریشه بسیاری از خطاهای تشخیصی در برق خودرو
+    است. برای فهم آن، باید مفهوم حلقه بسته توان و بازگشت
+    را دید.
+  </p>
+
+  <h3>حلقه توان و بازگشت</h3>
+  <p>
+    در مدارهای برق خودرو، جریان در یک حلقه بسته حرکت می‌کند.
+    از منبع شروع می‌شود، از مسیر تغذیه عبور می‌کند، از
+    بار می‌گذرد و از مسیر بازگشت به منبع برمی‌گردد.
+  </p>
+
+  <div class="diagram">Source
+  ↓
+Protection
+  ↓
+Switch / Relay
+  ↓
+Load
+  ↓
+Ground / Return
+  ↺
+
+Measurement must specify:
+point + reference + load + state + condition + instrument</div>
+
+  <h3>چرا ولتاژ تنها کافی نیست</h3>
+  <p>
+    اگر جایی از این حلقه باز یا مقاومت‌دار باشد، جریان
+    کاهش می‌یابد یا قطع می‌شود. اما مشکل می‌تواند در
+    هر نقطه از حلقه باشد: در باتری، فیوز، سیم تغذیه،
+    کنتاکت رله، موتور فن، سیم زمین، نقطه اتصال
+    بدنه یا منفی باتری.
+  </p>
+  <p>
+    اگر فقط یک نقطه از حلقه را اندازه بگیریم، نمی‌توانیم
+    بگوییم «حلقه سالم است». چون ممکن است همین ولتاژ
+    در نقطه بعدی افت کند، یا مسیر بازگشت مشکل داشته
+    باشد.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — سه سناریوی گمراه‌کننده</p>
+    <p style="margin:0;">
+      <strong>سناریوی اول:</strong> مولتی‌متر روی Pin ۸۷ رله
+      مقدار ۱۲.۴V نشان می‌دهد. اما فن وصل نیست. این
+      «ولتاژ بی‌بار» است. با اتصال فن، ممکن است ولتاژ
+      به ۸V افت کند، چون یک اتصال با مقاومت بالا در
+      مسیر هست.
+      <br><br>
+      <strong>سناریوی دوم:</strong> ولتاژ Pin ۳۰ رله ۱۲.۴V است
+      نسبت به بدنه. اما مسیر بازگشت از نقطه‌ای با
+      مقاومت بالا برقرار شده. جریان می‌تواند برود
+      اما نمی‌تواند به‌درستی برگردد. در نتیجه، فن
+      نمی‌چرخد حتی اگر ولتاژ «هست».
+      <br><br>
+      <strong>سناریوی سوم:</strong> ولتاژ Pin ۳۰ در حالت
+      استراحت ۱۲.۴V است. اما هنگام Cranking به
+      ۹.۱V افت می‌کند. اگر فقط در حالت استراحت
+      اندازه بگیریم، این افت را نمی‌بینیم.
+    </p>
+  </div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>پرسش تشخیصی درست</p>
+    <p style="margin:0;">
+      نه «آیا ولتاژ هست؟»، بلکه «آیا در شرایط بارگذاری و
+      از مسیر برگشت، ولتاژ در محدوده مرجع باقی می‌ماند؟»
+      <br><br>
+      برای پاسخ به این پرسش، حداقل پنج نقطه باید
+      اندازه‌گیری شود:
+      <br>
+      • ولتاژ Pin ۳۰ رله، نسبت به منفی باتری، زیر بار.
+      <br>
+      • ولتاژ Pin ۸۷ رله، نسبت به منفی باتری، زیر بار.
+      <br>
+      • ولتاژ Pin ۸۵ رله، نسبت به منفی باتری، در
+      زمان فرمان.
+      <br>
+      • ولتاژ پایه منفی فن، نسبت به منفی باتری، زیر
+      بار.
+      <br>
+      • ولتاژ منفی باتری، نسبت به نقطه اتصال بدنه.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — «اینجا ۱۲ ولت دارد، پس درست است»</p>
+    <p style="margin:0;">
+      شایع‌ترین دام در این اصل، رضایت دادن به یک
+      اندازه‌گیری ولتاژ در نقطه‌ای است که بی‌بار
+      است. تعمیرکار می‌گوید «اینجا ۱۲V داریم،
+      پس مسیر سالم است» — اما فن را وصل نکرده.
+      این اندازه‌گیری هیچ چیز را ثابت نمی‌کند.
+      <br><br>
+      راه درست: هر اندازه‌گیری ولتاژ در مدارهای
+      پرقدرت، باید در حالت بارگذاری انجام شود.
+      یعنی مصرف‌کننده باید وصل باشد تا جریان از
+      مسیر عبور کند و افت ولتاژ واقعی ظاهر شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۱۳</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۶ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۶ — ادامه</span>
+  </header>
+
+  <h3>قاعده عملی برای تحلیل مدار تغذیه</h3>
+  <p>
+    در تشخیص مدارهای تغذیه، این ترتیب را می‌توان رعایت کرد:
+  </p>
+  <ol>
+    <li>بار را وصل کنید (یا از یک بار معادل استفاده کنید).</li>
+    <li>افت ولتاژ را در طول مسیر حساب کنید، نه فقط در یک نقطه.</li>
+    <li>مسیر بازگشت را هم اندازه بگیرید، نه فقط مسیر تغذیه.</li>
+    <li>شرایط آزمون (دما، State) را ثبت کنید تا نتیجه قابل
+    استفاده دوباره باشد.</li>
+  </ol>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>مثال — چرا مسیر بازگشت مهم است</p>
+    <p style="margin:0;">
+      فرض کنید یک خودرو که در آن چند مصرف‌کننده روی
+      نقطه اتصال G3 مشترک قرار دارند: فن، چراغ
+      جلو و ECU. اگر G3 مقاومت بالایی پیدا کند
+      (خوردگی، شل شدن پیچ)، هر سه مصرف‌کننده
+      می‌توانند به‌طور همزمان یا متناوب مشکل
+      پیدا کنند.
+      <br><br>
+      اگر تنها به قطعات نگاه کنیم، ممکن است فن
+      را سالم عوض کنیم، ECU را بررسی کنیم،
+      حتی چراغ جلو را تعویض کنیم — بدون آن‌که
+      متوجه شویم علت واقعی در نقطه اتصال
+      G3 است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۱۴</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۷ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۷ — سیگنال و مشاهده</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 07</span>
+  <h2>سیگنال، مشاهده و اندازه‌گیری</h2>
+
+  <p class="lead">
+    در تشخیص، «آنچه دیده می‌شود» سه سطح دارد. اگر این سه
+    سطح با هم اشتباه شوند، نتیجه‌گیری‌ها به خطا
+    می‌روند.
+  </p>
+
+  <h3>سیگنال</h3>
+  <p>
+    سیگنال، نمایش فیزیکی یا منطقی اطلاعات یا انرژی است
+    که ویژگی‌هایی مانند دامنه، زمان، فرکانس، شکل موج،
+    مرجع و مسیر دارد. سیگنال یک پدیده است، چیزی که در
+    دنیای واقعی رخ می‌دهد.
+  </p>
+
+  <h3>اندازه‌گیری</h3>
+  <p>
+    اندازه‌گیری، عددی است که از سنجش سیگنال به‌دست
+    می‌آید. این عدد باید همراه با کمیت، واحد، نقطه،
+    مرجع، ابزار، شرایط و در صورت مهم بودن دقت یا
+    خطا ثبت شود.
+  </p>
+
+  <h3>مشاهده</h3>
+  <p>
+    مشاهده، گزارش معناداری است که از ترکیب اندازه‌گیری
+    با Context ساخته می‌شود. مشاهده، آن چیزی است که
+    در یک بافت مشخص، معنا پیدا می‌کند.
+  </p>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>سه سطح در یک مثال</p>
+    <p style="margin:0;">
+      <strong>سیگنال:</strong> موج مربعی خروجی سنسور
+      میل‌لنگ با فرکانس ۲.۵ kHz، دامنه ۵V، در
+      حالت Running.
+      <br>
+      <strong>اندازه‌گیری:</strong> ثبت‌شده با اسیلوسکوپ
+      روی Pin ۲۳ کانکتور ECU، مرجع: منفی باتری،
+      در بازه ۵ ثانیه، با پروب ۱۰:۱.
+      <br>
+      <strong>مشاهده:</strong> «دامنه سیگنال میل‌لنگ در
+      این Variant و این Context، ۰.۵V کمتر از مقدار
+      مرجع است؛ این افت می‌تواند نشانه فاصله
+      نامناسب سنسور یا خوردگی پایه باشد».
+      <br><br>
+      سه سطح، از یک واقعیت فیزیکی واحد. هر سطح،
+      سطح دقت و معنای متفاوتی دارد.
+    </p>
+  </div>
+
+  <h3>کد خطا و علت ریشه‌ای</h3>
+  <p>
+    یک DTC یک مشاهده است؛ نباید خودکار به «خرابی همان
+    قطعه» ترجمه شود.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — یک DTC، چند علت</p>
+    <p style="margin:0;">
+      فرض کنید ECU کد P0335 (خطای مدار سنسور میل‌لنگ)
+      ثبت می‌کند. این DTC می‌تواند از این علت‌ها
+      بیاید:
+      <br>
+      • سنسور معیوب — خود سنسور سیگنال درست نمی‌دهد.
+      <br>
+      • سیم معیوب — سیگنال سنسور درست است اما سیم
+      آن را با نویز به ECU می‌رساند.
+      <br>
+      • کانکتور شل — اتصال فیزیکی قطع و وصل می‌شود.
+      <br>
+      • دندانه چرخ‌دنده شکسته — سنسور کار می‌کند
+      اما سیگنال ناقص است.
+      <br>
+      • فاصله نامناسب سنسور — دامنه سیگنال پایین است.
+      <br>
+      • ورودی ECU معیوب — سیگنال سالم است اما ECU
+      نمی‌تواند آن را بخواند.
+      <br>
+      • نویز الکترومغناطیسی — یک منبع نویز بیرونی
+      روی سیم اثر گذاشته.
+      <br><br>
+      ECU در هیچ‌کدام از این حالت‌ها نمی‌تواند تشخیص
+      دهد که علت واقعی چیست. تنها می‌داند «چیزی در
+      این مدار درست نیست». بنابراین DTC یک مشاهده
+      است، نه یک علت.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۱۵</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۷ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۷ — ادامه</span>
+  </header>
+
+  <h3>اجزای یک Measurement معتبر</h3>
+  <p>
+    برای یک Measurement معتبر، شش جزء باید ثبت شود. اگر
+    یکی از این اجزا گم شود، Measurement ناقص است و در
+    برخی موارد بی‌فایده.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:20%;">جزء</th>
+        <th>معنا</th>
+        <th>مثال</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>کمیت</td><td>چه چیزی را می‌سنجیم.</td><td>ولتاژ، جریان، مقاومت، فرکانس.</td></tr>
+      <tr><td>واحد</td><td>در چه مقیاسی.</td><td>V، A، Ω، Hz.</td></tr>
+      <tr><td>نقطه</td><td>کجای مدار.</td><td>Pin ۳۰ رله، پایه منفی فن.</td></tr>
+      <tr><td>مرجع</td><td>نسبت به چه چیزی.</td><td>منفی باتری، بدنه خودرو، Pin ۳۱.</td></tr>
+      <tr><td>ابزار</td><td>با چه وسیله‌ای.</td><td>مولتی‌متر دیجیتال، اسیلوسکوپ، اسکنر.</td></tr>
+      <tr><td>شرایط</td><td>در چه وضعیتی.</td><td>موتور خاموش، Cranking، دمای ۲°C.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>چرا «مرجع» اهمیت دارد</p>
+    <p style="margin:0;">
+      عدد «۱۲.۴V» بدون «مرجع» می‌تواند نسبت به
+      منفی باتری یا نسبت به بدنه اندازه گرفته
+      شده باشد. این دو در عمل می‌توانند تفاوت
+      ۰.۵V داشته باشند. بدون مرجع، عدد گنگ است.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — یکی گرفتن مشاهده با تفسیر</p>
+    <p style="margin:0;">
+      وقتی تعمیرکار می‌گوید «ولتاژ Pin ۸۷ افت کرد،
+      پس رله خراب است»، او در واقع یک مشاهده
+      را با یک تفسیر ادغام کرده.
+      <br><br>
+      <strong>مشاهده:</strong> «ولتاژ Pin ۸۷ در حالت
+      بارگذاری ۹.۱V است».
+      <br>
+      <strong>تفسیر:</strong> «علت این افت، رله است».
+      <br><br>
+      این دو، دو گزاره متفاوت‌اند. بین آن‌ها،
+      باید فرضیه‌های مختلفی مثل «افت روی مسیر
+      تغذیه»، «افت روی مسیر بازگشت»، «افت روی
+      کنتاکت رله» یا «افت روی خود فن» قرار
+      گیرد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۱۶</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۸ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۸ — منشأ و شواهد</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 08</span>
+  <h2>منشأ، مرجع و شواهد</h2>
+
+  <p class="lead">
+    هر ادعا باید قابل ردیابی باشد. اگر نداشتن منشأ را
+    نپذیریم، ادعاها به گزاره‌های مقدس تبدیل می‌شوند
+    که نمی‌توان درباره‌شان بحث کرد.
+  </p>
+
+  <h3>عناصر حداقل الزام</h3>
+  <table>
+    <thead>
+      <tr><th style="width:32%;">عنصر</th><th>تعریف</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>منبع <code>Source</code></td><td>منبع قابل شناسایی.</td></tr>
+      <tr><td>منشأ <code>Provenance</code></td><td>مسیر ورود / تغییر دانش.</td></tr>
+      <tr><td>دامنه <code>Scope</code></td><td>خودرو / گونه / شرایط اعتبار.</td></tr>
+      <tr><td>نسخه و زمان</td><td>نسخه و زمان اعتبار.</td></tr>
+      <tr><td>اطمینان <code>Confidence</code></td><td>سطح اطمینان و علت آن.</td></tr>
+      <tr><td>شواهد <code>Evidence</code></td><td>شاهدی که ادعا را پشتیبانی یا تضعیف می‌کند.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>مثال — دو قاعده، با و بدون منشأ</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>قاعده بدون منشأ</p>
+    <p style="margin:0;">
+      «رله‌های نسل جدید در سرما کند عمل می‌کنند».
+      <br>
+      این قاعده از کجا آمده؟ کسی نمی‌داند.
+      برای چه خودرویی؟ نامعلوم.
+      چند بار مشاهده شده؟ معلوم نیست.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>قاعده با منشأ</p>
+    <p style="margin:0;">
+      «رله‌های ۴ پایه در Variant A این خودرو، در دمای
+      زیر ۵°C، به‌طور میانگین ۱.۵ ثانیه کندتر از
+      دمای ۲۵°C عمل می‌کنند».
+      <br>
+      <strong>منبع:</strong> مشاهده میدانی، ۲۳ مورد در
+      کارگاه X، از بهمن ۱۴۰۱ تا اسفند ۱۴۰۲.
+      <br>
+      <strong>دامنه:</strong> Variant A، سال ساخت ۱۴۰۰
+      تا ۱۴۰۲.
+      <br>
+      <strong>اطمینان:</strong> متوسط.
+      <br>
+      <strong>شواهد قابل رد:</strong> اگر در ۵ مورد
+      از ۵۰ مورد دیده شود که رله در سرما سریع
+      عمل کرده، این قاعده باید بازبینی شود.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>چرا هر شش عنصر لازم است</p>
+    <p style="margin:0;">
+      <strong>Source:</strong> بدون آن، نمی‌دانیم به
+      چه کسی اعتماد کنیم.
+      <br>
+      <strong>Provenance:</strong> بدون آن، نمی‌دانیم
+      داستان این قاعده چیست.
+      <br>
+      <strong>Scope:</strong> بدون آن، به همه خودروها
+      تعمیم می‌دهیم.
+      <br>
+      <strong>Version/Time:</strong> بدون آن، نمی‌دانیم
+      این قاعده هنوز معتبر است.
+      <br>
+      <strong>Confidence:</strong> بدون آن، همه چیز را
+      یکسان می‌بینیم.
+      <br>
+      <strong>Evidence:</strong> بدون آن، نمی‌توانیم
+      بگوییم چرا این را باور داریم.
+    </p>
+  </div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>«شاهد منفرد کافی نیست»</p>
+    <p style="margin:0;">
+      یک شاهد، یک مشاهده است؛ نه یک حقیقت. اگر
+      در یک خودرو ببینیم که فن در دمای ۹۵°C
+      روشن نشد، نمی‌توانیم نتیجه بگیریم که
+      این مدل در دمای ۹۵°C روشن نمی‌شود.
+      ممکن است سنسور دما کالیبراسیون غلط داشته،
+      یا مشکل در آن خودرو موقت بوده، یا ابزار
+      اندازه‌گیری خطا داشته.
+      <br><br>
+      برای رسیدن به یک قاعده قابل اتکا، باید
+      چند شاهد مشابه از خودروهای مختلف با
+      همان Variant جمع شود.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — ثبت گزاره بدون پشتوانه</p>
+    <p style="margin:0;">
+      در بسیاری از پایگاه‌های دانش، قواعد بدون
+      پشتوانه ثبت می‌شوند. چند سال بعد، کسی
+      نمی‌داند این قواعد از کجا آمده و آیا
+      هنوز معتبر است. در نتیجه، یا باید همه
+      را از صفر بازنویسی کرد یا با یک پایگاه
+      ناسازگار ادامه داد.
+      <br><br>
+      راه درست: از روز اول، ثبت شش عنصر الزامی
+      را اجباری کنید. این کار در ابتدا زمان
+      می‌برد، اما در چند سال، دانش پروژه را
+      از گسست نجات می‌دهد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۱۷</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۸ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۸ — ادامه</span>
+  </header>
+
+  <h3>Provenance — داستان زندگی یک قاعده</h3>
+  <p>
+    Provenance به معنای «داستان زندگی یک قاعده از لحظه
+    تولد تا امروز» است. فرض کنید یک قاعده در سال
+    ۲۰۱۹ از سند فنی خودروساز استخراج شده. Provenance
+    این قاعده می‌تواند این‌گونه باشد:
+  </p>
+
+  <div class="diagram">۲۰۱۹/۰۳:  استخراج از سند فنی، فصل ۴، ص ۱۲
+۲۰۱۹/۰۵:  اولین مورد میدانی تأییدکننده
+۲۰۲۰/۰۸:  یک مورد متناقض در Variant B
+           ← دامنه محدود شد به Variant A
+۲۰۲۱/۱۲:  سه مورد میدانی دیگر تأیید شد
+           ← اطمینان از «متوسط» به «بالا»
+۲۰۲۳/۰۲:  سند فنی جدید منتشر شد
+           ← عدد مرجع به‌روزرسانی شد</div>
+
+  <p>
+    این داستان زندگی، Provenance است. با آن، هر کسی
+    که به سامانه نگاه می‌کند می‌داند این قاعده چطور
+    به وجود آمده، چه مراحلی را طی کرده و اکنون
+    در چه وضعیتی است.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>چرا Provenance در تشخیص خودرو اهمیت دارد</p>
+    <p style="margin:0;">
+      فرض کنید در سال ۱۴۰۵، یک تعمیرکار تازه‌کار
+      با سامانه کار می‌کند. سامانه به او می‌گوید
+      «افت ولتاژ بیش از ۰.۵V روی مسیر B+ غیرمجاز
+      است». اگر Provenance ثبت شده باشد، تعمیرکار
+      می‌تواند ببیند این قاعده از کدام سند، کدام
+      سال و کدام Variant آمده. اگر خودرویی که
+      روی آن کار می‌کند Variant دیگری باشد،
+      سامانه او را هشدار می‌دهد.
+      <br><br>
+      بدون Provenance، این قاعده ممکن است به
+      اشتباه روی همه خودروها اعمال شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۱۸</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۹ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۹ — منطق تشخیص</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 09</span>
+  <h2>منطق تشخیص و فرضیه‌ها</h2>
+
+  <div class="axiom">
+    <span class="label">تعریف بنیادین</span>
+    <p>تشخیص = تفکیک فرضیه‌ها، نه حدس‌زدن قطعه.</p>
+  </div>
+
+  <p class="lead">
+    این جمله کوتاه، یک تغییر نگاه عمیق را نشان می‌دهد.
+    در نگاه «حدس‌زدن قطعه»، از یک نشانه به دنبال
+    یک قطعه مشکوک می‌رویم. در نگاه «تفکیک فرضیه‌ها»،
+    از یک نشانه به مجموعه‌ای از علت‌های ممکن می‌رسیم
+    و با آزمون، فضای فرضیه را کاهش می‌دهیم.
+  </p>
+
+  <h3>چرخه تشخیص</h3>
+  <div class="chain">
+    <span class="node">مشاهده</span><span class="arrow">←</span>
+    <span class="node">شکایت / نشانه</span><span class="arrow">←</span>
+    <span class="node">فرضیه‌ها</span><span class="arrow">←</span>
+    <span class="node">آزمون تفکیک‌کننده</span><span class="arrow">←</span>
+    <span class="node">به‌روزرسانی</span>
+  </div>
+
+  <div class="grid" style="display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin-top:5mm;">
+    <div class="box green" style="margin:0;">
+      <p class="box-title"><span class="icon">✓</span>تأیید مثبت</p>
+      <p style="margin:0;">
+        شواهدی که یک فرضیه را تقویت می‌کند.
+      </p>
+    </div>
+    <div class="box red" style="margin:0;">
+      <p class="box-title"><span class="icon">✕</span>رد منفی</p>
+      <p style="margin:0;">
+        شواهدی که یک فرضیه را تضعیف یا حذف می‌کند.
+        رد کردن معمولاً از اثبات کامل ارزان‌تر و
+        قوی‌تر است.
+      </p>
+    </div>
+  </div>
+
+  <h3>چرا «رد منفی» ارزان‌تر و قوی‌تر است</h3>
+  <p>
+    فرض کنید نشانه «فن کار نمی‌کند» و فرضیه‌های ممکن:
+    الف) رله خراب. ب) فن خراب. ج) ECU فرمان نمی‌دهد.
+    د) افت ولتاژ روی مسیر زمین.
+  </p>
+  <p>
+    برای اثبات فرضیه «الف»، باید چند آزمون انجام دهیم:
+    رله را بیرون بیاوریم، تست کنیم، اتصال‌ها را
+    بررسی کنیم. حتی اگر رله در تست بی‌بار سالم بود،
+    باید زیر بار هم چک شود. این کار چند دقیقه طول
+    می‌کشد.
+  </p>
+  <p>
+    اما برای رد فرضیه «الف»، یک راه ساده‌تر وجود دارد:
+    با اتصال مستقیم فن به باتری، اگر فن چرخید، یعنی
+    مسئله در فن نیست. یا با اندازه‌گیری ولتاژ روی
+    Pin ۸۷ رله در زمان فرمان، اگر ولتاژ بود، یعنی
+    رله بسته شده.
+  </p>
+  <p>
+    رد کردن، با یک آزمون ساده‌تر به نتیجه می‌رسد.
+    در تشخیص، اغلب هدف این نیست که «کدام فرضیه
+    درست است»، بلکه این است که «کدام فرضیه‌ها
+    غلط‌اند». باقی‌مانده، فرضیه درست است.
+  </p>
+
+  <h3>سه پرسش مادر</h3>
+  <ol>
+    <li>چه چیزی وارد می‌شود اما پردازش نمی‌شود؟</li>
+    <li>چه چیزی درست وارد می‌شود اما غلط یا ناقص تبدیل /
+    پردازش می‌شود؟</li>
+    <li>چه اطلاعاتی غلط یا ناقص به تصمیم‌گیرنده می‌رسد؟</li>
+  </ol>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — تفکیک چهار فرضیه</p>
+    <p style="margin:0;">
+      نشانه: «فن رادیاتور کار نمی‌کند، حتی در دمای
+      ۱۰۰°C».
+      <br>
+      فرضیه‌ها:
+      <br>
+      الف) رله معیوب.
+      <br>
+      ب) فن معیوب.
+      <br>
+      ج) ECU فرمان نمی‌دهد.
+      <br>
+      د) افت ولتاژ روی مسیر زمین.
+      <br><br>
+      آزمون‌های تفکیک‌کننده:
+      <br>
+      • اتصال مستقیم فن به باتری — اگر چرخید، فرضیه
+      ب رد می‌شود.
+      <br>
+      • چک ولتاژ Pin ۸۵ در زمان فرمان — اگر بود،
+      فرضیه ج رد می‌شود.
+      <br>
+      • اندازه‌گیری افت ولتاژ روی G3 در حالت بارگذاری
+      — اگر افت زیاد بود، فرضیه د تقویت می‌شود.
+      <br><br>
+      با این سه آزمون، فضای فرضیه به‌سرعت کاهش
+      می‌یابد و بدون تعویض‌های بی‌مورد، به علت
+      می‌رسیم.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۱۹</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۹ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۹ — ادامه</span>
+  </header>
+
+  <h3>چرا نگاه «حدس‌زدن قطعه» مسئله‌ساز است</h3>
+  <p>
+    در نگاه حدس‌زدن، تعمیرکار از یک نشانه به دنبال یک
+    قطعه مشکوک می‌رود. به‌محض رسیدن به یک قطعه
+    مشکوک، آن را تعویض می‌کند و امید دارد مشکل
+    حل شود. اگر حل نشد، به قطعه بعدی می‌رود.
+  </p>
+  <p>
+    این نگاه، سه پیامد منفی دارد:
+  </p>
+  <ul>
+    <li>تعویض‌های بی‌مورد که هزینه و زمان می‌برند.</li>
+    <li>تولید دانش ضعیف که قابل استفاده دوباره نیست.</li>
+    <li>ناتوانی در تشخیص علت‌های چندعاملی که در آن
+    چند قطعه به‌طور همزمان در خرابی نقش دارند.</li>
+  </ul>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «تعویض آزمون‌گونه»</p>
+    <p style="margin:0;">
+      یکی از پرتکرارترین دام‌ها این است که تعمیرکار،
+      تعویض را به‌عنوان آزمون استفاده کند. یعنی
+      به‌جای تفکیک فرضیه‌ها با آزمون هدفمند، یک
+      قطعه را تعویض می‌کند و امید دارد مشکل حل
+      شود. اگر مشکل حل شد، فرضیه تأیید؛ اگر حل
+      نشد، فرضیه رد.
+      <br><br>
+      این روش، اگرچه در نگاه اول کارآمد به‌نظر
+      می‌رسد، اما سه اشکال دارد:
+      <br>
+      • هزینه تعویض، جایگزین هزینه آزمون می‌شود
+      که معمولاً بیشتر است.
+      <br>
+      • دانش حاصل از آن، ضعیف است چون مبتنی بر
+      آزمون کنترل‌شده نیست.
+      <br>
+      • در موارد intermittent، ممکن است نتیجه
+      گمراه‌کننده باشد (مشکل موقت برطرف شده اما
+      فرضیه غلط تأیید شده).
+      <br><br>
+      تعویض را نباید به‌عنوان آزمون استفاده کرد.
+      تعویض، پس از تشخیص است، نه جایگزین آن.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۲۰</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۰ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۰ — انتخاب آزمون</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 10</span>
+  <h2>آزمون و انتخاب اقدام بعدی</h2>
+
+  <p class="lead">
+    همه آزمون‌ها ارزش یکسان ندارند. آزمون خوب، آزمونی است
+    که بیشترین کاهش ابهام را با کمترین هزینه و ریسک
+    ایجاد کند.
+  </p>
+
+  <p>
+    آزمون فقط «کاری که می‌توان انجام داد» نیست؛ باید
+    به‌دلیل اطلاعاتی که تولید می‌کند انتخاب شود.
+  </p>
+
+  <h3>معیارهای انتخاب آزمون</h3>
+  <table>
+    <thead>
+      <tr><th style="width:34%;">معیار</th><th>توضیح</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>قدرت تفکیک <code>Discriminating Power</code></td>
+        <td>آزمون خوب فرضیه‌های رقیب را از هم جدا می‌کند.</td>
+      </tr>
+      <tr>
+        <td>هزینه / ریسک / زمان <code>Cost / Risk / Time</code></td>
+        <td>هزینه، زمان، ریسک آسیب و نیاز به ابزار باید در انتخاب آزمون لحاظ شود.</td>
+      </tr>
+      <tr>
+        <td>برگشت‌پذیری <code>Reversibility</code></td>
+        <td>در صورت برابری ارزش اطلاعات، آزمون کم‌خطرتر و برگشت‌پذیرتر مقدم است.</td>
+      </tr>
+      <tr>
+        <td>کفایت</td>
+        <td>پس از رسیدن به سطح کافی از اطمینان، آزمون اضافه‌ای که تصمیم را تغییر نمی‌دهد نباید صرفاً برای اطمینان ذهنی انجام شود.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box navy">
+    <p class="box-title">اصل انتخاب</p>
+    <p style="margin:0;color:#fff;">
+      آزمون بعدی، آزمونی است که
+      <strong>کمترین هزینه و ریسک</strong> را دارد و
+      <strong>بیشترین کاهش ابهام</strong> را ایجاد می‌کند.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — سه آزمون برای یک شکایت</p>
+    <p style="margin:0;">
+      شکایت: «فن رادیاتور کار نمی‌کند».
+      <br><br>
+      <strong>آزمون A:</strong> چک ولتاژ Pin ۳۰ رله.
+      سریع، بی‌خطر، قدرت تفکیک کم (فقط می‌گوید
+      تغذیه هست یا نه).
+      <br>
+      <strong>آزمون B:</strong> چک ولتاژ Pin ۸۵ در
+      زمان فرمان ECU. متوسط، بی‌خطر، قدرت
+      تفکیک متوسط.
+      <br>
+      <strong>آزمون C:</strong> اتصال مستقیم فن به
+      باتری. سریع، بی‌خطر، قدرت تفکیک بالا
+      (سالم/معیوب بودن فن را جدا می‌کند).
+      <br><br>
+      اگر آزمون C در دسترس باشد، اولین انتخاب
+      معقول است، چون قدرت تفکیک بالایی دارد.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>چرا «کفایت» اهمیت دارد</p>
+    <p style="margin:0;">
+      پس از رسیدن به سطح کافی از اطمینان، آزمون
+      اضافه‌ای که تصمیم را تغییر نمی‌دهد، باید
+      متوقف شود. این کار دو فایده دارد:
+      <br>
+      • صرفه‌جویی در زمان و هزینه.
+      <br>
+      • جلوگیری از «فلج تحلیلی» که در آن،
+      تعمیرکار آن‌قدر آزمون انجام می‌دهد که
+      در نهایت تصمیم نمی‌گیرد.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام آزمون بدون هدف</p>
+    <p style="margin:0;">
+      انجام آزمونی که هیچ فرضیه‌ای را تفکیک نمی‌کند،
+      فقط زمان و منابع را هدر می‌دهد. هر آزمون باید
+      به این پرسش پاسخ دهد: «این آزمون، کدام
+      فرضیه‌ها را از هم جدا می‌کند؟». اگر پاسخ
+      روشن نیست، آزمون را انجام ندهید.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۲۱</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۰ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۰ — ادامه</span>
+  </header>
+
+  <h3>ترتیب آزمون‌ها بر اساس نسبت ارزش به هزینه</h3>
+  <p>
+    در انتخاب ترتیب آزمون‌ها، اغلب می‌توان از یک قاعده
+    ساده استفاده کرد: نسبت ارزش اطلاعات به هزینه
+    را محاسبه کرد و آزمون با بالاترین نسبت را
+    اول انجام داد.
+  </p>
+
+  <div class="diagram">نسبت ارزش به هزینه = (کاهش ابهام × احتمال موفقیت)
+                     ÷ (هزینه + ریسک + زمان)
+
+ترتیب پیشنهادی:
+۱. آزمون‌های سریع، بی‌خطر، با قدرت تفکیک بالا
+۲. آزمون‌های متوسط، با قدرت تفکیک متوسط
+۳. آزمون‌هایی که هزینه یا ریسک بالایی دارند
+۴. آزمون‌هایی که تصمیم را تغییر نمی‌دهند ← حذف</div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — ترتیب آزمون‌ها برای فن</p>
+    <p style="margin:0;">
+      <strong>گام ۱:</strong> اتصال مستقیم فن به باتری.
+      (سریع، بی‌خطر، تفکیک بالا).
+      <br>
+      اگر فن چرخید → فرضیه «فن معیوب» رد می‌شود.
+      <br>
+      اگر فن نچرخید → فرضیه «فن معیوب» تقویت
+      می‌شود، اما باید سایر فرضیه‌ها هم بررسی
+      شود.
+      <br><br>
+      <strong>گام ۲:</strong> چک ولتاژ Pin ۸۵ در زمان
+      فرمان. (متوسط، بی‌خطر).
+      <br>
+      اگر ولتاژ بود → فرضیه «ECU فرمان نمی‌دهد»
+      رد می‌شود.
+      <br>
+      اگر ولتاژ نبود → فرضیه تقویت می‌شود.
+      <br><br>
+      <strong>گام ۳:</strong> اندازه‌گیری افت ولتاژ روی
+      G3. (متوسط، بی‌خطر).
+      <br>
+      اگر افت زیاد بود → فرضیه «افت مسیر زمین»
+      تقویت می‌شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۲۲</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۱ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۱ — تعمیر و راستی‌آزمایی</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 11</span>
+  <h2>تشخیص، تعمیر و راستی‌آزمایی</h2>
+
+  <p class="lead">
+    یکی گرفتن این سه مرحله، شایع‌ترین علت بازگشت
+    خرابی به تعمیرگاه است. باید هر سه از هم جدا
+    بمانند.
+  </p>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>تشخیص <code>Diagnosis</code></p>
+    <p style="margin:0;">
+      تعیین محتمل‌ترین علت یا مجموعه علت‌ها و
+      سطح اطمینان، بر اساس شواهد.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>تعمیر <code>Repair</code></p>
+    <p style="margin:0;">
+      مداخله برای رفع علت یا بازسازی عملکرد.
+      انتخاب تعمیر می‌تواند تحت محدودیت
+      اقتصادی یا دسترسی قرار گیرد، اما نباید
+      با تشخیص یکی شود.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>راستی‌آزمایی <code>Verification</code></p>
+    <p style="margin:0;">
+      اثبات اینکه پس از مداخله، رفتار مورد
+      انتظار در شرایط مربوطه برگشته و علت
+      موردنظر واقعاً برطرف شده است.
+    </p>
+  </div>
+
+  <div class="axiom">
+    <span class="label">توالی الزامی</span>
+    <p>تشخیص ← تعمیر ← راستی‌آزمایی. پرش از هر مرحله، نقض قانون اساسی است.</p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — سه مرحله در یک مورد</p>
+    <p style="margin:0;">
+      <strong>تشخیص:</strong> «احتمالاً افزایش مقاومت
+      اتصال زمین فن (G3) علت اصلی است».
+      <br>
+      <strong>تعمیر:</strong> تمیز کردن و محکم کردن G3.
+      <br>
+      <strong>راستی‌آزمایی:</strong> اندازه‌گیری افت
+      ولتاژ روی G3 زیر بار Cranking و تأیید
+      این‌که در محدوده مرجع قرار گرفته.
+      <br><br>
+      اگر مرحله راستی‌آزمایی انجام نشود، ممکن
+      است مشکل در واقع جای دیگری بوده و
+      مدتی بعد دوباره ظاهر شود.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — یکی گرفتن تعمیر با راستی‌آزمایی</p>
+    <p style="margin:0;">
+      وقتی می‌گوییم «قطعه را عوض کردیم، پس
+      درست شد»، در واقع تعمیر را با راستی‌آزمایی
+      یکی گرفته‌ایم. این خطا در بازگشت‌های
+      مکرر خودرو به تعمیرگاه ظاهر می‌شود.
+      <br><br>
+      تعویض قطعه، خودش یک آزمون نیست؛ یک
+      مداخله است. تا زمانی که رفتار مورد
+      انتظار در شرایط مربوطه بازنگردد و
+      به‌طور مستقل اندازه‌گیری نشود، نمی‌توان
+      گفت مشکل برطرف شده.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۲۳</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۱ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۱ — ادامه</span>
+  </header>
+
+  <h3>چرا راستی‌آزمایی باید مستقل باشد</h3>
+  <p>
+    راستی‌آزمایی باید یک مشاهده مستقل باشد، نه یک
+    نتیجه‌گیری مبتنی بر همان آزمون اولیه. دلیل
+    این است که همان آزمون اولیه، ممکن است خودش
+    با خطا همراه بوده باشد.
+  </p>
+  <p>
+    برای نمونه، اگر تعمیرکار در تشخیص اولیه، ولتاژ
+    Pin ۸۷ را ۹.۱V اندازه گرفته، در راستی‌آزمایی
+    هم باید همین مقدار را با همان ابزار و شرایط
+    اندازه بگیرد. اگر پس از تعمیر، ولتاژ ۱۱.۸V
+    شد، این خودش یک شاهد مستقل است.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>سه سطح راستی‌آزمایی</p>
+    <p style="margin:0;">
+      <strong>سطح ۱ — رفتار فوری:</strong> رفتار
+      مورد انتظار در همان لحظه بازمی‌گردد.
+      <br>
+      <strong>سطح ۲ — رفتار در شرایط مشابه:</strong>
+      رفتار در همان State و Condition اولیه
+      بازمی‌گردد.
+      <br>
+      <strong>سطح ۳ — رفتار در شرایط متغیر:</strong>
+      رفتار در شرایط مختلف (دما، بار) هم
+      پایدار می‌ماند.
+      <br><br>
+      هرچه سطح راستی‌آزمایی بالاتر باشد، اطمینان
+      از رفع علت بیشتر است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۲۴</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۲ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۲ — معماری نرم‌افزار</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 12</span>
+  <h2>معماری نرم‌افزار و داده</h2>
+
+  <p class="lead">
+    سامانه‌ای که این اصول را پیاده می‌کند، نیازمند
+    معماری مشخصی است. این معماری باید بتواند
+    پیچیدگی مدل تشخیصی را در لایه‌های قابل مدیریت
+    تقسیم کند.
+  </p>
+
+  <h3>زنجیره معماری</h3>
+  <div class="box navy">
+    <p style="margin:0;color:#fff;font-family:monospace;direction:ltr;text-align:left;font-size:10pt;">
+      Domain Truth<br>
+      <span style="color:var(--gold);">↓</span><br>
+      Knowledge / Evidence Layer<br>
+      <span style="color:var(--gold);">↓</span><br>
+      Diagnostic Reasoning Kernel<br>
+      <span style="color:var(--gold);">↓</span><br>
+      UI / Mobile / API / Reports
+    </p>
+  </div>
+
+  <h3>رابط کاربری مستقل از دامنه</h3>
+  <p>
+    منطق دامنه نباید به صفحه موبایل، فریم‌ورک یا رابط
+    کاربر وابسته باشد. یعنی می‌توان رابط کاربر را
+    از اپلیکیشن موبایل به وب، دسکتاپ یا چت‌بات
+    تغییر داد، بدون این‌که به هسته استدلال
+    آسیب برسد.
+  </p>
+
+  <h3>داده ≠ قاعده</h3>
+  <p>
+    داده خام، مشاهده، مرجع، قاعده و تصمیم نباید در
+    یک مفهوم مبهم ادغام شوند. هرکدام منشأ و
+    نقش متفاوتی دارند.
+  </p>
+
+  <h3>قابلیت حسابرسی</h3>
+  <p>
+    برای تصمیم‌های مهم باید بتوان مسیر «ورودی ← شواهد
+    ← استدلال ← خروجی» را بازسازی کرد.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — مسیر حسابرسی یک تصمیم</p>
+    <p style="margin:0;">
+      اگر سیستم بگوید «علت: افزایش مقاومت اتصال زمین»،
+      باید بتوان پرسید:
+      <br>
+      • کدام شواهد این را تأیید می‌کند؟ (افت ولتاژ
+      ۱.۴V روی G3)
+      <br>
+      • این شواهد از کجا آمده؟ (اندازه‌گیری میدانی،
+      ابزار Fluke ۱۷)
+      <br>
+      • چه فرضیه‌های دیگری رد شدند؟ (فن سالم، رله
+      سالم، فرمان ECU سالم)
+      <br>
+      • این تصمیم در چه دامنه‌ای معتبر است؟ (Variant A،
+      شرایط بارگذاری مشخص)
+    </p>
+  </div>
+
+  <h3>هوش مصنوعی محدود به قرارداد</h3>
+  <p>
+    هوش مصنوعی می‌تواند پیشنهاد، استخراج و رتبه‌بندی
+    کند؛ اما نباید بدون provenance، scope و قواعد
+    حاکم، حقیقت جدید را خودکار قطعی کند.
+  </p>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام AI بدون قرارداد</p>
+    <p style="margin:0;">
+      اگر AI بتواند بدون قرارداد، حقیقت جدید
+      بسازد، در چند ماه، قواعد بی‌منشأ، متناقض
+      و ناسازگار در سامانه انباشته می‌شود.
+      کنترل کیفیت دانش از دست می‌رود و
+      نمی‌توان روی خروجی‌ها حساب کرد.
+      <br><br>
+      راه درست: AI به‌عنوان دستیار، نه به‌عنوان
+      صاحب اختیار. هر خروجی AI باید از مسیر
+      حاکمیت دانش عبور کند تا به عنوان
+      حقیقت ثبت شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۲۵</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۲ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۲ — ادامه</span>
+  </header>
+
+  <h3>چهار لایه معماری و مسئولیت هرکدام</h3>
+  <p>
+    هر لایه از معماری، مسئولیت مشخصی دارد. اگر
+    مسئولیت‌ها با هم قاطی شوند، تغییر در یک
+    لایه، لایه‌های دیگر را تحت تأثیر قرار
+    می‌دهد.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:30%;">لایه</th>
+        <th>مسئولیت</th>
+        <th>خارج از مسئولیت</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Domain Truth</td>
+        <td>تعریف مفاهیم بنیادین: Entity، Role، Signal، Context، Observation.</td>
+        <td>الگوریتم، پیاده‌سازی، UI.</td>
+      </tr>
+      <tr>
+        <td>Knowledge / Evidence</td>
+        <td>ذخیره و مدیریت قواعد، مراجع، شواهد و provenance.</td>
+        <td>استدلال تشخیصی، UI.</td>
+      </tr>
+      <tr>
+        <td>Diagnostic Reasoning</td>
+        <td>تفکیک فرضیه‌ها، انتخاب آزمون، تصمیم.</td>
+        <td>نمایش، ذخیره خام.</td>
+      </tr>
+      <tr>
+        <td>UI / API / Reports</td>
+        <td>نمایش، تعامل با کاربر، گزارش‌سازی.</td>
+        <td>منطق دامنه، استدلال.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>چرا جدایی لایه‌ها اهمیت دارد</p>
+    <p style="margin:0;">
+      اگر منطق دامنه به UI وابسته باشد،
+      نمی‌توان همان منطق را در موبایل،
+      وب و API بازاستفاده کرد. اگر
+      استدلال تشخیصی با ذخیره‌سازی
+      قاطی شود، تغییر در یکی،
+      دیگری را می‌شکند.
+      <br><br>
+      در سامانه‌های تشخیصی که باید
+      سال‌ها رشد کنند، جدایی لایه‌ها
+      یک ضرورت است، نه یک ترجیح.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۲۶</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۳ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۳ — چرخه به‌روزرسانی</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 13</span>
+  <h2>چرخه به‌روزرسانی دانش و بازبینی قانون اساسی</h2>
+
+  <p class="lead">
+    سامانه تشخیصی باید در طول زمان زنده بماند و از
+    انجماد فرار کند. این چرخه، نحوه این زنده
+    ماندن را تعیین می‌کند.
+  </p>
+
+  <h3>چرخه</h3>
+  <div class="chain">
+    <span class="node">شواهد میدانی</span><span class="arrow">←</span>
+    <span class="node">به‌روزرسانی دانش</span><span class="arrow">←</span>
+    <span class="node">به‌روزرسانی مدل / مشخصات</span><span class="arrow">←</span>
+    <span class="node">بازبینی</span><span class="arrow">←</span>
+    <span class="node">بازبینی قانون اساسی (فقط در صورت ضرورت)</span>
+  </div>
+
+  <h3>اصل ضد انجماد</h3>
+  <p>
+    تجربه میدان باید بتواند قاعده دامنه و مشخصات
+    غلط را اصلاح کند. قانون اساسی نباید هر بار
+    که یک قاعده غلط کشف شد تغییر کند.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — اصلاح یک مرجع</p>
+    <p style="margin:0;">
+      فرض کنید در سند فنی خودروساز نوشته «افت
+      ولتاژ مجاز روی مسیر زمین ۰.۵V است». اما
+      در ۲۰ مورد میدانی، دیده شده که در این
+      Variant خاص، مقدار تا ۰.۸V هم بدون
+      مشکل کار می‌کند.
+      <br><br>
+      با اصل ضد انجماد، این مشاهده می‌تواند
+      مرجع را اصلاح کند (به ۰.۸V). اما قانون
+      اساسی («افت ولتاژ باید بررسی شود»)
+      دست‌نخورده می‌ماند.
+    </p>
+  </div>
+
+  <h3>هر تغییر دانش باید مشخص کند</h3>
+  <ul class="checks">
+    <li>چه چیزی تغییر کرد؟</li>
+    <li>چه شاهدی باعث تغییر شد؟</li>
+    <li>کدام دامنه تحت تأثیر است؟</li>
+    <li>چه موارد قبلی ممکن است تحت تأثیر قرار گیرند؟</li>
+    <li>چه چیزی هنوز نامطمئن است؟</li>
+  </ul>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دو دام متضاد</p>
+    <p style="margin:0;">
+      <strong>دام اول — بازبینی بی‌رویه قانون اساسی:</strong>
+      اگر قانون اساسی هر بار که یک قاعده غلط
+      کشف می‌شود تغییر کند، سند به یک «دفتر
+      یادداشت» تبدیل می‌شود و هویت پروژه
+      از بین می‌رود.
+      <br>
+      <strong>دام دوم — انجماد کامل:</strong> اگر
+      قانون اساسی کاملاً منجمد نگه داشته
+      شود، تجربه میدان نمی‌تواند خودش را
+      اصلاح کند و پروژه از واقعیت جدا
+      می‌شود.
+      <br><br>
+      راه درست: بازبینی قانون اساسی فقط در
+      صورت ضرورت و با دلیل روشن. اصلاح
+      مدل و مشخصات، بدون بازبینی قانون
+      اساسی.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۲۷</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۳ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۳ — ادامه</span>
+  </header>
+
+  <h3>پرسش‌های پنج‌گانه در بازبینی دانش</h3>
+  <p>
+    هر بار که دانش پروژه تغییر می‌کند، پنج پرسش
+    باید پاسخ داده شود. این کار از تکرار خطاها
+    جلوگیری می‌کند و مسیر استدلال را قابل
+    ردیابی نگه می‌دارد.
+  </p>
+
+  <div class="diagram">نمونه — اصلاح قاعده افت ولتاژ:
+
+۱. چه چیزی تغییر کرد؟
+   مرجع افت ولتاژ از ۰.۵V به ۰.۸V.
+
+۲. چه شاهدی باعث تغییر شد؟
+   ۲۰ مورد میدانی در Variant A، بدون
+   مشاهده مشکل تا ۰.۸V.
+
+۳. کدام دامنه تحت تأثیر است؟
+   Variant A، سال‌های ۱۴۰۰ تا ۱۴۰۲.
+
+۴. چه موارد قبلی ممکن است تحت تأثیر
+   قرار گیرند؟
+   قواعد تصمیم‌گیری در ۱۲ مورد قبلی
+   که از مرجع ۰.۵V استفاده کرده‌اند.
+
+۵. چه چیزی هنوز نامطمئن است؟
+   آیا این مقدار برای خودروهای
+   بالای ۱۰۰٫۰۰۰ کیلومتر هم معتبر است؟</div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>چرا این پنج پرسش لازم است</p>
+    <p style="margin:0;">
+      بدون پاسخ به این پنج پرسش، تغییر دانش
+      به‌صورت یک «به‌روزرسانی جزئی» انجام
+      می‌شود که ممکن است در گوشه‌ای از
+      سامانه، با قواعد قبلی ناسازگار باشد.
+      <br><br>
+      این پنج پرسش، تضمین می‌کند که هر
+      تغییر، آگاهانه و قابل ردیابی است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۲۸</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۴ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۴ — ایمنی و مسئولیت</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 14</span>
+  <h2>ایمنی، مسئولیت و مرز تصمیم</h2>
+
+  <p class="lead">
+    در تشخیص خودرو، بعضی تصمیم‌ها فقط «فنی» نیستند؛
+    بعضی تصمیم‌ها می‌توانند به ایمنی انسان آسیب
+    بزنند. در این موارد، مرز تصمیم باید روشن
+    باشد.
+  </p>
+
+  <h3>اصل ایمنی</h3>
+  <p>
+    هر تصمیمی که احتمال آسیب جدی به انسان، خودرو
+    یا سامانه ایجاد می‌کند، باید دارای مرز
+    توقف، شرایط ایمن آزمون و سطح صلاحیت لازم
+    باشد.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — آزمون پرریسک</p>
+    <p style="margin:0;">
+      فرض کنید سیستم پیشنهاد می‌دهد «برای تست،
+      مسیر Airbag را جدا کنید». این پیشنهاد
+      می‌تواند در صورت اشتباه، به آسیب جدی
+      منجر شود. مرز تصمیم در اینجا یعنی:
+      <br>
+      • سیستم باید هشدار ایمنی بدهد.
+      <br>
+      • شرایط ایمن آزمون را مشخص کند (برق
+      قطع، زمان انتظار برای تخلیه خازن).
+      <br>
+      • تأکید کند که این آزمون باید توسط
+      فرد صالح انجام شود.
+    </p>
+  </div>
+
+  <h3>عدم قطعیت باید دیده شود</h3>
+  <p>
+    خروجی سیستم باید تفاوت بین چهار حالت زیر را
+    نشان دهد:
+  </p>
+  <div class="chain">
+    <span class="node">محتمل</span>
+    <span class="arrow">•</span>
+    <span class="node">تأییدشده</span>
+    <span class="arrow">•</span>
+    <span class="node">ردشده</span>
+    <span class="arrow">•</span>
+    <span class="node">نامشخص</span>
+  </div>
+
+  <h3>مرجع انسانی</h3>
+  <p>
+    در موارد پرریسک، تصمیم سیستم توصیه‌ای است و
+    نباید به‌صورت پنهان جایگزین مسئول حرفه‌ای
+    شود.
+  </p>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام AI به‌عنوان مسئول</p>
+    <p style="margin:0;">
+      اگر سیستم خودش را جایگزین مسئول حرفه‌ای
+      کند، در حادثه، مسئولیت حقوقی روی سازنده
+      سامانه می‌افتد. اگر عدم قطعیت را پنهان
+      کند، کاربر اعتماد کاذب پیدا می‌کند و
+      ممکن است تصمیم‌های پرخطر بگیرد.
+      <br><br>
+      راه درست: سیستم تصمیم‌ساز نیست،
+      تصمیم‌یار است. در موارد پرریسک،
+      توصیه می‌دهد و مسئولیت را به
+      انسان حرفه‌ای منتقل می‌کند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۲۹</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۴ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۴ — ادامه</span>
+  </header>
+
+  <h3>چرا نمایش عدم قطعیت، مسئولیت‌ساز است</h3>
+  <p>
+    وقتی سامانه‌ای می‌گوید «علت: رله R5»، کاربر ممکن
+    است آن را به‌عنوان یک حقیقت قطعی در نظر بگیرد.
+    اما اگر همان سامانه بگوید «علت محتمل: رله R5،
+    سطح اطمینان: متوسط، فرضیه‌های رقیب: افت ولتاژ
+    مسیر زمین، شواهد ردکننده: …»، کاربر می‌فهمد
+    که این یک توصیه است، نه یک فرمان.
+  </p>
+  <p>
+    نمایش عدم قطعیت، سه فایده دارد:
+  </p>
+  <ul>
+    <li>کاربر حرفه‌ای می‌داند که باید با قضاوت خودش
+    تصمیم بگیرد.</li>
+    <li>مسئولیت حقوقی روی سیستم نمی‌افتد، چراکه
+    سیستم تصمیم قطعی نگرفته.</li>
+    <li>کاربر می‌تواند با آگاهی از فرضیه‌های رقیب،
+    آزمون‌های بیشتری انجام دهد.</li>
+  </ul>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>سه سطح خطر و مرز تصمیم</p>
+    <p style="margin:0;">
+      <strong>سطح ۱ — کم‌خطر:</strong> آزمون‌های
+      ساده مانند اندازه‌گیری ولتاژ. سیستم
+      می‌تواند مستقیم پیشنهاد بدهد.
+      <br>
+      <strong>سطح ۲ — متوسط:</strong> آزمون‌هایی
+      که نیاز به احتیاط دارند، مانند
+      جدا کردن کانکتور. سیستم پیشنهاد
+      می‌دهد و شرایط ایمن را ذکر می‌کند.
+      <br>
+      <strong>سطح ۳ — پرخطر:</strong> آزمون‌هایی
+      که می‌توانند به آسیب جدی منجر شوند،
+      مانند کار روی Airbag یا سیستم ترمز.
+      سیستم توصیه می‌دهد و مسئولیت را
+      به فرد صالح منتقل می‌کند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۳۰</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۵ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۵ — مقیاس‌پذیری</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 15</span>
+  <h2>مقیاس‌پذیری و برش عمودی</h2>
+
+  <p class="lead">
+    سامانه تشخیصی باید بتواند بزرگ شود بدون این‌که
+    به سردرگمی بیفتد. این بزرگ شدن باید از منطق
+    مشترک و قراردادهای پایدار بیاید، نه از
+    کپی‌کردن داده و قاعده برای هر خودرو.
+  </p>
+
+  <h3>برش عمودی</h3>
+  <p>
+    یک برش عمودی باید از واقعیت خودرو تا مشاهده،
+    استدلال، تصمیم، آزمون و راستی‌آزمایی امتداد
+    داشته باشد.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — یک برش عمودی کامل</p>
+    <p style="margin:0;">
+      فرض کنید تیم تصمیم می‌گیرد ابتدا فقط
+      روی «مدار فن رادیاتور» کار کند. یک
+      برش عمودی درست، شامل این‌ها است:
+      <br>
+      • <strong>واقعیت خودرو:</strong> فیوز، رله، سیم،
+      فن، ECU، بدنه.
+      <br>
+      • <strong>مشاهده:</strong> ولتاژ Pin ۳۰، ولتاژ
+      Pin ۸۷، افت ولتاژ G3.
+      <br>
+      • <strong>استدلال:</strong> فرضیه‌های قطع سیم،
+      افت ولتاژ، خرابی رله.
+      <br>
+      • <strong>آزمون:</strong> اتصال مستقیم فن به
+      باتری، تست افت ولتاژ.
+      <br>
+      • <strong>تصمیم و راستی‌آزمایی:</strong> پس از
+      تعمیر، بازبینی مقدار.
+      <br><br>
+      اگر فقط یکی از این‌ها (مثلاً داده)
+      ساخته شود، برش کامل نیست.
+    </p>
+  </div>
+
+  <h3>گسترش با آزمون</h3>
+  <p>
+    هر حوزه جدید مانند ABS، Airbag یا TCI ابتدا باید
+    نشان دهد که مدل پایه واقعاً قابل انتقال است؛
+    صرف شباهت اسمی کافی نیست.
+  </p>
+
+  <h3>اعداد، قانون اساسی نیستند</h3>
+  <p>
+    اعدادی مانند «۱۰ مورد» یا «۵۰ مورد» و فازبندی
+    ثابت، قانون اساسی نیستند؛ فقط معیارهای
+    احتمالی اجرای یک برنامه‌اند و باید در
+    مشخصات یا برنامه باشند.
+  </p>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دو دام در مقیاس‌پذیری</p>
+    <p style="margin:0;">
+      <strong>دام اول — کپی داده و قاعده برای هر خودرو:</strong>
+      اگر هر خودرو جدید با کپی داده و قاعده مدل
+      شود، در چند ماه، ده‌ها مدل موازی و
+      ناسازگار خواهیم داشت.
+      <br>
+      <strong>دام دوم — اعداد فازبندی در قانون اساسی:</strong>
+      اگر اعداد فازبندی را در قانون اساسی
+      بگذاریم، هر تغییر در برنامه، نیازمند
+      بازبینی قانون اساسی می‌شود که غلط
+      است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۳۱</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۵ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۵ — ادامه</span>
+  </header>
+
+  <h3>چرا برش عمودی کامل لازم است</h3>
+  <p>
+    بسیاری از پروژه‌ها، کار را به‌صورت افقی شروع می‌کنند:
+    ابتدا تمام داده‌ها را جمع می‌کنند، بعد تمام
+    الگوریتم‌ها را می‌سازند، بعد رابط کاربر. این
+    رویکرد، در میانه راه با سؤال‌های بی‌پاسخ
+    مواجه می‌شود: «این داده به کدام تصمیم
+    کمک می‌کند؟».
+  </p>
+  <p>
+    رویکرد برش عمودی، از ابتدا این پرسش را
+    پاسخ می‌دهد. با تمرکز روی یک حوزه کوچک
+    اما کامل، از واقعیت خودرو تا تصمیم،
+    تیم می‌آموزد که چه چیزی واقعاً لازم
+    است. سپس این دانش را به حوزه‌های
+    دیگر گسترش می‌دهد.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>سه معیار بلوغ یک برش عمودی</p>
+    <p style="margin:0;">
+      <strong>معیار اول — پوشش:</strong> برش از
+      واقعیت خودرو تا تصمیم را پوشش می‌دهد.
+      <br>
+      <strong>معیار دوم — آزمون‌پذیری:</strong> می‌توان
+      با یک سناریوی واقعی، صحت آن را سنجید.
+      <br>
+      <strong>معیار سوم — انتقال:</strong> می‌توان
+      الگوهای آن را به حوزه‌های دیگر منتقل
+      کرد.
+      <br><br>
+      اگر یکی از این معیارها برقرار نباشد،
+      برش عمودی ناقص است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۳۲</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۶ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۶ — اقتصاد و حقوق</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 16</span>
+  <h2>اقتصاد، حقوق و مالکیت دانش</h2>
+
+  <p class="lead">
+    سامانه تشخیصی، یک محصول است. به‌عنوان یک
+    محصول، باید ارزش اقتصادی و چارچوب حقوقی
+    روشن داشته باشد.
+  </p>
+
+  <h3>ارزش اقتصادی تابع ارزش تشخیصی است</h3>
+  <p>
+    محصول باید مسئله‌ای واقعی را سریع‌تر، دقیق‌تر،
+    کم‌ریسک‌تر یا قابل‌اعتمادتر حل کند. «زیاد
+    بودن محتوا» خود ارزش نیست.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — دو سامانه</p>
+    <p style="margin:0;">
+      <strong>سامانه A:</strong> ۱۰٫۰۰۰ مورد تشخیصی
+      انبار شده، اما برای هر مورد فقط یک
+      متن آزاد دارد.
+      <br>
+      <strong>سامانه B:</strong> ۵۰ مورد تشخیصی،
+      اما هر مورد شامل مسیر استدلال،
+      شواهد، دامنه اعتبار و راستی‌آزمایی
+      است.
+      <br><br>
+      ارزش تشخیصی سامانه B بیشتر است،
+      چون یک تعمیرکار می‌تواند واقعاً
+      از آن استفاده کند.
+    </p>
+  </div>
+
+  <h3>مالکیت و مجوز</h3>
+  <p>
+    منشأ هر داده، سند، تصویر یا نقشه باید از نظر
+    حق استفاده و بازنشر قابل تعیین باشد.
+  </p>
+
+  <h3>تفکیک ادعا و تبلیغ</h3>
+  <p>
+    ادعاهای عملکردی، دقت و صرفه‌جویی باید از شعار
+    بازاری جدا و قابل سنجش باشند.
+  </p>
+
+  <h3>حریم خصوصی</h3>
+  <p>
+    اطلاعات مشتری و خودرو فقط به اندازه لازم
+    جمع‌آوری و با دسترس و نگهداری متناسب
+    مدیریت شود.
+  </p>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دو دام در اقتصاد و حقوق</p>
+    <p style="margin:0;">
+      <strong>دام اول — محتوا به‌جای ارزش:</strong>
+      بعضی پروژه‌ها با شعار «بزرگ‌ترین پایگاه
+      داده تشخیصی» شروع می‌کنند، اما کاربر
+      نمی‌تواند از داده‌ها استفاده کند. این
+      پروژه‌ها معمولاً شکست می‌خورند.
+      <br>
+      <strong>دام دوم — ادعای بدون سنجش:</strong>
+      اگر ادعای «۱۰٪ صرفه‌جویی» بدون سنجش
+      مطرح شود، اعتماد کاربر از دست می‌رود
+      و مسئولیت حقوقی ممکن است متوجه
+      سازنده شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۳۳</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۶ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۶ — ادامه</span>
+  </header>
+
+  <h3>ارزش اقتصادی در عمل چگونه سنجیده می‌شود</h3>
+  <p>
+    ارزش اقتصادی یک سامانه تشخیصی، با چند
+    معیار قابل سنجش است. این معیارها باید
+    قابل اندازه‌گیری باشند، نه صرفاً ادعا.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:28%;">معیار</th>
+        <th>سنجه</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>کاهش زمان تشخیص</td>
+        <td>میانگین زمان از دریافت شکایت تا تعیین علت.</td>
+      </tr>
+      <tr>
+        <td>کاهش تعویض بی‌مورد</td>
+        <td>نسبت تعداد قطعات تعویض‌شده به تعداد تعمیر موفق.</td>
+      </tr>
+      <tr>
+        <td>کاهش بازگشت</td>
+        <td>درصد خودروهایی که در بازه مشخص بازمی‌گردند.</td>
+      </tr>
+      <tr>
+        <td>افزایش دقت تشخیص</td>
+        <td>درصد مواردی که تشخیص اولیه درست بوده.</td>
+      </tr>
+      <tr>
+        <td>کاهش ریسک</td>
+        <td>کاهش آزمون‌های پرخطر با استفاده از آزمون‌های کم‌خطر.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>چرا این معیارها مهم‌اند</p>
+    <p style="margin:0;">
+      هر ادعای تبلیغاتی باید با یکی از این
+      معیارها سنجیده شود. اگر سامانه‌ای
+      بگوید «تشخیص را سریع‌تر می‌کنم»،
+      باید بتوان «چقدر سریع‌تر؟» را با
+      اندازه‌گیری نشان داد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۳۴</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۷ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۷ — حاکمیت تغییر</span>
+  </header>
+
+  <span class="principle-tag">PRINCIPLE 17</span>
+  <h2>حاکمیت تغییر و دروازه‌ها</h2>
+
+  <p class="lead">
+    آخرین اصل، به حاکمیت پروژه می‌پردازد: تصمیم‌ها
+    کجا گرفته می‌شوند و دروازه‌های بررسی کجاست.
+  </p>
+
+  <p>
+    دروازه ابزار حاکمیت است، نه تشریفات پروژه. هر
+    دروازه باید یک ادعای مشخص را بررسی کند.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:24%;">نوع تصمیم</th>
+        <th>مثال</th>
+        <th style="width:22%;">محل مناسب</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Constitutional</td><td>تفکیک واقعیت از مدل</td><td>قانون اساسی</td></tr>
+      <tr><td>Domain</td><td>تعریف Signal، Role، Entity</td><td>Domain Model</td></tr>
+      <tr><td>Knowledge</td><td>سطح اعتماد یک Rule</td><td>Knowledge Governance</td></tr>
+      <tr><td>Diagnostic</td><td>ترتیب تست‌ها، روش امتیازدهی</td><td>Diagnostic Model</td></tr>
+      <tr><td>Architecture</td><td>Relational DB یا Graph DB</td><td>Architecture Decision</td></tr>
+      <tr><td>Implementation</td><td>Framework، UI، API</td><td>System / Code</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — سه سطح تصمیم</p>
+    <p style="margin:0;">
+      <strong>تصمیم قانون اساسی:</strong> اگر کسی
+      بخواهد بگوید «مشاهده و مرجع یکی هستند»،
+      این یک تصمیم قانون اساسی است.
+      <br>
+      <strong>تصمیم حاکمیت دانش:</strong> اگر تیم
+      بخواهد یک Rule را از سطح اعتماد «کم»
+      به «بالا» ارتقا دهد، این یک تصمیم
+      حاکمیت دانش است.
+      <br>
+      <strong>تصمیم معماری:</strong> اگر تیم فنی
+      بخواهد Relational DB را انتخاب کند،
+      این یک تصمیم معماری است.
+      <br><br>
+      هر تصمیم، محل مناسب خود را دارد. جابه‌جایی
+      تصمیم‌ها، منشأ بسیاری از مشکلات پروژه‌هاست.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دو دام جابه‌جایی تصمیم</p>
+    <p style="margin:0;">
+      <strong>دام اول — معماری در قانون اساسی:</strong>
+      اگر تصمیم‌های معماری را در قانون اساسی
+      بگیریم، هر تغییر فنی، نیازمند بازبینی
+      قانون اساسی می‌شود.
+      <br>
+      <strong>دام دوم — قانون اساسی در پیاده‌سازی:</strong>
+      اگر تصمیم‌های قانون اساسی را در لایه
+      پیاده‌سازی بگیریم، هویت پروژه تغییر
+      می‌کند بدون این‌که کسی متوجه شود.
+      <br><br>
+      راه درست: هر تصمیم در جای خودش.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۳۵</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل ۱۷ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">اصل ۱۷ — ادامه</span>
+  </header>
+
+  <h3>سه پرسش برای هر تصمیم</h3>
+  <p>
+    پیش از هر تصمیم مهم، سه پرسش باید پاسخ
+    داده شود تا دروازه بررسی، کار خود را
+    به‌درستی انجام دهد.
+  </p>
+
+  <div class="diagram">پرسش ۱: این تصمیم، هویت پروژه را
+         تغییر می‌دهد؟
+         اگر بله → قانون اساسی.
+         اگر نه → پرسش دوم.
+
+پرسش ۲: این تصمیم، معنای دامنه را
+         تغییر می‌دهد؟
+         اگر بله → مدل دامنه یا حاکمیت دانش.
+         اگر نه → پرسش سوم.
+
+پرسش ۳: این تصمیم، نحوه پیاده‌سازی
+         را تغییر می‌دهد؟
+         اگر بله → مشخصات سامانه یا
+         تصمیم‌های معماری یا پیاده‌سازی.</div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>فایده این سه پرسش</p>
+    <p style="margin:0;">
+      این سه پرسش، جلوی دو خطای رایج را
+      می‌گیرد:
+      <br>
+      • بالا کشیدن تصمیم‌های جزئی به
+      لایه‌های بالا.
+      <br>
+      • پایین انداختن تصمیم‌های بنیادین
+      به لایه‌های پیاده‌سازی.
+      <br><br>
+      نتیجه: هر تصمیم در جای خودش
+      گرفته می‌شود و سند، هویت
+      خود را حفظ می‌کند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۳۶</span>
+  </footer>
+</section>
+
+<!-- ==================== ممنوعیت‌ها و اصل نهایی ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">ممنوعیت‌ها و اصل نهایی</span>
+  </header>
+
+  <h2>ممنوعیت‌ها</h2>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">✕</span>ممنوعیت ۵</p>
+    <p style="margin:0;">
+      قرار دادن ابزار، فناوری، عدد KPI یا برنامه
+      زمانی در لایه قانون اساسی، صرفاً برای
+      اینکه امروز مفید است.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">✕</span>ممنوعیت ۶</p>
+    <p style="margin:0;">
+      پنهان‌کردن عدم قطعیت از کاربر یا وانمود
+      کردن اینکه هوش مصنوعی حقیقت را می‌داند.
+    </p>
+  </div>
+
+  <hr class="ornament">
+
+  <h2>اصل نهایی</h2>
+  <div class="axiom">
+    <span class="label">اصل نهایی</span>
+    <p>
+      سیستم باید در هر لحظه بتواند روشن کند:
+    </p>
+  </div>
+
+  <ul class="checks">
+    <li>«چه می‌دانیم»</li>
+    <li>«در چه شرایطی معتبر است»</li>
+    <li>«چه چیزهایی هنوز ممکن است»</li>
+    <li>«کدام آزمون با کمترین هزینه و ریسک، بیشترین کاهش ابهام را ایجاد می‌کند»</li>
+  </ul>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>معیار درستی نسخه‌های بعدی</p>
+    <p style="margin:0;">
+      اگر روزی نسخه بعدی این سند نوشته شد،
+      معیار درستی آن این است که آیا هنوز
+      این چهار پرسش را می‌تواند پاسخ
+      دهد: چه می‌دانیم، در چه دامنه‌ای
+      معتبر است، چه چیزهایی هنوز ممکن
+      است و کدام آزمون بیشترین کاهش
+      ابهام را می‌دهد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۳۷</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل نهایی ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">جمع‌بندی</span>
+  </header>
+
+  <h3>چهار پرسش، در چهار موقعیت</h3>
+  <p>
+    این چهار پرسش، در موقعیت‌های مختلف به کار
+    می‌آیند. برای روشن شدن، چهار موقعیت
+    نمونه را در نظر بگیرید.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>موقعیت اول — پیش از تشخیص</p>
+    <p style="margin:0;">
+      «چه می‌دانیم؟» — سامانه باید بتواند
+      فهرست کند که چه Observationها و
+      Referenceهایی در دست دارد.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>موقعیت دوم — پیش از تصمیم</p>
+    <p style="margin:0;">
+      «در چه شرایطی معتبر است؟» — سامانه
+      باید دامنه اعتبار هر گزاره را
+      نشان دهد.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>موقعیت سوم — در تصمیم</p>
+    <p style="margin:0;">
+      «چه چیزهایی هنوز ممکن است؟» —
+      سامانه باید فرضیه‌های باز و
+      فرضیه‌های ردشده را از هم جدا
+      نشان دهد.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>موقعیت چهارم — در انتخاب اقدام بعدی</p>
+    <p style="margin:0;">
+      «کدام آزمون بیشترین کاهش ابهام را
+      می‌دهد؟» — سامانه باید آزمون‌ها
+      را بر اساس قدرت تفکیک، هزینه و
+      ریسک رتبه‌بندی کند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>قانون اساسی پروژه</span>
+    <span class="page-num">۳۸</span>
+  </footer>
+</section>
+
+<!-- ==================== معماری اسناد ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">قانون اساسی پروژه — نسخه ۵.۰</span>
+    <span class="rh-right">معماری اسناد و مرزها</span>
+  </header>
+
+  <h2>معماری اسناد پروژه</h2>
+  <p>
+    قانون اساسی، تنها سند پروژه نیست. یک خانواده
+    از اسناد وجود دارد که هرکدام مسئولیت
+    مشخصی دارند.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th style="width:12%;">شماره</th><th>سند</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>۰۱</td><td>قانون اساسی — <code>Constitution</code></td></tr>
+      <tr><td>۰۲</td><td>مدل دامنه — <code>Domain Model</code></td></tr>
+      <tr><td>۰۳</td><td>حاکمیت دانش — <code>Knowledge Governance</code></td></tr>
+      <tr><td>۰۴</td><td>مدل تشخیص — <code>Diagnostic Model</code></td></tr>
+      <tr><td>۰۵</td><td>مشخصات سامانه — <code>System Specification</code></td></tr>
+      <tr><td>۰۶</td><td>تصمیم‌های معماری — <code>Architecture Decisions</code></td></tr>
+      <tr><td>۰۷</td><td>کسب‌وکار — <code>Business</code></td></tr>
+      <tr><td>۰۸</td><td>حقوقی / مالکیت فکری — <code>Legal / IP</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2 style="margin-top:10mm;">چه چیزهایی از قانون اساسی خارج شده‌اند</h2>
+  <p>
+    یکی از مهم‌ترین کارهای یک قانون اساسی،
+    تعیین مرزهای خودش است. این فهرست،
+    چیزهایی است که آگاهانه از این سند
+    بیرون گذاشته شده‌اند:
+  </p>
+
+  <ul class="cross">
+    <li>تعداد ثابت <code>Entity</code> / <code>Role</code> / <code>Signal</code></li>
+    <li>تعداد ثابت <code>Case</code> و فاز</li>
+    <li>نوع پایگاه داده و الگوریتم خاص</li>
+    <li><code>Bayesian</code> / <code>Fuzzy</code> / <code>Dempster-Shafer</code> / <code>MDP</code> / <code>VOI</code> به‌عنوان الزام</li>
+    <li><code>Video-First</code> یا <code>Mobile-First</code> به‌عنوان اصل</li>
+    <li>KPIهای عددی و آستانه‌های قراردادی</li>
+    <li>مدل درآمدی مشخص و فهرست رقبا</li>
+  </ul>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>چرا این مرزها مهم‌اند</p>
+    <p style="margin:0;">
+      اگر هر یک از این موارد در قانون اساسی
+      بیاید، سند به یک «دفترچه فناوری»
+      یا «سند کسب‌وکار» تبدیل می‌شود و
+      هویت خود را از دست می‌دهد.
+      <br><br>
+      قانون اساسی باید چارچوب پایدار
+      بماند و اجازه دهد لایه‌های پایین‌تر
+      با تغییر فناوری، تغییر نیاز بازار
+      یا تغییر شرایط پروژه، تکامل
+      پیدا کنند.
+    </p>
+  </div>
+
+  <hr class="ornament">
+
+  <h3>بستن</h3>
+  <p>
+    این سند یک قرارداد منطقی برای رشد پروژه است؛
+    نه جایگزین تجربه میدانی، مهندسی، اندازه‌گیری
+    یا مسئولیت حرفه‌ای.
+  </p>
+  <p>
+    بازطراحی بر مبنای نسخه‌های ۲.۰، ۳.۰ و ۴.۰، با
+    اصلاحات منطقی و معماری در سطح قانون اساسی
+    و با بسط توضیحی برای روشن شدن مرزها و
+    مفاهیم.
+  </p>
+
+  <div class="box navy" style="text-align:center;">
+    <p style="margin:0;color:#fff;font-weight:700;letter-spacing:1px;">
+      قانون اساسی پروژه — نسخه ۵.۰
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>پایان سند</span>
+    <span class="page-num">۳۹</span>
+  </footer>
+</section>
+
+</body>
+</html>

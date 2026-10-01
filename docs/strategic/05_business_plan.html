@@ -1,0 +1,2726 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نقشه راه کسب‌وکار — تعمیرگاه زنجیره‌ای هوشمند — نسخه ۲.۰</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+  @page { size: A5; margin: 10mm 8mm; }
+  * { box-sizing: border-box; }
+  html, body {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    direction: rtl; text-align: right;
+    color: #1a1a1a; background: #fff;
+    font-size: 12pt; line-height: 1.95;
+    margin: 0; padding: 0;
+    -webkit-text-size-adjust: 100%;
+  }
+  body { padding: 0 6px; }
+
+  h1 {
+    font-size: 18pt; font-weight: 800; color: #0d1b2a;
+    margin: 24px 0 12px 0; padding-bottom: 8px;
+    border-bottom: 3px solid #1b4965; line-height: 1.5;
+    page-break-after: avoid;
+  }
+  h2 {
+    font-size: 14.5pt; font-weight: 700; color: #1b4965;
+    margin: 20px 0 10px 0; padding: 8px 12px 8px 0;
+    border-right: 5px solid #1b4965; background: #f4f8fb;
+    line-height: 1.5; page-break-after: avoid;
+  }
+  h3 {
+    font-size: 13pt; font-weight: 700; color: #2c5f8d;
+    margin: 16px 0 8px 0; line-height: 1.5;
+    page-break-after: avoid;
+  }
+  h4 {
+    font-size: 12pt; font-weight: 700; color: #415a77;
+    margin: 12px 0 6px 0; page-break-after: avoid;
+  }
+  p { margin: 9px 0; text-align: justify; line-height: 2; }
+  ul, ol { padding-right: 22px; margin: 9px 0; }
+  li { margin: 5px 0; line-height: 1.95; }
+
+  .card {
+    border: 1px solid #c9d6df; border-radius: 8px;
+    margin: 12px 0; overflow: hidden; background: #fff;
+    page-break-inside: avoid;
+  }
+  .card-title {
+    background: #1b4965; color: #fff;
+    padding: 10px 12px; font-weight: 700; font-size: 12pt;
+  }
+  .card-body { padding: 10px 12px; }
+  .card-item {
+    padding: 8px 0; border-bottom: 1px solid #e8eef3;
+    line-height: 1.9;
+  }
+  .card-item:last-child { border-bottom: none; }
+  .card-item strong {
+    color: #1b4965; display: block;
+    margin-bottom: 2px; font-size: 11.5pt;
+  }
+
+  table {
+    width: 100%; border-collapse: collapse;
+    margin: 10px 0; font-size: 10.5pt;
+    page-break-inside: avoid;
+  }
+  table th {
+    background: #1b4965; color: #fff;
+    padding: 8px 6px; text-align: right;
+    font-weight: 700; border: 1px solid #0d1b2a;
+    font-size: 10.5pt;
+  }
+  table td {
+    padding: 7px 6px; border: 1px solid #c9d6df;
+    line-height: 1.8; vertical-align: top;
+    font-size: 10.5pt;
+  }
+  table tr:nth-child(even) td { background: #f8fbfd; }
+
+  .note {
+    border-right: 5px solid #2980b9; background: #eef6fb;
+    padding: 12px 14px; margin: 12px 0;
+    border-radius: 6px; line-height: 1.95;
+    page-break-inside: avoid;
+  }
+  .note-title {
+    font-weight: 800; color: #2980b9;
+    display: block; margin-bottom: 4px; font-size: 12pt;
+  }
+  .warn { border-right-color: #c0392b; background: #fdf2f0; }
+  .warn .note-title { color: #c0392b; }
+  .ok { border-right-color: #27ae60; background: #f0f9f4; }
+  .ok .note-title { color: #27ae60; }
+  .purple { border-right-color: #8e44ad; background: #f5eefa; }
+  .purple .note-title { color: #8e44ad; }
+  .deepen { border-right-color: #16a085; background: #effbf8; }
+  .deepen .note-title { color: #16a085; }
+  .example { border-right-color: #d4a017; background: #fdfaef; }
+  .example .note-title { color: #b8860b; }
+
+  .term {
+    background: #fffbe6; border: 1px solid #f0d78c;
+    border-radius: 8px; padding: 12px 14px;
+    margin: 12px 0; line-height: 1.95;
+    page-break-inside: avoid;
+  }
+  .term .en {
+    display: inline-block; background: #0d1b2a; color: #fff;
+    padding: 2px 10px; border-radius: 6px;
+    font-size: 10pt; font-family: 'Consolas', monospace;
+    direction: ltr;
+  }
+  .term .fa {
+    display: inline-block; font-weight: 800;
+    color: #1b4965; font-size: 12pt;
+    margin-right: 8px;
+  }
+  .term .desc {
+    display: block; margin-top: 6px; font-size: 11pt;
+  }
+
+  code {
+    font-family: 'Consolas', monospace; background: #eef3f8;
+    color: #1b4965; padding: 2px 6px; border-radius: 4px;
+    font-size: 10.5pt; direction: ltr; display: inline-block;
+    word-break: break-word;
+  }
+  pre {
+    font-family: 'Consolas', monospace; background: #0d1b2a;
+    color: #e0e8f0; padding: 12px; border-radius: 8px;
+    direction: ltr; text-align: left; font-size: 9.5pt;
+    line-height: 1.6; margin: 12px 0;
+    white-space: pre-wrap; word-wrap: break-word;
+    page-break-inside: avoid;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+
+  .flow {
+    background: #f8f9fb; border: 1px solid #c9d6df;
+    border-radius: 8px; padding: 12px;
+    margin: 12px 0; text-align: center;
+    font-size: 11.5pt; line-height: 2.2;
+    page-break-inside: avoid;
+  }
+  .flow-step {
+    display: block; padding: 6px 10px;
+    margin: 4px auto; background: #fff;
+    border: 1px solid #1b4965; border-radius: 6px;
+    max-width: 92%; font-weight: 700; color: #1b4965;
+    font-size: 11pt;
+  }
+  .flow-arrow {
+    display: block; color: #27ae60;
+    font-weight: 800; font-size: 14pt;
+    line-height: 1; margin: 2px 0;
+  }
+
+  .cover {
+    text-align: center; padding: 30px 15px;
+    min-height: 90vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+  }
+  .badge {
+    display: inline-block; background: #1b4965; color: #fff;
+    padding: 6px 16px; border-radius: 20px;
+    font-size: 10.5pt; margin: 0 auto 20px auto;
+  }
+  .cover h1 {
+    font-size: 23pt; border: none;
+    padding: 0; margin: 15px 0; line-height: 1.4;
+  }
+  .cover .sub {
+    font-size: 13pt; color: #415a77;
+    margin: 15px 0 30px 0;
+  }
+  .cover .meta {
+    font-size: 11pt; color: #333;
+    line-height: 2.3; margin-top: 25px;
+  }
+  .cover .meta strong { color: #0d1b2a; }
+
+  .toc-list { list-style: none; padding: 0; margin: 14px 0; }
+  .toc-list li {
+    padding: 7px 0; border-bottom: 1px dotted #ccc;
+    font-size: 11.5pt; line-height: 1.8;
+  }
+  .toc-list li.l1 { font-weight: 800; color: #0d1b2a; }
+  .toc-list li.l2 {
+    padding-right: 20px; font-size: 10.5pt; color: #333;
+  }
+
+  .pb { page-break-before: always; }
+
+  .model-card {
+    border: 2px solid; border-radius: 8px;
+    margin: 12px 0; overflow: hidden;
+    page-break-inside: avoid;
+  }
+  .model-header {
+    padding: 10px 14px; color: #fff;
+    font-weight: 700; font-size: 12pt;
+  }
+  .model-body { padding: 10px 14px; background: #fff; line-height: 1.9; }
+
+  .m1 { border-color: #c0392b; }
+  .m1 .model-header { background: #c0392b; }
+  .m2 { border-color: #e67e22; }
+  .m2 .model-header { background: #e67e22; }
+  .m3 { border-color: #d4a017; }
+  .m3 .model-header { background: #d4a017; }
+  .m4 { border-color: #27ae60; }
+  .m4 .model-header { background: #27ae60; }
+  .m5 { border-color: #2980b9; }
+  .m5 .model-header { background: #2980b9; }
+  .m6 { border-color: #8e44ad; }
+  .m6 .model-header { background: #8e44ad; }
+  .m7 { border-color: #16a085; }
+  .m7 .model-header { background: #16a085; }
+
+  .stat-row {
+    display: flex; gap: 8px; margin: 10px 0;
+    page-break-inside: avoid;
+  }
+  .stat {
+    flex: 1; background: #f4f8fb; border: 1px solid #c9d6df;
+    border-radius: 8px; padding: 10px 8px; text-align: center;
+  }
+  .stat .num {
+    display: block; font-size: 14pt; font-weight: 800;
+    color: #1b4965; line-height: 1.3;
+  }
+  .stat .lbl {
+    display: block; font-size: 9.5pt; color: #415a77;
+    margin-top: 4px; line-height: 1.5;
+  }
+
+  .compare-box {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin: 10px 0;
+    page-break-inside: avoid;
+  }
+  .compare-box .pro,
+  .compare-box .con {
+    border-radius: 8px; padding: 10px 12px;
+    line-height: 1.9; font-size: 11pt;
+  }
+  .compare-box .pro {
+    background: #f0f9f4; border: 1px solid #a8ddc0;
+  }
+  .compare-box .con {
+    background: #fdf2f0; border: 1px solid #f0b8b0;
+  }
+  .compare-box .pro::before {
+    content: "✓ مزایا"; display: block;
+    color: #27ae60; font-weight: 800; margin-bottom: 6px;
+  }
+  .compare-box .con::before {
+    content: "✕ معایب"; display: block;
+    color: #c0392b; font-weight: 800; margin-bottom: 6px;
+  }
+
+  @media print {
+    body { font-size: 11.5pt; }
+    .card-title, table th, .term .en, pre, .note,
+    .model-header, .flow-step, .stat, .badge {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ COVER ══════════════════ -->
+<section class="cover">
+  <div class="badge">نقشه راه استراتژیک کسب‌وکار — نسخه ۲.۰</div>
+  <h1>تعمیرگاه زنجیره‌ای هوشمند</h1>
+  <div class="sub">تحلیل عمیق هفت مدل کسب‌وکار + نقشه راه اجرایی مرحله‌ای</div>
+
+  <div class="meta">
+    <div><strong>بازار هدف:</strong> کرج، ایران</div>
+    <div><strong>دوره:</strong> سال ۱۴۰۵ تا ۱۴۰۷ (سه سال)</div>
+    <div><strong>نوع سند:</strong> نقشه راه مشاور کسب‌وکار</div>
+    <div><strong>مبنای تحلیل:</strong> مقایسه تطبیقی مدل‌های جهانی و بازار ایران</div>
+    <div><strong>نسخه:</strong> ۲.۰ — بسط‌یافته و پیوسته</div>
+  </div>
+
+  <div style="margin-top:40px; font-size:11pt; color:#666; line-height:2;">
+    این سند، هفت مدل کسب‌وکار ممکن را تحلیل، مقایسه،<br>
+    و برای شرایط خاص بازار ایران ارزیابی می‌کند.<br>
+    سپس یک مدل ترکیبی مرحله‌ای پیشنهاد می‌دهد.
+  </div>
+</section>
+
+<!-- ══════════════════ TOC ══════════════════ -->
+<section class="pb">
+  <h1>فهرست مطالب</h1>
+  <ul class="toc-list">
+    <li class="l1">۰ — چکیده اجرایی</li>
+    <li class="l1">۱ — تحلیل بازار کرج ۱۴۰۵</li>
+    <li class="l2">۱.۱ — اندازه و ساختار بازار</li>
+    <li class="l2">۱.۲ — رقبا و شکاف‌ها</li>
+    <li class="l2">۱.۳ — مشتری و رفتار او</li>
+    <li class="l2">۱.۴ — موانع بیرونی</li>
+    <li class="l1">۲ — هفت مدل کسب‌وکار ممکن</li>
+    <li class="l2">۲.۱ — مدل سنتی (Baseline)</li>
+    <li class="l2">۲.۲ — فرنچایز</li>
+    <li class="l2">۲.۳ — SaaS خالص</li>
+    <li class="l2">۲.۴ — مارکت‌پلیس</li>
+    <li class="l2">۲.۵ — فروش داده</li>
+    <li class="l2">۲.۶ — B2B API</li>
+    <li class="l2">۲.۷ — سرمایه‌گذاری خارجی</li>
+    <li class="l1">۳ — مقایسه تطبیقی مدل‌ها</li>
+    <li class="l1">۴ — درس‌های جهانی</li>
+    <li class="l2">۴.۱ — پنج مطالعه موردی موفق</li>
+    <li class="l2">۴.۲ — دو مطالعه شکست</li>
+    <li class="l2">۴.۳ — الگوهای مشترک</li>
+    <li class="l1">۵ — مدل ترکیبی پیشنهادی</li>
+    <li class="l1">۶ — نقشه راه اجرایی</li>
+    <li class="l1">۷ — پیش‌بینی مالی</li>
+    <li class="l1">۸ — تحلیل ریسک و راهکار</li>
+    <li class="l1">۹ — چارچوب تصمیم و KPI</li>
+    <li class="l1">۱۰ — توصیه نهایی</li>
+  </ul>
+</section>
+
+<!-- ══════════════════ بخش ۰ ══════════════════ -->
+<section class="pb">
+<h1>بخش ۰ — چکیده اجرایی</h1>
+
+<p>
+این سند، ایده «تعمیرگاه زنجیره‌ای هوشمند» را در شرایط
+بازار کرج در سال ۱۴۰۵ ارزیابی می‌کند. به‌جای تعریف و
+تمجید عمومی از ایده، این سند <strong>هفت مدل کسب‌وکار
+ممکن</strong> را به‌طور جداگانه تحلیل، با هم مقایسه، و
+در نهایت یک <strong>مدل ترکیبی مرحله‌ای</strong>
+پیشنهاد می‌دهد.
+</p>
+
+<div class="note ok">
+  <span class="note-title">یافته اصلی سند</span>
+  هیچ‌کدام از هفت مدل، به‌تنهایی، در شرایط بازار ایران
+  ۱۴۰۵ موفق نیستند. هر مدل، در یک بازه زمانی خاص
+  و در ترکیب با مدل‌های دیگر معنا پیدا می‌کند. تنها
+  یک <strong>مدل ترکیبی مرحله‌ای</strong> می‌تواند
+  موفق شود: شروع با خدمت مستقیم، رشد با فرنچایز،
+  تثبیت با SaaS، و در نهایت ورود به B2B و فروش داده.
+</div>
+
+<h2>چرا این رویکرد متفاوت است</h2>
+
+<p>
+بسیاری از اسناد کسب‌وکار، یک مدل را انتخاب می‌کنند
+و تمام تحلیل را حول آن مدل می‌سازند. مشکل این
+رویکرد این است که در بازارهای پیچیده و در حال
+تغییر (مثل بازار ایران)، هیچ مدل واحدی نمی‌تواند
+همه نیازها را پوشش دهد.
+</p>
+
+<p>
+رویکرد این سند، متفاوت است. ابتدا <strong>همه
+گزینه‌ها</strong> روی میز می‌آیند، سپس هر گزینه
+با معیارهای مشخص ارزیابی می‌شود، و در نهایت
+<strong>ترکیبی از گزینه‌ها در طول زمان</strong>
+پیشنهاد می‌شود.
+</p>
+
+<div class="example">
+  <span class="note-title">مثال — چرا مدل واحد جواب نمی‌دهد</span>
+  فرض کنید یک تیم تصمیم می‌گیرد فقط SaaS بسازد.
+  در ماه سوم، به این نتیجه می‌رسند که تعمیرکاران
+  ایرانی، حاضر به پرداخت اشتراک ماهانه نیستند.
+  حالا چه کنند؟ اگر فقط SaaS را بلد باشند،
+  متوقف می‌شوند. اما اگر از ابتدا بدانند که
+  SaaS، مرحله سوم است و مرحله اول باید
+  تعمیرگاه واقعی باشد، در مسیر درست
+  حرکت می‌کنند.
+</div>
+
+<h2>پنج توصیه کلیدی سند</h2>
+
+<div class="card">
+  <div class="card-title">پنج توصیه راهبردی</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>۱. شروع محدود، نه گسترده</strong>
+      یک تعمیرگاه پرچم‌دار در یک منطقه مشخص کرج.
+      نه هفت تعمیرگاه همزمان. دلیل: بدون اثبات
+      اقتصاد واحد در یک نقطه، گسترش فقط شکست
+      را بزرگ‌تر می‌کند.
+    </div>
+    <div class="card-item">
+      <strong>۲. اثبات اقتصاد واحد، قبل از فرنچایز</strong>
+      تا زمانی که Unit Economics (درآمد هر
+      مشتری منهای هزینه جذب و خدمات او) مثبت
+      نشده، فرنچایز ممنوع. دلیل: فرنچایز،
+      ضرب یک مدل در چند نقطه است؛ اگر مدل
+      پایه ضعیف باشد، ضرب آن هم ضعیف است.
+    </div>
+    <div class="card-item">
+      <strong>۳. سرمایه‌گذاری خارجی، آخرین گزینه</strong>
+      نه اولین. اول با درآمد داخلی رشد کنید.
+      دلیل: در ایران ۱۴۰۵، محدودیت‌های انتقال
+      وجه، تحریم‌ها و عدم اطمینان حقوقی، این
+      مسیر را عملاً غیرممکن کرده‌اند.
+    </div>
+    <div class="card-item">
+      <strong>۴. داده، محصول نیست؛ اهرم است</strong>
+      داده به‌عنوان دارایی داخلی برای بهبود
+      کیفیت و کاهش زمان تشخیص، نه محصول
+      فروش مستقیم. دلیل: در ایران ۱۴۰۵،
+      خریدار داده بسیار محدود است؛ شرکت‌های
+      بیمه، بودجه تحلیلی ندارند.
+    </div>
+    <div class="card-item">
+      <strong>۵. سه سال صبر، نه سه ماه شتاب</strong>
+      بازی این کسب‌وکار، ماراتن است، نه دوی
+      سرعت. دلیل: ساخت برند، اعتماد و شبکه
+      فرنچایز، نیازمند زمان است. تلاش برای
+      شتاب، به سوختن منابع منجر می‌شود.
+    </div>
+  </div>
+</div>
+
+<h2>ارقام کلیدی سند</h2>
+
+<div class="stat-row">
+  <div class="stat">
+    <span class="num">۵۰۰-۹۰۰</span>
+    <span class="lbl">سرمایه اولیه<br>(میلیون تومان)</span>
+  </div>
+  <div class="stat">
+    <span class="num">۱۲-۱۸</span>
+    <span class="lbl">زمان تا سوددهی<br>(ماه)</span>
+  </div>
+  <div class="stat">
+    <span class="num">۵۰۰</span>
+    <span class="lbl">مشتری فعال<br>(سال اول)</span>
+  </div>
+</div>
+
+<div class="stat-row">
+  <div class="stat">
+    <span class="num">۳-۵</span>
+    <span class="lbl">درآمد تخمینی<br>(میلیارد تومان)</span>
+  </div>
+  <div class="stat">
+    <span class="num">۵-۱۰</span>
+    <span class="lbl">فرنچایز هدف<br>(سال سوم)</span>
+  </div>
+  <div class="stat">
+    <span class="num">۱۰۰-۳۰۰</span>
+    <span class="lbl">ارزش‌گذاری سال پنجم<br>(میلیارد تومان)</span>
+  </div>
+</div>
+
+<div class="note warn">
+  <span class="note-title">هشدار مهم درباره این اعداد</span>
+  این ارقام، تخمینی و بر اساس مفروضات مشخص هستند.
+  هر تغییر اساسی در بازار (مثل شوک ارز، تحریم جدید،
+  یا ورود رقیب قدرتمند)، می‌تواند این اعداد را
+  به‌طور معناداری تغییر دهد. این اعداد، ابزار تصمیم
+  هستند، نه وعده.
+</div>
+</section>
+
+<!-- ══════════════════ بخش ۱ ══════════════════ -->
+<section class="pb">
+<h1>بخش ۱ — تحلیل بازار کرج ۱۴۰۵</h1>
+
+<p>
+برای اینکه بتوانیم مدل کسب‌وکار مناسبی طراحی کنیم،
+ابتدا باید بازار را عمیقاً بشناسیم. بخش حاضر،
+بازار کرج را از چهار زاویه بررسی می‌کند: اندازه
+و ساختار، رقبا و شکاف‌ها، مشتری و رفتار او،
+و موانع بیرونی.
+</p>
+
+<h2>۱.۱ — اندازه و ساختار بازار</h2>
+
+<p>
+کرج، به‌عنوان دومین کلان‌شهر ایران و قطب صنعتی
+استان تهران، بازاری قابل توجه برای خدمات
+خودرو دارد. این بازار از سه ویژگی مهم
+برخوردار است: <strong>حجم بالا، پراکندگی
+زیاد و کیفیت پایین خدمات</strong>.
+</p>
+
+<div class="card">
+  <div class="card-title">ارقام کلیدی بازار کرج</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>جمعیت</strong>
+      حدود ۱.۸ میلیون نفر (با احتساب حاشیه و شهرهای اقماری مانند فردیس و محمدشهر).
+    </div>
+    <div class="card-item">
+      <strong>تعداد خودروهای فعال</strong>
+      تخمین ۷۰۰٫۰۰۰ تا ۸۰۰٫۰۰۰ خودرو. نسبت خودرو به جمعیت: حدود ۰.۴ (یعنی به‌ازای هر ۲.۵ نفر یک خودرو).
+    </div>
+    <div class="card-item">
+      <strong>تعداد تعمیرگاه‌های رسمی</strong>
+      حدود ۲۶۴ تعمیرگاه ثبت‌شده در اتحادیه صنف.
+    </div>
+    <div class="card-item">
+      <strong>تعداد تعمیرگاه‌های غیررسمی</strong>
+      تخمین ۲٫۰۰۰ تا ۳٫۰۰۰ واحد. یعنی نسبت ۱ به ۱۰ بین رسمی و غیررسمی.
+    </div>
+    <div class="card-item">
+      <strong>بازار سالانه خدمات خودرو کرج</strong>
+      تخمین ۵٫۰۰۰ تا ۷٫۰۰۰ میلیارد تومان.
+    </div>
+    <div class="card-item">
+      <strong>سهم خدمات برق و الکترونیک</strong>
+      ۲۰ تا ۲۵٪ از کل بازار خدمات. یعنی حدود ۱٫۰۰۰ تا ۱٫۵۰۰ میلیارد تومان سالانه.
+    </div>
+  </div>
+</div>
+
+<div class="deepen">
+  <span class="note-title">تعمیق — چرا نسبت تعمیرگاه غیررسمی به رسمی ۱۰ به ۱ است؟</span>
+  این نسبت، تصادفی نیست. سه عامل، این عدم تعادل
+  را توضیح می‌دهد:
+  <br><br>
+  <strong>عامل اول — هزینه ثبت و مجوز:</strong> فرآیند
+  رسمی شدن، نیازمند مجوز، مالیات، بیمه و
+  رعایت استانداردهای فیزیکی است که برای یک
+  تعمیرگاه کوچک، صرفه اقتصادی ندارد.
+  <br><br>
+  <strong>عامل دوم — فرار مالیاتی:</strong> در اقتصاد
+  تورمی ایران، کسب‌وکارهای غیررسمی، از
+  پرداخت مالیات فرار می‌کنند و همین،
+  مزیت رقابتی آن‌ها در قیمت است.
+  <br><br>
+  <strong>عامل سوم — اعتماد محلی:</strong> مشتری
+  ایرانی، به تعمیرگاه محلی که سال‌ها می‌شناسد،
+  بیشتر اعتماد می‌کند تا به یک تعمیرگاه
+  رسمی و ناشناخته.
+  <br><br>
+  نتیجه: هر مدل کسب‌وکاری که بخواهد در
+  این بازار موفق شود، باید با این
+  ساختار واقعی کار کند، نه با آرزو
+  که همه تعمیرگاه‌ها رسمی شوند.
+</div>
+
+<h2>۱.۲ — رقبا و شکاف‌ها</h2>
+
+<p>
+بازار تعمیرگاه کرج، در سه دسته اصلی رقبا
+قابل تقسیم است. شناخت دقیق این سه دسته،
+کلید طراحی مدل رقابتی است.
+</p>
+
+<div class="card">
+  <div class="card-title">سه دسته رقیب</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>دسته ۱ — نمایندگی‌های رسمی (۲۰٪ بازار)</strong>
+      تعداد محدود در کرج (شاید ۱۵ تا ۲۵ نمایندگی برای برندهای مختلف).
+      مزیت: قطعات اصلی، تضمین کار، تجربه استاندارد.
+      معایب: قیمت بالا، صف طولانی، تجربه خشک و اداری، دور بودن از محله.
+      مشتری هدف: صاحبان خودروهای صفر یا دارای گارانتی.
+    </div>
+    <div class="card-item">
+      <strong>دسته ۲ — تعمیرگاه‌های سنتی (۷۰٪ بازار)</strong>
+      ستون اصلی بازار. مبتنی بر تجربه استادکار.
+      مزیت: قیمت مناسب، سرعت، اعتماد محلی، دسترسی آسان.
+      معایب: کیفیت غیریکنواخت، عدم شفافیت قیمت، نبود تضمین، عدم توانایی در تشخیص پیچیده.
+      مشتری هدف: اکثریت صاحبان خودروهای خارج از گارانتی.
+    </div>
+    <div class="card-item">
+      <strong>دسته ۳ — تعمیرگاه‌های تخصصی (۱۰٪ بازار)</strong>
+      نادر، گران، معمولاً برای برندهای خاص (بنز، BMW، هیوندای).
+      مزیت: تخصص بالا، ابزار مخصوص، توانایی تشخیص پیچیده.
+      معایب: قیمت بسیار بالا، نیاز به رزرو، عدم دسترسی برای همه.
+      مشتری هدف: صاحبان خودروهای لوکس یا خاص.
+    </div>
+  </div>
+</div>
+
+<h3>شکاف‌های کلیدی بازار</h3>
+
+<p>
+شکاف بازار، یعنی نیاز مشتری که هیچ‌کدام از
+رقبا به‌درستی پاسخ نمی‌دهند. این شکاف‌ها،
+فرصت‌های کسب‌وکار هستند.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:50%;">شکاف</th>
+      <th>شدت</th>
+      <th>پاسخ رقبا</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>عدم شفافیت قیمت</td><td>بالا</td><td>هیچ‌کدام</td></tr>
+    <tr><td>عدم اعتماد مشتری</td><td>بالا</td><td>نمایندگی تا حدی</td></tr>
+    <tr><td>کیفیت غیریکنواخت</td><td>بالا</td><td>نمایندگی تا حدی</td></tr>
+    <tr><td>نبود سابقه فنی متمرکز</td><td>متوسط</td><td>هیچ‌کدام</td></tr>
+    <tr><td>زمان انتظار طولانی</td><td>متوسط</td><td>هیچ‌کدام</td></tr>
+    <tr><td>مشکل تأمین قطعه</td><td>بالا</td><td>هیچ‌کدام</td></tr>
+    <tr><td>عدم آموزش سیستماتیک تعمیرکاران</td><td>بالا</td><td>هیچ‌کدام</td></tr>
+    <tr><td>نبود پیگیری پس از تعمیر</td><td>بالا</td><td>هیچ‌کدام</td></tr>
+  </tbody>
+</table>
+
+<div class="note ok">
+  <span class="note-title">درس کلیدی از این جدول</span>
+  شکاف‌هایی که «هیچ‌کدام» در ستون پاسخ رقبا دارند،
+  بزرگ‌ترین فرصت‌ها هستند. این شکاف‌ها نه
+  به‌دلیل نبود تقاضا، بلکه به‌دلیل نبود
+  <strong>توانایی ساختاری</strong> رقبا در
+  پاسخ دادن به آن‌ها هستند. یک تعمیرگاه
+  زنجیره‌ای هوشمند، می‌تواند با
+  سیستم و استاندارد، این شکاف‌ها را
+  پر کند.
+</div>
+
+<div class="example">
+  <span class="note-title">مثال — یک سفر مشتری واقعی</span>
+  آقای احمدی، صاحب یک پژو ۲۰۶ مدل ۱۳۹۵،
+  با مشکل «روشن شدن چراغ چک» به یک
+  تعمیرگاه سنتی محلی مراجعه می‌کند.
+  <br><br>
+  <strong>تجربه کنونی:</strong>
+  <br>
+  • تعمیرکار اسکنر وصل می‌کند، کد را می‌بیند.
+  <br>
+  • می‌گوید «سنسور اکسیژن باید عوض شود».
+  <br>
+  • قیمت را نمی‌گوید، فقط می‌گوید «حدوداً».
+  <br>
+  • پس از تعویض، چراغ چک خاموش می‌شود.
+  <br>
+  • سه ماه بعد، همان مشکل برمی‌گردد.
+  <br>
+  • مشتری به تعمیرگاه دیگری می‌رود.
+  <br><br>
+  <strong>تجربه مطلوب در مدل پیشنهادی:</strong>
+  <br>
+  • مشتری در اپلیکیشن نوبت می‌گیرد.
+  <br>
+  • پیش از مراجعه، تخمین قیمت را می‌بیند.
+  <br>
+  • پس از تشخیص، گزارش کامل با عکس و ویدیو دریافت می‌کند.
+  <br>
+  • قیمت نهایی و دلایل، شفاف است.
+  <br>
+  • پس از تعمیر، پیگیری می‌شود.
+  <br>
+  • اگر مشکل در بازه تضمین برگشت، رایگان برطرف می‌شود.
+</div>
+
+<h2>۱.۳ — مشتری و رفتار او</h2>
+
+<p>
+مشتری خدمات خودرو در کرج، یک گروه یکنواخت
+نیست. سه پرسونای اصلی وجود دارد که هر
+کدام، رفتار، اولویت و انگیزه متفاوتی
+دارند. شناخت دقیق این پرسوناها،
+برای طراحی تجربه مشتری و
+قیمت‌گذاری ضروری است.
+</p>
+
+<div class="card">
+  <div class="card-title">سه پرسونای مشتری</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>پرسونا ۱ — محافظه‌کار (۶۰٪ بازار)</strong>
+      <br>
+      ویژگی: به تعمیرگاه آشنا می‌رود، به قیمت حساس است، حاضر به تغییر نیست، وفادار به استادکار.
+      <br>
+      انگیزه اصلی: صرفه‌جویی، امنیت آشنا.
+      <br>
+      کانال دسترسی: توصیه دوستان و آشنایان.
+      <br>
+      آمادگی پرداخت بیشتر: پایین.
+      <br>
+      استراتژی: رها نکن، اما هدف اولیه نگیر.
+    </div>
+    <div class="card-item">
+      <strong>پرسونا ۲ — مدرن (۲۵٪ بازار)</strong>
+      <br>
+      ویژگی: به کیفیت و شفافیت اهمیت می‌دهد، از اپلیکیشن استفاده می‌کند، حاضر است بیشتر بپردازد.
+      <br>
+      انگیزه اصلی: شفافیت، صرفه‌جویی در زمان، تجربه خوب.
+      <br>
+      کانال دسترسی: جستجوی اینترنتی، شبکه‌های اجتماعی، اپلیکیشن.
+      <br>
+      آمادگی پرداخت بیشتر: بالا (۳۰٪ بیشتر).
+      <br>
+      استراتژی: هدف اولیه. این گروه، پذیرای تغییر است.
+    </div>
+    <div class="card-item">
+      <strong>پرسونا ۳ — اضطراری (۱۵٪ بازار)</strong>
+      <br>
+      ویژگی: فقط دنبال سریع‌ترین راه حل است، قیمت مهم نیست، کیفیت متوسط قبول می‌کند.
+      <br>
+      انگیزه اصلی: سرعت، در دسترس بودن.
+      <br>
+      کانال دسترسی: جستجوی سریع، تماس تلفنی.
+      <br>
+      آمادگی پرداخت بیشتر: بالا در لحظه اضطراری.
+      <br>
+      استراتژی: خدمات اورژانس، قیمت پویا.
+    </div>
+  </div>
+</div>
+
+<div class="note warn">
+  <span class="note-title">هشدار راهبردی — دام هدف‌گیری همزمان</span>
+  هدف‌گیری همزمان هر سه پرسونا، شکست می‌آورد.
+  چون هر پرسونا، نیاز، کانال و پیام متفاوتی
+  می‌خواهد. برای شروع، روی <strong>پرسونا ۲
+  (مدرن)</strong> تمرکز کنید، چون:
+  <br>
+  • پذیرای تغییر است.
+  <br>
+  • حاضر به پرداخت بیشتر است.
+  <br>
+  • در شبکه‌های اجتماعی فعال است و بازاریابی دهان‌به‌دهان می‌کند.
+  <br>
+  • تجربه‌اش، برند را می‌سازد.
+  <br><br>
+  پس از تسلط بر این پرسونا، می‌توانید به سراغ
+  پرسونا ۱ و ۳ بروید.
+</div>
+
+<h2>۱.۴ — موانع بیرونی</h2>
+
+<p>
+هر کسب‌وکاری در ایران ۱۴۰۵، با موانع محیطی
+خاصی مواجه است که خارج از کنترل آن
+هستند. شناخت این موانع، پیش‌نیاز
+طراحی مدل مقاوم است.
+</p>
+
+<div class="card">
+  <div class="card-title">شش مانع کلان محیطی</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>۱. تورم بالا</strong>
+      قیمت قطعات و خدمات، هر ۶ ماه دو برابر می‌شود. راهکار: مدل‌های قیمت‌گذاری باید انعطاف‌پذیر باشند و قراردادهای بلندمدت با قطعه‌فروشان، خودکشی تجاری است.
+    </div>
+    <div class="card-item">
+      <strong>۲. نوسان ارز</strong>
+      قطعات وارداتی، دستخوش شوک قیمتی مداوم هستند. راهکار: تنوع تأمین، انبار مرکزی، تمرکز بر قطعات داخلی.
+    </div>
+    <div class="card-item">
+      <strong>۳. محدودیت‌های بین‌المللی</strong>
+      دسترسی به فناوری‌های خارجی، پرداخت‌های بین‌المللی، سرمایه‌گذاری خارجی سخت است. راهکار: فناوری بومی، خودکفایی.
+    </div>
+    <div class="card-item">
+      <strong>۴. نیروی کار ماهر</strong>
+      کمبود تعمیرکار خبره؛ مهاجرت نیروهای ماهر به خارج. راهکار: آکادمی داخلی، پرداخت بالاتر، مسیر رشد شغلی.
+    </div>
+    <div class="card-item">
+      <strong>۵. زیرساخت اینترنت</strong>
+      قطعی‌های مکرر؛ طراحی سیستم باید Offline-First باشد. راهکار: اپلیکیشن موبایل با ذخیره‌سازی محلی، همگام‌سازی در زمان اتصال.
+    </div>
+    <div class="card-item">
+      <strong>۶. مقررات</strong>
+      مالیات، بیمه، مجوزها؛ پیچیدگی اداری. راهکار: مشاور حقوقی ثابت، ثبت رسمی از ابتدا.
+    </div>
+  </div>
+</div>
+
+<div class="deepen">
+  <span class="note-title">تعمیق — چرا Offline-First حیاتی است</span>
+  در بسیاری از نقاط کرج، اینترنت همراه یا
+  قطع است، یا کیفیت پایین دارد. اگر سیستم
+  تشخیص، فقط آنلاین کار کند:
+  <br>
+  • در زمان قطعی، تعمیرکار نمی‌تواند از
+  سیستم استفاده کند و به روش قدیمی
+  برمی‌گردد.
+  <br>
+  • داده‌ها از دست می‌روند یا ناقص ثبت
+  می‌شوند.
+  <br>
+  • اعتماد تعمیرکار به سیستم کاهش
+  می‌یابد.
+  <br><br>
+  راه درست: سیستم باید بتواند کاملاً
+  آفلاین کار کند، و در زمان اتصال،
+  داده‌ها را همگام‌سازی کند. این
+  یعنی معماری فنی متفاوت، اما
+  نتیجه آن، استفاده واقعی در
+  محیط واقعی است.
+</div>
+</section>
+
+<!-- ══════════════════ بخش ۲ ══════════════════ -->
+<section class="pb">
+<h1>بخش ۲ — هفت مدل کسب‌وکار ممکن</h1>
+
+<p>
+برای این ایده، هفت مدل کسب‌وکار قابل تصور
+است. هر مدل، مزایا، معایب و شرایط خاص
+خود را دارد. این بخش، هر مدل را جداگانه
+و با عمق تحلیل می‌کند.
+</p>
+
+<div class="note">
+  <span class="note-title">چرا هفت مدل و نه کمتر</span>
+  اگر فقط یک یا دو مدل را بررسی کنیم،
+  خطر این وجود دارد که بهترین گزینه را
+  نبینیم. با بررسی هفت مدل، می‌توانیم
+  با اطمینان بگوییم که همه گزینه‌های
+  منطقی را دیده‌ایم. برخی از این
+  مدل‌ها در نهایت کنار گذاشته می‌شوند،
+  اما همین کنار گذاشتن، آگاهانه و
+  مستند است.
+</div>
+
+<!-- ── مدل ۱ ── -->
+<div class="model-card m1">
+  <div class="model-header">مدل ۱ — تعمیرگاه سنتی (Baseline)</div>
+  <div class="model-body">
+    <p><strong>تعریف:</strong> یک تعمیرگاه واحد،
+    با تمرکز بر خدمات محلی. این مدل،
+    نقطه شروع همه رقبای فعلی بازار
+    است.</p>
+    <p><strong>سرمایه اولیه:</strong> ۳۰۰ تا ۵۰۰
+    میلیون تومان (اجاره، تجهیزات،
+    موجودی قطعات).</p>
+    <p><strong>منبع درآمد:</strong> خدمات
+    (اجرت) + فروش قطعات (حاشیه سود).</p>
+    <p><strong>حاشیه سود خالص:</strong> ۱۵
+    تا ۲۵٪.</p>
+  </div>
+</div>
+
+<h4>تحلیل عمیق</h4>
+
+<div class="compare-box">
+  <div class="pro">
+    <ul style="margin:0; padding-right:16px;">
+      <li>شروع سریع (۳ تا ۶ ماه).</li>
+      <li>سرمایه کم.</li>
+      <li>بدون پیچیدگی فنی.</li>
+      <li>مدل درآمدی آشنا.</li>
+    </ul>
+  </div>
+  <div class="con">
+    <ul style="margin:0; padding-right:16px;">
+      <li>کاملاً وابسته به استادکار.</li>
+      <li>غیرقابل مقیاس.</li>
+      <li>ارزش‌گذاری پایین.</li>
+      <li>آسیب‌پذیر در برابر تعطیلی استادکار.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">ارزیابی نهایی مدل ۱</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>مناسب چه کسی؟</strong>
+      کسی که فقط درآمد می‌خواهد، نه ساختن شرکت. کسی که می‌خواهد یک شغل داشته باشد، نه یک دارایی.
+    </div>
+    <div class="card-item">
+      <strong>مناسب ایده شما؟</strong>
+      ❌ به‌عنوان مدل نهایی، خیر. اما به‌عنوان
+      <strong>مرحله اول</strong> مدل ترکیبی، بله.
+      چون یادگیری و اثبات مفهوم از یک تعمیرگاه
+      واقعی شروع می‌شود.
+    </div>
+    <div class="card-item">
+      <strong>چه چیزی از این مدل یاد بگیریم؟</strong>
+      اقتصاد واقعی تعمیرگاه، رفتار واقعی مشتری، چالش‌های روزمره، ساختار هزینه‌ها. این درس‌ها، در هیچ کلاس یا کتابی پیدا نمی‌شود.
+    </div>
+  </div>
+</div>
+
+<!-- ── مدل ۲ ── -->
+<div class="model-card m2">
+  <div class="model-header">مدل ۲ — فرنچایز</div>
+  <div class="model-body">
+    <p><strong>تعریف:</strong> فروش حق استفاده از
+    برند + SOP + آموزش به تعمیرگاه‌های
+    مستقل. فرنچایزگیرنده، سرمایه و اجرا
+    را تأمین می‌کند؛ فرنچایزر، برند،
+    سیستم و پشتیبانی.</p>
+    <p><strong>منبع درآمد:</strong> حق ورود
+    (Lump Sum) + رویالتی ماهانه (۵-۱۰٪
+    درآمد) + فروش قطعه به فرنچایزها.</p>
+    <p><strong>نمونه جهانی موفق:</strong>
+    Christian Brothers Automotive (۲۵۰+
+    شعبه)، Midas (۱٫۲۰۰+ شعبه)، Bosch
+    Car Service (۱۵٫۰۰۰+ شعبه).</p>
+  </div>
+</div>
+
+<h4>تحلیل عمیق</h4>
+
+<div class="compare-box">
+  <div class="pro">
+    <ul style="margin:0; padding-right:16px;">
+      <li>رشد سریع بدون سرمایه زیاد.</li>
+      <li>درآمد جاری (رویالتی).</li>
+      <li>مقیاس‌پذیری.</li>
+      <li>ارزش‌گذاری بالاتر از تعمیرگاه سنتی.</li>
+    </ul>
+  </div>
+  <div class="con">
+    <ul style="margin:0; padding-right:16px;">
+      <li>نیاز به برند قوی.</li>
+      <li>نیاز به SOP بالغ.</li>
+      <li>نیاز به سیستم نظارت مؤثر.</li>
+      <li>نیاز به آموزش مؤثر.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="example">
+  <span class="note-title">درس کلیدی از Christian Brothers</span>
+  این فرنچایز آمریکایی، برخلاف انتظار،
+  <strong>۸۵٪ فرنچایزگیرندگان را از
+  خارج صنعت خودرو انتخاب می‌کند</strong>.
+  چرا؟ چون فرنچایزگیرنده‌ای که تجربه
+  قبلی در صنعت ندارد، راحت‌تر
+  SOP را می‌پذیرد. در مقابل،
+  استادکار قدیمی، فکر می‌کند
+  «من خودم بلدم» و SOP را
+  دور می‌زند.
+  <br><br>
+  این یک درس مهم برای ایران
+  دارد: اگر می‌خواهید فرنچایز
+  راه بیندازید، ممکن است
+  بهتر باشد سراغ کارآفرینان
+  غیرتعمیرکار بروید، نه
+  استادکاران قدیمی.
+</div>
+
+<div class="note warn">
+  <span class="note-title">دام فرنچایز ایرانی</span>
+  بسیاری از پروژه‌های فرنچایز ایرانی،
+  قبل از اثبات اقتصاد واحد شروع
+  کرده‌اند و شکست خورده‌اند. اگر
+  یک تعمیرگاه واحد، سودآور نباشد،
+  هیچ دلیلی وجود ندارد که تعمیرگاه
+  دوم سودآور شود. فرنچایز،
+  ضرب یک مدل موفق است، نه
+  ساخت یک مدل.
+</div>
+
+<!-- ── مدل ۳ ── -->
+<div class="model-card m3">
+  <div class="model-header">مدل ۳ — SaaS خالص</div>
+  <div class="model-body">
+    <p><strong>تعریف:</strong> فروش نرم‌افزار
+    اشتراکی به تعمیرگاه‌های مستقل.
+    نرم‌افزار شامل مدیریت Case،
+    تشخیص، آموزش و باشگاه مشتریان.</p>
+    <p><strong>منبع درآمد:</strong> اشتراک
+    ماهانه یا سالانه (۱-۵ میلیون
+    تومان در ماه برای هر تعمیرگاه).</p>
+    <p><strong>نمونه جهانی:</strong>
+    Xtime (Cox)، Shop-Ware،
+    AutoLeap، Tekmetric.</p>
+  </div>
+</div>
+
+<h4>تحلیل عمیق</h4>
+
+<div class="compare-box">
+  <div class="pro">
+    <ul style="margin:0; padding-right:16px;">
+      <li>حاشیه سود بالا (۷۰-۹۰٪).</li>
+      <li>مقیاس‌پذیری جهانی.</li>
+      <li>ارزش‌گذاری بالا (۱۰-۲۰× درآمد).</li>
+      <li>درآمد تکرارشونده.</li>
+    </ul>
+  </div>
+  <div class="con">
+    <ul style="margin:0; padding-right:16px;">
+      <li>نیاز به فروش B2B.</li>
+      <li>چرخه فروش طولانی.</li>
+      <li>فرار مشتری (Churn) بالا.</li>
+      <li>رقابت شدید جهانی.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="deepen">
+  <span class="note-title">تعمیق — چرا SaaS در ایران سخت است</span>
+  SaaS، یک مدل کسب‌وکار <strong>غربی</strong>
+  است. در این مدل، مشتری، ماهانه پول
+  می‌دهد بدون اینکه محصول فیزیکی
+  بگیرد. این مدل، نیازمند سه پیش‌فرض
+  است که در ایران ۱۴۰۵ صادق نیست:
+  <br><br>
+  <strong>پیش‌فرض اول — فرهنگ پرداخت اشتراک:</strong>
+  در ایران، پرداخت اشتراک ماهانه برای
+  نرم‌افزار، جا افتاده نیست. تعمیرکار
+  می‌گوید «چرا ماهانه بدهم، وقتی می‌توانم
+  یک بار بخرم؟».
+  <br><br>
+  <strong>پیش‌فرض دوم — اعتماد به فضای ابری:</strong>
+  تعمیرکار ایرانی، به ذخیره داده‌هایش
+  روی سرور خارج از کسب‌وکار خود،
+  اعتماد ندارد.
+  <br><br>
+  <strong>پیش‌فرض سوم — ارزش‌گذاری زمانی:</strong>
+  اگر تعمیرکار، ارزش نرم‌افزار را در
+  کاهش زمان یا افزایش درآمد نبیند،
+  حاضر به پرداخت نیست.
+  <br><br>
+  نتیجه: SaaS خالص در ایران ۱۴۰۵،
+  بسیار سخت است. اما SaaS به‌عنوان
+  <strong>یک لایه در مدل ترکیبی</strong>
+  (یعنی فروش به تعمیرگاه‌هایی که
+  آموزش دیده‌اند)، ممکن است
+  جواب دهد.
+</div>
+
+<!-- ── مدل ۴ ── -->
+<div class="model-card m4">
+  <div class="model-header">مدل ۴ — مارکت‌پلیس</div>
+  <div class="model-body">
+    <p><strong>تعریف:</strong> پلتفرم اتصال
+    مشتری به تعمیرگاه. کمیسیون
+    از هر تراکنش.</p>
+    <p><strong>منبع درآمد:</strong> کمیسیون
+    (۵-۱۵٪) + تبلیغات + اشتراک
+    ویژه.</p>
+    <p><strong>نمونه‌های جهانی:</strong>
+    RepairPal، Openbay،
+    YourMechanic.</p>
+    <p><strong>نمونه شکست‌خورده:</strong>
+    GoMechanic (هند) — ۷۰
+    میلیون دلار جذب، تعطیل شد.</p>
+  </div>
+</div>
+
+<h4>تحلیل عمیق</h4>
+
+<div class="compare-box">
+  <div class="pro">
+    <ul style="margin:0; padding-right:16px;">
+      <li>مقیاس‌پذیری سریع.</li>
+      <li>دارایی سبک (Asset-Light).</li>
+      <li>بدون سرمایه سنگین.</li>
+      <li>پتانسیل درآمد از تبلیغات.</li>
+    </ul>
+  </div>
+  <div class="con">
+    <ul style="margin:0; padding-right:16px;">
+      <li>مشکل مرغ و تخم‌مرغ.</li>
+      <li>چرخه اعتماد دشوار.</li>
+      <li>حاشیه سود کم.</li>
+      <li>رقابت با تعمیرگاه‌های فعلی.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="note warn">
+  <span class="note-title">درس GoMechanic — دام فرض درآمدی</span>
+  GoMechanic، فرض کرده بود که مشتری
+  حاضر است برای «راحتی و شفافیت»
+  بیشتر بپردازد. این فرض، در عمل
+  غلط بود. مشتری هندی، به‌سادگی
+  از واسطه عبور می‌کرد و به تعمیرگاه
+  مستقیم می‌رفت.
+  <br><br>
+  همین ریسک، در ایران هم وجود دارد.
+  مشتری ایرانی، به‌طور تاریخی به
+  واسطه‌ها اعتماد نمی‌کند.
+</div>
+
+<!-- ── مدل ۵ ── -->
+<div class="model-card m5">
+  <div class="model-header">مدل ۵ — فروش داده (Data Monetization)</div>
+  <div class="model-body">
+    <p><strong>تعریف:</strong> جمع‌آوری داده
+    از تعمیرگاه‌ها و فروش آن به
+    شرکت‌های بیمه، قطعه‌سازان،
+    خودروسازان.</p>
+    <p><strong>منبع درآمد:</strong> فروش
+    API داده، گزارش‌های تحلیلی،
+    پیش‌بینی خرابی.</p>
+    <p><strong>نمونه‌های جهانی:</strong>
+    神汽智联 (Shenqi)، Solera
+    Holdings، CARFAX.</p>
+  </div>
+</div>
+
+<h4>تحلیل عمیق</h4>
+
+<div class="compare-box">
+  <div class="pro">
+    <ul style="margin:0; padding-right:16px;">
+      <li>حاشیه سود بسیار بالا (۸۰٪+).</li>
+      <li>مقیاس‌پذیری جهانی.</li>
+      <li>دارایی دفاع‌پذیر.</li>
+      <li>ارزش‌گذاری بالا.</li>
+    </ul>
+  </div>
+  <div class="con">
+    <ul style="margin:0; padding-right:16px;">
+      <li>نیاز به حجم داده بسیار زیاد.</li>
+      <li>مشکل حریم خصوصی.</li>
+      <li>فروش B2B طولانی.</li>
+      <li>در ایران، خریدار محدود.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="deepen">
+  <span class="note-title">تعمیق — چرا فروش داده در ایران سخت است</span>
+  فروش داده، نیازمند یک بازار خریدار است.
+  در آمریکا و اروپا، سه گروه اصلی خریدار
+  وجود دارند: شرکت‌های بیمه (برای قیمت‌گذاری
+  ریسک)، خودروسازان (برای طراحی)، و
+  فروشندگان قطعه (برای تحلیل خرابی).
+  <br><br>
+  در ایران ۱۴۰۵:
+  <br>
+  • شرکت‌های بیمه، بودجه تحلیل داده ندارند.
+  <br>
+  • خودروسازان، درگیر مشکلات ساختاری خودشان هستند.
+  <br>
+  • فروشندگان قطعه، به‌صورت سنتی کار می‌کنند.
+  <br><br>
+  نتیجه: در کوتاه‌مدت، فروش داده جواب
+  نمی‌دهد. اما در بلندمدت، اگر حجم داده
+  به ۱۰۰٫۰۰۰ Case برسد و شرکت‌های
+  بیمه بالغ شوند، این بازار می‌تواند
+  شکل بگیرد. پس این مدل، به‌عنوان
+  <strong>مرحله پنجم</strong> مدل ترکیبی،
+  منطقی است.
+</div>
+
+<!-- ── مدل ۶ ── -->
+<div class="model-card m6">
+  <div class="model-header">مدل ۶ — B2B API</div>
+  <div class="model-body">
+    <p><strong>تعریف:</strong> فروش دسترسی
+    به موتور تشخیص از طریق API
+    به شرکت‌های دیگر.</p>
+    <p><strong>مشتریان:</strong> بیمه‌ها،
+    توزیع‌کنندگان قطعه، آموزشگاه‌ها،
+    خودروسازان.</p>
+    <p><strong>منبع درآمد:</strong> اشتراک
+    API، پرداخت به‌ازای هر Query.</p>
+  </div>
+</div>
+
+<h4>تحلیل عمیق</h4>
+
+<div class="compare-box">
+  <div class="pro">
+    <ul style="margin:0; padding-right:16px;">
+      <li>درآمد تکرارشونده.</li>
+      <li>مشتریان پایدار.</li>
+      <li>ارزش‌گذاری بالا.</li>
+      <li>حاشیه سود بالا.</li>
+    </ul>
+  </div>
+  <div class="con">
+    <ul style="margin:0; padding-right:16px;">
+      <li>نیاز به محصول بالغ.</li>
+      <li>چرخه فروش طولانی.</li>
+      <li>وابستگی به چند مشتری بزرگ.</li>
+      <li>نیاز به SLA قوی.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="example">
+  <span class="note-title">مثال — B2B API در عمل</span>
+  یک شرکت بیمه، می‌خواهد ارزیابی ریسک
+  خودروهای تحت پوشش را بهبود دهد.
+  اگر موتور تشخیص، به بیمه‌گر API
+  بدهد، بیمه‌گر می‌تواند:
+  <br>
+  • از روی تاریخچه خودرو، احتمال خرابی را پیش‌بینی کند.
+  <br>
+  • قیمت بیمه‌نامه را دقیق‌تر تنظیم کند.
+  <br>
+  • به مشتری خدمات پیشگیرانه پیشنهاد دهد.
+  <br><br>
+  این API، می‌تواند ماهانه ۵۰ تا
+  ۲۰۰ میلیون تومان درآمد داشته
+  باشد، بسته به حجم Query.
+</div>
+
+<!-- ── مدل ۷ ── -->
+<div class="model-card m7">
+  <div class="model-header">مدل ۷ — سرمایه‌گذاری خارجی</div>
+  <div class="model-body">
+    <p><strong>تعریف:</strong> جذب سرمایه
+    از VCهای خارجی یا هلدینگ‌های
+    بین‌المللی.</p>
+    <p><strong>مثال‌های جهانی:</strong>
+    استارتاپ‌های هندی و چینی
+    که میلیون‌ها دلار جذب
+    کردند.</p>
+    <p><strong>نمونه شکست‌خورده:</strong>
+    集群车宝 (چین) — ۴۰۰
+    میلیون یوان جذب،
+    ورشکست شد.</p>
+  </div>
+</div>
+
+<h4>تحلیل عمیق</h4>
+
+<div class="compare-box">
+  <div class="pro">
+    <ul style="margin:0; padding-right:16px;">
+      <li>سرمایه کلان.</li>
+      <li>اعتبار بین‌المللی.</li>
+      <li>دسترسی به بازار جهانی.</li>
+    </ul>
+  </div>
+  <div class="con">
+    <ul style="margin:0; padding-right:16px;">
+      <li>فشار رشد سریع.</li>
+      <li>از دست دادن کنترل.</li>
+      <li>وابستگی به سرمایه بعدی.</li>
+      <li>در ایران ۱۴۰۵: غیرممکن.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="note warn">
+  <span class="note-title">چرا در ایران ۱۴۰۵ غیرممکن است</span>
+  سه مانع ساختاری وجود دارد:
+  <br>
+  • <strong>تحریم‌ها:</strong> VCهای بین‌المللی، به‌دلیل تحریم، در ایران سرمایه‌گذاری نمی‌کنند.
+  <br>
+  • <strong>محدودیت انتقال وجه:</strong> حتی اگر VC بخواهد سرمایه‌گذاری کند، انتقال وجه به ایران، عملاً ممکن نیست.
+  <br>
+  • <strong>عدم اطمینان حقوقی:</strong> ساختار حقوقی ایران، برای VCها ناشناخته است.
+  <br><br>
+  نتیجه: این مدل، در ایران ۱۴۰۵، باید کنار
+  گذاشته شود. اگر روزی شرایط تغییر کرد،
+  می‌توان دوباره بررسی کرد.
+</div>
+</section>
+
+<!-- ══════════════════ بخش ۳ ══════════════════ -->
+<section class="pb">
+<h1>بخش ۳ — مقایسه تطبیقی مدل‌ها</h1>
+
+<p>
+هفت مدل را در این بخش، در دو سطح مقایسه
+می‌کنیم. اول یک مقایسه کیفی از نظر
+مناسب‌بودن برای ایران، سرعت رشد،
+سرمایه مورد نیاز و ریسک. سپس یک
+مقایسه کمی با امتیازدهی.
+</p>
+
+<h2>مقایسه کیفی</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>مدل</th>
+      <th>ایران</th>
+      <th>سرعت</th>
+      <th>سرمایه</th>
+      <th>ریسک</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>۱. سنتی</td>
+      <td>✅</td>
+      <td>کم</td>
+      <td>کم</td>
+      <td>کم</td>
+    </tr>
+    <tr>
+      <td>۲. فرنچایز</td>
+      <td>✅</td>
+      <td>متوسط</td>
+      <td>متوسط</td>
+      <td>متوسط</td>
+    </tr>
+    <tr>
+      <td>۳. SaaS</td>
+      <td>⚠️</td>
+      <td>کم</td>
+      <td>کم</td>
+      <td>بالا</td>
+    </tr>
+    <tr>
+      <td>۴. مارکت‌پلیس</td>
+      <td>❌</td>
+      <td>بالا</td>
+      <td>متوسط</td>
+      <td>بسیار بالا</td>
+    </tr>
+    <tr>
+      <td>۵. فروش داده</td>
+      <td>⚠️</td>
+      <td>کم</td>
+      <td>کم</td>
+      <td>متوسط</td>
+    </tr>
+    <tr>
+      <td>۶. B2B API</td>
+      <td>✅</td>
+      <td>کم</td>
+      <td>متوسط</td>
+      <td>متوسط</td>
+    </tr>
+    <tr>
+      <td>۷. VC خارجی</td>
+      <td>❌</td>
+      <td>بالا</td>
+      <td>بالا</td>
+      <td>بسیار بالا</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>امتیازدهی چندمعیاره</h2>
+
+<p>
+هر مدل را بر اساس پنج معیار، از ۱ تا ۵
+امتیاز می‌دهیم. توضیح هر معیار:
+</p>
+
+<ul>
+  <li><strong>مناسب‌بودن:</strong> چقدر با بازار ایران ۱۴۰۵ سازگار است؟</li>
+  <li><strong>سود:</strong> پتانسیل حاشیه سود چقدر است؟</li>
+  <li><strong>مقیاس:</strong> چقدر قابل گسترش است؟</li>
+  <li><strong>دفاع:</strong> چقدر در برابر رقبا مقاوم است؟</li>
+  <li><strong>مجموع:</strong> جمع امتیازهای چهار معیار بالا.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>مدل</th>
+      <th>مناسب</th>
+      <th>سود</th>
+      <th>مقیاس</th>
+      <th>دفاع</th>
+      <th>مجموع</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>سنتی</td><td>۵</td><td>۲</td><td>۱</td><td>۲</td><td>۱۰</td></tr>
+    <tr><td>فرنچایز</td><td>۴</td><td>۴</td><td>۴</td><td>۴</td><td>۱۶</td></tr>
+    <tr><td>SaaS</td><td>۲</td><td>۴</td><td>۵</td><td>۴</td><td>۱۵</td></tr>
+    <tr><td>مارکت‌پلیس</td><td>۲</td><td>۳</td><td>۵</td><td>۳</td><td>۱۳</td></tr>
+    <tr><td>فروش داده</td><td>۳</td><td>۵</td><td>۵</td><td>۵</td><td>۱۸</td></tr>
+    <tr><td>B2B API</td><td>۴</td><td>۵</td><td>۴</td><td>۵</td><td>۱۸</td></tr>
+    <tr><td>VC خارجی</td><td>۱</td><td>۳</td><td>۵</td><td>۲</td><td>۱۱</td></tr>
+  </tbody>
+</table>
+
+<div class="deepen">
+  <span class="note-title">تعمیق — چرا فروش داده و B2B API بالاترین امتیاز را دارند؟</span>
+  این دو مدل، در معیارهای <strong>سود، مقیاس
+  و دفاع</strong> بالاترین امتیاز را دارند.
+  چرا؟ چون:
+  <br><br>
+  <strong>سود بالا:</strong> حاشیه سود این دو مدل،
+  در سطح ۷۰-۹۰٪ است. در مقایسه، تعمیرگاه
+  سنتی، حاشیه سود ۱۵-۲۵٪ دارد. این تفاوت،
+  تفاوت یک تجارت کوچک با یک شرکت بزرگ
+  است.
+  <br><br>
+  <strong>مقیاس بالا:</strong> یک نرم‌افزار یا
+  API، می‌تواند به هزاران مشتری فروخته
+  شود، بدون افزایش خطی هزینه. برعکس،
+  تعمیرگاه سنتی، برای هر مشتری جدید،
+  نیازمند فضای فیزیکی و نیروی انسانی
+  بیشتر است.
+  <br><br>
+  <strong>دفاع بالا:</strong> یک بار که داده و
+  شبکه ساخته شد، رقیب نمی‌تواند به‌سادگی
+  آن را کپی کند. اما تعمیرگاه سنتی،
+  به‌سادگی توسط رقیب محلی کپی می‌شود.
+  <br><br>
+  <strong>اما:</strong> همین دو مدل، در
+  معیار <strong>مناسب‌بودن برای ایران</strong>
+  امتیاز پایین‌تری دارند. یعنی شروع
+  از این دو مدل، در ایران ۱۴۰۵،
+  شکست می‌خورد. باید ابتدا از
+  مدل‌های پایین‌تر شروع کرد و
+  به‌تدریج به این دو رسید.
+</div>
+
+<h2>نتیجه مقایسه — برندگان هر مرحله زمانی</h2>
+
+<div class="card">
+  <div class="card-title">برندگان در سه افق زمانی</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>برندگان کوتاه‌مدت (سال ۱-۲)</strong>
+      فرنچایز + تعمیرگاه سنتی. چون سریع
+      اجرا می‌شوند و سرمایه کم می‌خواهند.
+      این دو، نقدینگی اولیه را تولید
+      می‌کنند که برای مراحل بعدی
+      لازم است.
+    </div>
+    <div class="card-item">
+      <strong>برندگان میان‌مدت (سال ۲-۴)</strong>
+      SaaS + B2B API. چون درآمد
+      تکرارشونده می‌سازند. این
+      درآمد، پایدارتر از درآمد
+      تعمیرگاه است و ارزش‌گذاری
+      شرکت را بالا می‌برد.
+    </div>
+    <div class="card-item">
+      <strong>برندگان بلندمدت (سال ۴-۷)</strong>
+      فروش داده. چون حاشیه سود
+      بسیار بالا دارد و رقیب
+      نمی‌تواند به‌سادگی آن را
+      کپی کند. این مدل، در
+      نهایت به یک دارایی
+      راهبردی تبدیل می‌شود.
+    </div>
+    <div class="card-item">
+      <strong>هیچ مدلی به‌تنهایی برنده نیست</strong>
+      باید به‌ترتیب زمان، مدل‌ها را
+      ترکیب کرد. این ترکیب،
+      ماهیت مدل ترکیبی
+      مرحله‌ای است که در
+      بخش بعدی توضیح
+      داده می‌شود.
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════ بخش ۴ ══════════════════ -->
+<section class="pb">
+<h1>بخش ۴ — درس‌های جهانی</h1>
+
+<p>
+پیش از آنکه مدل ترکیبی پیشنهادی را مطرح
+کنیم، باید از تجربه‌های جهانی درس
+بگیریم. در این بخش، پنج شرکت موفق
+و دو شرکت شکست‌خورده را تحلیل
+می‌کنیم. هدف: استخراج الگوهای
+قابل استفاده برای بازار ایران.
+</p>
+
+<h2>۴.۱ — پنج مطالعه موردی موفق</h2>
+
+<div class="card">
+  <div class="card-title">مطالعه ۱ — Christian Brothers Automotive (آمریکا)</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>مدل</strong>
+      فرنچایز تعمیرگاه‌های عمومی.
+    </div>
+    <div class="card-item">
+      <strong>آمار کلیدی</strong>
+      ۲۵۰+ شعبه در آمریکا.
+      ۸۵٪ فرنچایزگیرندگان، بدون تجربه
+      قبلی در صنعت خودرو. میانگین
+      درآمد شعبه جدید: ۲.۲ میلیون
+      دلار در سال.
+    </div>
+    <div class="card-item">
+      <strong>استراتژی متمایز</strong>
+      Christian Brothers، به‌جای
+      جذب استادکاران قدیمی،
+      کارآفرینان غیرتعمیرکار را
+      جذب می‌کند. چون این
+      کارآفرینان، SOP را
+      راحت‌تر می‌پذیرند.
+    </div>
+    <div class="card-item">
+      <strong>درس برای ایران</strong>
+      اگر می‌خواهید فرنچایز
+      راه بیندازید، ممکن است
+      بهتر باشد سراغ
+      کارآفرینان غیرتعمیرکار
+      بروید، نه استادکاران
+      قدیمی.
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">مطالعه ۲ — Bosch Car Service (آلمان، جهانی)</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>مدل</strong>
+      فرنچایز جهانی تعمیرگاه.
+    </div>
+    <div class="card-item">
+      <strong>آمار کلیدی</strong>
+      ۱۵٫۰۰۰+ شعبه در ۱۵۰
+      کشور. تمرکز شدید بر
+      استاندارد و آموزش.
+    </div>
+    <div class="card-item">
+      <strong>استراتژی متمایز</strong>
+      برند قوی + SOP + قطعات
+      اصلی. مشتری حاضر است
+      ۳۰٪ بیشتر بپردازد، اگر
+      مطمئن باشد کیفیت
+      استاندارد است.
+    </div>
+    <div class="card-item">
+      <strong>درس برای ایران</strong>
+      برند و استاندارد،
+      می‌توانند جایگزین
+      قیمت پایین شوند.
+      این مهم است، چون
+      در بازار ایران،
+      همه به قیمت
+      پایین فکر
+      می‌کنند.
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">مطالعه ۳ — Xtime (Cox Automotive، آمریکا)</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>مدل</strong>
+      SaaS برای تعمیرگاه‌های
+      نمایندگی.
+    </div>
+    <div class="card-item">
+      <strong>نقطه قوت</strong>
+      تمرکز بر تجربه مشتری
+      از نوبت‌گیری تا پرداخت.
+      ابزار ویدیوی چندنقطه‌ای
+      که نرخ تأیید تعمیرات
+      را ۳۰٪ افزایش
+      می‌دهد.
+    </div>
+    <div class="card-item">
+      <strong>استراتژی متمایز</strong>
+      SaaS موفق، فقط یک
+      ابزار نیست. کل تجربه
+      مشتری را بازطراحی
+      می‌کند.
+    </div>
+    <div class="card-item">
+      <strong>درس برای ایران</strong>
+      اگر SaaS می‌سازید،
+      فقط ابزار نسازید.
+      تجربه کامل مشتری
+      را حل کنید.
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">مطالعه ۴ — 神汽智联 Shenqi (چین)</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>مدل</strong>
+      پلتفرم SaaS + داده.
+    </div>
+    <div class="card-item">
+      <strong>آمار کلیدی</strong>
+      ۸۰٫۰۰۰ تعمیرگاه متصل.
+      ۱.۳ میلیارد رکورد
+      نگهداری. ۵۳ میلیون
+      مالک خودرو.
+    </div>
+    <div class="card-item">
+      <strong>استراتژی متمایز</strong>
+      داده، اگر در مقیاس
+      بزرگ باشد، یک
+      دارایی راهبردی
+      است.
+    </div>
+    <div class="card-item">
+      <strong>درس برای ایران</strong>
+      در مقیاس کوچک،
+      داده ارزش چندانی
+      ندارد. باید اول
+      به مقیاس رسید،
+      سپس داده را
+      فعال کرد.
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">مطالعه ۵ — 卡爾世達 Carstar (تایوان)</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>مدل</strong>
+      اکوسیستم خدمات
+      تعمیرگاهی.
+    </div>
+    <div class="card-item">
+      <strong>آمار کلیدی</strong>
+      نرخ تمدید ۸۵٪
+      مشتریان.
+    </div>
+    <div class="card-item">
+      <strong>ارائه‌ها</strong>
+      پایگاه دانش، نقشه
+      مدار، آموزش آنلاین.
+    </div>
+    <div class="card-item">
+      <strong>درس برای ایران</strong>
+      مشتریان (تعمیرگاه‌ها)
+      اگر از سرویس ارزشمند
+      استفاده کنند، خودشان
+      تمدید می‌کنند.
+      نیازی به فشار
+      فروش نیست.
+    </div>
+  </div>
+</div>
+
+<h2>۴.۲ — دو مطالعه شکست</h2>
+
+<div class="card">
+  <div class="card-title">شکست ۱ — GoMechanic (هند)</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>مدل</strong>
+      مارکت‌پلیس خدمات
+      خودرو.
+    </div>
+    <div class="card-item">
+      <strong>سرمایه جذب‌شده</strong>
+      بیش از ۷۰ میلیون
+      دلار.
+    </div>
+    <div class="card-item">
+      <strong>علت شکست</strong>
+      فرض «مشتری برای
+      راحتی بیشتر می‌پردازد»
+      غلط بود. مشتری حاضر
+      نبود بیشتر بپردازد.
+    </div>
+    <div class="card-item">
+      <strong>درس</strong>
+      هر فرض درآمدی، قبل
+      از گسترش باید در
+      مقیاس کوچک آزمون
+      شود.
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">شکست ۲ — 集群车宝 (چین)</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>مدل</strong>
+      پلتفرم دیجیتال
+      قطعات و خدمات.
+    </div>
+    <div class="card-item">
+      <strong>سرمایه جذب‌شده</strong>
+      ۴۰۰ میلیون یوان.
+    </div>
+    <div class="card-item">
+      <strong>علت شکست</strong>
+      مدل درآمدی پایدار
+      نداشت. اتکا به
+      سرمایه خارجی.
+      رشد بی‌محابا.
+    </div>
+    <div class="card-item">
+      <strong>درس</strong>
+      سرمایه، جایگزین
+      اقتصاد واحد نمی‌شود.
+      اگر واحد پولی نیست،
+      مقیاس فقط شکست
+      را بزرگ‌تر
+      می‌کند.
+    </div>
+  </div>
+</div>
+
+<h2>۴.۳ — الگوهای مشترک</h2>
+
+<div class="card">
+  <div class="card-title">پنج الگوی مشترک بین شکست‌ها</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>۱. رشد بی‌محابا بدون اقتصاد واحد</strong>
+      بزرگ شدن قبل از سوددهی. فرض «مقیاس
+      سود می‌سازد» غلط است، اگر اقتصاد
+      واحد منفی باشد.
+    </div>
+    <div class="card-item">
+      <strong>۲. اتکا به سرمایه خارجی</strong>
+      به‌جای درآمد داخلی. سرمایه،
+      موتور است، نه سوخت. اگر کسب‌وکار
+      خودش سوخت تولید نکند، موتور
+      خاموش می‌شود.
+    </div>
+    <div class="card-item">
+      <strong>۳. فرض‌های اثبات‌نشده</strong>
+      مثل «مشتری برای راحتی
+      بیشتر می‌پردازد». هر فرض،
+      قبل از گسترش، باید با
+      آزمون میدانی تأیید شود.
+    </div>
+    <div class="card-item">
+      <strong>۴. تمرکز روی فناوری به‌جای مشتری</strong>
+      ساخت اپ زیبا، بدون حل
+      مسئله واقعی. فناوری، وسیله
+      است، نه هدف.
+    </div>
+    <div class="card-item">
+      <strong>۵. عدم تمرکز</strong>
+      همه‌کاره بودن به‌جای
+      تخصص. در بازار اشباع،
+      متخصص‌ها برنده می‌شوند.
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">پنج الگوی مشترک بین موفقیت‌ها</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>۱. تمرکز بر یک منطقه، سپس گسترش</strong>
+      تسلط بر یک بازار قبل از
+      رفتن به بعدی. این
+      الگو، در همه شرکت‌های
+      موفق دیده می‌شود.
+    </div>
+    <div class="card-item">
+      <strong>۲. اقتصاد واحد مثبت از ابتدا</strong>
+      هر واحد، خودش سود
+      می‌دهد. اگر یک شعبه
+      سودآور نباشد، تکرار
+      آن بی‌فایده است.
+    </div>
+    <div class="card-item">
+      <strong>۳. SOP قوی و آموزش مؤثر</strong>
+      استاندارد، پایه رشد
+      است. بدون SOP، هر
+      شعبه، یک تجربه
+      متفاوت است.
+    </div>
+    <div class="card-item">
+      <strong>۴. درآمد تکرارشونده</strong>
+      اشتراک، رویالتی، API.
+      درآمد تکرارشونده،
+      ارزش شرکت را
+      چند برابر
+      می‌کند.
+    </div>
+    <div class="card-item">
+      <strong>۵. داده به‌عنوان اهرم داخلی</strong>
+      نه محصول فروش، بلکه
+      ابزار بهبود کیفیت.
+    </div>
+  </div>
+</div>
+
+<div class="note ok">
+  <span class="note-title">درس نهایی بخش ۴</span>
+  اگر می‌خواهیم در ایران موفق شویم،
+  باید پنج الگوی موفقیت را رعایت
+  کنیم و از پنج الگوی شکست
+  بپرهیزیم. این الگوها،
+  مبنای مدل ترکیبی
+  پیشنهادی در بخش
+  بعدی هستند.
+</div>
+</section>
+
+<!-- ══════════════════ بخش ۵ ══════════════════ -->
+<section class="pb">
+<h1>بخش ۵ — مدل ترکیبی پیشنهادی</h1>
+
+<p>
+بر اساس تحلیل هفت مدل (بخش ۲)، مقایسه
+تطبیقی (بخش ۳) و درس‌های جهانی
+(بخش ۴)، مدل پیشنهادی ما یک
+<strong>مدل ترکیبی مرحله‌ای</strong>
+است. این مدل، به‌جای انتخاب یک
+مدل واحد، ترکیبی از مدل‌ها را
+در طول زمان پیشنهاد می‌دهد.
+</p>
+
+<h2>اصل حاکم: مدل مارپیچی (Spiral Model)</h2>
+
+<p>
+مدل مارپیچی یعنی هر مرحله، بر
+دستاوردهای مرحله قبل بنا می‌شود
+و شرایط مرحله بعد را فراهم
+می‌کند. این مدل، شبیه یک
+مارپیچ است که هر دور،
+بالاتر از دور قبل قرار
+می‌گیرد.
+</p>
+
+<div class="flow">
+  <span class="flow-step">مرحله ۱ — خدمت مستقیم (تعمیرگاه پرچم‌دار)</span>
+  <span class="flow-arrow">▼</span>
+  <span class="flow-step">مرحله ۲ — فرنچایز (۲ تا ۵ شعبه)</span>
+  <span class="flow-arrow">▼</span>
+  <span class="flow-step">مرحله ۳ — SaaS (فروش به تعمیرگاه‌های مستقل)</span>
+  <span class="flow-arrow">▼</span>
+  <span class="flow-step">مرحله ۴ — B2B API (بیمه، قطعه، خودروساز)</span>
+  <span class="flow-arrow">▼</span>
+  <span class="flow-step">مرحله ۵ — فروش داده (تحلیلی و راهبردی)</span>
+</div>
+
+<h2>چرا این ترتیب؟</h2>
+
+<div class="card">
+  <div class="card-title">منطق ترتیب مراحل</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>مرحله ۱ — چرا اول؟</strong>
+      چون باید مسئله واقعی را حل کنیم،
+      نه فقط نرم‌افزار بسازیم. تعمیرگاه
+      پرچم‌دار، آزمایشگاه زنده ماست.
+      اینجا یاد می‌گیریم مشتری
+      واقعی چه می‌خواهد،
+      چه چیزی می‌پردازد،
+      و چه چیزی را
+      دوست دارد.
+    </div>
+    <div class="card-item">
+      <strong>مرحله ۲ — چرا دوم؟</strong>
+      چون باید اثبات کنیم مدل
+      تکرارپذیر است. یک تعمیرگاه،
+      شانس است. دو تعمیرگاه،
+      سیستم است. با تعمیرگاه
+      دوم، SOP ما آزمون
+      می‌شود.
+    </div>
+    <div class="card-item">
+      <strong>مرحله ۳ — چرا سوم؟</strong>
+      چون بعد از اثبات، می‌توانیم
+      به دیگران بفروشیم. فروش
+      به تعمیرگاه‌های مستقل،
+      نیازمند محصول بالغ
+      و برند شناخته‌شده
+      است.
+    </div>
+    <div class="card-item">
+      <strong>مرحله ۴ — چرا چهارم؟</strong>
+      چون نیاز به دانش
+      ساختاریافته دارد که فقط
+      بعد از چند سال کار
+      میدانی به دست
+      می‌آید.
+    </div>
+    <div class="card-item">
+      <strong>مرحله ۵ — چرا آخر؟</strong>
+      چون در ایران، خریدار
+      داده محدود است. باید
+      اول بازار ساخته شود،
+      سپس داده فروخته
+      شود.
+    </div>
+  </div>
+</div>
+
+<h2>ترکیب مدل‌ها در هر مرحله</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>مرحله</th>
+      <th>مدل اصلی</th>
+      <th>مدل کمکی</th>
+      <th>زمان‌بندی</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>۱</td><td>تعمیرگاه سنتی</td><td>—</td><td>۶ ماه</td></tr>
+    <tr><td>۲</td><td>فرنچایز</td><td>SaaS داخلی</td><td>۱۲ ماه</td></tr>
+    <tr><td>۳</td><td>SaaS</td><td>فرنچایز</td><td>۱۲ ماه</td></tr>
+    <tr><td>۴</td><td>B2B API</td><td>SaaS</td><td>۱۲ ماه</td></tr>
+    <tr><td>۵</td><td>فروش داده</td><td>B2B API</td><td>ادامه</td></tr>
+  </tbody>
+</table>
+
+<div class="note ok">
+  <span class="note-title">مزیت مدل ترکیبی — بدون سرمایه خارجی</span>
+  در هر مرحله، یک منبع درآمد پایدار
+  وجود دارد که مرحله بعد را تأمین
+  می‌کند. این یعنی نیازی به
+  سرمایه‌گذاری خارجی نیست. اگر
+  مرحله ۱ سودآور باشد،
+  مرحله ۲ با درآمد خودش
+  راه می‌افتد، و به
+  همین ترتیب.
+</div>
+
+<div class="deepen">
+  <span class="note-title">تعمیق — چرا مدل مارپیچی، نه خطی؟</span>
+  مدل خطی یعنی هر مرحله، پس از
+  اتمام مرحله قبل شروع شود و
+  هیچ بازگشتی نباشد. مدل
+  مارپیچی، امکان بازگشت و
+  اصلاح را می‌دهد.
+  <br><br>
+  مثال: اگر در مرحله ۳ (SaaS)
+  متوجه شویم که مشتریان
+  تعمیرگاه، به قابلیت جدیدی
+  نیاز دارند، می‌توانیم به
+  مرحله ۲ برگردیم و SOP را
+  اصلاح کنیم، سپس دوباره
+  به مرحله ۳ برگردیم.
+  <br><br>
+  مدل مارپیچی، با واقعیت
+  پیچیده کسب‌وکار
+  سازگارتر است.
+</div>
+</section>
+
+<!-- ══════════════════ بخش ۶ ══════════════════ -->
+<section class="pb">
+<h1>بخش ۶ — نقشه راه اجرایی</h1>
+
+<p>
+نقشه راه در پنج مرحله، طی سه سال
+طراحی شده است. هر مرحله،
+هدف، اقدامات کلیدی و
+معیار موفقیت مشخصی
+دارد.
+</p>
+
+<h2>مرحله ۱ — تعمیرگاه پرچم‌دار (۶ ماه اول، ۱۴۰۵)</h2>
+
+<div class="card">
+  <div class="card-title">هدف، مکان، سرمایه، معیار</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>هدف</strong>
+      اثبات مدل در یک تعمیرگاه
+      واحد، در یک منطقه مشخص
+      کرج. این تعمیرگاه،
+      آزمایشگاه یادگیری
+      ماست.
+    </div>
+    <div class="card-item">
+      <strong>مکان</strong>
+      منطقه‌ای با تراکم جمعیتی
+      بالا و ترافیک متوسط.
+      پیشنهاد: گوهردشت،
+      مهرشهر، یا عظیمیه.
+      دلیل: دسترسی آسان،
+      تراکم خودرو، سطح
+      درآمد متوسط
+      به بالا.
+    </div>
+    <div class="card-item">
+      <strong>سرمایه</strong>
+      ۵۰۰ تا ۹۰۰ میلیون
+      تومان (اجاره، تجهیزات،
+      موجودی قطعات،
+      نیروی انسانی
+      اولیه).
+    </div>
+    <div class="card-item">
+      <strong>معیار موفقیت</strong>
+      ۵۰۰ مشتری فعال در ماه.
+      نرخ بازگشت ۴۰٪.
+      سودآوری از ماه ۱۲.
+    </div>
+  </div>
+</div>
+
+<h3>اقدامات کلیدی</h3>
+
+<ol>
+  <li><strong>راه‌اندازی MVP نرم‌افزار:</strong>
+  پورتال مشتری + پنل مدیریت +
+  سیستم Case. حداقل قابلیت‌ها.
+  هدف: شروع سریع، یادگیری
+  سریع.</li>
+  <li><strong>استخدام تیم پایه:</strong>
+  ۲ تعمیرکار سطح ۱، ۱ سطح ۲،
+  ۱ سطح ۳ (استادکار). هدف:
+  پوشش نیازهای اولیه.</li>
+  <li><strong>اجرای ۵۰ مورد تعمیر واقعی</strong>
+  با ثبت کامل در سیستم. هدف:
+  یادگیری از داده‌های
+  واقعی.</li>
+  <li><strong>هفته‌ای یک جلسه بازبینی Caseها</strong>
+  و اصلاح SOP. هدف:
+  بهبود مستمر.</li>
+  <li><strong>ساخت باشگاه مشتریان اولیه</strong>
+  (پایلوت با ۱۰۰ نفر). هدف:
+  ایجاد وفاداری.</li>
+</ol>
+
+<h2>مرحله ۲ — فرنچایز اولیه (۶ تا ۱۸ ماه، ۱۴۰۵-۱۴۰۶)</h2>
+
+<div class="card">
+  <div class="card-title">هدف، سرمایه، معیار</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>هدف</strong>
+      راه‌اندازی ۲ تا ۳ تعمیرگاه
+      جدید با مدل فرنچایز.
+    </div>
+    <div class="card-item">
+      <strong>سرمایه</strong>
+      از درآمد تعمیرگاه اول +
+      حق ورود فرنچایزها.
+    </div>
+    <div class="card-item">
+      <strong>معیار موفقیت</strong>
+      تعمیرگاه دوم در ۶ ماه
+      به ۷۰٪ عملکرد تعمیرگاه
+      اول برسد.
+    </div>
+  </div>
+</div>
+
+<h3>اقدامات کلیدی</h3>
+
+<ol>
+  <li>تدوین بسته فرنچایز: برند، SOP، آموزش، نرم‌افزار.</li>
+  <li>راه‌اندازی آکادمی آموزشی داخلی.</li>
+  <li>ساخت انبار مرکزی قطعات.</li>
+  <li>تعریف مدل درآمدی فرنچایز: حق ورود + رویالتی ماهانه + فروش قطعه.</li>
+  <li>جذب اولین ۲ فرنچایزگیرنده.</li>
+</ol>
+
+<h2>مرحله ۳ — SaaS و شبکه (۱۸ تا ۳۰ ماه، ۱۴۰۶)</h2>
+
+<div class="card">
+  <div class="card-title">هدف و معیار</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>هدف</strong>
+      فروش نرم‌افزار به تعمیرگاه‌های
+      مستقل + گسترش فرنچایز
+      به ۵ تا ۱۰ شعبه.
+    </div>
+    <div class="card-item">
+      <strong>معیار موفقیت</strong>
+      ۱۰ تعمیرگاه در شبکه +
+      ۵ مشتری SaaS.
+    </div>
+  </div>
+</div>
+
+<h3>اقدامات کلیدی</h3>
+
+<ol>
+  <li>تکامل نرم‌افزار به یک محصول بالغ.</li>
+  <li>تعریف پلن‌های اشتراک (پایه، حرفه‌ای، سازمانی).</li>
+  <li>استخدام تیم فروش B2B.</li>
+  <li>راه‌اندازی مرکز پشتیبانی ۲۴/۷.</li>
+  <li>شروع ساخت محصولات داده‌ای.</li>
+</ol>
+
+<h2>مرحله ۴ — B2B API (۳۰ تا ۴۲ ماه، ۱۴۰۶-۱۴۰۷)</h2>
+
+<div class="card">
+  <div class="card-title">هدف و معیار</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>هدف</strong>
+      ورود به بازار B2B: بیمه،
+      توزیع‌کننده قطعه،
+      خودروساز.
+    </div>
+    <div class="card-item">
+      <strong>معیار موفقیت</strong>
+      ۳ قرارداد B2B فعال.
+    </div>
+  </div>
+</div>
+
+<h3>اقدامات کلیدی</h3>
+
+<ol>
+  <li>طراحی و انتشار Public API.</li>
+  <li>ساخت گزارش‌های تحلیلی برای بیمه‌ها.</li>
+  <li>مذاکره با توزیع‌کنندگان قطعه برای یکپارچه‌سازی.</li>
+  <li>گسترش به ۲ شهر دیگر (تهران، اصفهان).</li>
+</ol>
+
+<h2>مرحله ۵ — فروش داده (۴۲ ماه به بعد، ۱۴۰۷+)</h2>
+
+<div class="card">
+  <div class="card-title">هدف و معیار</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>هدف</strong>
+      تبدیل داده به یک خط درآمدی
+      مستقل.
+    </div>
+    <div class="card-item">
+      <strong>معیار موفقیت</strong>
+      ۱۰٪ از درآمد کل، از
+      فروش داده.
+    </div>
+  </div>
+</div>
+
+<h3>اقدامات کلیدی</h3>
+
+<ol>
+  <li>ساخت محصولات داده (پیش‌بینی خرابی، تحلیل بازار).</li>
+  <li>مذاکره با شرکت‌های بیمه برای استفاده از داده.</li>
+  <li>فروش داده به تولیدکنندگان قطعه برای تحلیل شکست.</li>
+  <li>گسترش به بازار منطقه‌ای (عراق، افغانستان، ترکیه).</li>
+</ol>
+</section>
+
+<!-- ══════════════════ بخش ۷ ══════════════════ -->
+<section class="pb">
+<h1>بخش ۷ — پیش‌بینی مالی</h1>
+
+<p>
+پیش‌بینی مالی در قالب سه سناریو ارائه
+می‌شود: بدبینانه، واقع‌بینانه، خوش‌بینانه.
+هر سناریو، مفروضات خاص خود را دارد.
+</p>
+
+<h2>سال اول — تعمیرگاه پرچم‌دار</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>سناریو</th>
+      <th>درآمد</th>
+      <th>هزینه</th>
+      <th>سود</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>بدبینانه</td><td>۲ میلیارد</td><td>۲.۵ میلیارد</td><td>(۰.۵)</td></tr>
+    <tr><td>واقع‌بینانه</td><td>۳.۵ میلیارد</td><td>۲.۸ میلیارد</td><td>۰.۷</td></tr>
+    <tr><td>خوش‌بینانه</td><td>۵ میلیارد</td><td>۳ میلیارد</td><td>۲</td></tr>
+  </tbody>
+</table>
+
+<div class="deepen">
+  <span class="note-title">تعمیق — چرا سناریوی بدبینانه منفی است؟</span>
+  در سناریوی بدبینانه، هزینه‌ها بیشتر از
+  درآمد است. دلیل: در ماه‌های اول،
+  هزینه‌های ثابت (اجاره، حقوق،
+  تجهیزات) وجود دارد، اما درآمد،
+  به‌تدریج رشد می‌کند. اگر جذب
+  مشتری کند باشد، ممکن است
+  سال اول با زیان بسته شود.
+  این وضعیت، در کسب‌وکارهای
+  خدماتی، طبیعی است.
+</div>
+
+<h2>سال دوم — فرنچایز (۳ شعبه)</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>منبع درآمد</th>
+      <th>مبلغ (میلیارد تومان)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>تعمیرگاه پرچم‌دار</td><td>۵</td></tr>
+    <tr><td>شعبه ۲</td><td>۴</td></tr>
+    <tr><td>شعبه ۳</td><td>۴</td></tr>
+    <tr><td>حق ورود فرنچایز</td><td>۱</td></tr>
+    <tr><td>رویالتی</td><td>۰.۵</td></tr>
+    <tr><td>فروش قطعه</td><td>۲</td></tr>
+    <tr><td><strong>جمع درآمد</strong></td><td><strong>۱۶.۵</strong></td></tr>
+    <tr><td>هزینه‌ها</td><td>۱۳</td></tr>
+    <tr><td><strong>سود</strong></td><td><strong>۳.۵</strong></td></tr>
+  </tbody>
+</table>
+
+<h2>سال سوم — SaaS و شبکه</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>منبع درآمد</th>
+      <th>مبلغ (میلیارد تومان)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>خدمات تعمیرگاه‌ها (۷ شعبه)</td><td>۳۰</td></tr>
+    <tr><td>فرنچایز (حق ورود + رویالتی)</td><td>۴</td></tr>
+    <tr><td>SaaS (۲۰ مشتری)</td><td>۲</td></tr>
+    <tr><td>فروش قطعه</td><td>۵</td></tr>
+    <tr><td><strong>جمع درآمد</strong></td><td><strong>۴۱</strong></td></tr>
+    <tr><td>هزینه‌ها</td><td>۳۲</td></tr>
+    <tr><td><strong>سود</strong></td><td><strong>۹</strong></td></tr>
+  </tbody>
+</table>
+
+<h2>سال پنجم — B2B و داده</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>منبع درآمد</th>
+      <th>درصد از کل</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>خدمات شبکه (۲۰ شعبه)</td><td>۶۰٪</td></tr>
+    <tr><td>SaaS (۱۰۰ مشتری)</td><td>۱۵٪</td></tr>
+    <tr><td>B2B API (۱۰ قرارداد)</td><td>۱۵٪</td></tr>
+    <tr><td>فروش داده</td><td>۱۰٪</td></tr>
+  </tbody>
+</table>
+
+<p>
+تخمین درآمد سال پنجم:
+<strong>۱۵۰ تا ۳۰۰ میلیارد تومان</strong>.
+</p>
+
+<div class="note ok">
+  <span class="note-title">ارزش‌گذاری تخمینی سال پنجم</span>
+  با ضریب درآمدی ۳ تا ۵ برابر (ضریب
+  رایج برای شرکت‌های خدماتی-فناوری)،
+  ارزش شرکت بین <strong>۵۰۰ تا
+  ۱.۵۰۰ میلیارد تومان</strong>
+  خواهد بود. این ارزش،
+  حاصل ترکیب خدمات،
+  SaaS، B2B و داده
+  است.
+</div>
+
+<div class="note warn">
+  <span class="note-title">هشدار درباره پیش‌بینی مالی</span>
+  این پیش‌بینی، بر اساس مفروضات خاص
+  (تورم، نرخ رشد مشتری، قیمت‌گذاری)
+  ساخته شده. هر تغییر اساسی
+  در این مفروضات، اعداد را
+  تغییر می‌دهد. پیش‌بینی
+  مالی، ابزار تصمیم است،
+  نه وعده.
+</div>
+</section>
+
+<!-- ══════════════════ بخش ۸ ══════════════════ -->
+<section class="pb">
+<h1>بخش ۸ — تحلیل ریسک و راهکار</h1>
+
+<p>
+هر کسب‌وکاری، با ریسک مواجه است.
+در این بخش، ریسک‌های اصلی
+و راهکارهای مدیریت آن‌ها
+بررسی می‌شود.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ریسک</th>
+      <th>شدت</th>
+      <th>راهکار</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>عدم پذیرش مشتری</td>
+      <td>بالا</td>
+      <td>آموزش بازار، تجربه رایگان اولیه</td>
+    </tr>
+    <tr>
+      <td>مقاومت پرسنل</td>
+      <td>بالا</td>
+      <td>پاداش برای استفاده از سیستم</td>
+    </tr>
+    <tr>
+      <td>بحران قطعات</td>
+      <td>بالا</td>
+      <td>انبار مرکزی، قرارداد مستقیم</td>
+    </tr>
+    <tr>
+      <td>تورم و نوسان ارز</td>
+      <td>بالا</td>
+      <td>قیمت‌گذاری پویا، تنوع تأمین</td>
+    </tr>
+    <tr>
+      <td>مهاجرت نیروی ماهر</td>
+      <td>متوسط</td>
+      <td>پرداخت بالاتر، آموزش مستمر</td>
+    </tr>
+    <tr>
+      <td>کپی‌پذیری نرم‌افزار</td>
+      <td>متوسط</td>
+      <td>تمرکز بر شبکه و SOP</td>
+    </tr>
+    <tr>
+      <td>ورود رقیب قدرتمند</td>
+      <td>متوسط</td>
+      <td>تثبیت برند، وفاداری مشتری</td>
+    </tr>
+    <tr>
+      <td>مقررات جدید</td>
+      <td>پایین</td>
+      <td>مشاور حقوقی ثابت</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>سه ریسک کشنده (Kill Risks)</h2>
+
+<p>
+برخی ریسک‌ها، اگر محقق شوند،
+کل پروژه را از بین می‌برند.
+این ریسک‌ها باید با دقت
+بیشتری مدیریت شوند.
+</p>
+
+<div class="card">
+  <div class="card-title">ریسک‌هایی که می‌توانند پروژه را بکشند</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>۱. عدم اثبات اقتصاد واحد</strong>
+      اگر تعمیرگاه اول در ۱۸ ماه
+      سودآور نشود، کل مدل
+      زیر سؤال می‌رود.
+      راهکار: پایش ماهانه
+      معیارهای اقتصادی،
+      اصلاح سریع.
+    </div>
+    <div class="card-item">
+      <strong>۲. شکست فرنچایز اول</strong>
+      اگر فرنچایز دوم به
+      عملکرد مورد انتظار
+      نرسد، مدل
+      تکرارپذیری
+      اثبات
+      نمی‌شود.
+      راهکار: انتخاب
+      دقیق
+      فرنچایزگیرنده،
+      پشتیبانی
+      شدید
+      در ماه‌های
+      اول.
+    </div>
+    <div class="card-item">
+      <strong>۳. از دست دادن تیم پایه</strong>
+      اگر استادکار اصلی برود،
+      تعمیرگاه پرچم‌دار
+      آسیب می‌بیند.
+      راهکار: قرارداد
+      بلندمدت،
+      سهیم
+      کردن
+      در
+      سود.
+    </div>
+  </div>
+</div>
+
+<div class="deepen">
+  <span class="note-title">تعمیق — چرا ریسک کشنده سوم خطرناک است</span>
+  در کسب‌وکارهای خدماتی، ارزش اصلی
+  در <strong>دانش و تجربه نیروی
+  انسانی</strong> است. اگر استادکار
+  اصلی برود، ممکن است:
+  <br>
+  • مشتریان وفادار، به‌دنبال او بروند.
+  <br>
+  • کیفیت خدمات، افت کند.
+  <br>
+  • آموزش تعمیرکاران جوان‌تر، متوقف شود.
+  <br>
+  • برند، آسیب ببیند.
+  <br><br>
+  راهکار درست: <strong>ساخت سیستم</strong>.
+  یعنی دانش استادکار، به SOP و
+  پایگاه دانش منتقل شود. اگر
+  این کار انجام شود، رفتن
+  استادکار، ضربه کمتری
+  می‌زند.
+</div>
+</section>
+
+<!-- ══════════════════ بخش ۹ ══════════════════ -->
+<section class="pb">
+<h1>بخش ۹ — چارچوب تصمیم و KPI</h1>
+
+<p>
+در هر مرحله، معیارهای تصمیم
+(Go / No-Go) تعریف شده است.
+این معیارها، به‌عنوان دروازه
+عبور به مرحله بعد عمل
+می‌کنند.
+</p>
+
+<h2>مرحله ۱ — تصمیم عبور به مرحله ۲</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>معیار</th>
+      <th>حد آستانه</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>تعداد مشتری فعال ماهانه</td><td>≥ ۳۰۰</td></tr>
+    <tr><td>نرخ بازگشت مشتری</td><td>≥ ۴۰٪</td></tr>
+    <tr><td>سودآوری ماهانه</td><td>مثبت از ماه ۱۲</td></tr>
+    <tr><td>رضایت مشتری (NPS)</td><td>≥ ۳۰</td></tr>
+    <tr><td>استفاده واقعی از سیستم</td><td>≥ ۸۰٪ از تعمیرات</td></tr>
+  </tbody>
+</table>
+
+<h2>مرحله ۲ — تصمیم عبور به مرحله ۳</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>معیار</th>
+      <th>حد آستانه</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>عملکرد تعمیرگاه دوم</td><td>≥ ۷۰٪ تعمیرگاه اول</td></tr>
+    <tr><td>زمان راه‌اندازی شعبه جدید</td><td>≤ ۴ ماه</td></tr>
+    <tr><td>SOP مستند</td><td>کامل</td></tr>
+    <tr><td>آکادمی آموزشی</td><td>فعال</td></tr>
+    <tr><td>انبار مرکزی</td><td>راه‌اندازی شده</td></tr>
+  </tbody>
+</table>
+
+<h2>مرحله ۳ — تصمیم عبور به مرحله ۴</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>معیار</th>
+      <th>حد آستانه</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>تعداد شعبات شبکه</td><td>≥ ۱۰</td></tr>
+    <tr><td>مشتریان SaaS</td><td>≥ ۱۰</td></tr>
+    <tr><td>درآمد تکرارشونده ماهانه (MRR)</td><td>≥ ۵۰۰ میلیون تومان</td></tr>
+    <tr><td>رضایت مشتریان SaaS</td><td>≥ ۴ از ۵</td></tr>
+  </tbody>
+</table>
+
+<h2>مرحله ۴ — تصمیم عبور به مرحله ۵</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>معیار</th>
+      <th>حد آستانه</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>حجم Caseهای ثبت‌شده</td><td>≥ ۱۰۰٫۰۰۰</td></tr>
+    <tr><td>تعداد قرارداد B2B</td><td>≥ ۳</td></tr>
+    <tr><td>درآمد از B2B</td><td>≥ ۱۰٪ کل درآمد</td></tr>
+    <tr><td>حضور در ۳ شهر</td><td>محقق شده</td></tr>
+  </tbody>
+</table>
+
+<h2>KPIهای کلیدی در کل مسیر</h2>
+
+<div class="card">
+  <div class="card-title">پنج KPI اصلی</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>۱. Customer Acquisition Cost (CAC)</strong>
+      هزینه جذب هر مشتری. باید کمتر از
+      ۲۰۰ هزار تومان باشد. این عدد،
+      نشان می‌دهد بازاریابی چقدر
+      مؤثر است.
+    </div>
+    <div class="card-item">
+      <strong>۲. Lifetime Value (LTV)</strong>
+      ارزش طول عمر مشتری. باید بیش
+      از ۳ برابر CAC باشد. این
+      نسبت، نشان می‌دهد مدل
+      کسب‌وکار، سودآور است
+      یا نه.
+    </div>
+    <div class="card-item">
+      <strong>۳. Diagnostic Time Saved</strong>
+      زمان صرفه‌جویی‌شده در
+      تشخیص. باید حداقل ۲۰٪
+      نسبت به روش سنتی.
+      این عدد، ارزش
+      نرم‌افزار را
+      نشان
+      می‌دهد.
+    </div>
+    <div class="card-item">
+      <strong>۴. Repeat Rate</strong>
+      نرخ بازگشت مشتری. باید
+      حداقل ۴۰٪ باشد. این
+      عدد، نشان می‌دهد
+      مشتری راضی است
+      یا نه.
+    </div>
+    <div class="card-item">
+      <strong>۵. Franchise Replication Rate</strong>
+      سرعت راه‌اندازی شعبه
+      جدید. باید حداکثر
+      ۴ ماه باشد. این
+      عدد، نشان می‌دهد
+      SOP چقدر بالغ
+      است.
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════ بخش ۱۰ ══════════════════ -->
+<section class="pb">
+<h1>بخش ۱۰ — توصیه نهایی</h1>
+
+<p>
+پس از تحلیل هفت مدل (بخش ۲)، مقایسه
+تطبیقی (بخش ۳)، مطالعه پنج شرکت
+موفق و دو شرکت شکست‌خورده (بخش ۴)،
+و طراحی مدل ترکیبی مرحله‌ای
+(بخش ۵ و ۶)، توصیه نهایی ما
+به شرح زیر است.
+</p>
+
+<h2>ده توصیه راهبردی</h2>
+
+<div class="card">
+  <div class="card-title">برای موفقیت در این مسیر</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>۱. با تعمیرگاه پرچم‌دار شروع کن، نه فرنچایز</strong>
+      اول مسئله را حل کن، سپس مقیاس بده.
+      دلیل: بدون اثبات مدل، فرنچایز فقط
+      شکست را تکرار می‌کند.
+    </div>
+    <div class="card-item">
+      <strong>۲. اقتصاد واحد را قبل از فرنچایز اثبات کن</strong>
+      هر شعبه باید خودش سودآور باشد.
+      دلیل: اگر یک شعبه سودآور نباشد،
+      شعبه دوم هم سودآور نخواهد بود.
+    </div>
+    <div class="card-item">
+      <strong>۳. سرمایه‌گذاری خارجی را فراموش کن</strong>
+      در ایران ۱۴۰۵، عملاً غیرممکن است.
+      دلیل: تحریم‌ها، محدودیت انتقال وجه،
+      عدم اطمینان حقوقی.
+    </div>
+    <div class="card-item">
+      <strong>۴. داده را محصول نکن، اهرم کن</strong>
+      داده برای بهبود کیفیت، نه فروش
+      مستقیم. دلیل: در ایران، خریدار
+      داده محدود است.
+    </div>
+    <div class="card-item">
+      <strong>۵. مشتری مدرن را هدف بگیر</strong>
+      پرسونا ۲ (۲۵٪)، نه همه بازار.
+      دلیل: این گروه، پذیرای تغییر
+      است و حاضر به پرداخت
+      بیشتر.
+    </div>
+    <div class="card-item">
+      <strong>۶. SOP را جدی بگیر</strong>
+      بدون SOP، فرنچایز شکست
+      می‌خورد. دلیل: SOP،
+      پایه تکرارپذیری است.
+    </div>
+    <div class="card-item">
+      <strong>۷. از استادکار یاد بگیر</strong>
+      سیستم باید از رفتار او
+      الگو بگیرد. دلیل:
+      دانش استادکار،
+      بزرگ‌ترین
+      دارایی است.
+    </div>
+    <div class="card-item">
+      <strong>۸. در برابر قطعات، انبار مرکزی بساز</strong>
+      بحران قطعه، بزرگ‌ترین
+      تهدید بازار ایران
+      است. دلیل: نوسان
+      ارز و تورم،
+      تأمین را
+      دشوار
+      می‌کند.
+    </div>
+    <div class="card-item">
+      <strong>۹. Offline-First باشد</strong>
+      سیستم باید بدون اینترنت
+      کار کند. دلیل: قطعی
+      اینترنت در ایران،
+      شایع است.
+    </div>
+    <div class="card-item">
+      <strong>۱۰. صبور باش</strong>
+      بازی این کسب‌وکار،
+      ماراتن است، نه
+      دوی سرعت. دلیل:
+      ساخت برند و
+      اعتماد، زمان
+      می‌برد.
+    </div>
+  </div>
+</div>
+
+<h2>سه اشتباه مرگبار که باید از آن‌ها پرهیز کنی</h2>
+
+<div class="card">
+  <div class="card-title">اشتباهاتی که پروژه را می‌کشند</div>
+  <div class="card-body">
+    <div class="card-item">
+      <strong>۱. شروع با فرنچایز یا SaaS</strong>
+      بدون اثبات مدل، هر دو شکست
+      می‌خورند. باید از تعمیرگاه
+      واقعی شروع کرد.
+    </div>
+    <div class="card-item">
+      <strong>۲. رشد بی‌محابا بدون درآمد</strong>
+      درس GoMechanic و 集群车宝.
+      رشد بدون اقتصاد واحد،
+      به ورشکستگی منجر
+      می‌شود.
+    </div>
+    <div class="card-item">
+      <strong>۳. تمرکز بر فناوری به‌جای مشتری</strong>
+      ساخت اپ زیبا، بدون
+      حل مسئله واقعی.
+      فناوری، وسیله
+      است، نه هدف.
+    </div>
+  </div>
+</div>
+
+<h2>سخن آخر</h2>
+
+<p>
+ایده «تعمیرگاه زنجیره‌ای هوشمند» یک
+ایده بزرگ است. اما موفقیت آن به
+اجرای دقیق، صبر راهبردی، و
+تمرکز بر ارزش واقعی (نه
+سرعت) بستگی دارد.
+</p>
+
+<p>
+ارزش اصلی این کسب‌وکار،
+<strong>قابل انتقال کردن دانش
+استادکار به هر کسی</strong>
+است. این ارزش، در بازار
+ایران ۱۴۰۵، بسیار بزرگ
+است، چون:
+</p>
+
+<ul>
+  <li>تعمیرگاه‌های زیادی استادکار خبره ندارند.</li>
+  <li>تازه‌کارها رها شده‌اند.</li>
+  <li>دانش با رفتن استادکار از دست می‌رود.</li>
+  <li>هیچ‌کس نمی‌تواند کیفیت را تضمین کند.</li>
+</ul>
+
+<div class="note ok">
+  <span class="note-title">توصیه پایانی</span>
+  اگر می‌خواهید این مسیر را بروید، با
+  <strong>یک تعمیرگاه کوچک در یک
+  منطقه مشخص کرج</strong> شروع
+  کنید. در سه ماه اول، فقط
+  یک هدف داشته باشید:
+  <strong>۵۰۰ مشتری راضی</strong>.
+  بعد از آن، همه‌چیز
+  خودش را نشان
+  می‌دهد.
+</div>
+
+<div class="note purple">
+  <span class="note-title">پیام نهایی سند</span>
+  این سند، بر اساس تحلیل صادقانه هفت
+  مدل کسب‌وکار نوشته شده است.
+  هیچ‌کدام به‌تنهایی کامل
+  نیستند. تنها یک مدل
+  ترکیبی مرحله‌ای
+  می‌تواند موفق
+  شود. موفقیت،
+  نه به ایده،
+  بلکه به
+  <strong>اجرای
+  دقیق</strong>
+  بستگی
+  دارد.
+</div>
+
+<div class="note">
+  <span class="note-title">یادآوری مهم</span>
+  این سند، مبنای تصمیم‌گیری راهبردی است،
+  نه یک قطعیت. هر تغییر اساسی
+  در مفروضات (قیمت ارز،
+  مقررات، رقبا)، نیازمند
+  بازنگری سند است.
+</div>
+</section>
+
+<!-- ══════════════════ END ══════════════════ -->
+<section class="pb" style="text-align:center; padding-top:50px;">
+  <div style="font-size:16pt; color:#1b4965; font-weight:800; margin:25px 0;">
+    پایان سند
+  </div>
+
+  <div style="font-size:13pt; color:#333; line-height:2.2; margin:35px 0;">
+    <div>📘 <strong>نقشه راه کسب‌وکار</strong></div>
+    <div>تعمیرگاه زنجیره‌ای هوشمند</div>
+    <div style="margin-top:15px;">کرج، ایران — ۱۴۰۵</div>
+    <div style="margin-top:15px;">نسخه ۲.۰ — بسط‌یافته</div>
+  </div>
+
+  <div style="margin-top:50px; padding-top:25px; border-top:1px solid #ccc; font-size:11pt; color:#666; line-height:2.2;">
+    <div><strong>تهیه‌شده در چارچوب:</strong></div>
+    <div style="margin-top:10px;">پروژه هسته فنی و راهبردی بیزینس برق خودرو</div>
+    <div style="margin-top:20px;">این سند، مبنای تصمیم‌گیری راهبردی است.</div>
+    <div style="margin-top:10px;">هر تغییر در مفروضات، نیازمند بازنگری سند است.</div>
+  </div>
+</section>
+
+</body>
+</html>

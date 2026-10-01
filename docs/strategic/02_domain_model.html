@@ -1,0 +1,3957 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مدل دامنه و هستی‌شناسی سامانه تشخیص برق و الکترونیک خودرو — نسخه ۲.۰</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<style>
+:root{
+  --navy:#152437; --navy-2:#22344a; --gold:#b58b22; --gold-soft:#f4e9c8;
+  --ink:#1d2630; --ink-soft:#3a4553; --muted:#778391;
+  --line:#dce2e8; --line-soft:#eceff3;
+  --bg:#ffffff; --bg-soft:#f6f8fa; --bg-warm:#fbf7eb;
+  --green:#176b4a; --green-soft:#f0faf5;
+  --red:#a72c24; --red-soft:#fff5f4;
+  --purple:#5a3aa6; --purple-soft:#f7f4fd;
+  --blue:#2b5b8c; --blue-soft:#eef4fb;
+  --radius:8px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:"Vazirmatn","Vazir","IRANSans","Segoe UI",Tahoma,sans-serif;
+  background:#e9edf1;color:var(--ink);font-size:10.5pt;line-height:1.9;
+  direction:rtl;text-align:right;-webkit-font-smoothing:antialiased;
+}
+.sheet{
+  background:var(--bg);width:210mm;min-height:297mm;
+  margin:10mm auto;padding:20mm 20mm 22mm 20mm;
+  position:relative;box-shadow:0 4px 24px rgba(0,0,0,.12);overflow:hidden;
+}
+.running-head{
+  position:absolute;top:10mm;right:20mm;left:20mm;
+  font-size:8.5pt;color:var(--muted);
+  display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:3mm;border-bottom:.5pt solid var(--line-soft);
+}
+.running-head .rh-left{color:var(--navy);font-weight:600;}
+.running-foot{
+  position:absolute;bottom:10mm;right:20mm;left:20mm;
+  font-size:8.5pt;color:var(--muted);
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:3mm;border-top:.5pt solid var(--line-soft);
+}
+.page-num{font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;}
+
+/* جلد */
+.cover{
+  background:linear-gradient(160deg,#0e1927 0%,#152437 55%,#263c55 100%);
+  color:#fff;display:flex;flex-direction:column;justify-content:center;
+  padding:28mm 22mm;position:relative;overflow:hidden;
+}
+.cover::before{
+  content:"";position:absolute;width:420px;height:420px;
+  left:-150px;top:-150px;border:1px solid rgba(181,139,34,.35);border-radius:50%;
+}
+.cover::after{
+  content:"";position:absolute;width:520px;height:2px;
+  right:-120px;bottom:95px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.cover .badge{
+  display:inline-block;font-size:9pt;letter-spacing:3px;color:#f1d37a;
+  border:1pt solid var(--gold);padding:2mm 5mm;border-radius:3px;
+  margin-bottom:12mm;align-self:flex-start;font-weight:800;
+}
+.cover h1{
+  font-size:30pt;line-height:1.3;font-weight:900;margin:0 0 6mm 0;
+  color:#fff;letter-spacing:-.5px;
+}
+.cover h1 .accent{color:#e6c65c;}
+.cover .subtitle{
+  font-size:12pt;line-height:1.9;color:#d7dee7;
+  max-width:160mm;margin:0 0 16mm 0;
+}
+.cover .meta{
+  border-top:1pt solid rgba(255,255,255,.18);padding-top:6mm;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:4mm 8mm;font-size:9.5pt;
+}
+.cover .meta div{
+  padding:3mm 4mm;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.04);border-radius:6px;
+}
+.cover .meta dt{color:#e6c65c;font-size:8pt;letter-spacing:1px;margin-bottom:1mm;font-weight:800;}
+.cover .meta dd{margin:0;color:#eef2f6;font-weight:500;}
+
+/* فهرست */
+.toc-part{
+  font-weight:800;color:var(--gold);font-size:10pt;letter-spacing:1px;
+  margin:5mm 0 2mm 0;padding-bottom:1mm;border-bottom:1pt solid var(--gold-soft);
+}
+.toc-list{list-style:none;padding:0;margin:0;}
+.toc-list li{
+  display:flex;align-items:baseline;padding:1.7mm 0;
+  font-size:9.5pt;border-bottom:.5pt dotted var(--line);
+}
+.toc-list li .t{color:var(--ink);}
+.toc-list li .d{flex:1;margin:0 3mm;border-bottom:1px dotted #d8dde3;transform:translateY(-2px);}
+.toc-list li .p{color:var(--muted);font-size:8.5pt;font-variant-numeric:tabular-nums;font-weight:700;}
+
+/* تیترها */
+h1,h2,h3,h4{color:var(--navy);font-weight:800;line-height:1.45;page-break-after:avoid;break-after:avoid;}
+h2{
+  font-size:16pt;margin:0 0 5mm 0;padding-bottom:3mm;
+  border-bottom:1.5pt solid var(--navy);position:relative;
+}
+h2::after{
+  content:"";position:absolute;bottom:-1.5pt;right:0;
+  width:22mm;height:1.5pt;background:var(--gold);
+}
+h3{font-size:12pt;margin:6mm 0 3mm 0;color:var(--navy-2);}
+h4{font-size:10.5pt;margin:5mm 0 2mm 0;color:var(--ink);}
+p{margin:0 0 3mm 0;text-align:justify;}
+
+.part-tag{
+  display:inline-block;font-size:8.5pt;letter-spacing:2px;color:var(--gold);
+  font-weight:800;margin-bottom:3mm;
+}
+.chapter-tag{
+  display:inline-block;font-size:9pt;letter-spacing:2px;color:var(--gold);
+  font-weight:700;border:1pt solid var(--gold);padding:1.2mm 3.5mm;
+  border-radius:3px;margin-bottom:4mm;
+}
+
+/* بلوک متن بخش (نقل عین) */
+.original{
+  background:linear-gradient(135deg,#f8f6ef 0%,#fbf7ec 100%);
+  border:1pt solid #e6d9a8;border-right:4pt solid var(--gold);
+  border-radius:var(--radius);padding:5mm 6mm;margin:4mm 0 6mm 0;
+  position:relative;page-break-inside:avoid;
+}
+.original::before{
+  content:"متن بخش";
+  position:absolute;top:-3mm;right:6mm;
+  background:var(--gold);color:#fff;
+  font-size:8.5pt;font-weight:800;letter-spacing:1px;
+  padding:1mm 3mm;border-radius:3px;
+}
+.original p{margin:0 0 2.5mm 0;color:var(--ink);font-weight:500;}
+.original p:last-child{margin:0;}
+.original strong{color:var(--navy);}
+
+/* بلوک توضیح */
+.note{
+  background:#fff;border:1pt solid var(--line);
+  border-radius:var(--radius);padding:5mm 6mm;
+  margin:5mm 0;position:relative;page-break-inside:avoid;
+}
+.note::before{
+  content:"توضیح";
+  position:absolute;top:-3mm;right:6mm;
+  background:var(--navy);color:#fff;
+  font-size:8.5pt;font-weight:800;letter-spacing:1px;
+  padding:1mm 3mm;border-radius:3px;
+}
+
+/* بلوک بسط */
+.expand{
+  background:#fbfdff;border:1pt dashed #a8c0dc;
+  border-radius:var(--radius);padding:5mm 6mm;
+  margin:5mm 0;position:relative;page-break-inside:avoid;
+}
+.expand::before{
+  content:"بسط";
+  position:absolute;top:-3mm;right:6mm;
+  background:#fff;color:var(--blue);border:1pt solid var(--blue);
+  font-size:8.5pt;font-weight:800;letter-spacing:1px;
+  padding:.8mm 3mm;border-radius:3px;
+}
+
+/* جعبه‌ها */
+.box{
+  border:1pt solid var(--line);border-right:3pt solid var(--navy);
+  background:var(--bg-soft);border-radius:var(--radius);
+  padding:4.5mm 5.5mm;margin:4mm 0;
+  page-break-inside:avoid;break-inside:avoid;
+}
+.box .box-title{
+  font-weight:900;color:var(--navy);font-size:10pt;
+  margin:0 0 2mm 0;letter-spacing:.3px;
+  display:flex;align-items:center;gap:2mm;
+}
+.box .box-title .icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:5mm;height:5mm;border-radius:50%;
+  background:var(--navy);color:#fff;font-size:8pt;font-weight:900;
+}
+.box p:last-child{margin-bottom:0;}
+.box.gold{background:var(--bg-warm);border-color:#ead9a3;border-right-color:var(--gold);}
+.box.gold .box-title{color:var(--gold);}
+.box.gold .box-title .icon{background:var(--gold);}
+.box.green{background:var(--green-soft);border-color:#c7e6d6;border-right-color:var(--green);}
+.box.green .box-title{color:var(--green);}
+.box.green .box-title .icon{background:var(--green);}
+.box.red{background:var(--red-soft);border-color:#efd0cd;border-right-color:var(--red);}
+.box.red .box-title{color:var(--red);}
+.box.red .box-title .icon{background:var(--red);}
+.box.blue{background:var(--blue-soft);border-color:#cfe0f3;border-right-color:var(--blue);}
+.box.blue .box-title{color:var(--blue);}
+.box.blue .box-title .icon{background:var(--blue);}
+.box.purple{background:var(--purple-soft);border-color:#ddd3f0;border-right-color:var(--purple);}
+.box.purple .box-title{color:var(--purple);}
+.box.purple .box-title .icon{background:var(--purple);}
+.box.navy{
+  background:linear-gradient(135deg,#152437 0%,#22344a 100%);
+  color:#e6ebf2;border-color:#0e1927;border-right-color:var(--gold);
+}
+.box.navy .box-title,.box.navy strong{color:#fff;}
+.box.navy .box-title .icon{background:var(--gold);}
+.box.navy code{background:rgba(255,255,255,.08);color:var(--gold-soft);}
+
+/* اصل برجسته */
+.axiom{
+  background:var(--navy);color:#fff;border-radius:var(--radius);
+  padding:5.5mm 6.5mm;margin:5.5mm 0;
+  border-right:4pt solid var(--gold);page-break-inside:avoid;
+}
+.axiom .label{
+  display:block;color:#e6c65c;font-size:8.5pt;letter-spacing:2px;
+  margin-bottom:2mm;font-weight:800;
+}
+.axiom p{color:#eef2f6;margin:0;font-size:10.5pt;line-height:1.85;}
+
+/* زنجیره */
+.chain{
+  display:flex;flex-wrap:wrap;align-items:center;gap:2mm 0;
+  margin:4mm 0;font-size:9.5pt;page-break-inside:avoid;
+}
+.chain .node{
+  background:#fff;border:1pt solid var(--line);border-radius:6px;
+  padding:1.8mm 3.5mm;color:var(--navy);font-weight:600;white-space:nowrap;
+}
+.chain .arrow{color:var(--gold);font-weight:800;padding:0 2mm;font-size:11pt;}
+
+/* جداول */
+table{
+  width:100%;border-collapse:collapse;margin:4.5mm 0;
+  font-size:9.5pt;page-break-inside:avoid;
+}
+thead th{
+  background:var(--navy);color:#fff;font-weight:700;
+  padding:2.8mm 3.5mm;text-align:right;
+  border:1pt solid var(--navy);font-size:9.5pt;
+}
+tbody td{
+  padding:2.4mm 3.5mm;border:1pt solid var(--line);
+  vertical-align:top;color:var(--ink-soft);line-height:1.7;
+}
+tbody tr:nth-child(even){background:var(--bg-soft);}
+tbody td:first-child{color:var(--navy);font-weight:700;}
+
+code{
+  font-family:"Vazirmatn Code","Consolas","Courier New",monospace;
+  background:#eef2f5;border:1pt solid #d9e0e6;border-radius:3px;
+  padding:.3mm 1.8mm;font-size:9pt;color:#23364b;
+  direction:ltr;display:inline-block;
+}
+.diagram{
+  background:#111c29;color:#eaf0f6;padding:4.5mm 5.5mm;border-radius:8px;
+  font-family:"Vazirmatn Code","Consolas","Courier New",monospace;
+  direction:ltr;text-align:left;line-height:1.75;font-size:9pt;
+  margin:4.5mm 0;overflow:auto;page-break-inside:avoid;
+  border-right:3pt solid var(--gold);white-space:pre;
+}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin:4mm 0;}
+.card{
+  border:1pt solid var(--line);border-radius:var(--radius);
+  padding:4mm 4.5mm;background:#fff;page-break-inside:avoid;
+}
+.card h4{margin-top:0;color:var(--navy);}
+.card p:last-child{margin-bottom:0;}
+
+ul,ol{padding-right:6mm;margin:0 0 3.5mm 0;}
+li{margin-bottom:1.5mm;}
+ul li::marker{color:var(--gold);}
+ol li::marker{color:var(--gold);font-weight:700;}
+ul.checks{list-style:none;padding-right:0;}
+ul.checks li{position:relative;padding-right:7mm;}
+ul.checks li::before{content:"✓";position:absolute;right:0;top:0;color:var(--green);font-weight:800;}
+ul.cross{list-style:none;padding-right:0;}
+ul.cross li{position:relative;padding-right:7mm;}
+ul.cross li::before{content:"✕";position:absolute;right:0;top:0;color:var(--red);font-weight:800;}
+
+.small{font-size:9pt;color:var(--muted);}
+hr.ornament{border:none;text-align:center;margin:6mm 0;height:auto;}
+hr.ornament::before{content:"❖ ❖ ❖";color:var(--gold);letter-spacing:6px;font-size:10pt;}
+.page-break{page-break-before:always;break-before:page;}
+.avoid-break{page-break-inside:avoid;break-inside:avoid;}
+
+@media screen and (max-width:840px){
+  body{background:#fff;}
+  .sheet{width:100%;min-height:auto;margin:0;padding:12mm 6mm 14mm 6mm;box-shadow:none;border-radius:0;}
+  .running-head,.running-foot{position:static;margin:0 0 5mm 0;}
+  .running-foot{margin:6mm 0 0 0;}
+  .cover{padding:14mm 8mm;}
+  .cover h1{font-size:22pt;}
+  .cover .meta{grid-template-columns:1fr;}
+  .grid{grid-template-columns:1fr;}
+  table{display:block;overflow-x:auto;font-size:9pt;}
+  th,td{min-width:120px;}
+  .diagram{font-size:8pt;padding:3mm;}
+}
+
+@page{size:A4;margin:16mm 16mm 18mm 16mm;}
+@media print{
+  html,body{background:#fff;font-size:9.5pt;line-height:1.75;}
+  .sheet{
+    width:auto;min-height:auto;margin:0;padding:0;
+    box-shadow:none;page-break-after:always;break-after:page;overflow:visible;
+  }
+  .sheet:last-child{page-break-after:auto;}
+  .running-head,.running-foot{display:none;}
+  .cover{padding:20mm 15mm;min-height:260mm;display:flex;page-break-after:always;}
+  .page-break{page-break-before:always;}
+  h2,h3,h4{page-break-after:avoid;}
+  .box,.note,.original,.expand,table,.chain,.card,.diagram,.avoid-break{page-break-inside:avoid;}
+  a{color:inherit;text-decoration:none;}
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+  .no-print{display:none !important;}
+}
+.print-hint{
+  position:fixed;bottom:16px;left:16px;background:var(--navy);color:#fff;
+  padding:9px 16px;border-radius:6px;font-size:10pt;
+  box-shadow:0 4px 14px rgba(0,0,0,.2);z-index:9999;cursor:pointer;
+  border:none;font-family:inherit;font-weight:600;
+}
+.print-hint:hover{background:var(--navy-2);}
+@media print{.print-hint{display:none;}}
+@media screen and (max-width:840px){.print-hint{bottom:10px;left:10px;padding:7px 12px;font-size:9pt;}}
+</style>
+</head>
+<body>
+
+<button class="print-hint no-print" onclick="window.print()">🖨️ چاپ / ذخیره PDF</button>
+
+<!-- ==================== جلد ==================== -->
+<section class="sheet cover">
+  <span class="badge">DOMAIN MODEL • ONTOLOGY • v2.0</span>
+  <h1>مدل دامنه و <span class="accent">هستی‌شناسی</span><br>سامانه تشخیص برق و الکترونیک خودرو</h1>
+  <p class="subtitle">
+    توصیف خودروی واقعی، ساختار و مسیرهای تحقق رفتار، نقش‌ها و قابلیت‌ها،
+    وضعیت و شرایط، مشاهده و شواهد، خرابی و فرضیه، آزمون و تصمیم؛
+    به‌گونه‌ای که هم انسان و هم نرم‌افزار بتوانند درباره یک خودرو، یکسان و
+    بدون ابهام صحبت کنند.
+  </p>
+  <dl class="meta">
+    <div><dt>هدف</dt><dd>کاهش ابهام معنایی پیش از ساخت داده و منطق تشخیص</dd></div>
+    <div><dt>دامنه</dt><dd>برق، الکترونیک، کنترل و شبکه‌های ارتباطی خودرو</dd></div>
+    <div><dt>ساختار</dt><dd>متن بخش + توضیح + مثال خودرویی + نکته + بسط</dd></div>
+  </dl>
+</section>
+
+<!-- ==================== فهرست ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">فهرست مطالب</span>
+  </header>
+
+  <h2>فهرست مطالب</h2>
+
+  <p class="toc-part">مقدمه</p>
+  <ol class="toc-list">
+    <li><span class="t">چرا این سند نوشته شد</span><span class="d"></span><span class="p">۳</span></li>
+    <li><span class="t">قرارداد این مدل</span><span class="d"></span><span class="p">۴</span></li>
+  </ol>
+
+  <p class="toc-part">بخش اول — واقعیت خودرو و بازنمایی آن</p>
+  <ol class="toc-list">
+    <li><span class="t">دو جهان: خودرو و مدل</span><span class="d"></span><span class="p">۵</span></li>
+  </ol>
+
+  <p class="toc-part">بخش دوم — شناسنامه خودرو</p>
+  <ol class="toc-list">
+    <li><span class="t">هویت، گونه و پیکربندی</span><span class="d"></span><span class="p">۷</span></li>
+  </ol>
+
+  <p class="toc-part">بخش سوم — ساختار خودرو</p>
+  <ol class="toc-list">
+    <li><span class="t">Entity — چیزی که وجود دارد</span><span class="d"></span><span class="p">۹</span></li>
+    <li><span class="t">Component، Module و Aggregate</span><span class="d"></span><span class="p">۱۰</span></li>
+    <li><span class="t">Pin، Port و Interface</span><span class="d"></span><span class="p">۱۱</span></li>
+    <li><span class="t">Connection — اتصال‌ها</span><span class="d"></span><span class="p">۱۲</span></li>
+    <li><span class="t">Path — مسیر تحقق رفتار</span><span class="d"></span><span class="p">۱۳</span></li>
+    <li><span class="t">Topology — ساختار مسیرها</span><span class="d"></span><span class="p">۱۵</span></li>
+  </ol>
+
+  <p class="toc-part">بخش چهارم — نقش‌ها و رفتار</p>
+  <ol class="toc-list">
+    <li><span class="t">Role — نقش در بافت</span><span class="d"></span><span class="p">۱۶</span></li>
+    <li><span class="t">Role Assignment — انتساب صریح نقش</span><span class="d"></span><span class="p">۱۷</span></li>
+    <li><span class="t">Capability و Function</span><span class="d"></span><span class="p">۱۸</span></li>
+  </ol>
+
+  <p class="toc-part">بخش پنجم — شرایط و وضعیت</p>
+  <ol class="toc-list">
+    <li><span class="t">State — حالت گسسته</span><span class="d"></span><span class="p">۲۰</span></li>
+    <li><span class="t">Condition — شرط زمینه‌ای</span><span class="d"></span><span class="p">۲۱</span></li>
+    <li><span class="t">Context — بافت معنا</span><span class="d"></span><span class="p">۲۲</span></li>
+  </ol>
+
+  <p class="toc-part">بخش ششم — سیگنال و مشاهده</p>
+  <ol class="toc-list">
+    <li><span class="t">Energy، Signal، Data</span><span class="d"></span><span class="p">۲۳</span></li>
+    <li><span class="t">Measurement — اندازه‌گیری</span><span class="d"></span><span class="p">۲۴</span></li>
+    <li><span class="t">Observation — مشاهده</span><span class="d"></span><span class="p">۲۵</span></li>
+    <li><span class="t">Primitiveهای سیگنال</span><span class="d"></span><span class="p">۲۶</span></li>
+  </ol>
+
+  <p class="toc-part">بخش هفتم — اصل مسیر توان و بازگشت</p>
+  <ol class="toc-list">
+    <li><span class="t">حلقه توان و بازگشت</span><span class="d"></span><span class="p">۲۷</span></li>
+  </ol>
+
+  <p class="toc-part">بخش هشتم — انتظار و مرجع</p>
+  <ol class="toc-list">
+    <li><span class="t">Reference و انواع آن</span><span class="d"></span><span class="p">۲۸</span></li>
+  </ol>
+
+  <p class="toc-part">بخش نهم — خرابی و نشانه</p>
+  <ol class="toc-list">
+    <li><span class="t">Failure Mode و Fault</span><span class="d"></span><span class="p">۲۹</span></li>
+    <li><span class="t">Symptom و Complaint</span><span class="d"></span><span class="p">۳۰</span></li>
+    <li><span class="t">DTC و کدهای خطا</span><span class="d"></span><span class="p">۳۱</span></li>
+  </ol>
+
+  <p class="toc-part">بخش دهم — استدلال تشخیصی</p>
+  <ol class="toc-list">
+    <li><span class="t">Hypothesis — واحد استدلال</span><span class="d"></span><span class="p">۳۲</span></li>
+    <li><span class="t">Test — آزمون تفکیک‌کننده</span><span class="d"></span><span class="p">۳۳</span></li>
+    <li><span class="t">Evidence و Provenance</span><span class="d"></span><span class="p">۳۴</span></li>
+  </ol>
+
+  <p class="toc-part">بخش یازدهم — یکپارچگی و کاربرد</p>
+  <ol class="toc-list">
+    <li><span class="t">Diagnostic Episode / Case</span><span class="d"></span><span class="p">۳۵</span></li>
+    <li><span class="t">روابط بنیادی مدل</span><span class="d"></span><span class="p">۳۶</span></li>
+    <li><span class="t">قواعد یکپارچگی</span><span class="d"></span><span class="p">۳۷</span></li>
+    <li><span class="t">الگوهای خرابی</span><span class="d"></span><span class="p">۳۸</span></li>
+    <li><span class="t">سناریوهای آزمون مدل</span><span class="d"></span><span class="p">۳۹</span></li>
+    <li><span class="t">ضدالگوهای معماری</span><span class="d"></span><span class="p">۴۱</span></li>
+    <li><span class="t">مرزها، گسترش و پذیرش</span><span class="d"></span><span class="p">۴۲</span></li>
+    <li><span class="t">خلاصه فشرده مدل</span><span class="d"></span><span class="p">۴۴</span></li>
+  </ol>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="page-num">۲</span>
+  </footer>
+</section>
+
+<!-- ==================== مقدمه ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">مقدمه</span>
+  </header>
+
+  <span class="chapter-tag">مقدمه</span>
+  <h2>چرا این سند نوشته شد</h2>
+
+  <div class="note">
+    <p>
+      فرض کنید سه تعمیرکار روی یک خودرو کار می‌کنند که صبح‌های سرد
+      به‌سختی روشن می‌شود. یکی می‌گوید باتری ضعیف است، دیگری می‌گوید
+      استارت خراب است، سومی می‌گوید ECU فرمان کافی نمی‌دهد. هر سه
+      روی یک خودرو، با یک نشانه، به سه نتیجه متفاوت رسیده‌اند.
+    </p>
+    <p>
+      این اختلاف، نه از تفاوت مهارت، بلکه اغلب از <strong>تفاوت در
+      معنای واژه‌ها</strong> می‌آید. یکی «ولتاژ باتری» را در حالت
+      استراحت دیده، دیگری زیر بار استارت. یکی «شکایت مشتری» را با
+      «علت» یکی گرفته، دیگری برای همان نشانه فرضیه‌های متفاوتی
+      ساخته.
+    </p>
+    <p>
+      اگر نتوانیم دقیقاً بگوییم «درباره کدام خودرو، در چه شرایطی،
+      چه چیزی را مشاهده کردیم و چه چیزی انتظار داشتیم»، هر بحث
+      فنی به سرعت به حدس و آزمون‌وخطا می‌رسد.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>مسئله‌ای که این سند حل می‌کند</p>
+    <p style="margin:0;">
+      در تشخیص خودرو، بیشترین اتلاف زمان از <strong>ابهام معنایی</strong>
+      می‌آید، نه از کمبود اطلاعات. تعمیرکاران باتجربه اطلاعات زیادی
+      دارند؛ اما این اطلاعات در ذهن هر فرد با واژگان متفاوت سازماندهی
+      شده. برای ساخت یک سامانه قابل اتکا، پیش از هر پایگاه داده و هر
+      الگوریتمی، باید واژگان و مرزهای معنایی مشترک را ساخت.
+    </p>
+  </div>
+
+  <h3>هدف این سند در یک جمله</h3>
+  <p>
+    این سند می‌خواهد واژگان و روابطی را تعریف کند که بتوانند
+    <strong>واقعیت یک خودرو و فرآیند تشخیص آن</strong> را بدون
+    فروکاستن به فهرست قطعات، بدون فروکاستن به کدهای خطا و بدون
+    فروکاستن به مجموعه‌ای از قواعد موردی، به‌طور دقیق و قابل اشتراک
+    نمایش دهند.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>دو نقشه این سند</p>
+    <p style="margin:0;">
+      این سند هم‌زمان دو هدف را دنبال می‌کند: <strong>آموزشی</strong> —
+      برای کسی که می‌خواهد بداند چرا این تفکیک‌ها اهمیت دارند — و
+      <strong>مرجعی</strong> — برای کسی که می‌خواهد هنگام طراحی داده،
+      مدل یا API به تعریف دقیق و قاعده استناد کند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۳</span>
+  </footer>
+</section>
+
+<!-- ==================== قرارداد ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">قرارداد</span>
+  </header>
+
+  <span class="chapter-tag">مقدمه</span>
+  <h2>قرارداد این مدل</h2>
+
+  <div class="original">
+    <p>این سند تعریف می‌کند «چه چیزهایی در جهان مسئله وجود دارند،
+    چه رابطه‌ای با هم دارند، چه تفاوت‌هایی نباید از بین بروند و هر
+    گزاره درباره چه چیزی صحبت می‌کند».</p>
+    <p><strong>قاعده مرکزی:</strong> هیچ مفهوم تشخیصی نباید فقط به
+    دلیل شباهت واژگانی با مفهوم دیگری یکی گرفته شود. هر جا دو
+    مفهوم به دو پرسش متفاوت پاسخ می‌دهند، باید جدا بمانند؛ حتی
+    اگر در عمل اغلب همراه هم ظاهر شوند.</p>
+  </div>
+
+  <div class="expand">
+    <h4>چرا تفکیک مفاهیم، عملی است؟</h4>
+    <p>
+      فرض کنید در یک اپلیکیشن تشخیص، به‌جای دو فیلد «ولتاژ استراحت»
+      و «ولتاژ زیر بار استارت»، فقط یک فیلد «ولتاژ باتری» داشته
+      باشیم. در این حالت، دو داده کاملاً متفاوت با یک برچسب ذخیره
+      می‌شوند.
+    </p>
+    <p>
+      نتیجه این است که یک سامانه نرم‌افزاری هرگز نمی‌تواند تفاوت
+      بین «باتری ضعیف در استراحت» و «افت ولتاژ زیر بار به دلیل
+      اتصال زمین» را تشخیص دهد. تفکیک مفاهیم، یک تصمیم طراحی
+      است که هزینه‌اش امروز پرداخت می‌شود و سودش در قابلیت
+      استدلال بعدی ظاهر می‌شود.
+    </p>
+  </div>
+
+  <h3>این مدل چه چیزی نیست؟</h3>
+  <ul class="cross">
+    <li>طرح نهایی جداول SQL یا Graph Database نیست.</li>
+    <li>الگوریتم احتمالاتی یا موتور تصمیم‌گیری نیست.</li>
+    <li>فهرست کامل قطعات خودرو نیست.</li>
+    <li>فهرست ثابت خرابی‌ها یا DTCها نیست.</li>
+    <li>رابط کاربر، اپلیکیشن، API، ابزار اسکنر یا روش تجاری‌سازی نیست.</li>
+  </ul>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>چگونه این سند را بخوانیم</p>
+    <p style="margin:0;">
+      بخش‌های ۱ تا ۳ (شناسنامه و ساختار) پایه توصیف خودرو را
+      می‌سازند. بخش‌های ۴ تا ۶ (نقش، وضعیت، مشاهده) به «چگونه
+      رفتار را می‌بینیم» می‌پردازند. بخش‌های ۷ تا ۱۰ (خرابی و
+      استدلال) به «چگونه از مشاهده به تصمیم می‌رسیم» اختصاص
+      دارند. بخش ۱۱ (یکپارچگی و کاربرد) همان قواعد قبلی را در
+      قالب سناریوهای واقعی و قواعد داده‌ای جمع می‌کند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۴</span>
+  </footer>
+</section>
+
+<!-- ==================== دو جهان ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱ — جهان مسئله</span>
+  </header>
+
+  <span class="part-tag">بخش اول</span>
+  <h2>دو جهان: خودرو و مدل</h2>
+
+  <div class="original">
+    <p>پیش از آنکه چیزی مدل کنیم، باید قبول کنیم دو جهان متفاوت
+    داریم: <strong>خودروی واقعی</strong> که در کارگاه است و
+    <strong>بازنمایی ما از آن خودرو</strong> که در دفتر طراحی، در
+    داده، در نمودار یا در ذهن ما شکل می‌گیرد.</p>
+  </div>
+
+  <div class="note">
+    <p>
+      این دو جهان هرگز کاملاً بر هم منطبق نمی‌شوند. خودروی واقعی
+      بی‌نهایت جزئیات دارد؛ مدل فقط آن بخشی از واقعیت را نگه
+      می‌دارد که برای یک هدف مشخص (مثلاً تشخیص یک نشانه) اهمیت
+      دارد.
+    </p>
+    <p>
+      خطر زمانی آغاز می‌شود که فراموش کنیم مدل، «تمام» واقعیت
+      نیست. اگر مدل را با واقعیت یکی بگیریم، هر پیش‌بینی نادرست
+      مدل را به گردن خودرو می‌اندازیم. اگر واقعیت را با مدل
+      یکی بگیریم، هر چیزی که در مدل نیست را «نادیده» فرض
+      می‌کنیم. این دو خطا، ریشه بسیاری از تشخیص‌های نادرست‌اند.
+    </p>
+  </div>
+
+  <h3>دو زنجیره در یک نگاه</h3>
+  <p>
+    در این سند دو زنجیره موازی داریم: زنجیره‌ای که
+    <strong>خودرو را توصیف می‌کند</strong> و زنجیره‌ای که
+    <strong>فرآیند تشخیص را توصیف می‌کند</strong>. این دو
+    زنجیره نباید با هم ادغام شوند، اما در نقاط مشخصی به هم
+    متصل می‌شوند.
+  </p>
+
+  <div class="diagram">زنجیره توصیف خودرو (Structural Chain)
+─────────────────────────────────────────
+Identity → Variant → Configuration
+   │
+   └── Entity → Port → Connection → Path → Role → Capability → Function
+
+زنجیره تشخیص (Diagnostic Chain)
+─────────────────────────────────────────
+Observation → Evidence → Hypothesis → Test → Decision → Repair → Verification
+
+نقطه اتصال دو زنجیره
+─────────────────────────────────────────
+ExpectedBehavior (از زنجیره ساختاری) ← مقایسه → Observation (از زنجیره تشخیص)</div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>وضعیت موجود در برابر مرجع</p>
+    <p style="margin:0;">
+      <strong>وضعیت موجود (As-Found):</strong> آنچه در یک خودرو،
+      در یک زمان و شرایط مشخص واقعاً مشاهده یا اندازه‌گیری شده
+      است. <strong>مرجع (Expected / Reference):</strong> آنچه بر
+      اساس یک منبع معتبر، مشخصات فنی یا مدل پذیرفته‌شده انتظار
+      می‌رود. تمام استدلال تشخیصی، از مقایسه این دو ساخته می‌شود.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      روی یک خودرو، ولتاژ Pin ۳۰ رله در حالت استراحت اندازه
+      گرفته می‌شود: ۱۲.۴V. این «وضعیت موجود» است.
+      <br><br>
+      از سند فنی خودروساز استخراج می‌شود که «در این گونه و
+      در حالت استراحت، انتظار می‌رود ولتاژ بین ۱۲.۳ تا
+      ۱۲.۷V باشد». این «مرجع» است.
+      <br><br>
+      مقایسه این دو، یک ادعای تشخیصی تولید می‌کند: «در این
+      نقطه، ولتاژ در محدوده مرجع است». اگر به‌جای ۱۲.۴V، عدد
+      ۱۱.۸V باشد، آنگاه اختلافی به وجود می‌آید که فضای تشخیص
+      را باز می‌کند.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر وضعیت موجود و مرجع در داده، در گزارش یا در ذهن ما
+      با یک برچسب ذخیره شوند، سامانه نمی‌تواند بگوید «این
+      خودرو با مرجع اختلاف دارد» یا «مرجع با این خودرو
+      هم‌خوان نیست». در چنین حالتی، هیچ استدلال تشخیصی
+      قابل اتکایی شکل نمی‌گیرد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۵</span>
+  </footer>
+</section>
+
+<!-- ==================== ادامه دو جهان ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱ — ادامه</span>
+  </header>
+
+  <div class="expand">
+    <h4>سه سطح از «بازنمایی واقعیت»</h4>
+    <p>
+      یک «بازنمایی» هر چیزی است که درباره واقعیت حرف می‌زند، اما
+      خودِ واقعیت نیست. در سیستم‌های خودرویی، سه سطح از
+      بازنمایی وجود دارد:
+    </p>
+    <p>
+      <strong>سطح ۱ — داده خام:</strong> ولتاژی که یک سنسور دما
+      می‌خواند، مثلاً ۴.۲V. این داده، یک عدد خام است. هنوز نه
+      می‌دانیم کدام دما، نه می‌دانیم چرا آن مقدار، نه می‌دانیم
+      شرایط چیست.
+    </p>
+    <p>
+      <strong>سطح ۲ — تفسیر:</strong> ECU این عدد را به
+      «۹۸ درجه سانتی‌گراد» ترجمه می‌کند و آن را با آستانه
+      مقایسه می‌کند. حالا یک ادعا داریم: «دمای موتور ۹۸ درجه
+      است». این ادعا هم بازنمایی است، نه واقعیت.
+    </p>
+    <p>
+      <strong>سطح ۳ — نتیجه‌گیری تشخیصی:</strong> ECU کد
+      P0217 ثبت می‌کند: «دمای موتور بالا است». این هم
+      بازنمایی است، اما در سطحی انتزاعی‌تر.
+    </p>
+    <p>
+      در هیچ‌کدام از این سه سطح، به «واقعیت فیزیکی خودرو»
+      دسترسی مستقیم نداریم. آنچه داریم، بازنمایی‌های
+      به‌هم‌زنجیرشده است. هر حلقه در این زنجیره می‌تواند
+      خطا داشته باشد: سنسور معیوب، کالیبراسیون نادرست ECU،
+      باس شبکه پرنویز.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۶</span>
+  </footer>
+</section>
+
+<!-- ==================== هویت، گونه و پیکربندی ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲ — شناسنامه خودرو</span>
+  </header>
+
+  <span class="part-tag">بخش دوم</span>
+  <h2>هویت، گونه و پیکربندی</h2>
+
+  <div class="original">
+    <p>پیش از آنکه درباره رفتار یک خودرو حرف بزنیم، باید بدانیم
+    دقیقاً درباره «کدام خودرو» صحبت می‌کنیم. «پژو ۲۰۶» یک برچسب
+    کافی نیست؛ چراکه دو خودرو با همین نام می‌توانند سیم‌کشی،
+    ECU، نرم‌افزار و رفتار کاملاً متفاوت داشته باشند.</p>
+  </div>
+
+  <div class="note">
+    <p>
+      برای پرهیز از تعمیم‌های نادرست، سه سطح شناسایی تعریف
+      می‌کنیم. این سه سطح به‌ترتیب دامنه را دقیق‌تر می‌کنند،
+      از کلی به جزئی:
+    </p>
+  </div>
+
+  <div class="chain">
+    <span class="node">Vehicle Identity</span><span class="arrow">←</span>
+    <span class="node">Variant</span><span class="arrow">←</span>
+    <span class="node">Configuration</span><span class="arrow">←</span>
+    <span class="node">Context</span>
+  </div>
+
+  <table>
+    <thead><tr><th style="width:20%;">سطح</th><th>نمونه</th><th>چرا جداست؟</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Identity</td>
+        <td>یک خودروی مشخص با VIN/شناسه داخلی</td>
+        <td>دو خودروی ظاهراً مشابه ممکن است تاریخچه و پیکربندی متفاوت داشته باشند.</td>
+      </tr>
+      <tr>
+        <td>Variant</td>
+        <td>تیپ، موتور، گیربکس، سال، بازار، خانواده ECU</td>
+        <td>ساختار و رفتار می‌تواند با این ترکیب تغییر کند.</td>
+      </tr>
+      <tr>
+        <td>Configuration</td>
+        <td>ECU نصب‌شده، نسخه نرم‌افزار، کالیبراسیون، تجهیزات اضافی</td>
+        <td>یک گونه می‌تواند چند پیکربندی واقعی داشته باشد.</td>
+      </tr>
+      <tr>
+        <td>Context</td>
+        <td>سوئیچ باز + موتور خاموش + باتری ۱۲.۴V + دمای ۲۵°C</td>
+        <td>همان خودرو در شرایط مختلف رفتار متفاوت دارد.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      فرض کنید دو پژو ۲۰۶ از نظر ظاهری یکسان داریم. خودروی
+      اول با ECU بوش و نسخه نرم‌افزار قدیمی، خودروی دوم با
+      ECU زیمنس و نسخه جدید. مقدار مرجع ولتاژ سنسور اکسیژن
+      در این دو خودرو، ممکن است متفاوت باشد.
+      <br><br>
+      اگر <strong>گونه</strong> و <strong>پیکربندی</strong> را
+      ثبت نکنیم، یک مقدار مرجع را به اشتباه به خودرویی نسبت
+      می‌دهیم که هرگز آن مقدار را نداشته.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      تعمیم نقشه پایه‌ها، مقدار مرجع، رفتار ECU یا یک قاعده
+      تشخیصی از یک گونه به گونه دیگر، فقط به دلیل شباهت نام
+      خودرو، یکی از شایع‌ترین ریشه‌های تشخیص نادرست است. در
+      داده، این تعمیم همیشه با یک فیلد ناقص یا یک «نام
+      خودرو» مبهم پنهان می‌شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۷</span>
+  </footer>
+</section>
+
+<!-- ==================== ادامه هویت ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲ — ادامه</span>
+  </header>
+
+  <div class="expand">
+    <h4>پیامدهای عملی تفکیک هویت، گونه و پیکربندی</h4>
+    <p>
+      این تفکیک در نگاه اول ممکن است سخت‌گیرانه به‌نظر برسد.
+      اما سه پیامد عملی دارد:
+    </p>
+    <p>
+      <strong>پیامد اول — در داده:</strong> هر قاعده‌ای که در
+      سامانه ثبت می‌شود، باید یک فیلد دامنه داشته باشد که
+      بگوید در کدام گونه و کدام پیکربندی معتبر است. اگر
+      این فیلد نباشد، همان قاعده به‌طور پنهان به همه گونه‌ها
+      تعمیم داده می‌شود.
+    </p>
+    <p>
+      <strong>پیامد دوم — در استدلال:</strong> هنگام تصمیم‌گیری،
+      سامانه باید فقط قواعدی را به کار ببرد که دامنه‌شان با
+      گونه و پیکربندی خودروی فعلی تطبیق دارد. اگر سامانه این
+      کار را نکند، ممکن است قاعده‌ای را از گونه دیگر اعمال
+      کند و به تصمیم نادرست برسد.
+    </p>
+    <p>
+      <strong>پیامد سوم — در یادگیری:</strong> اگر روزی شواهد
+      کافی جمع شد که نشان دهد یک قاعده، در دو گونه با یک
+      مقدار کار می‌کند، می‌توان دامنه را گسترش داد. اما این
+      تصمیم باید مبتنی بر شواهد باشد، نه مبتنی بر حدس.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۸</span>
+  </footer>
+</section>
+
+<!-- ==================== Entity ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۳ — Entity</span>
+  </header>
+
+  <span class="part-tag">بخش سوم</span>
+  <span class="chapter-tag">۳.۱</span>
+  <h2>Entity — چیزی که وجود دارد</h2>
+
+  <div class="original">
+    <p>Entity کوچک‌ترین واحد قابل اشاره در مدل است. یعنی چیزی
+    که بتوانیم به آن اشاره کنیم، نام بدهیم و درباره‌اش حرف
+    بزنیم. Entity می‌تواند فیزیکی باشد (رله، باتری، سیم) یا
+    منطقی (وضعیت خواب، پیام شبکه، حالت خطا).</p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      در مدار فن رادیاتور، این‌ها Entity هستند:
+      <strong>باتری</strong>، <strong>فیوز F12</strong>،
+      <strong>رله R5</strong>، <strong>ECU موتور</strong>،
+      <strong>موتور فن</strong>، <strong>سیم توان (B+ به رله)</strong>،
+      <strong>سیم زمین فن</strong>، <strong>پیام شبکه «درخواست فن»</strong>
+      و <strong>نقطه اتصال بدنه G3</strong>.
+      <br><br>
+      هر کدام قابل اشاره‌اند، می‌توانند در جای مختلفی ظاهر
+      شوند و می‌توان رفتارشان را جداگانه توصیف کرد.
+    </p>
+  </div>
+
+  <div class="expand">
+    <h4>موجودیت در برابر مفهوم عمومی</h4>
+    <p>
+      «فن رادیاتور» می‌تواند هم نام یک قطعه باشد (یک موجودیت
+      مشخص در یک خودرو) و هم نام یک مفهوم عمومی (هر فنی که
+      در هر خودرویی این نقش را دارد). این دو، یکی نیستند.
+    </p>
+    <p>
+      وقتی می‌گوییم «فن رادیاتور این خودرو»، درباره یک موجودیت
+      مشخص صحبت می‌کنیم. یعنی یک قطعه فیزیکی با شماره، تاریخ
+      نصب و وضعیت فعلی. اما وقتی می‌گوییم «فن رادیاتور در
+      خودروهای سواری معمولاً با رله کنترل می‌شود»، درباره یک
+      الگوی عمومی صحبت می‌کنیم که در چند خودرو تکرار شده.
+    </p>
+    <p>
+      اگر این دو را یکی بگیریم، نمی‌توانیم بگوییم «این فن
+      مشخص در این خودرو، دیروز قطع و وصل می‌شد» یا «در ۲۰
+      خودرو از این گونه، همین نوع فن استفاده شده». یکی
+      گرفتن این دو، یعنی از دست دادن توانایی تفکیک تجربه
+      میدانی از الگوی طراحی.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>آزمون تمایز</p>
+    <p style="margin:0;">
+      اگر بتوانیم به آن اشاره کنیم، درباره‌اش مقدار بگوییم،
+      خرابی‌اش را توصیف کنیم یا وضعیتش را در زمان ثبت کنیم،
+      احتمالاً موجودیت است. اگر فقط یک «نوع» یا «دسته» است،
+      مفهوم عمومی است، نه موجودیت.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر «نوع فن» را با «فن این خودرو» یکی بگیریم، نمی‌توانیم
+      بگوییم کدام فن در کدام خودرو چه تاریخی داشته. اگر
+      «پیام شبکه» را به‌عنوان یک موجودیت ثبت نکنیم، نمی‌توانیم
+      فرمان ECU به رله را در زمان مدل کنیم. هر مفهوم مبهم،
+      یک داده از دست رفته در آینده است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۹</span>
+  </footer>
+</section>
+
+<!-- ==================== Component، Module، Aggregate ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۳ — Component و Module</span>
+  </header>
+
+  <span class="chapter-tag">۳.۲</span>
+  <h2>Component، Module و Aggregate</h2>
+
+  <div class="original">
+    <p>Entity یک مفهوم عمومی است؛ اما در عمل، همه Entityها یک
+    شکل نیستند. بعضی قطعات فیزیکی قابل تعویض‌اند، بعضی
+    واحدهای مرکب با چند قابلیت‌اند و بعضی فقط برای یک هدف
+    تحلیلی کنار هم گروه‌بندی می‌شوند. برای همین سه نام
+    کاربردی تعریف می‌کنیم.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h4>Component</h4>
+      <p>یک موجودیت فیزیکی یا قابل تعویض که در ساختار سیستم نقش مشخص دارد.</p>
+      <p class="small" style="margin:0;">مثال: رله R5، فیوز F12، موتور فن.</p>
+    </div>
+    <div class="card">
+      <h4>Module</h4>
+      <p>یک واحد نسبتاً مرکب با چند قابلیت یا رابط؛ الزاماً «جعبه فیزیکی» نیست.</p>
+      <p class="small" style="margin:0;">مثال: ECU موتور، ماژول بدنه، ماژول درب.</p>
+    </div>
+    <div class="card">
+      <h4>Aggregate</h4>
+      <p>گروهی از موجودیت‌ها که برای یک رفتار یا تصمیم خاص با هم دیده می‌شوند.</p>
+      <p class="small" style="margin:0;">مثال: «مسیر خنک‌کاری» شامل فن، رله، فیوز، سیم‌ها و ECU.</p>
+    </div>
+    <div class="card">
+      <h4>مفهوم عمومی (Type)</h4>
+      <p>دسته یا نوعی که چند موجودیت با آن توصیف می‌شوند؛ خودش یک موجودیت نیست.</p>
+      <p class="small" style="margin:0;">مثال: «رله چهار پایه» به‌عنوان یک نوع.</p>
+    </div>
+  </div>
+
+  <div class="expand">
+    <h4>چرا Aggregate لازم است؟</h4>
+    <p>
+      وقتی ECU می‌گوید «دمای موتور بالا رفته»، این جمله درباره
+      یک قطعه خاص نیست؛ درباره یک <strong>مسیر کامل خنک‌کاری</strong>
+      است که شامل ECU، رله، فن، فیوز، سیم‌ها، مایع خنک‌کننده
+      و رادیاتور می‌شود.
+    </p>
+    <p>
+      اگر فقط «فن» را مدل کنیم و بقیه را نداشته باشیم، نمی‌توانیم
+      نشان دهیم چرا ممکن است فن سالم باشد ولی سیستم خنک‌کاری
+      کار نکند. مثلاً فرض کنید ECU فرمان می‌دهد، رله بسته
+      می‌شود، فن می‌چرخد، اما ترموستات گیر کرده است. در این
+      حالت، فن سالم است، رله سالم است، ECU سالم است، اما
+      سیستم خنک‌کاری کار نمی‌کند.
+    </p>
+    <p>
+      Aggregate به ما اجازه می‌دهد این مسیر کامل را به‌عنوان
+      یک واحد تحلیلی در نظر بگیریم، بدون آن‌که آن را با یک
+      قطعه فیزیکی واقعی اشتباه بگیریم.
+    </p>
+  </div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>آزمون تمایز</p>
+    <p style="margin:0;">
+      اگر حذف یک مفهوم باعث شود نتوانیم یک چیز واقعی یا
+      منطقی را مستقل ارجاع دهیم، آن مفهوم احتمالاً موجودیت
+      است. اگر فقط نوع مشارکت آن در یک رفتار تغییر کند،
+      نباید با ساختن موجودیت جدید، نقش را پنهان کنیم.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر Aggregate را با Module یکی بگیریم، داده‌های تحلیلی
+      را با داده‌های فیزیکی قاطی می‌کنیم. اگر Module را با
+      Component یکی بگیریم، برای یک ECU (که چند قابلیت دارد)
+      فقط یک نقش ساده قائل می‌شویم. این خطاها در پیاده‌سازی،
+      به جدول‌ها و مدل‌های غیرقابل توسعه منتهی می‌شوند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۱۰</span>
+  </footer>
+</section>
+
+<!-- ==================== Pin، Port، Interface ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۳ — Pin و Port</span>
+  </header>
+
+  <span class="chapter-tag">۳.۳</span>
+  <h2>Pin، Port و Interface</h2>
+
+  <div class="original">
+    <p>موجودیت‌ها در خلأ نیستند؛ با هم و با محیط تعامل دارند.
+    اما «محل تعامل» در سطح فیزیکی با «محل تعامل» در سطح
+    معنایی یکی نیست. برای همین، سه مفهوم را از هم جدا
+    می‌کنیم.</p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:16%;">مفهوم</th>
+        <th style="width:28%;">نمونه در مدار فن</th>
+        <th>مرز معنایی</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Pin</td>
+        <td>پایه ۸۵ رله R5</td>
+        <td>ترمینال فیزیکی مشخص روی قطعه یا کانکتور.</td>
+      </tr>
+      <tr>
+        <td>Port</td>
+        <td>ورودی فرمان رله R5</td>
+        <td>نمای معنایی نقطه تعامل؛ می‌تواند به یک یا چند پایه نگاشت شود.</td>
+      </tr>
+      <tr>
+        <td>Interface</td>
+        <td>خط شبکه بین ECU و ماژول بدنه</td>
+        <td>قرارداد تعامل که می‌تواند شامل چند خط، قواعد و رفتار باشد.</td>
+      </tr>
+      <tr>
+        <td>Connector</td>
+        <td>کانکتور سه پایه روی فن</td>
+        <td>جسم فیزیکی که چند پایه را در یک محفظه نگه می‌دارد.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="expand">
+    <h4>چرا تفکیک پایه و نقطه تعامل لازم است؟</h4>
+    <p>
+      در یک ECU، همان پایه فیزیکی می‌تواند در پیکربندی‌های
+      مختلف نقش متفاوتی داشته باشد. یک پایه ممکن است در
+      یک گونه «خروجی فرمان رله فن» باشد و در گونه دیگر
+      «ورودی سنسور دما».
+    </p>
+    <p>
+      اگر پایه و نقطه تعامل را یکی بگیریم، داده پایه شماره
+      ۲۳ را در دو خودرو با دو معنای متفاوت ذخیره می‌کنیم.
+      این کار باعث می‌شود نتوانیم در تحلیل، بین این دو
+      تمایز بگذاریم.
+    </p>
+    <p>
+      تعمیرکار معمولاً می‌پرسد «پایه ۸۵ رله چه ولتاژی دارد؟».
+      طراح مدل می‌پرسد «ورودی فرمان رله در حالت سوئیچ باز چه
+      انتظاری دارد؟». این دو پرسش، دو سطح متفاوت‌اند. اگر
+      داده تنها یک سطح داشته باشد، یکی از این دو پرسش
+      بی‌پاسخ می‌ماند.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر پایه و نقطه تعامل را یکی بگیریم، در هنگام تغییر
+      گونه یا پیکربندی، نمی‌توانیم بگوییم «این نقطه تعامل
+      حالا نقش متفاوتی دارد». اگر رابط را با پایه یکی
+      بگیریم، در تحلیل شبکه نمی‌توانیم قواعد پروتکل،
+      زمان‌بندی و رفتار گره‌ها را جدا از سیم‌های فیزیکی
+      مدل کنیم.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۱۱</span>
+  </footer>
+</section>
+
+<!-- ==================== Connection ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۳ — Connection</span>
+  </header>
+
+  <span class="chapter-tag">۳.۴</span>
+  <h2>Connection — اتصال‌ها</h2>
+
+  <div class="original">
+    <p>پایه و نقطه تعامل، نقاط تعامل‌اند؛ اما خودشان به هم
+    متصل نیستند. Connection، همان رابطه‌ای است که دو نقطه
+    تعامل را به هم می‌رساند. اتصال، خودش یک موجودیت نیست؛
+    بلکه یک رابطه است.</p>
+    <p>Connection باید همیشه <strong>دامنه</strong> داشته باشد؛
+    یعنی بدانیم این اتصال در کدام پیکربندی و در چه شرایطی
+    برقرار است.</p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      در مدار فن رادیاتور، این اتصال‌ها وجود دارند:
+      <strong>فیوز F12 به Pin ۳۰ رله</strong>،
+      <strong>Pin ۸۷ رله به پایه مثبت موتور فن</strong>،
+      <strong>پایه منفی فن به نقطه اتصال بدنه G3</strong>،
+      و <strong>خط فرمان ECU به Pin ۸۵ رله</strong>.
+      <br><br>
+      هر کدام از این‌ها یک رابطه است، نه یک قطعه.
+    </p>
+  </div>
+
+  <div class="expand">
+    <h4>اتصال در برابر پایه</h4>
+    <p>
+      همان اتصال می‌تواند در یک خودرو از طریق سیم مسی و در
+      خودروی دیگر از طریق یک مسیر داخل برد ECU برقرار شود.
+      اگر اتصال به پایه وابسته باشد، نمی‌توانیم این دو را با
+      یک معنای مشترک مدل کنیم.
+    </p>
+    <p>
+      اتصال درباره «رابطه» صحبت می‌کند؛ پایه درباره «محل
+      فیزیکی» آن رابطه. این دو، در سطح معنایی متفاوت‌اند.
+    </p>
+    <p>
+      برای مثال، دو خودروی متفاوت ممکن است از نظر ساختاری
+      دارای یک اتصال مشابه باشند («خروجی رله به فن») اما
+      این اتصال در یکی از طریق کابل و در دیگری از طریق
+      برد PCB برقرار شده باشد. اگر اتصال را با پایه یکی
+      بگیریم، این دو خودروی متفاوت را نمی‌توانیم با یک
+      معنای مشترک توصیف کنیم.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر اتصال را با مسیر یکی بگیریم، یک اتصال ساده
+      (مثلاً «Pin ۸۷ به فن») را با یک مسیر کامل (مثلاً
+      «B+ تا فن») اشتباه می‌گیریم. یک اتصال فقط یک گام
+      است؛ یک مسیر می‌تواند چند اتصال و چند گام باشد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۱۲</span>
+  </footer>
+</section>
+
+<!-- ==================== Path ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۳ — Path</span>
+  </header>
+
+  <span class="chapter-tag">۳.۵</span>
+  <h2>Path — مسیر تحقق رفتار</h2>
+
+  <div class="original">
+    <p>Path زنجیره‌ای از Connectionهاست که یک انتقال، اثر یا
+    رفتار را ممکن می‌کند. Path چیزی فراتر از یک خط سیم
+    است؛ چراکه مسیر می‌تواند از چند قطعه، چند اتصال و چند
+    مرحله عبور کند. این مفهوم، مرکز تحلیل تشخیصی در این
+    سند است.</p>
+  </div>
+
+  <h3>چهار خانواده Path در برق خودرو</h3>
+  <p>
+    تقریباً همه رفتارهای برقی خودرو را می‌توان در قالب چهار
+    خانواده Path توصیف کرد. این دسته‌بندی برای این است که
+    هنگام تحلیل یک نشانه، بدانیم به کدام خانواده مسیر باید
+    نگاه کنیم.
+  </p>
+
+  <div class="diagram">توان (POWER PATH)
+منبع → حفاظت → سوئیچ / رله → بار → بازگشت / زمین
+نمونه: باتری → فیوز F12 → رله R5 → موتور فن → بدنه G3
+
+سیگنال (SIGNAL PATH)
+منبع / سنسور → شرط‌سازی → ورودی ECU → پردازش → فرمان
+نمونه: سنسور دما → سیم سیگنال → ورودی ECU → پردازش → فرمان فن
+
+فرمان و اثر (ACTUATION PATH)
+خروجی ECU → درایور → عملگر → اثر فیزیکی → بازخورد
+نمونه: خروجی ECU → Pin ۸۵ رله → بسته شدن کنتاکت → چرخش فن
+
+شبکه (NETWORK PATH)
+گره ↔ رابط ↔ باس / سگمنت ↔ رابط ↔ گره
+نمونه: ECU ↔ باس شبکه ↔ ماژول بدنه ↔ پیام درخواست فن</div>
+
+  <div class="expand">
+    <h4>چرا چهار مسیر و نه یکی؟</h4>
+    <p>
+      در برق خودرو، اگر بخواهیم همه مسیرها را در یک الگوی
+      واحد مدل کنیم، به سردرگمی می‌رسیم. چون ماهیت مسیرها
+      متفاوت است. چهار خانواده مسیر، برای این تفکیک
+      تعریف شده:
+    </p>
+    <p>
+      <strong>مسیر توان — یک‌طرفه و پرقدرت:</strong> جریان از
+      منبع به بار می‌رود و از زمین برمی‌گردد. هدف، انتقال
+      انرژی است. در این مسیر، مقاومت و افت ولتاژ مهم‌اند.
+    </p>
+    <p>
+      <strong>مسیر سیگنال — کم‌قدرت:</strong> سیگنال از سنسور
+      به ECU می‌رود و فرمان از ECU به عملگر می‌آید. هدف،
+      انتقال اطلاعات است. در این مسیر، نویز و شکل موج
+      مهم‌اند.
+    </p>
+    <p>
+      <strong>مسیر خروجی ECU — میانی:</strong> ECU به درایور
+      فرمان می‌دهد و درایور به عملگر. این مسیر، ترکیبی از
+      سیگنال و توان است. اگر این مسیر خراب شود، عملگر
+      نمی‌تواند کار کند حتی اگر همه اجزای دیگر سالم
+      باشند.
+    </p>
+    <p>
+      <strong>مسیر شبکه — گره‌محور:</strong> چند گره روی یک
+      باس مشترک قرار دارند. تفاوت این مسیر با بقیه در این
+      است که «چه کسی خراب است» و «چه کسی ارتباط ندارد» را
+      نمی‌توان به‌سادگی به یک سیم خاص نسبت داد. باید
+      ساختار باس و نقشه گره‌ها را در نظر گرفت.
+    </p>
+    <p>
+      نتیجه: هر چهار مسیر، ماهیت متفاوتی دارند و جدا نگه
+      داشتن آن‌ها، تصمیم طراحی است — نه سخت‌گیری.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      وقتی می‌گوییم «فن رادیاتور کار نمی‌کند»، دقیقاً
+      نمی‌دانیم کدام Path خراب است. ممکن است:
+      <br>• Path توان (فیوز، رله، سیم) خراب باشد.
+      <br>• Path فرمان (خط سیگنال ECU، پایه، خود ECU) خراب باشد.
+      <br>• Path شبکه (پیام بین ECU و ماژول بدنه) خراب باشد.
+      <br>• Path بازگشت (نقطه اتصال بدنه G3) خراب باشد.
+      <br><br>
+      اگر فقط یک Path را مدل کنیم، نصف فرضیه‌ها را از ابتدا
+      حذف کرده‌ایم.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر Path را با Connection یکی بگیریم، هر مسیر
+      چند مرحله‌ای را به یک گام ساده کاهش می‌دهیم و
+      نمی‌توانیم افت ولتاژ تدریجی، اتصال سری، یا خرابی
+      میانی را در داده نمایش دهیم. همچنین، Path در
+      این سند دقیقاً معادل «مسیر سیم‌کشی» نیست. Path
+      می‌تواند از داخل ECU، از طریق نرم‌افزار یا از
+      طریق یک پیام شبکه عبور کند. آنچه مهم است، تحقق
+      یک رفتار است، نه جنس رسانه.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۱۳</span>
+  </footer>
+</section>
+
+<!-- ==================== ادامه Path ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۳ — ادامه Path</span>
+  </header>
+
+  <div class="expand">
+    <h4>یک مثال کامل از چهار مسیر در یک خودرو</h4>
+    <p>
+      فرض کنید یک خودرو با شکایت «فن رادیاتور کار نمی‌کند»
+      به کارگاه آمده است. برای تحلیل دقیق، هر چهار مسیر
+      را جداگانه بررسی می‌کنیم.
+    </p>
+    <p>
+      <strong>مسیر توان:</strong> باتری ← فیوز F12 ← Pin ۳۰
+      رله ← کنتاکت داخلی رله ← Pin ۸۷ ← پایه مثبت فن ←
+      جاروبک‌های فن ← پایه منفی فن ← نقطه اتصال بدنه G3
+      ← بدنه خودرو ← منفی باتری.
+    </p>
+    <p>
+      <strong>مسیر فرمان:</strong> سنسور دما ← سیم سیگنال ←
+      ورودی ECU ← پردازش ← خروجی ECU ← Pin ۸۵ رله.
+    </p>
+    <p>
+      <strong>مسیر خروجی ECU:</strong> خروجی ECU ← درایور
+      داخلی ← Pin ۸۵ ← بسته شدن کنتاکت رله ← عبور جریان
+      از Pin ۳۰ به Pin ۸۷.
+    </p>
+    <p>
+      <strong>مسیر شبکه:</strong> ECU ← باس شبکه ← ماژول
+      بدنه ← پیام درخواست فن.
+    </p>
+    <p>
+      هر یک از این چهار مسیر می‌تواند شکسته باشد. یک
+      تعمیرکار ماهر، با یک یا دو آزمون ساده می‌تواند بین
+      این چهار مسیر تفکیک کند. اما اگر ذهن او فقط
+      «مسیر توان» را ببیند، سه مسیر دیگر را از ابتدا
+      نادیده گرفته است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۱۴</span>
+  </footer>
+</section>
+
+<!-- ==================== Topology ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۳ — Topology</span>
+  </header>
+
+  <span class="chapter-tag">۳.۶</span>
+  <h2>Topology — ساختار مسیرها</h2>
+
+  <div class="original">
+    <p>تا اینجا Pathها را جداگانه دیدیم. اما در یک خودرو،
+    Pathها تنها نیستند؛ با هم یک ساختار می‌سازند. این
+    ساختار را Topology می‌نامیم. توجه کنید که Topology
+    یک «ویژگی» مسیرهاست، نه یک موجودیت مستقل.</p>
+  </div>
+
+  <div class="expand">
+    <h4>چرا Topology مهم است؟</h4>
+    <p>
+      الگوی انتشار خرابی، مستقیماً به ساختار واقعی مسیرها
+      وابسته است. اگر چند مصرف‌کننده روی یک نقطه اتصال
+      بدنه مشترک باشند، یک افزایش مقاومت در آن نقطه،
+      همه آن‌ها را هم‌زمان تحت تأثیر قرار می‌دهد.
+    </p>
+    <p>
+      اگر یک شبکه به‌صورت باس باشد، قطع یک سگمنت، فقط
+      گره‌های آن سگمنت را از دسترس خارج می‌کند. اگر شبکه
+      به‌صورت ستاره باشد، قطع یک شاخه، فقط یک گره را
+      تحت تأثیر قرار می‌دهد. تفاوت این دو در نوع انتشار
+      خرابی است.
+    </p>
+  </div>
+
+  <table>
+    <thead><tr><th style="width:22%;">اصل</th><th>قاعده</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>محور تحلیل</td>
+        <td>اول مسیر و اتصال‌های واقعی را مدل کن؛ سپس در صورت نیاز ویژگی Topology را ثبت کن.</td>
+      </tr>
+      <tr>
+        <td>انتشار خرابی</td>
+        <td>الگوی انتشار به ساختار واقعی مسیر وابسته است و نباید صرفاً از نام Topology نتیجه‌گیری شود.</td>
+      </tr>
+      <tr>
+        <td>Hybrid</td>
+        <td>یک خودرو می‌تواند چند ساختار ارتباطی هم‌زمان داشته باشد (شبکه + LIN + سیم مستقیم).</td>
+      </tr>
+      <tr>
+        <td>تشخیص</td>
+        <td>Topology باید در جایی وارد استدلال شود که واقعاً بر انتخاب آزمون یا انتشار اثر دارد.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      فرض کنید سه مصرف‌کننده (فن، چراغ جلو و ECU) روی
+      یک نقطه اتصال بدنه مشترک G3 هستند. اگر G3 مقاومت
+      بالایی داشته باشد، هر سه به‌طور متناوب یا هم‌زمان
+      تحت تأثیر قرار می‌گیرند. اما اگر هر کدام نقطه زمین
+      جداگانه داشته باشند، خرابی G3 فقط روی فن اثر
+      می‌گذارد.
+      <br><br>
+      تفاوت این دو سناریو، فقط در Topology است.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر Topology را به‌جای «ویژگی مسیرها» یک «نوع» در
+      نظر بگیریم و همیشه در یک خانه بسته قرار دهیم،
+      نمی‌توانیم یک ساختار ترکیبی (مثلاً باس با
+      پاسخ‌دهی ستاره) را مدل کنیم. خودروهای امروزی
+      تقریباً همیشه Hybrid هستند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۱۵</span>
+  </footer>
+</section>
+
+<!-- ==================== Role ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۴ — Role</span>
+  </header>
+
+  <span class="part-tag">بخش چهارم</span>
+  <span class="chapter-tag">۴.۱</span>
+  <h2>Role — نقش در بافت</h2>
+
+  <div class="original">
+    <p>در بخش قبل، موجودیت‌ها و مسیرها را ساختیم. اما یک
+    موجودیت به‌تنهایی معنای تشخیصی ندارد. آنچه مهم است،
+    نقشی است که موجودیت در یک بافت مشخص ایفا می‌کند.
+    این نقش را <strong>Role</strong> می‌نامیم.</p>
+    <p>تفاوت کلیدی Role با موجودیت این است که Role ذاتی
+    قطعه نیست. یک رله همیشه رله است، اما نقش آن — بسته
+    به مدار و بافت — می‌تواند «سوئیچ توان»، «اینورتر
+    منطقی» یا «جداکننده» باشد. یک سیم مسی همیشه یک سیم
+    است، اما در یک مسیر «انتقال توان» و در مسیر دیگر
+    «انتقال سیگنال» است.</p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      در مدار فن، رله R5 در حالت <strong>کارکرد عادی</strong>
+      نقش <strong>سوئیچینگ</strong> دارد. همان رله، اگر
+      ECU فرمان ندهد و کلید دستی روشن باشد، نقش
+      <strong>بایپس دستی</strong> می‌گیرد. اگر رله در
+      حالت <strong>خواب</strong> باشد، نقشش
+      <strong>جداسازی</strong> است.
+      <br><br>
+      یعنی یک موجودیت، سه نقش در سه بافت.
+    </p>
+  </div>
+
+  <div class="expand">
+    <h4>چرا نقش، ذات موجودیت نیست؟</h4>
+    <p>
+      برای فهم این جمله، یک سیم مسی را در نظر بگیرید.
+      سیم مسی، فیزیکی است و هویت آن ثابت. اما نقشی که
+      این سیم در یک مدار ایفا می‌کند، می‌تواند کاملاً
+      متفاوت باشد:
+    </p>
+    <ul>
+      <li>در یک مسیر تغذیه، نقش <strong>انتقال توان</strong> دارد.</li>
+      <li>در یک مسیر سیگنال، نقش <strong>حامل سیگنال</strong> دارد.</li>
+      <li>در یک نقطه، نقش <strong>مسیر بازگشت</strong> (زمین) دارد.</li>
+      <li>در یک سپر، نقش <strong>محافظ الکترومغناطیسی</strong> دارد.</li>
+    </ul>
+    <p>
+      سیم یکی است؛ نقش‌ها متفاوت. اگر «نقش» را با «قطعه»
+      یکی بگیریم، برای هر نقش یک قطعه جدید اختراع می‌کنیم
+      و در داده، تکرار و ناسازگاری ایجاد می‌شود.
+    </p>
+    <p>
+      همین منطق در مورد ECU، سنسور و هر موجودیت دیگری
+      صادق است. یک ECU در بافت کارکرد عادی نقش
+      <strong>کنترل</strong> دارد؛ در بافت برنامه‌ریزی
+      نقش <strong>برنامه‌پذیر</strong> دارد. اگر این
+      دو نقش را با «ECU = کنترلر» یکی بگیریم، قابلیت
+      مدل‌سازی حالت برنامه‌ریزی را از دست می‌دهیم.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر به‌جای نقش، یک موجودیت جدید بسازیم (مثلاً
+      «سوئیچ توان»)، در عمل همان رله را دوباره با نام
+      دیگر ثبت کرده‌ایم. این کار باعث تکرار داده،
+      پیچیدگی ساختار و از دست رفتن قابلیت استفاده
+      مجدد می‌شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۱۶</span>
+  </footer>
+</section>
+
+<!-- ==================== Role Assignment ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۴ — Role Assignment</span>
+  </header>
+
+  <span class="chapter-tag">۴.۲</span>
+  <h2>Role Assignment — انتساب صریح نقش</h2>
+
+  <div class="original">
+    <p>گفتیم نقش، ذات موجودیت نیست. پس باید یک رابطه
+    صریح وجود داشته باشد که بگوید «کدام موجودیت، در
+    کدام بافت، چه نقشی دارد». این رابطه را
+    <strong>RoleAssignment</strong> می‌نامیم.</p>
+    <p><code>RoleAssignment = (Entity, Context, Role, validity, evidence)</code></p>
+    <p>این ساختار می‌گوید: یک موجودیت در یک بافت، یک
+    نقش را ایفا می‌کند، با یک دوره اعتبار و با شواهدی
+    که این انتساب را پشتیبانی می‌کند.</p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:20%;">موجودیت</th>
+        <th style="width:24%;">بافت</th>
+        <th>نقش‌های ممکن</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>ECU موتور</td><td>کارکرد عادی</td><td>کنترل + ارتباط + حس‌گری + فرمان</td></tr>
+      <tr><td>رله R5</td><td>سوئیچ باز</td><td>سوئیچینگ + مسیر توان</td></tr>
+      <tr><td>بدنه خودرو</td><td>در مدار فن</td><td>بازگشت / مرجع</td></tr>
+      <tr><td>سیم B+ به رله</td><td>در مسیر تغذیه</td><td>مسیر / حامل انرژی</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      ECU موتور در بافت <strong>کارکرد عادی</strong>
+      هم‌زمان چهار نقش دارد:
+      <br>• <strong>کنترل</strong> (کنترل تزریق)
+      <br>• <strong>ارتباط</strong> (گفتگو روی باس)
+      <br>• <strong>حس‌گری</strong> (خواندن سنسورها)
+      <br>• <strong>فرمان</strong> (فرمان به رله‌ها)
+      <br><br>
+      اگر ECU را فقط «کنترلر» بنامیم، سه نقش دیگر را
+      از دست می‌دهیم و نمی‌توانیم درباره سنسورهایی که
+      ECU می‌خواند یا فرمان‌هایی که صادر می‌کند،
+      استدلال کنیم.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر انتساب نقش را در یک فیلد متنی ذخیره کنیم
+      («ECU یک کنترلر است»)، در هنگام تحلیل نمی‌توانیم
+      بپرسیم «کدام موجودیت در بافت X چه نقش‌هایی
+      دارد؟». این پرسش، یکی از پرکاربردترین پرسش‌های
+      تشخیصی است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۱۷</span>
+  </footer>
+</section>
+
+<!-- ==================== Capability و Function ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۴ — Capability و Function</span>
+  </header>
+
+  <span class="chapter-tag">۴.۳</span>
+  <h2>Capability و Function</h2>
+
+  <div class="original">
+    <p>تا اینجا گفتیم چه چیزهایی هست (موجودیت)، کجا با
+    هم تعامل دارند (پایه، اتصال، مسیر) و چه نقش‌هایی
+    دارند (نقش). حالا می‌رسیم به پرسش «سیستم در کل
+    چه کاری انجام می‌دهد؟».</p>
+    <p>در این سند، بین <strong>Capability</strong> (توانایی)
+    و <strong>Function</strong> (کارکرد) تفاوت می‌گذاریم.
+    Capability یک توانایی پایه است که می‌تواند مستقل
+    معنا داشته باشد؛ Function یک رفتار یا نتیجه کامل
+    است که از ترکیب چند Capability ساخته می‌شود.</p>
+  </div>
+
+  <div class="diagram">ENTITY ──plays──> ROLE ──provides──> CAPABILITY ──contributes_to──> FUNCTION
+   │                    │                    │                              │
+   └── implementation   └── not component   └── may span multiple entities  └── system result</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:16%;">مفهوم</th>
+        <th>مثال خودرویی</th>
+        <th>خطای رایج</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>نقش</td>
+        <td>سوئیچینگ، حس‌گری، کنترل، ارتباط</td>
+        <td>«سوئیچ توان» را نام قطعه فرض کردن.</td>
+      </tr>
+      <tr>
+        <td>Capability</td>
+        <td>تأمین توان پایدار برای ECU، تشخیص وضعیت میل‌لنگ</td>
+        <td>برابر گرفتن Capability با یک قطعه منفرد.</td>
+      </tr>
+      <tr>
+        <td>Function</td>
+        <td>راه‌اندازی موتور، کنترل دمای موتور، مدیریت تزریق</td>
+        <td>فرض اینکه هر Function دقیقاً یک Component دارد.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="expand">
+    <h4>تفاوت Capability با قطعه</h4>
+    <p>
+      تفاوت Capability با قطعه، در <strong>جنس آن</strong> است:
+      یک قطعه فیزیکی است، اما یک Capability
+      <strong>انتزاعی</strong> است. برای مثال «تأمین توان
+      پایدار برای ECU» یک Capability است — اما در هیچ
+      جایی به‌عنوان یک قطعه فروخته نمی‌شود. این Capability
+      از همکاری چند قطعه (باتری، فیوز، رله، سیم، بدنه)
+      پدید می‌آید.
+    </p>
+    <p>
+      چرا این تفکیک مهم است؟ چون در تشخیص، وقتی چیزی
+      کار نمی‌کند، پرسش درست این نیست «کدام قطعه خراب
+      است؟»، بلکه این است: «<strong>کدام Capability
+      شکسته است؟</strong>». و پس از آن، در گام بعد:
+      «این Capability از کدام قطعات و نقش‌ها ساخته
+      شده که یکی از آن‌ها ممکن است مقصر باشد؟».
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      <strong>Function</strong> «خنک‌کاری موتور» از ترکیب چند
+      <strong>Capability</strong> ساخته می‌شود:
+      <br>• خواندن دما
+      <br>• مقایسه با مقدار مرجع
+      <br>• فرمان به رله
+      <br>• تأمین توان فن
+      <br>• بازگشت جریان
+      <br><br>
+      هیچ‌کدام از این‌ها به‌تنهایی «خنک‌کاری موتور» نیست؛
+      اما هرکدام یک Capability مستقل است. این تفکیک به
+      ما اجازه می‌دهد وقتی Function کار نمی‌کند، بپرسیم
+      کدام Capability شکسته است.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر Capability و Function را یکی بگیریم، در برخورد
+      با یک Function پیچیده (مثل «مدیریت موتور»)،
+      نمی‌توانیم آن را به اجزای قابل بررسی بشکنیم.
+      نتیجه: تشخیص کلی می‌شود و به «تعویض ECU» می‌رسد،
+      نه به علت واقعی.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۱۸</span>
+  </footer>
+</section>
+
+<!-- ==================== ادامه Capability ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۴ — ادامه</span>
+  </header>
+
+  <div class="box purple">
+    <p class="box-title"><span class="icon">★</span>جمع‌بندی چهار مفهوم کلیدی این بخش</p>
+    <p style="margin:0;">
+      <strong>موجودیت</strong> — چیزی که وجود دارد.
+      <br>
+      <strong>سیگنال / رابط</strong> — جایی که تعامل رخ می‌دهد.
+      <br>
+      <strong>نقش</strong> — نقشی که موجودیت در یک بافت ایفا می‌کند.
+      <br>
+      <strong>Capability</strong> — توانایی‌ای که از تعامل پدید می‌آید.
+      <br><br>
+      این چهار، در کنار هم یک شبکه معنایی می‌سازند که
+      ساختار «چه چیزی، در کجا، با چه نقشی، برای چه
+      قابلیتی» را توصیف می‌کند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۱۹</span>
+  </footer>
+</section>
+
+<!-- ==================== State ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۵ — State</span>
+  </header>
+
+  <span class="part-tag">بخش پنجم</span>
+  <span class="chapter-tag">۵.۱</span>
+  <h2>State — حالت گسسته سیستم</h2>
+
+  <div class="original">
+    <p>در بخش قبل، رفتار سیستم را توصیف کردیم. اما این
+    رفتار ثابت نیست؛ در طول زمان تغییر می‌کند. برای
+    توصیف این تغییر، از مفهوم <strong>State</strong>
+    استفاده می‌کنیم: یک وضعیت گسسته و معنادار که
+    سیستم یا یک موجودیت در یک بازه زمانی در آن
+    قرار دارد.</p>
+    <p>State باید یک معنای گسسته داشته باشد، نه یک
+    مقدار پیوسته. «دمای موتور» یک State نیست، بلکه
+    یک شرط است. «موتور در حال چرخش است» یا «موتور
+    خاموش است»، State هستند.</p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      Stateهای معمول یک خودروی سواری:
+      <br>• <strong>خاموش</strong> — موتور و شبکه خاموش
+      <br>• <strong>سوئیچ باز</strong> — سوئیچ روشن، موتور خاموش
+      <br>• <strong>استارت</strong> — استارت در حال چرخش
+      <br>• <strong>کارکرد عادی</strong> — موتور روشن
+      <br>• <strong>خواب</strong> — شبکه در حالت کم‌مصرف
+      <br>• <strong>برنامه‌ریزی</strong> — در حال به‌روزرسانی نرم‌افزار
+      <br><br>
+      هر کدام از این‌ها یک حالت معنادار است که رفتار
+      خودرو در آن متفاوت است.
+    </p>
+  </div>
+
+  <div class="expand">
+    <h4>قواعد گذار بین حالت‌ها</h4>
+    <p>
+      حالت‌ها به هم منتقل می‌شوند؛ اما نه هر انتقالی
+      مجاز است. از «کارکرد عادی» نمی‌توان مستقیم به
+      «خواب» رفت؛ باید ابتدا «خاموش» شود و پس از یک
+      تأخیر، وارد «خواب» شد. این قواعد را ماشین
+      حالت (State Machine) تعریف می‌کند.
+    </p>
+    <p>
+      هر گذار می‌تواند علت (Trigger)، شرایط، زمان،
+      برگشت‌پذیری و نقش‌های متأثر داشته باشد.
+      ماشین حالت با بافت یکی نیست؛ ماشین حالت
+      می‌گوید «چه گذارهایی ممکن است»، در حالی که
+      بافت می‌گوید «اکنون در چه شرایطی هستیم».
+    </p>
+    <p>
+      برای مثال، در یک خودروی سواری:
+    </p>
+    <ul>
+      <li>از «خاموش» می‌توان به «سوئیچ باز» رفت (با چرخاندن سوئیچ).</li>
+      <li>از «سوئیچ باز» می‌توان به «استارت» رفت (با فعال کردن استارت).</li>
+      <li>از «استارت» می‌توان به «کارکرد عادی» رفت (با روشن شدن موتور).</li>
+      <li>از «کارکرد عادی» نمی‌توان مستقیم به «خواب» رفت؛
+      باید ابتدا به «خاموش» برگشت و پس از تأخیر، به
+      «خواب» وارد شد.</li>
+    </ul>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      تعداد حالت‌ها نباید صرفاً برای رسیدن به یک عدد
+      ثابت محدود یا گسترده شود. معیار درست این است
+      که هر حالت برای یک تصمیم یا رفتار واقعی،
+      معنای مستقل داشته باشد. حالت‌های اضافی، داده
+      را شلوغ و تحلیل را کند می‌کنند؛ حالت‌های
+      ناقص، تفاوت‌های مهم رفتاری را پنهان می‌کنند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۲۰</span>
+  </footer>
+</section>
+
+<!-- ==================== Condition ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۵ — Condition</span>
+  </header>
+
+  <span class="chapter-tag">۵.۲</span>
+  <h2>Condition — شرط زمینه‌ای</h2>
+
+  <div class="original">
+    <p>State گفت چه حالت گسسته‌ای داریم. اما بسیاری از
+    رفتارها به عوامل پیوسته یا شرایط محیطی وابسته‌اند
+    که در قالب State نمی‌گنجند. به این عوامل،
+    <strong>Condition</strong> می‌گوییم.</p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:16%;">مفهوم</th>
+        <th>نمونه</th>
+        <th style="width:28%;">نوع تغییر</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>State</td>
+        <td>خاموش، سوئیچ باز، استارت، کارکرد عادی</td>
+        <td>گذار بین حالت‌های معنادار</td>
+      </tr>
+      <tr>
+        <td>Condition</td>
+        <td>دمای ۴۵°C، بار ۷۰٪، باتری ۱۱.۲V، لرزش، رطوبت</td>
+        <td>مقدار یا شرط قابل تغییر در محیط یا سیستم</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="expand">
+    <h4>تفاوت وضعیت و شرط</h4>
+    <p>
+      این دو مفهوم گاهی با هم اشتباه می‌شوند. تفاوت را
+      با یک مثال روشن می‌کنیم.
+    </p>
+    <p>
+      «موتور روشن است» یک <strong>وضعیت</strong> است.
+      یعنی خودرو در یکی از حالت‌های گسسته ممکن
+      (کارکرد عادی) قرار دارد. وضعیت‌ها محدود و
+      شمارش‌پذیرند.
+    </p>
+    <p>
+      «دمای مایع خنک‌کننده ۹۸ درجه است» یک
+      <strong>شرط</strong> است. دما یک مقدار پیوسته
+      است؛ می‌تواند هر عددی بین منفی چهل تا صد و
+      بیست درجه باشد. نمی‌شود این‌ها را به‌عنوان
+      وضعیت جدا ثبت کرد، چون تعدادشان بی‌نهایت
+      است.
+    </p>
+    <p>
+      چرا این تفکیک اهمیت دارد؟ چون وقتی می‌خواهیم
+      یک خودرو را مدل کنیم، نمی‌توانیم برای هر مقدار
+      پیوسته یک وضعیت جدید بسازیم. اگر بخواهیم
+      این کار را بکنیم، باید وضعیت‌هایی مثل
+      «کارکرد_۴۵»، «کارکرد_۴۶»، «کارکرد_۴۷» و…
+      بسازیم که در عمل بی‌فایده است.
+    </p>
+    <p>
+      راه درست: وضعیت‌های گسسته و معنادار (خاموش،
+      کارکرد عادی) جدا نگه داشته شوند، و شرط‌ها
+      به‌عنوان مقدار جداگانه ثبت شوند. سپس بافت،
+      از ترکیب این دو به‌همراه گونه ساخته شود.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      یک خودرو ممکن است در وضعیت <strong>کارکرد عادی</strong>
+      باشد، اما شرط آن «دمای ۹۵°C + بار بالا + هوای
+      بیرون ۴۵°C» باشد. تحت این شرط، انتظار داریم فن
+      رادیاتور روشن شود.
+      <br><br>
+      اگر فقط وضعیت را ثبت کنیم و شرط را نه، نمی‌توانیم
+      بگوییم «فن باید روشن می‌بود» یا «فن به‌درستی
+      روشن نشد».
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      بسیاری از خرابی‌های متناوب، وابسته به شرط
+      هستند: قطع سیم در اثر لرزش، افزایش مقاومت در
+      دمای بالا، افت کارکرد باتری در سرما. اگر
+      شرط را در داده نداشته باشیم، نمی‌توانیم الگوی
+      تکرار این خرابی‌ها را پیدا کنیم و همواره با
+      «اتفاقی بودن» مواجهیم.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۲۱</span>
+  </footer>
+</section>
+
+<!-- ==================== Context ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۵ — Context</span>
+  </header>
+
+  <span class="chapter-tag">۵.۳</span>
+  <h2>Context — بافت معنا</h2>
+
+  <div class="original">
+    <p>State و Condition، هریک یک جنبه از بافت را توصیف
+    می‌کنند. Context ترکیب معنایی همه آن‌هاست به‌همراه
+    هویت و گونه خودرو. Context پاسخ این پرسش است:
+    «این گزاره، دقیقاً در چه بافتی معتبر است؟».</p>
+    <p><code>Context = Vehicle / Variant / Configuration + State + Condition(s) + Environment + Test Conditions</code></p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی — بافت کامل</p>
+    <p style="margin:0;">
+      «خودروی مشخص، گونه A، ECU بوش نسخه ۳، در وضعیت
+      <strong>استارت</strong>، باتری ۱۱.۲V، دمای محیط ۲°C،
+      ولتاژ اندازه‌گیری‌شده روی Pin ۸۷ رله ۹.۱V با
+      مولتی‌متر دیجیتال در بازه ۳۰ ثانیه استارت».
+      <br><br>
+      بدون بافت، فقط «۹.۱V» داریم — یک عدد بی‌معنا.
+      با بافت، می‌توانیم بپرسیم: «آیا ۹.۱V زیر بار
+      استارت در دمای ۲°C، در محدوده مورد انتظار
+      است؟». این پرسش، همان جایی است که تشخیص
+      آغاز می‌شود.
+    </p>
+  </div>
+
+  <div class="expand">
+    <h4>چرا بافت را جدا نگه می‌داریم؟</h4>
+    <p>
+      اگر بافت را در متن آزاد یا در نام مورد پنهان
+      کنیم، در هنگام تحلیل نمی‌توانیم بپرسیم «در چه
+      بافت‌هایی این مرجع معتبر است؟» یا «در بافت‌های
+      مشابه، چه مشاهده‌هایی ثبت شده‌اند؟».
+    </p>
+    <p>
+      بافت باید یک ساختار قابل پرس‌وجو داشته باشد، نه
+      یک توصیف انسانی. برای مثال، اگر بافت به‌صورت
+      ساختاری ثبت شده باشد، می‌توان پرسید:
+    </p>
+    <ul>
+      <li>در گونه A، در وضعیت استارت، چه مرجع‌هایی ثبت شده؟</li>
+      <li>در دمای زیر ۵°C، چه مشاهده‌هایی پرتکرارند؟</li>
+      <li>در پیکربندی ECU بوش نسخه ۳، چه قواعدی معتبرند؟</li>
+    </ul>
+    <p>
+      این پرسش‌ها در سامانه‌ای که بافت را در متن آزاد
+      ذخیره کرده، بی‌پاسخ می‌مانند. یعنی سامانه هرگز
+      نمی‌تواند تجربه‌های قبلی را بازیابی کند و همواره
+      از صفر شروع می‌کند.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      بدون بافت، هر عدد، هر مقدار مرجع و هر قاعده،
+      بی‌اعتبار می‌شود. دو تعمیرکار که هر دو مقدار
+      «۱۲.۴V» ثبت کرده‌اند، ممکن است یکی در حالت
+      استراحت و دیگری زیر بار اندازه‌گیری کرده باشد.
+      تفاوت این دو، همه تفاوت است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۲۲</span>
+  </footer>
+</section>
+
+<!-- ==================== Energy، Signal، Data ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۶ — انرژی، سیگنال، داده</span>
+  </header>
+
+  <span class="part-tag">بخش ششم</span>
+  <span class="chapter-tag">۶.۱</span>
+  <h2>Energy، Signal، Data</h2>
+
+  <div class="original">
+    <p>وارد بخش مشاهده می‌شویم. برای این‌که بفهمیم چه چیزی
+    را می‌بینیم، اول باید بدانیم آنچه در خودرو جریان
+    دارد چه چیزی است. سه مفهوم پایه داریم: انرژی،
+    سیگنال و داده.</p>
+  </div>
+
+  <h3>Energy — انرژی</h3>
+  <p>
+    انرژی، توان فیزیکی است که در مدار حرکت می‌کند
+    (ولتاژ و جریان). ممکن است انرژی وجود داشته باشد
+    بدون آنکه اطلاعات خاصی منتقل شود. مدار تغذیه
+    ECU، انرژی خالص منتقل می‌کند.
+  </p>
+
+  <h3>Signal — سیگنال</h3>
+  <p>
+    سیگنال، الگوی فیزیکی یا منطقی است که حامل اطلاعات
+    یا فرمان است. یک خروجی سنسور، یک PWM، یا یک
+    پیام شبکه، سیگنال هستند. سیگنال، یک پدیده است؛
+    چیزی که در دنیای واقعی رخ می‌دهد.
+  </p>
+
+  <h3>Data — داده</h3>
+  <p>
+    داده، مقدار ثبت‌شده یا خام است. «۱۲.۱V»،
+    «۲.۵ کیلوهرتز»، «ADC = ۸۱۲»، همه داده‌اند. داده
+    می‌تواند خام یا پردازش‌شده باشد، اما هنوز در
+    بافت قرار نگرفته است.
+  </p>
+
+  <div class="chain">
+    <span class="node">انرژی</span><span class="arrow">←</span>
+    <span class="node">سیگنال</span><span class="arrow">←</span>
+    <span class="node">داده</span><span class="arrow">←</span>
+    <span class="node">اندازه‌گیری</span><span class="arrow">←</span>
+    <span class="node">مشاهده</span>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      در مدار فن:
+      <br>
+      <strong>انرژی</strong> = جریانی که از باتری به فن می‌رود.
+      <br>
+      <strong>سیگنال</strong> = فرمان PWM از ECU به رله (اگر
+      رله PWM پذیر باشد).
+      <br>
+      <strong>داده</strong> = عددی که اسکنر نشان می‌دهد
+      (مثلاً چرخه کار = ۷۰٪).
+      <br><br>
+      هر سه، یک چیز را توصیف می‌کنند اما در سه سطح متفاوت.
+    </p>
+  </div>
+
+  <div class="expand">
+    <h4>چرا جدا نگه داشتن این سه سطح اهمیت دارد؟</h4>
+    <p>
+      فرض کنید در یک گزارش تشخیص، نوشته شده «فن کار
+      نمی‌کند». برای تحلیل، باید بدانیم در کدام سطح
+      مشکل وجود دارد:
+    </p>
+    <ul>
+      <li>اگر انرژی نرسد، فن اصلاً نمی‌تواند بچرخد.</li>
+      <li>اگر انرژی برسد اما سیگنال فرمان نرسد، رله
+      بسته نمی‌شود و فن نمی‌چرخد.</li>
+      <li>اگر انرژی و سیگنال برسند اما داده‌ای که اسکنر
+      نشان می‌دهد ناقص باشد، ممکن است مسئله در ثبت
+      داده باشد، نه در خودرو.</li>
+    </ul>
+    <p>
+      اگر این سه سطح را با هم یکی بگیریم، در تحلیل
+      نمی‌توانیم بگوییم «انرژی هست، سیگنال نیست» یا
+      «سیگنال هست، اما داده اشتباه ثبت شده». هر دو
+      حالت، تشخیص متفاوتی دارند.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر انرژی و سیگنال را یکی بگیریم، نمی‌توانیم
+      بین «نرسیدن توان به فن» و «نرسیدن فرمان به رله»
+      تفاوت بگذاریم. اگر سیگنال و داده را یکی بگیریم،
+      نمی‌توانیم بگوییم «سیگنال وجود دارد اما داده
+      ثبت‌شده ناقص است».
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۲۳</span>
+  </footer>
+</section>
+
+<!-- ==================== Measurement ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۶ — Measurement</span>
+  </header>
+
+  <span class="chapter-tag">۶.۲</span>
+  <h2>Measurement — اندازه‌گیری</h2>
+
+  <div class="original">
+    <p>داده یک عدد بود. اما آن عدد از کجا آمده؟ با چه
+    ابزاری؟ در چه نقطه‌ای؟ اندازه‌گیری پاسخ این
+    پرسش‌هاست. بدون اندازه‌گیری، عدد بی‌معناست.</p>
+    <p>یک اندازه‌گیری معتبر، حداقل این اجزا را دارد:
+    کمیت، واحد، نقطه، ابزار، روش، زمان، بافت.</p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:20%;">جزء</th>
+        <th>معنا</th>
+        <th>مثال</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>کمیت</td><td>چه چیزی را می‌سنجیم.</td><td>ولتاژ، جریان، مقاومت، فرکانس.</td></tr>
+      <tr><td>واحد</td><td>در چه مقیاسی.</td><td>ولت، آمپر، اهم، هرتز.</td></tr>
+      <tr><td>نقطه</td><td>کجای مدار.</td><td>Pin ۳۰ رله، پایه منفی فن.</td></tr>
+      <tr><td>مرجع</td><td>نسبت به چه چیزی.</td><td>منفی باتری، بدنه خودرو، Pin مجاور.</td></tr>
+      <tr><td>ابزار</td><td>با چه وسیله‌ای.</td><td>مولتی‌متر دیجیتال، اسیلوسکوپ، اسکنر.</td></tr>
+      <tr><td>شرایط</td><td>در چه وضعیتی.</td><td>موتور خاموش، استارت، دمای ۲°C.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی — دو اندازه‌گیری متفاوت</p>
+    <p style="margin:0;">
+      <strong>اندازه‌گیری ۱:</strong> «۱۲.۴V، Pin ۳۰ رله R5،
+      مولتی‌متر Fluke ۱۷، سوئیچ بسته، موتور خاموش،
+      باتری تازه».
+      <br>
+      <strong>اندازه‌گیری ۲:</strong> «۹.۱V، Pin ۳۰ رله R5،
+      مولتی‌متر Fluke ۱۷، هنگام استارت، دمای ۲°C».
+      <br><br>
+      هر دو یک نقطه را اندازه گرفته‌اند، اما در دو بافت
+      کاملاً متفاوت. اگر فقط «۹.۱V» را ذخیره کنیم،
+      نمی‌توانیم بگوییم آیا این عدد نگران‌کننده است
+      یا نه.
+    </p>
+  </div>
+
+  <div class="expand">
+    <h4>نقش مرجع در اندازه‌گیری</h4>
+    <p>
+      در اندازه‌گیری ولتاژ، باید بدانیم نسبت به چه
+      مرجعی اندازه گرفته‌ایم. «Pin ۳۰ نسبت به بدنه»
+      یا «Pin ۳۰ نسبت به Pin ۳۱»؟
+    </p>
+    <p>
+      این مرجع، بخشی از اندازه‌گیری است، نه یک جزئیات
+      اختیاری. برای نشان دادن اهمیت آن، یک مثال
+      عددی را در نظر بگیرید:
+    </p>
+    <ul>
+      <li>ولتاژ Pin ۳۰ نسبت به منفی باتری: ۱۲.۴V.</li>
+      <li>ولتاژ Pin ۳۰ نسبت به بدنه خودرو: ۱۲.۱V.</li>
+      <li>ولتاژ Pin ۳۰ نسبت به Pin ۳۱ (زمین محلی): ۱۱.۹V.</li>
+    </ul>
+    <p>
+      همین یک نقطه، سه عدد متفاوت بسته به مرجع
+      اندازه‌گیری می‌دهد. اگر مرجع را ثبت نکنیم،
+      هیچ‌کدام از این اعداد قابل تفسیر نیستند.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر اندازه‌گیری را به یک عدد و یک فیلد «محل»
+      کاهش دهیم، در هنگام تحلیل نمی‌توانیم بفهمیم
+      چرا دو اندازه‌گیری مشابه، دو تفسیر متفاوت
+      دارند. این تفاوت‌ها در بازبینی مورد و در
+      آموزش مدل، حیاتی‌اند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۲۴</span>
+  </footer>
+</section>
+
+<!-- ==================== Observation ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۶ — Observation</span>
+  </header>
+
+  <span class="chapter-tag">۶.۳</span>
+  <h2>Observation — مشاهده</h2>
+
+  <div class="original">
+    <p>اندازه‌گیری یک عدد دقیق بود. اما در کار تشخیص،
+    اغلب با چیزهایی سروکار داریم که دقیق‌تر از یک
+    عددند: «صدای غیرعادی»، «فن گاهی روشن نمی‌شود»،
+    «افت ولتاژ زیر بار». این‌ها مشاهده هستند: گزارش
+    ساخت‌یافته از چیزی که در یک بافت مشاهده یا
+    اندازه‌گیری شده است.</p>
+    <p>مشاهده می‌تواند یک اندازه‌گیری دقیق داشته باشد
+    یا نه. آنچه مشاهده را می‌سازد، قرار گرفتن در
+    بافت و معنای تشخیصی است.</p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:20%;">مفهوم</th>
+        <th>نمونه</th>
+        <th>مرز</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>اندازه‌گیری</td>
+        <td>ولتاژ Pin ۳۰ = ۹.۱V</td>
+        <td>عدد دقیق با ابزار</td>
+      </tr>
+      <tr>
+        <td>مشاهده ساده</td>
+        <td>«صدای کلیک رله شنیده نمی‌شود»</td>
+        <td>گزارش حسی در بافت</td>
+      </tr>
+      <tr>
+        <td>مشاهده ترکیبی</td>
+        <td>«افت ولتاژ ۱.۴V روی مسیر زمین هنگام استارت»</td>
+        <td>ترکیب چند اندازه‌گیری در یک معنای تشخیصی</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      وقتی تعمیرکار می‌گوید «فن گاهی روشن نمی‌شود»:
+      این یک <strong>مشاهده</strong> است، نه یک علت.
+      اما یک مشاهده بسیار مهم، چون ما را به چند
+      فرضیه هدایت می‌کند:
+      <br>• خرابی متناوب رله
+      <br>• اتصال سست در پایه
+      <br>• دمای بالای ECU
+      <br>• افت ولتاژ در روزهای گرم
+    </p>
+  </div>
+
+  <div class="expand">
+    <h4>مرز بین مشاهده و تفسیر</h4>
+    <p>
+      یکی از ظریف‌ترین مرزهای تشخیصی، مرز بین
+      مشاهده و تفسیر است. مشاهده، آنچه هست؛ تفسیر،
+      آنچه ما از آن استنباط می‌کنیم.
+    </p>
+    <p>
+      برای نشان دادن تفاوت، دو جمله را مقایسه کنید:
+    </p>
+    <ul>
+      <li>«ولتاژ Pin ۸۷ در حالت بارگذاری ۹.۱V است.» — این یک مشاهده است.</li>
+      <li>«افت ولتاژ در Pin ۸۷ به دلیل خرابی رله است.» — این یک تفسیر است.</li>
+    </ul>
+    <p>
+      جمله اول، یک واقعیت فیزیکی را توصیف می‌کند.
+      جمله دوم، یک فرضیه را مطرح می‌کند. هر دو
+      می‌توانند درست باشند، اما در دو سطح متفاوت
+      از قطعیت قرار دارند.
+    </p>
+    <p>
+      اگر این دو را با هم ادغام کنیم («Pin ۸۷ افت
+      دارد چون رله خراب است»)، دیگر نمی‌توانیم
+      فرضیه‌های دیگر (افت روی سیم تغذیه، افت روی
+      مسیر بازگشت، افت روی خود فن) را به‌سادگی
+      بررسی کنیم. چون فرضیه اول، فرضیه‌های دیگر
+      را در ذهن ما حذف کرده است.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر مشاهده را با تفسیر یکی بگیریم («فن گاهی
+      روشن نمی‌شود، پس رله خراب است»)، فرضیه‌های
+      دیگر را از ابتدا حذف کرده‌ایم. مشاهده یک
+      مشاهده است؛ تفسیر، کار مرحله بعد است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۲۵</span>
+  </footer>
+</section>
+
+<!-- ==================== Primitiveهای سیگنال ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۶ — Primitiveها</span>
+  </header>
+
+  <span class="chapter-tag">۶.۴</span>
+  <h2>Primitiveهای سیگنال</h2>
+
+  <div class="original">
+    <p>برای توصیف دقیق مشاهده‌ها، نیاز به واژگان مشترک
+    داریم. Primitiveها، صفت‌های پایه‌ای هستند که برای
+    توصیف سیگنال به کار می‌روند. اما نباید فرض کنیم
+    هر مشاهده دقیقاً به یک Primitive بسته نگاشت
+    می‌شود؛ یک مشاهده می‌تواند چند ویژگی هم‌زمان
+    داشته باشد.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h4>دامنه و سطح</h4>
+      <p>Amplitude، Peak، RMS، Offset.</p>
+    </div>
+    <div class="card">
+      <h4>زمان و فرکانس</h4>
+      <p>Frequency، Period، Duty Cycle، Rise Time، Fall Time.</p>
+    </div>
+    <div class="card">
+      <h4>شکل موج</h4>
+      <p>Square، Sinusoidal، Ramp، Pulse، PWM.</p>
+    </div>
+    <div class="card">
+      <h4>گذرا و رفتار</h4>
+      <p>Inrush، Cranking Sag، Glitch، Ringing.</p>
+    </div>
+    <div class="card">
+      <h4>کیفیت سیگنال</h4>
+      <p>Noise، Interference، Reflection، Signal Integrity.</p>
+    </div>
+    <div class="card">
+      <h4>وضعیت منطقی</h4>
+      <p>Analog / Digital، Active High / Active Low، Sleep / Wake.</p>
+    </div>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      سیگنال سنسور میل‌لنگ ممکن است با این Primitiveها
+      توصیف شود: «موج مربعی، فرکانس متناسب با دور
+      موتور، چرخه کار حدود ۵۰٪، بدون نویز قابل توجه،
+      دامنه ۵V در کارکرد عادی».
+      <br><br>
+      یک مشاهده واحد، اما چند Primitive هم‌زمان.
+    </p>
+  </div>
+
+  <div class="expand">
+    <h4>چرا نباید هر مشاهده را به یک Primitive محدود کرد؟</h4>
+    <p>
+      سیگنال‌های خودرویی، در عمل چند ویژگی هم‌زمان
+      دارند. اگر بخواهیم هر مشاهده را دقیقاً به یک
+      Primitive بسته نگاشت کنیم، مجبور می‌شویم
+      اطلاعات مهم را حذف کنیم.
+    </p>
+    <p>
+      برای مثال، فرض کنید یک مشاهده از سیگنال
+      سنسور میل‌لنگ داریم. اگر مجبور باشیم فقط یک
+      Primitive ثبت کنیم، باید بین این‌ها انتخاب
+      کنیم:
+    </p>
+    <ul>
+      <li>فرکانس ۲.۵ کیلوهرتز</li>
+      <li>دامنه ۵V</li>
+      <li>شکل موج مربعی</li>
+      <li>چرخه کار ۵۰٪</li>
+    </ul>
+    <p>
+      اما در تحلیل تشخیصی، هر چهار ویژگی می‌توانند
+      مهم باشند. مثلاً فرکانس پایین‌تر از حد معمول
+      می‌تواند نشانه مشکل در چرخ‌دنده باشد؛ اما
+      دامنه پایین‌تر می‌تواند نشانه فاصله نامناسب
+      سنسور. اگر فقط یک Primitive را نگه داریم،
+      نمی‌توانیم بین این دو تشخیص، تفکیک کنیم.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر هر مشاهده را مجبور کنیم دقیقاً یک
+      Primitive داشته باشد، مجبور می‌شویم اطلاعات
+      مهم را حذف کنیم. اگر Primitive را به‌جای
+      مشاهده بگذاریم، بافت و ابزار اندازه‌گیری گم
+      می‌شوند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۲۶</span>
+  </footer>
+</section>
+
+<!-- ==================== اصل مسیر توان و بازگشت ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۷ — مسیر توان و بازگشت</span>
+  </header>
+
+  <span class="part-tag">بخش هفتم</span>
+  <h2>اصل مسیر توان و بازگشت</h2>
+
+  <div class="original">
+    <p>اکنون که مشاهده را می‌شناسیم، به یک اصل بنیادین
+    برق خودرو می‌رسیم که در همه تشخیص‌های مرتبط با
+    توان و زمین کاربرد دارد.</p>
+    <p><strong>اصل بنیادین:</strong> وجود ولتاژ در یک نقطه،
+    به‌تنهایی سلامت مسیر را اثبات نمی‌کند.</p>
+  </div>
+
+  <div class="axiom">
+    <span class="label">اصل بنیادین</span>
+    <p>وجود ولتاژ در یک نقطه، به‌تنهایی سلامت مسیر را اثبات نمی‌کند.</p>
+  </div>
+
+  <div class="note">
+    <p>
+      برای قضاوت درباره یک مسیر توان، باید هم‌زمان همه
+      اجزای حلقه را دید: منبع، حفاظت، سوئیچینگ، بار،
+      بازگشت و شرایط بارگذاری. جریان، در یک حلقه بسته
+      حرکت می‌کند؛ اگر برگشت مشکل داشته باشد، ولتاژ
+      نقطه‌ای که اندازه می‌گیریم می‌تواند فریب‌دهنده
+      باشد.
+    </p>
+  </div>
+
+  <div class="diagram">حلقه توان و بازگشت
+──────────────────
+منبع
+  ↓
+حفاظت
+  ↓
+سوئیچ / رله
+  ↓
+بار
+  ↓
+زمین / بازگشت
+  ↺
+
+هر اندازه‌گیری باید مشخص کند:
+نقطه + مرجع + بار + وضعیت + شرط + ابزار</div>
+
+  <div class="expand">
+    <h4>سه سناریو که نشان می‌دهد چرا ولتاژ تنها کافی نیست</h4>
+    <p>
+      این جمله در نگاه اول ممکن است عجیب به‌نظر برسد.
+      مگر ولتاژ نداشتن یا داشتن، خودش یک حقیقت نیست؟
+      بله، هست — اما «حقیقت داشتن ولتاژ» با «اثبات
+      سلامت مسیر» فرق دارد. سه سناریو را در نظر
+      بگیرید:
+    </p>
+    <p>
+      <strong>سناریو اول:</strong> مولتی‌متر را روی Pin ۸۷
+      رله می‌گذاریم و ۱۲.۴V می‌بینیم. اما فن وصل
+      نیست. این ولتاژ، «ولتاژ بی‌بار» است. به‌محض
+      اتصال فن، ممکن است این ولتاژ به ۸V افت کند،
+      چون یک اتصال با مقاومت بالا در مسیر وجود دارد.
+    </p>
+    <p>
+      <strong>سناریو دوم:</strong> ولتاژ Pin ۳۰ رله، ۱۲.۴V
+      است نسبت به بدنه. اما مسیر بازگشت (زمین) از
+      طریق یک نقطه اتصال با مقاومت بالا برقرار شده.
+      جریان می‌تواند برود اما نمی‌تواند به‌درستی
+      برگردد. در نتیجه، فن نمی‌چرخد حتی اگر ولتاژ
+      «هست».
+    </p>
+    <p>
+      <strong>سناریو سوم:</strong> ولتاژ Pin ۳۰ در حالت
+      استراحت ۱۲.۴V است. اما هنگام استارت، به ۹.۱V
+      افت می‌کند. اگر فقط در حالت استراحت اندازه
+      بگیریم، این افت را نمی‌بینیم و مسیر را سالم
+      فرض می‌کنیم.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی — پنج اندازه‌گیری برای یک حلقه</p>
+    <p style="margin:0;">
+      برای قضاوت درباره مدار فن رادیاتور، پنج
+      اندازه‌گیری کافی است تا تصویر کامل شود:
+      <br><br>
+      <strong>۱.</strong> ولتاژ Pin ۳۰ رله (ورودی تغذیه)،
+      نسبت به منفی باتری، در حالت بارگذاری.
+      <br>
+      <strong>۲.</strong> ولتاژ Pin ۸۷ رله (خروجی رله)،
+      نسبت به منفی باتری، در حالت بارگذاری.
+      <br>
+      <strong>۳.</strong> ولتاژ Pin ۸۵ رله (ورودی فرمان)،
+      نسبت به منفی باتری، در زمان فرمان.
+      <br>
+      <strong>۴.</strong> ولتاژ پایه منفی فن نسبت به منفی
+      باتری، در حالت بارگذاری.
+      <br>
+      <strong>۵.</strong> ولتاژ منفی باتری نسبت به نقطه
+      اتصال بدنه، در حالت بارگذاری.
+      <br><br>
+      با این پنج عدد، می‌توان افت ولتاژ را در طول
+      حلقه محاسبه کرد. اگر همه در محدوده مرجع
+      باشند، حلقه سالم است. اگر یکی بیش از حد افت
+      داشت، همان نقطه مقصر است.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      شایع‌ترین خطا در این اصل، رضایت دادن به یک
+      اندازه‌گیری ولتاژ در نقطه‌ای است که بی‌بار
+      است. گفته می‌شود «اینجا ۱۲V داریم، پس مسیر
+      سالم است» — اما فن وصل نشده. این اندازه‌گیری
+      هیچ چیز را ثابت نمی‌کند.
+      <br><br>
+      راه درست: هر اندازه‌گیری ولتاژ در مدارهای
+      پرقدرت، باید در حالت بارگذاری انجام شود.
+      یعنی مصرف‌کننده باید وصل باشد تا جریان از
+      مسیر عبور کند و افت ولتاژ واقعی ظاهر شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۲۷</span>
+  </footer>
+</section>
+
+<!-- ==================== Reference ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۸ — Reference</span>
+  </header>
+
+  <span class="part-tag">بخش هشتم</span>
+  <h2>Reference — مرجع و انتظار</h2>
+
+  <div class="original">
+    <p>تا اینجا مشاهده را ساختیم؛ یعنی «آنچه هست».
+    حالا به مفهوم مقایسه می‌رسیم. برای تشخیص، به
+    «آنچه باید باشد» نیاز داریم که به آن Reference
+    می‌گوییم.</p>
+    <p>Reference، توصیف انتظار است؛ نه واقعیت
+    مشاهده‌شده و نه حکم قطعی درباره خودرو. هر
+    Reference باید حداقل دامنه، منشأ، تاریخ/نسخه
+    و وضعیت اعتبار داشته باشد.</p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%;">نوع مرجع</th>
+        <th>نمونه</th>
+        <th style="width:28%;">سطح اعتبار</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>مشخصه فنی</td>
+        <td>محدوده ولتاژ یا مقاومت مستند</td>
+        <td>وابسته به منبع و گونه</td>
+      </tr>
+      <tr>
+        <td>رفتار مورد انتظار</td>
+        <td>فن در شرایط مشخص فعال شود</td>
+        <td>وابسته به بافت</td>
+      </tr>
+      <tr>
+        <td>قید منطقی</td>
+        <td>رابطه منطقی بین دو وضعیت</td>
+        <td>باید منشأ یا استدلال آن مشخص باشد</td>
+      </tr>
+      <tr>
+        <td>مرجع میدانی</td>
+        <td>الگوی تکرارشونده مشاهده‌شده در میدان</td>
+        <td>نیازمند شواهد و دامنه مشخص</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="expand">
+    <h4>مرز بین مشاهده و مرجع</h4>
+    <p>
+      یکی از خطاهای شایع در تشخیص، ارتقای یک
+      مشاهده میدانی به مرجع است. فرض کنید در
+      ده خودرو از یک گونه، ولتاژ Pin ۳۰ رله در
+      حالت استراحت بین ۱۲.۳ تا ۱۲.۵V دیده شده
+      است. این یک «مشاهده میدانی» است.
+    </p>
+    <p>
+      اگر همین مشاهده را به‌عنوان «مرجع» ثبت کنیم
+      بدون آنکه منبع رسمی یا شواهد کافی داشته
+      باشیم، در واقع مشاهده را به استاندارد ارتقا
+      داده‌ایم. این ارتقا، سه مشکل دارد:
+    </p>
+    <ul>
+      <li>ممکن است این ده خودرو، همه از یک پیکربندی
+      خاص بوده باشند و این مقدار در پیکربندی
+      دیگر اشتباه باشد.</li>
+      <li>ممکن است ولتاژ باتری همه آن خودروها در
+      لحظه اندازه‌گیری، به‌طور تصادفی مشابه
+      بوده باشد.</li>
+      <li>ممکن است ابزار اندازه‌گیری، خطای سیستماتیک
+      داشته باشد که در همه اندازه‌گیری‌ها تکرار
+      شده است.</li>
+    </ul>
+    <p>
+      راه درست: مشاهده میدانی را به‌عنوان «مرجع
+      میدانی» ثبت کنیم با سطح اطمینان مشخص، و
+      کنار آن، «مشخصه فنی» رسمی را هم اگر در
+      دسترس است نگه داریم. سپس در هنگام استفاده،
+      بین این دو تفکیک قائل شویم.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      <strong>مرجع:</strong> «در گونه A، هنگام استارت با
+      باتری سالم، افت ولتاژ روی مسیر تغذیه به
+      Pin ۳۰ رله نباید بیش از نیم ولت باشد».
+      <br>
+      <strong>مشاهده:</strong> «افت ولتاژ اندازه‌گیری‌شده:
+      یک و چهار دهم ولت».
+      <br><br>
+      تفاوت این دو، یک <strong>انحراف</strong> است که
+      فضای تشخیص را باز می‌کند.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر یک مشاهده میدانی («من در ۱۰ خودرو این
+      عدد را دیدم») را به‌عنوان مرجع ثبت کنیم،
+      بدون دامنه و شواهد، در واقع مشاهده را به
+      استاندارد ارتقا داده‌ایم. این خطا، ریشه
+      بسیاری از تعمیم‌های نادرست است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۲۸</span>
+  </footer>
+</section>
+
+<!-- ==================== Failure Mode و Fault ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۹ — Failure و Fault</span>
+  </header>
+
+  <span class="part-tag">بخش نهم</span>
+  <span class="chapter-tag">۹.۱</span>
+  <h2>Failure Mode و Fault</h2>
+
+  <div class="original">
+    <p>حالا که هم مشاهده داریم و هم مرجع، می‌توانیم
+    درباره انحراف صحبت کنیم. اما انحراف خودش یک
+    چیز نیست؛ دو سطح دارد: Failure Mode (الگوی
+    خرابی) و Fault (وضعیت انحراف واقعی).</p>
+  </div>
+
+  <div class="chain">
+    <span class="node">الگوی خرابی</span><span class="arrow">←</span>
+    <span class="node">انحراف</span><span class="arrow">←</span>
+    <span class="node">اثر مشاهده‌شده</span><span class="arrow">←</span>
+    <span class="node">نشانه / کد خطا</span>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:20%;">مفهوم</th>
+        <th>تعریف</th>
+        <th>مثال</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>الگوی خرابی</td>
+        <td>الگوی از کار افتادن</td>
+        <td>افزایش مقاومت اتصال، قطع متناوب، اتصال کوتاه، نشتی، رانش، افت ظرفیت</td>
+      </tr>
+      <tr>
+        <td>انحراف</td>
+        <td>وضعیت انحراف واقعی</td>
+        <td>افت غیرمجاز ولتاژ روی مسیر زمین در حالت استارت</td>
+      </tr>
+      <tr>
+        <td>اثر مشاهده‌شده</td>
+        <td>اثر مشاهده‌شده</td>
+        <td>ولتاژ Pin ۸۷ رله پایین‌تر از محدوده</td>
+      </tr>
+      <tr>
+        <td>نشانه</td>
+        <td>نشانه از دید کاربر</td>
+        <td>استارت می‌خورد ولی موتور روشن نمی‌شود</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="expand">
+    <h4>چرا این تفکیک مهم است؟</h4>
+    <p>
+      «افزایش مقاومت اتصال زمین» یک الگوی خرابی است
+      که می‌تواند در چندین خودرو با نشانه‌های
+      متفاوت ظاهر شود:
+    </p>
+    <ul>
+      <li>یک بار بد روشن شدن موتور.</li>
+      <li>بار دیگر ضعف چراغ‌های جلو.</li>
+      <li>بار دیگر کندی کارکرد فن رادیاتور.</li>
+      <li>بار دیگر خطای ارتباط شبکه.</li>
+    </ul>
+    <p>
+      در همه این حالت‌ها، الگوی خرابی یکی است:
+      افزایش مقاومت در اتصال زمین. اما نشانه‌ها
+      متفاوت‌اند. اگر نشانه را با الگوی خرابی
+      یکی بگیریم، هر بار مجبور می‌شویم از صفر
+      شروع کنیم و الگوی مشترک را نادیده بگیریم.
+    </p>
+    <p>
+      با تفکیک، می‌توانیم در سامانه ذخیره کنیم:
+      «نشانه X در این خودرو، به الگوی خرابی Y
+      اشاره دارد». و در آینده، وقتی همان نشانه
+      در خودروی دیگری ظاهر شد، بلافاصله به الگوی
+      مشترک فکر کنیم.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      <strong>نشانه:</strong> استارت می‌خورد ولی موتور
+      روشن نمی‌شود.
+      <br>
+      <strong>اثر مشاهده‌شده:</strong> ولتاژ Pin ۸۷ رله
+      در حالت بارگذاری ۹.۱V است.
+      <br>
+      <strong>انحراف:</strong> افت ولتاژ روی مسیر زمین
+      در حالت استارت.
+      <br>
+      <strong>الگوی خرابی:</strong> افزایش مقاومت اتصال
+      زمین.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۲۹</span>
+  </footer>
+</section>
+
+<!-- ==================== Symptom و Complaint ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۹ — Symptom و Complaint</span>
+  </header>
+
+  <span class="chapter-tag">۹.۲</span>
+  <h2>Symptom و Complaint</h2>
+
+  <div class="original">
+    <p>نشانه، نشانه‌ای است که از دید راننده یا
+    تعمیرکار قابل مشاهده است. شکایت، شکایت
+    اولیه‌ای است که مشتری مطرح می‌کند. شکایت
+    معمولاً کلی‌تر و مبهم‌تر از نشانه است.</p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      <strong>شکایت:</strong> «ماشین صبح‌ها بد روشن می‌شود».
+      <br>
+      <strong>نشانه ۱:</strong> استارت طولانی‌تر از حد معمول.
+      <br>
+      <strong>نشانه ۲:</strong> صدای استارت ضعیف است.
+      <br>
+      <strong>نشانه ۳:</strong> فقط در دمای زیر پنج درجه رخ می‌دهد.
+      <br><br>
+      شکایت را نمی‌توان مستقیماً مدل کرد؛ اما نشانه‌ها
+      قابل مدل‌سازی‌اند و به مشاهده‌های دقیق‌تر هدایت
+      می‌کنند.
+    </p>
+  </div>
+
+  <div class="expand">
+    <h4>چرا شکایت را به نشانه می‌شکنیم؟</h4>
+    <p>
+      شکایت معمولاً مبهم و وابسته به زبان مشتری است.
+      اگر بخواهیم مستقیماً آن را مدل کنیم، نمی‌توانیم
+      دو مورد ظاهراً مشابه را با یک معنای واحد مقایسه
+      کنیم.
+    </p>
+    <p>
+      فرض کنید دو مشتری به کارگاه می‌آیند. مشتری اول
+      می‌گوید: «صبح‌ها ماشین بد روشن می‌شود». مشتری
+      دوم می‌گوید: «وقتی سرده، استارت طول می‌کشد».
+      در نگاه اول، این دو شکایت متفاوت به‌نظر می‌رسند.
+      اما اگر به نشانه‌ها بشکنیم، ممکن است هر دو به
+      یک مجموعه نشانه برسند: استارت طولانی، دمای
+      پایین، صدای ضعیف استارت.
+    </p>
+    <p>
+      این فرآیند «شکستن شکایت به نشانه»، به ما اجازه
+      می‌دهد:
+    </p>
+    <ul>
+      <li>دو مورد ظاهراً متفاوت را با یک معنای مشترک مقایسه کنیم.</li>
+      <li>الگوهای تکرارشونده را در چند خودرو تشخیص دهیم.</li>
+      <li>از نشانه به سمت فرضیه‌های ممکن حرکت کنیم.</li>
+    </ul>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر شکایت را با الگوی خرابی یا انحراف یکی
+      بگیریم («ماشین بد روشن می‌شود، پس سیستم
+      سوخت مشکل دارد»)، دامنه فرضیه‌ها را از ابتدا
+      بسته‌ایم. در حالی که «بد روشن شدن» می‌تواند
+      از باتری، استارت، سنسور دما، ECU یا اتصال
+      زمین بیاید.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۳۰</span>
+  </footer>
+</section>
+
+<!-- ==================== DTC ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۹ — DTC</span>
+  </header>
+
+  <span class="chapter-tag">۹.۳</span>
+  <h2>DTC و کدهای خطا</h2>
+
+  <div class="original">
+    <p>یکی از پرتکرارترین خطاها در تشخیص خودرو،
+    یکی گرفتن کد خطا با «علت خرابی» است. یک کد
+    خطا، گزارش یک کنترلر از تشخیص داخلی خودش
+    است؛ نه نام یک علت.</p>
+    <p>مدل باید این اطلاعات را از هم جدا نگه دارد:
+    کد خطا، ECU صادرکننده، شرایط ثبت، داده
+    لحظه‌ای در صورت وجود، معنای مستند کد.</p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:36%;">اطلاعات</th>
+        <th>نباید با چه چیزی یکی شود؟</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>کد خطا</td><td>الگوی خرابی</td></tr>
+      <tr><td>ECU صادرکننده</td><td>علت ریشه‌ای</td></tr>
+      <tr><td>داده لحظه‌ای</td><td>بافت فعلی</td></tr>
+      <tr><td>وضعیت کد</td><td>راستی‌آزمایی تعمیر</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      کد <strong>P0335</strong> یعنی «مدار سنسور میل‌لنگ A».
+      اما این کد می‌تواند از این‌ها بیاید:
+      <br>• قطع یا اتصال بد سیم سنسور
+      <br>• خرابی خود سنسور
+      <br>• فاصله نامناسب سنسور با چرخ‌دنده
+      <br>• نویز روی سیگنال
+      <br>• خرابی ورودی ECU
+      <br><br>
+      ECU فقط می‌گوید «چیزی در این مدار درست نیست»؛
+      علت واقعی، در فضای فرضیه‌هاست.
+    </p>
+  </div>
+
+  <div class="expand">
+    <h4>کد خطا به‌عنوان گزارش تشخیص داخلی ECU</h4>
+    <p>
+      ECU هر چند میلی‌ثانیه یک‌بار سیگنال‌ها را می‌خواند
+      و بررسی می‌کند که آیا در محدوده مجاز هستند یا
+      نه. اگر یک سیگنال خارج از محدوده بود، ECU یک
+      کد خطا ثبت می‌کند. این کد، در واقع گزارش ECU
+      است از چیزی که خودش دیده، نه از چیزی که
+      واقعاً در خودرو می‌گذرد.
+    </p>
+    <p>
+      برای روشن شدن مطلب، دو مثال را در نظر بگیرید:
+    </p>
+    <p>
+      <strong>مثال اول:</strong> یک سنسور دما واقعاً معیوب
+      است و مقدار اشتباه می‌خواند. ECU کد خطا ثبت
+      می‌کند. در این حالت، گزارش ECU با واقعیت
+      هم‌خوان است.
+    </p>
+    <p>
+      <strong>مثال دوم:</strong> سنسور سالم است، اما سیم
+      سیگنال در اثر لرزش، لحظه‌ای قطع می‌شود. ECU
+      یک قطع لحظه‌ای می‌بیند و کد خطا ثبت می‌کند. در
+      این حالت، گزارش ECU با واقعیت متفاوت است
+      (سنسور سالم است، اما ECU آن را معیوب
+      تشخیص می‌دهد).
+    </p>
+    <p>
+      سامانه تشخیص، وظیفه دارد این گزارش را به
+      مجموعه فرضیه‌ها تبدیل کند و سپس با آزمون،
+      بین آن‌ها تفکیک کند. یعنی کد خطا، نقطه شروع
+      است، نه نقطه پایان.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر کد خطا را مستقیماً علت ریشه‌ای ذخیره کنیم،
+      در داده، «فرهنگ کد خطا = علت» شکل می‌گیرد. در
+      نتیجه، بعداً نمی‌توانیم بگوییم «کد P0335 در
+      این خودرو با علت متفاوتی از آن خودرو بوده
+      است». این خطا در پایگاه داده‌های تشخیصی
+      بسیار شایع است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۳۱</span>
+  </footer>
+</section>
+
+<!-- ==================== Hypothesis ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۰ — Hypothesis</span>
+  </header>
+
+  <span class="part-tag">بخش دهم</span>
+  <span class="chapter-tag">۱۰.۱</span>
+  <h2>Hypothesis — واحد مرکزی استدلال تشخیصی</h2>
+
+  <div class="original">
+    <p>فرضیه باید یک گزاره قابل بررسی باشد، نه صرفاً
+    نام یک قطعه. فرضیه می‌تواند در چند سطح مطرح
+    شود: الگوی خرابی، شکست نقش، شکست مسیر،
+    خطای پیکربندی، توضیح وابسته به شرط، خطای
+    اندازه‌گیری، مجموعه چند خرابی.</p>
+  </div>
+
+  <div class="box purple">
+    <p class="box-title"><span class="icon">★</span>چهار مفهوم که نباید مخلوط شوند</p>
+    <p style="margin:0;">
+      <strong>باور اولیه:</strong> ارزیابی قبلی ما از احتمال
+      یک فرضیه، پیش از دیدن شواهد جدید.
+      <br>
+      <strong>کیفیت شاهد:</strong> کیفیت خود شاهد — دقت
+      ابزار، کامل بودن بافت، تکرارپذیری.
+      <br>
+      <strong>قوت شاهد:</strong> میزان حمایت شاهد از
+      فرضیه — آیا فرضیه را تقویت می‌کند یا تضعیف.
+      <br>
+      <strong>وضعیت تشخیصی:</strong> وضعیت فعلی فرضیه
+      در فرآیند تشخیص — تأییدشده، ردشده، محتمل،
+      نامشخص.
+      <br><br>
+      این‌ها چهار پرسش متفاوت‌اند. یکی گرفتن آن‌ها،
+      خطای رایج در سامانه‌های تشخیصی است.
+    </p>
+  </div>
+
+  <div class="expand">
+    <h4>سطوح فرضیه در تشخیص خودرو</h4>
+    <p>
+      فرضیه در تشخیص خودرو، فقط در سطح قطعه مطرح
+      نمی‌شود. می‌تواند در چند سطح متفاوت باشد:
+    </p>
+    <ul>
+      <li><strong>الگوی خرابی:</strong> «افزایش مقاومت
+      اتصال زمین در این خودرو».</li>
+      <li><strong>شکست نقش:</strong> «رله R5 نقش
+      سوئیچینگ خود را به‌درستی ایفا نمی‌کند».</li>
+      <li><strong>شکست مسیر:</strong> «مسیر بازگشت
+      از پایه منفی فن تا بدنه مشکل دارد».</li>
+      <li><strong>خطای پیکربندی:</strong> «نسخه نرم‌افزار
+      ECU با این خودرو سازگار نیست».</li>
+      <li><strong>توضیح وابسته به شرط:</strong> «مشکل
+      فقط در دمای زیر پنج درجه رخ می‌دهد».</li>
+      <li><strong>خطای اندازه‌گیری:</strong> «عدد
+      اندازه‌گیری‌شده به دلیل خطای ابزار نامعتبر
+      است».</li>
+      <li><strong>مجموعه چند خرابی:</strong> «دو
+      مشکل مستقل هم‌زمان وجود دارد: یکی در مسیر
+      تغذیه، یکی در سنسور».</li>
+    </ul>
+    <p>
+      هر یک از این سطوح، به آزمون متفاوتی نیاز دارد.
+      اگر فرضیه را فقط در سطح «کدام قطعه خراب است»
+      ببینیم، سطوح دیگر را نادیده می‌گیریم و به
+      تعویض‌های بی‌دلیل می‌رسیم.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      نشانه: «فن رادیاتور در دمای بالا روشن نمی‌شود».
+      <br><br>
+      فرضیه‌های ممکن در سطوح مختلف:
+      <br>• <strong>سطح قطعه:</strong> رله معیوب است.
+      <br>• <strong>سطح نقش:</strong> ECU نقش حس‌گری دما را
+      درست ایفا نمی‌کند.
+      <br>• <strong>سطح مسیر:</strong> مسیر تغذیه به رله
+      افت ولتاژ دارد.
+      <br>• <strong>سطح بافت:</strong> فقط در دمای
+      زیر پنج درجه رخ می‌دهد.
+      <br>• <strong>سطح اندازه‌گیری:</strong> سنسور دما
+      یا مسیر سیگنال آن نویز دارد.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      اگر فرضیه‌ها را فقط در سطح قطعه نگه داریم،
+      در هر خرابی مجبوریم قطعات را یکی‌یکی
+      تعویض کنیم تا علت پیدا شود. در حالی که
+      اگر سطوح مختلف فرضیه را در نظر بگیریم،
+      می‌توانیم با یک آزمون دقیق، کل یک سطح را
+      رد یا تأیید کنیم.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۳۲</span>
+  </footer>
+</section>
+
+<!-- ==================== Test ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۰ — Test</span>
+  </header>
+
+  <span class="chapter-tag">۱۰.۲</span>
+  <h2>Test — آزمون تفکیک‌کننده</h2>
+
+  <div class="original">
+    <p>آزمون صرفاً «کاری که تعمیرکار انجام می‌دهد» نیست.
+    آزمون باید با هدف تشخیصی تعریف شود: کدام
+    فرضیه‌ها را از هم تفکیک می‌کند، چه هزینه و
+    ریسکی دارد و نتیجه آن چه تصمیمی را ممکن
+    می‌کند.</p>
+  </div>
+
+  <div class="diagram">TEST
+ ├─ Target (هدف)
+ ├─ Preconditions / Context (پیش‌شرط‌ها / بافت)
+ ├─ Procedure (روش اجرا)
+ ├─ Expected Result (نتیجه مورد انتظار)
+ ├─ Possible Outcomes (نتیجه‌های ممکن)
+ ├─ Safety / Risk (ایمنی / ریسک)
+ ├─ Evidence Produced (شواهد تولیدشده)
+ └─ Decision Impact (اثر بر تصمیم)</div>
+
+  <div class="expand">
+    <h4>آزمون خوب در برابر آزمون ضعیف</h4>
+    <p>
+      همه آزمون‌ها یک ارزش ندارند. یک آزمون خوب، آزمونی
+      است که بیشترین کاهش ابهام را با کمترین هزینه
+      و ریسک ایجاد کند. اما این یک تصمیم ساده
+      نیست؛ باید چند معیار را هم‌زمان در نظر
+      گرفت.
+    </p>
+    <p>
+      <strong>قدرت تفکیک:</strong> آزمونی که فرضیه‌های رقیب
+      را از هم جدا می‌کند، ارزشمندتر است. آزمونی
+      که همه فرضیه‌ها را تأیید یا همه را رد می‌کند،
+      ارزش کمتری دارد.
+    </p>
+    <p>
+      <strong>هزینه، ریسک و زمان:</strong> یک آزمون ممکن
+      است بسیار دقیق باشد، اما اگر نیاز به باز
+      کردن گیربکس داشته باشد، انتخاب آن به‌عنوان
+      آزمون اول منطقی نیست.
+    </p>
+    <p>
+      <strong>برگشت‌پذیری:</strong> آزمونی که می‌توان آن
+      را بی‌خطر انجام داد و بی‌خطر برگشت، بهتر از
+      آزمونی است که تغییرات دائمی ایجاد می‌کند.
+    </p>
+    <p>
+      <strong>کفایت:</strong> اگر به یک سطح قابل قبول از
+      اطمینان رسیده‌ایم، آزمون بیشتر فقط زمان و
+      هزینه است، بدون آن‌که تصمیم را تغییر دهد.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی — سه آزمون برای یک نشانه</p>
+    <p style="margin:0;">
+      نشانه: «فن رادیاتور کار نمی‌کند».
+      <br><br>
+      <strong>آزمون اول — چک ولتاژ Pin ۳۰ رله:</strong>
+      سریع، بی‌خطر، اما تفکیک کم. اگر ولتاژ باشد،
+      فقط می‌دانیم که تغذیه تا رله می‌رسد. فرضیه‌های
+      دیگر باز می‌مانند.
+      <br><br>
+      <strong>آزمون دوم — چک ولتاژ Pin ۸۵ در زمان فرمان:</strong>
+      سریع، بی‌خطر، تفکیک متوسط. اگر ولتاژ باشد،
+      فرضیه «ECU فرمان نمی‌دهد» رد می‌شود.
+      <br><br>
+      <strong>آزمون سوم — اتصال مستقیم فن به باتری:</strong>
+      سریع، بی‌خطر، تفکیک بالا. اگر فن چرخید،
+      فرضیه «فن معیوب» رد می‌شود.
+      <br><br>
+      آزمون سوم بیشترین قدرت تفکیک را دارد، چون
+      مستقیماً سالم یا معیوب بودن فن را جدا می‌کند.
+      اگر این آزمون در دسترس باشد، اولین انتخاب
+      معقول است.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      آزمون بدون هدف، فقط مصرف زمان و منابع است.
+      هر آزمون باید با یک پرسش مشخص شروع شود:
+      «این آزمون، کدام فرضیه را رد یا تأیید
+      می‌کند؟» اگر پاسخ روشن نیست، آن آزمون
+      احتمالاً انتخاب مناسبی نیست.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۳۳</span>
+  </footer>
+</section>
+
+<!-- ==================== Evidence و Provenance ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۰ — Evidence</span>
+  </header>
+
+  <span class="chapter-tag">۱۰.۳</span>
+  <h2>Evidence و Provenance</h2>
+
+  <div class="original">
+    <p>هر ادعای مهم باید بتواند پاسخ دهد: این اطلاعات
+    از کجا آمده، درباره کدام گونه است، چه زمانی
+    معتبر بوده، با چه روشی به‌دست آمده و چه
+    محدودیتی دارد.</p>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th style="width:28%;">فیلد معنایی</th><th>نمونه</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>منبع</td><td>سند فنی، اندازه‌گیری میدانی، تجربه ثبت‌شده، تست کنترل‌شده</td></tr>
+      <tr><td>دامنه</td><td>خودرو/گونه/ECU/شرایط معتبر</td></tr>
+      <tr><td>زمان کسب</td><td>زمان مشاهده یا ثبت</td></tr>
+      <tr><td>روش</td><td>مولتی‌متر، اسیلوسکوپ، اسکنر، مشاهده، تست بار</td></tr>
+      <tr><td>کیفیت</td><td>کیفیت ابزار و روش و کامل بودن بافت</td></tr>
+      <tr><td>تفسیر</td><td>نتیجه‌ای که از شاهد استنباط شده؛ جدا از خود شاهد</td></tr>
+    </tbody>
+  </table>
+
+  <div class="expand">
+    <h4>چرا یک «امتیاز اعتماد» واحد کافی نیست؟</h4>
+    <p>
+      در بسیاری از سامانه‌ها، تلاش می‌شود همه ابعاد
+      کیفیت یک شاهد در یک عدد واحد فشرده شود —
+      مثلاً «امتیاز اعتماد: ۰.۸». این کار در نگاه
+      اول ساده به‌نظر می‌رسد، اما مشکلی اساسی
+      دارد:
+    </p>
+    <p>
+      امتیاز واحد، ابعاد مختلف را پنهان می‌کند. یک
+      شاهد می‌تواند از نظر منبع معتبر باشد (سند
+      رسمی خودروساز)، اما از نظر دامنه محدود
+      باشد (فقط برای یک گونه خاص). یا برعکس،
+      منبع آن ضعیف باشد (تجربه یک تعمیرکار)، اما
+      در چند خودرو تکرار شده باشد.
+    </p>
+    <p>
+      اگر این ابعاد را در یک عدد پنهان کنیم، در
+      هنگام استفاده نمی‌دانیم کدام بعد ضعیف است.
+      در نتیجه، نمی‌توانیم تصمیم متناسب بگیریم.
+      راه درست: ابعاد را جدا نگه داریم و در
+      استدلال، هر کدام را جداگانه در نظر بگیریم.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      یک شاهد: «افت ولتاژ Pin ۳۰ رله در حالت استارت،
+      در دمای ۲°C، در گونه A، ۱.۴V است».
+      <br><br>
+      <strong>منبع:</strong> اندازه‌گیری میدانی، توسط
+      تعمیرکار، با مولتی‌متر Fluke ۱۷.
+      <br>
+      <strong>دامنه:</strong> گونه A، پیکربندی ECU بوش
+      نسخه ۳، شرایط استارت، دمای ۲°C.
+      <br>
+      <strong>زمان کسب:</strong> بهمن ۱۴۰۲.
+      <br>
+      <strong>روش:</strong> اندازه‌گیری ولتاژ نسبت به
+      منفی باتری، با پروب استاندارد.
+      <br>
+      <strong>کیفیت:</strong> ابزار معتبر، بافت کامل،
+      تکرار در پنج خودرو مشابه.
+      <br>
+      <strong>تفسیر:</strong> «افت در محدوده غیرمجاز
+      است، احتمالاً به دلیل افزایش مقاومت اتصال».
+      <br><br>
+      با این اطلاعات، شاهد قابل اتکاست. بدون آن‌ها،
+      فقط یک عدد است.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته</p>
+    <p style="margin:0;">
+      یک «امتیاز اعتماد» واحد که کیفیت منبع، کیفیت
+      اندازه‌گیری، اعتبار دامنه و قوت شاهد را در
+      یک عدد پنهان کند، برای مدل معنایی کافی
+      نیست. این ابعاد باید قابل مشاهده و قابل
+      تفکیک باشند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۳۴</span>
+  </footer>
+</section>
+
+<!-- ==================== Diagnostic Episode ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۱ — Diagnostic Episode</span>
+  </header>
+
+  <span class="part-tag">بخش یازدهم</span>
+  <span class="chapter-tag">۱۱.۱</span>
+  <h2>Diagnostic Episode / Case</h2>
+
+  <div class="original">
+    <p>مورد یک «چیز موجود در خودرو» نیست؛ یک رکورد
+    از یک اپیزود تشخیصی است. بنابراین نباید با
+    موجودیت، انحراف یا فرضیه هم‌سطح مفهومی
+    تلقی شود.</p>
+  </div>
+
+  <div class="diagram">DiagnosticEpisode
+ ├─ Vehicle / Variant / Configuration
+ ├─ Complaint
+ ├─ Initial Context
+ ├─ Observations
+ ├─ Hypotheses
+ ├─ Tests
+ ├─ Evidence
+ ├─ Decisions
+ ├─ Repairs
+ └─ Verification</div>
+
+  <div class="expand">
+    <h4>چرا مورد یک موجودیت نیست؟</h4>
+    <p>
+      در نگاه اول، ممکن است «مورد» به‌نظر یک چیز
+      ساده بیاید: یک رکورد از یک تشخیص. اما اگر
+      آن را در همان سطح «خودرو» یا «قطعه» قرار
+      دهیم، به خطای معنایی می‌رسیم.
+    </p>
+    <p>
+      یک مورد، یک <strong>روایت</strong> است از یک
+      اپیزود تشخیصی: در یک خودرو مشخص، در یک
+      زمان مشخص، با یک شکایت مشخص، چه فرضیه‌هایی
+      مطرح شد، چه آزمون‌هایی انجام شد، چه شواهدی
+      به‌دست آمد و در نهایت چه تصمیمی گرفته شد.
+    </p>
+    <p>
+      این روایت، خودش یک چیز فیزیکی یا منطقی
+      مستقل نیست؛ یک <strong>گزارش</strong> است.
+      اگر آن را با «خودرو» یکی بگیریم، نمی‌توانیم
+      دو مورد جداگانه از یک خودرو داشته باشیم.
+      اگر آن را با «فرضیه» یکی بگیریم، نمی‌توانیم
+      چند فرضیه در یک مورد را جدا نگه داریم.
+    </p>
+    <p>
+      تفکیک مورد از موجودیت، به ما اجازه می‌دهد:
+    </p>
+    <ul>
+      <li>چند اپیزود تشخیصی روی یک خودرو را جدا ثبت کنیم.</li>
+      <li>در هر اپیزود، چند فرضیه، چند آزمون و چند شاهد را در کنار هم نگه داریم.</li>
+      <li>مسیر استدلال را بازسازی کنیم، نه فقط نتیجه نهایی را ذخیره کنیم.</li>
+    </ul>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال خودرویی</p>
+    <p style="margin:0;">
+      یک خودرو در سه ماه، سه بار به کارگاه می‌آید:
+      <br>
+      <strong>مورد اول:</strong> شکایت «بد روشن شدن
+      صبح‌ها»، تشخیص «افت ولتاژ زیر بار استارت»،
+      تعمیر «تمیز کردن نقطه اتصال بدنه».
+      <br>
+      <strong>مورد دوم:</strong> شکایت «ضعف چراغ‌های
+      جلو»، تشخیص «افت ولتاژ در مسیر تغذیه»،
+      تعمیر «تعویض رله».
+      <br>
+      <strong>مورد سوم:</strong> شکایت «فن رادیاتور
+      کار نمی‌کند»، تشخیص «خرابی خود فن»، تعمیر
+      «تعویض فن».
+      <br><br>
+      سه مورد جداگانه روی یک خودرو. اگر این سه را
+      با «خودرو» یکی بگیریم، نمی‌توانیم تفکیک
+      کنیم که کدام تشخیص مربوط به کدام اپیزود
+      بوده است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۳۵</span>
+  </footer>
+</section>
+
+<!-- ==================== روابط بنیادی ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۱ — روابط بنیادی</span>
+  </header>
+
+  <span class="chapter-tag">۱۱.۲</span>
+  <h2>روابط بنیادی</h2>
+
+  <table>
+    <thead><tr><th style="width:18%;">رابطه</th><th style="width:20%;">از</th><th style="width:20%;">به</th><th>معنا</th></tr></thead>
+    <tbody>
+      <tr><td>contains</td><td>Vehicle / Module</td><td>Entity</td><td>شامل بودن</td></tr>
+      <tr><td>has_port</td><td>Entity</td><td>Port</td><td>داشتن نقطه تعامل</td></tr>
+      <tr><td>connects_to</td><td>Port</td><td>Port</td><td>اتصال فیزیکی/منطقی</td></tr>
+      <tr><td>forms_path</td><td>Connection</td><td>Path</td><td>تشکیل مسیر</td></tr>
+      <tr><td>plays_role</td><td>Entity</td><td>RoleAssignment</td><td>ایفای نقش در بافت</td></tr>
+      <tr><td>provides</td><td>Entity / Role</td><td>Capability</td><td>مشارکت در قابلیت</td></tr>
+      <tr><td>contributes_to</td><td>Capability</td><td>Function</td><td>مشارکت در کارکرد</td></tr>
+      <tr><td>has_state</td><td>Entity / System</td><td>State</td><td>داشتن وضعیت</td></tr>
+      <tr><td>conditioned_by</td><td>Behavior / Observation</td><td>Condition</td><td>وابستگی به شرایط</td></tr>
+      <tr><td>expects</td><td>Entity / Path / Function</td><td>ExpectedBehavior</td><td>انتظار رفتاری</td></tr>
+      <tr><td>observed_as</td><td>Observation</td><td>Measurement / Effect</td><td>توصیف آنچه مشاهده شده</td></tr>
+      <tr><td>supports</td><td>Evidence</td><td>Hypothesis</td><td>پشتیبانی از فرضیه</td></tr>
+      <tr><td>tests</td><td>Test</td><td>Hypothesis Set</td><td>تفکیک یا ارزیابی فرضیه‌ها</td></tr>
+      <tr><td>verifies</td><td>Verification</td><td>ExpectedBehavior</td><td>راستی‌آزمایی رفتار پس از مداخله</td></tr>
+    </tbody>
+  </table>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۳۶</span>
+  </footer>
+</section>
+
+<!-- ==================== قواعد یکپارچگی ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۱ — قواعد یکپارچگی</span>
+  </header>
+
+  <span class="chapter-tag">۱۱.۳</span>
+  <h2>قواعد یکپارچگی مدل</h2>
+
+  <ul class="checks">
+    <li>هر مشاهده باید بافت و زمان داشته باشد.</li>
+    <li>هر اندازه‌گیری باید نقطه، کمیت، واحد، روش و ابزار مشخص داشته باشد؛ در صورت نیاز مرجع اندازه‌گیری نیز ثبت شود.</li>
+    <li>هر نقطه تعامل باید متعلق به یک موجودیت یا رابط مشخص باشد.</li>
+    <li>هر اتصال باید دامنه پیکربندی خود را داشته باشد.</li>
+    <li>هر انتساب نقش باید موجودیت + بافت + نقش را مشخص کند.</li>
+    <li>هر مرجع باید دامنه و منشأ داشته باشد.</li>
+    <li>هر فرضیه باید قابل ارزیابی با شاهد یا آزمون باشد.</li>
+    <li>هر تصمیم مهم باید قابل ردیابی به شواهد و استدلال باشد.</li>
+    <li>تعمیر نباید به‌جای راستی‌آزمایی تلقی شود.</li>
+    <li>کد خطا نباید به‌عنوان علت ریشه‌ای ذخیره شود.</li>
+    <li>گونه نباید فقط در نام مورد یا متن آزاد پنهان شود.</li>
+    <li>وضعیت موجود و انتظار باید در داده و معنا قابل تفکیک باشند.</li>
+  </ul>
+
+  <div class="expand">
+    <h4>چرا این دوازده قاعده، حداقل الزام است؟</h4>
+    <p>
+      هر یک از این دوازده قاعده، در حقیقت یک «دروازه
+      کیفیت» برای داده است. اگر یکی از آن‌ها نباشد،
+      سامانه در بلندمدت دچار گسست می‌شود.
+    </p>
+    <p>
+      برای مثال، قاعده اول («هر مشاهده باید بافت و
+      زمان داشته باشد») در نگاه اول ساده به‌نظر
+      می‌رسد. اما اگر رعایت نشود، بعد از چند
+      ماه، داده‌ای جمع می‌شود که نمی‌توان
+      تشخیص داد کدام مشاهده در چه شرایطی
+      ثبت شده. این داده، برای استدلال
+      بی‌فایده است.
+    </p>
+    <p>
+      قاعده هفتم («هر فرضیه باید قابل ارزیابی با
+      شاهد یا آزمون باشد») از فرضیه‌های مبهم
+      جلوگیری می‌کند. اگر فرضیه‌ای نتواند با
+      هیچ آزمونی رد یا تأیید شود، در واقع
+      یک گزاره فلسفی است، نه یک فرضیه
+      تشخیصی.
+    </p>
+    <p>
+      قاعده دوازدهم («وضعیت موجود و انتظار باید
+      قابل تفکیک باشند») ریشه در اصل دوم
+      دارد. اگر این تفکیک نباشد، همه
+      استدلال‌های تشخیصی بی‌پایه می‌شوند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۳۷</span>
+  </footer>
+</section>
+
+<!-- ==================== الگوهای خرابی ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۱ — الگوهای خرابی</span>
+  </header>
+
+  <span class="chapter-tag">۱۱.۴</span>
+  <h2>الگوهای خرابی که مدل باید بتواند نمایش دهد</h2>
+
+  <table>
+    <thead><tr><th style="width:22%;">الگو</th><th>نمای دامنه‌ای</th><th>مثال تشخیصی</th></tr></thead>
+    <tbody>
+      <tr><td>مدار باز</td><td>شکست مسیر/اتصال</td><td>قطع سیم بین رله و بار</td></tr>
+      <tr><td>مقاومت بالا</td><td>افت اتصال/مسیر</td><td>افت ولتاژ زیاد روی اتصال زمین زیر بار</td></tr>
+      <tr><td>اتصال کوتاه</td><td>اتصال ناخواسته بین گره‌ها</td><td>خط سیگنال به زمین یا مثبت</td></tr>
+      <tr><td>نشتی / انگلی</td><td>مسیر جریان ناخواسته</td><td>مصرف جریان در حالت خواب</td></tr>
+      <tr><td>رانش / اشباع</td><td>انحراف سیگنال/اندازه‌گیری</td><td>سنسور با خروجی خارج از رفتار مورد انتظار</td></tr>
+      <tr><td>متناوب</td><td>خرابی مسیر/سیگنال وابسته به شرط</td><td>قطع در اثر لرزش یا دما</td></tr>
+      <tr><td>زمان‌بندی</td><td>انحراف رفتار زمانی</td><td>تاخیر، PWM یا لبه‌های نامناسب</td></tr>
+      <tr><td>پیکربندی</td><td>عدم تطابق نرم‌افزار/سخت‌افزار/بافت</td><td>ECU یا کالیبراسیون ناسازگار</td></tr>
+    </tbody>
+  </table>
+
+  <div class="expand">
+    <h4>چرا الگوهای خرابی را جدا نگه می‌داریم؟</h4>
+    <p>
+      یک الگوی خرابی، مانند «مقاومت بالا»، می‌تواند
+      در قطعات، مسیرها و شرایط مختلف ظاهر شود.
+      اگر آن را با یک قطعه خاص یکی بگیریم، دامنه
+      دانش را محدود کرده‌ایم.
+    </p>
+    <p>
+      برای نمونه، «مقاومت بالا» می‌تواند در این
+      نقاط رخ دهد:
+    </p>
+    <ul>
+      <li>در اتصال نقطه زمین G3.</li>
+      <li>در پایه‌های رله R5.</li>
+      <li>در سیم تغذیه ECU.</li>
+      <li>در اتصال باتری به فیوز.</li>
+    </ul>
+    <p>
+      در همه این موارد، الگوی خرابی یکی است: افزایش
+      مقاومت در یک نقطه از مدار. اما محل و
+      علت متفاوت است. اگر سامانه الگوهای
+      خرابی را جدا نگه دارد، می‌تواند در
+      تحلیل، اول الگو را تشخیص دهد و سپس
+      محل را پیدا کند. این رویکرد، سریع‌تر
+      و دقیق‌تر است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۳۸</span>
+  </footer>
+</section>
+
+<!-- ==================== سناریوهای آزمون ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۱ — سناریوها</span>
+  </header>
+
+  <span class="chapter-tag">۱۱.۵</span>
+  <h2>آزمون مدل با سناریوهای واقعی</h2>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>سناریو A — استارت می‌خورد، روشن نمی‌شود</p>
+    <p style="margin:0;">
+      شکایت فقط یک نشانه است. مدل باید بتواند وضعیت،
+      شرایط استارت، مسیرهای توان و زمین، سیگنال‌های
+      لازم، مشاهده‌ها، فرضیه‌های متعدد و آزمون‌های
+      تفکیک‌کننده را بدون پرش مستقیم به «ECU خراب
+      است» نمایش دهد.
+      <br><br>
+      <strong>فرضیه‌های ممکن:</strong>
+      <br>• باتری ضعیف
+      <br>• استارت معیوب
+      <br>• افت ولتاژ روی مسیر زمین
+      <br>• سنسور دما معیوب
+      <br>• کمبود فشار سوخت
+      <br><br>
+      <strong>آزمون‌های تفکیک‌کننده:</strong>
+      <br>• اندازه‌گیری ولتاژ باتری در حالت استارت
+      <br>• اندازه‌گیری افت ولتاژ روی مسیر بازگشت
+      <br>• بررسی فرمان ECU به رله‌ها
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>سناریو B — فن گاهی کار نمی‌کند</p>
+    <p style="margin:0;">
+      متناوب بودن بخشی از بافت و شرط است. باید بتوان
+      اختلاف بین وضعیت موجود و انتظار، وضعیت فرمان
+      ECU، نقش سوئیچینگ رله، مسیر توان، بار و
+      شرایط دما را جداگانه مدل کرد.
+      <br><br>
+      <strong>فرضیه‌های ممکن:</strong>
+      <br>• افزایش مقاومت در اتصال رله
+      <br>• خرابی متناوب فن
+      <br>• شرایط دما مؤثر بر رله
+      <br>• افت ولتاژ در روزهای گرم
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>سناریو C — چند ECU روی شبکه ارتباط ندارند</p>
+    <p style="margin:0;">
+      این وضعیت نباید صرفاً به چند «قطعه خراب» شکسته
+      شود. مسیر شبکه، گره‌ها، رابط‌ها، شرایط باس،
+      تغذیه و زمین و الگوی انتشار اثر باید در
+      مدل قابل نمایش باشد.
+      <br><br>
+      <strong>سؤال‌های کلیدی:</strong>
+      <br>• آیا همه گره‌ها ارتباط ندارند یا فقط برخی؟
+      <br>• آیا ولتاژ باس در محدوده است؟
+      <br>• آیا مقاومت پایانه‌بندی صحیح است؟
+      <br>• آیا یکی از گره‌ها باس را اشغال کرده؟
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>سناریو D — خطای سنسور و تغذیه ۵V مرجع</p>
+    <p style="margin:0;">
+      وجود یک کد خطای سنسور نباید مانع بررسی نقش
+      مشترک تغذیه ۵V مرجع، مسیر مشترک، زمین مشترک
+      و اثر چند مصرف‌کننده بر یک مسیر شود.
+      <br><br>
+      <strong>سؤال‌های کلیدی:</strong>
+      <br>• آیا سنسورهای دیگر روی همان تغذیه ۵V خطا دارند؟
+      <br>• آیا ولتاژ ۵V مرجع در محدوده است؟
+      <br>• آیا فقط یک سنسور خطا دارد یا همه؟
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۳۹</span>
+  </footer>
+</section>
+
+<!-- ==================== ادامه سناریوها ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۱ — سناریوها (ادامه)</span>
+  </header>
+
+  <div class="expand">
+    <h4>چرا این سناریوها برای آزمون مدل انتخاب شده‌اند؟</h4>
+    <p>
+      این چهار سناریو، تنوع خوبی از مسائل تشخیصی خودرو
+      را پوشش می‌دهند:
+    </p>
+    <ul>
+      <li><strong>سناریو A (بد روشن شدن):</strong> ترکیبی از
+      مسیر توان، مسیر فرمان و شرایط محیطی.</li>
+      <li><strong>سناریو B (فن متناوب):</strong> تمرکز بر
+      خرابی وابسته به شرط و متناوب.</li>
+      <li><strong>سناریو C (شبکه ارتباطی):</strong> تمرکز بر
+      مسیر شبکه، گره‌ها و انتشار اثر.</li>
+      <li><strong>سناریو D (سنسور و ۵V):</strong> تمرکز بر
+      نقش مشترک و اثر جانبی چند مصرف‌کننده.</li>
+    </ul>
+    <p>
+      اگر مدل بتواند این چهار سناریو را پوشش دهد،
+      در عمل می‌تواند اکثر مسائل تشخیصی خودرو را
+      هم پوشش دهد. اما اگر مدل در یکی از این
+      سناریوها شکست بخورد، نشانه‌ای است که یکی
+      از مفاهیم اصلی (مثلاً مسیر، نقش مشترک یا
+      خرابی وابسته به شرط) به‌درستی در مدل
+      جای نگرفته است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۴۰</span>
+  </footer>
+</section>
+
+<!-- ==================== ضدالگوها ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۱ — ضدالگوها</span>
+  </header>
+
+  <span class="chapter-tag">۱۱.۶</span>
+  <h2>خطاهای معماری که این مدل باید مانع آن‌ها شود</h2>
+
+  <table>
+    <thead><tr><th style="width:24%;">ضدالگو</th><th>مشکل</th><th>جایگزین</th></tr></thead>
+    <tbody>
+      <tr><td>نشانه ← قطعه</td><td>پرش علّی و تعویض قطعه</td><td>نشانه ← مشاهده ← فرضیه ← آزمون</td></tr>
+      <tr><td>کد خطا = علت</td><td>کد خطا با علت یکی می‌شود</td><td>کد خطا به‌عنوان گزارش تشخیصی با بافت</td></tr>
+      <tr><td>نقش = قطعه</td><td>دانش قابل استفاده مجدد از بین می‌رود</td><td>موجودیت، نقش را ایفا می‌کند</td></tr>
+      <tr><td>پایه = نقطه تعامل</td><td>معنای فیزیکی و معنایی قاطی می‌شود</td><td>پایه به نقطه تعامل نگاشت شود</td></tr>
+      <tr><td>اندازه‌گیری = مشاهده</td><td>بافت و روش اندازه‌گیری گم می‌شود</td><td>اندازه‌گیری داخل مشاهده</td></tr>
+      <tr><td>مرجع = وضعیت موجود</td><td>انحراف واقعی حذف می‌شود</td><td>دو مفهوم و دو منشأ جدا</td></tr>
+      <tr><td>امتیاز اعتماد = یک عدد</td><td>ابعاد مختلف کیفیت پنهان می‌شوند</td><td>منشأ + ابعاد کیفیت جداگانه</td></tr>
+      <tr><td>گونه در متن آزاد</td><td>تعمیم ناخواسته</td><td>گونه به‌عنوان موجودیت قابل پرس‌وجو</td></tr>
+      <tr><td>مورد = موجودیت</td><td>اپیزود تشخیص با شیء واقعی قاطی می‌شود</td><td>اپیزود جدا از موجودیت خودرو</td></tr>
+    </tbody>
+  </table>
+
+  <div class="expand">
+    <h4>چرا این ضدالگوها خطرناک‌اند؟</h4>
+    <p>
+      هر یک از این ضدالگوها، در نگاه اول یک راه‌حل
+      ساده به‌نظر می‌رسد. مثلاً «نشانه ← قطعه» بسیار
+      طبیعی است: کاربر می‌گوید فن کار نمی‌کند،
+      تعمیرکار به دنبال قطعه معیوب می‌رود.
+    </p>
+    <p>
+      اما همین ضدالگو در بلندمدت، چند مشکل ایجاد
+      می‌کند:
+    </p>
+    <ul>
+      <li>دانش قابل استفاده مجدد تولید نمی‌شود؛ هر
+      مورد از صفر شروع می‌شود.</li>
+      <li>نمی‌توان بین تجربه‌های مختلف الگوی
+      مشترک پیدا کرد.</li>
+      <li>سیستم نمی‌تواند پیشنهاد هدفمند بدهد؛
+      فقط می‌تواند بگوید «قطعات را یکی‌یکی
+      امتحان کن».</li>
+      <li>در مقیاس بزرگ، تعداد قواعد انفجاری
+      می‌شود؛ چون هر نشانه با هر قطعه یک
+      قاعده جداگانه می‌خواهد.</li>
+    </ul>
+    <p>
+      ضدالگوهای این جدول، دقیقاً همان چیزهایی
+      هستند که مدل هستی‌شناسی می‌خواهد از
+      آن‌ها جلوگیری کند. یک مدل خوب، نه
+      فقط می‌گوید «چه چیزی درست است»،
+      بلکه می‌گوید «چه چیزی غلط است».
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۴۱</span>
+  </footer>
+</section>
+
+<!-- ==================== مرزها ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۱ — مرزها</span>
+  </header>
+
+  <span class="chapter-tag">۱۱.۷</span>
+  <h2>مرزهای این مدل</h2>
+
+  <div class="original">
+    <p>این مدل برای آن است که «معنا» ثابت بماند؛ جزئیات
+    زیر در لایه‌های تخصصی‌تر قابل تعریف‌اند.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h4>خارج از این لایه</h4>
+      <ul>
+        <li>فرمول دقیق موتور استدلال</li>
+        <li>الگوریتم‌های احتمالاتی (بیزی، دِمپستر-شفر، فازی)</li>
+        <li>ساختار فیزیکی پایگاه داده</li>
+        <li>انتخاب نوع پایگاه داده</li>
+        <li>رابط کاربری و رابط برنامه‌نویسی</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>قابل اتصال از لایه‌های بعدی</h4>
+      <ul>
+        <li>مدل شواهد و حاکمیت دانش</li>
+        <li>مدل تشخیص و رتبه‌بندی فرضیه‌ها</li>
+        <li>مدل انتخاب آزمون</li>
+        <li>مدل یادگیری و نسخه‌بندی</li>
+        <li>مشخصات نرم‌افزار</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="expand">
+    <h4>چرا مرزگذاری لازم است؟</h4>
+    <p>
+      اگر این مدل بخواهد درباره الگوریتم احتمالاتی هم
+      تصمیم بگیرد، به سرعت از حوزه خود خارج می‌شود.
+      یک مدل هستی‌شناسی، درباره معنای واژه‌ها و
+      روابط آن‌ها بحث می‌کند؛ نه درباره این‌که
+      با چه فرمولی احتمال را محاسبه کنیم.
+    </p>
+    <p>
+      تفکیک این مرز، دو مزیت دارد:
+    </p>
+    <ul>
+      <li>مدل هستی‌شناسی می‌تواند پایدار بماند، حتی
+      اگر الگوریتم تغییر کند.</li>
+      <li>تصمیم‌های فنی (مثل انتخاب پایگاه داده یا
+      الگوریتم) در لایه خودشان بررسی می‌شوند،
+      بدون آن‌که به‌اشتباه به یک حقیقت
+      هستی‌شناختی تبدیل شوند.</li>
+    </ul>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۴۲</span>
+  </footer>
+</section>
+
+<!-- ==================== قواعد گسترش ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۱ — گسترش</span>
+  </header>
+
+  <span class="chapter-tag">۱۱.۸</span>
+  <h2>قواعد گسترش مدل</h2>
+
+  <ol>
+    <li>هر مفهوم جدید باید یک پرسش تشخیصی یا مدل‌سازی را که مفاهیم موجود پاسخ نمی‌دهند، روشن کند.</li>
+    <li>اگر مفهوم جدید فقط یک نام متفاوت برای مفهوم موجود است، ساخته نشود؛ ابتدا تفاوت معنایی اثبات شود.</li>
+    <li>اگر یک مفهوم هم‌زمان چند نقش دارد، به‌جای ساخت موجودیت‌های مصنوعی از انتساب نقش استفاده شود.</li>
+    <li>اگر تفاوت فقط در گونه، پیکربندی یا بافت است، موجودیت جدید فقط به دلیل تفاوت شرایط ساخته نشود.</li>
+    <li>اگر یک مفهوم به‌طور مکرر در چند مورد برای تصمیم‌های متفاوت استفاده می‌شود، می‌تواند نامزد ارتقا به مفهوم دامنه‌ای مستقل باشد.</li>
+    <li>هر گسترش باید با یک یا چند سناریوی واقعی قابل آزمون باشد.</li>
+  </ol>
+
+  <div class="expand">
+    <h4>چرا این قواعد اهمیت دارند؟</h4>
+    <p>
+      بدون این قواعد، مدل به‌سرعت رشد می‌کند و پر از
+      مفاهیم تکراری یا ناسازگار می‌شود. برای مثال،
+      ممکن است کسی مفهوم جدیدی به نام «رله-فن» بسازد،
+      به‌بهانه این‌که رله‌ای که فن را کنترل می‌کند
+      با رله‌های دیگر متفاوت است. اما اگر تفاوت
+      فقط در نقش باشد، باید از انتساب نقش استفاده
+      کرد، نه از مفهوم جدید.
+    </p>
+    <p>
+      قاعده پنجم، یک نکته ظریف دارد: اگر مفهومی به‌طور
+      مکرر در چند مورد استفاده می‌شود، ممکن است
+      نشانه این باشد که آن مفهوم باید ارتقا یابد.
+      مثلاً اگر «افت ولتاژ زیر بار» در ده‌ها مورد
+      به‌عنوان یک الگوی تکرارشونده ظاهر شد، ممکن
+      است به یک مفهوم دامنه‌ای مستقل تبدیل شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۴۳</span>
+  </footer>
+</section>
+
+<!-- ==================== معیار پذیرش ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۱ — معیار پذیرش</span>
+  </header>
+
+  <span class="chapter-tag">۱۱.۹</span>
+  <h2>معیار پذیرش مدل</h2>
+
+  <div class="original">
+    <p>مدل زمانی قابل استفاده است که بتواند برای یک
+    خودرو و یک شرایط مشخص، بدون ابهام به پرسش‌های
+    زیر پاسخ دهد:</p>
+  </div>
+
+  <ol>
+    <li>دقیقاً درباره کدام خودرو و کدام گونه صحبت می‌کنیم؟</li>
+    <li>پیکربندی واقعی چیست؟</li>
+    <li>چه موجودیت‌هایی وجود دارند و مرز هرکدام کجاست؟</li>
+    <li>هر موجودیت از چه نقاط تعامل و رابط‌هایی تعامل می‌کند؟</li>
+    <li>اتصال‌ها و مسیر تحقق رفتار کدام‌اند؟</li>
+    <li>هر موجودیت در این بافت چه نقش‌هایی دارد؟</li>
+    <li>چه Capability و Function مورد انتظار است؟</li>
+    <li>وضعیت و شرط چه هستند؟</li>
+    <li>رفتار مورد انتظار از کجا آمده و دامنه اعتبارش چیست؟</li>
+    <li>چه چیزی واقعاً مشاهده و اندازه‌گیری شده است؟</li>
+    <li>کدام بخش مشاهده است و کدام بخش تفسیر؟</li>
+    <li>چه الگوهای خرابی و فرضیه‌هایی هنوز باز هستند؟</li>
+    <li>هر آزمون چه چیزی را تفکیک می‌کند؟</li>
+    <li>هر تصمیم به کدام شاهد متکی است؟</li>
+    <li>پس از تعمیر چگونه راستی‌آزمایی انجام می‌شود؟</li>
+  </ol>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>معیار نهایی</p>
+    <p style="margin:0;">
+      اگر دو متخصص مستقل بتوانند یک مدار یا سناریوی
+      واقعی را با همین واژگان مدل کنند و اختلاف
+      آن‌ها ناشی از واقعیت خودرو باشد، نه ابهام
+      تعریف مفاهیم، مدل به بلوغ قابل استفاده
+      نزدیک شده است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>مدل دامنه و هستی‌شناسی</span>
+    <span class="page-num">۴۴</span>
+  </footer>
+</section>
+
+<!-- ==================== خلاصه فشرده ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">مدل دامنه و هستی‌شناسی — نسخه ۲.۰</span>
+    <span class="rh-right">خلاصه فشرده مدل</span>
+  </header>
+
+  <span class="chapter-tag">خلاصه</span>
+  <h2>خلاصه فشرده مدل</h2>
+
+  <div class="diagram">VEHICLE
+  ↓
+VARIANT → CONFIGURATION
+  ↓
+ENTITY ↔ PORT/INTERFACE ↔ CONNECTION → PATH
+  ↓                         ↓
+ROLE ASSIGNMENT          TOPOLOGY
+  ↓
+CAPABILITY → FUNCTION → EXPECTED BEHAVIOR
+  ↓
+STATE + CONDITION + CONTEXT
+  ↓
+OBSERVATION → MEASUREMENT / DATA
+  ↓
+EVIDENCE + PROVENANCE
+  ↓
+HYPOTHESES
+  ↓
+TEST / NEXT ACTION
+  ↓
+DECISION
+  ↓
+REPAIR
+  ↓
+VERIFICATION
+  ↓
+LEARNING INPUT</div>
+
+  <div class="note">
+    <p>
+      هسته این مدل یک فهرست قطعات نیست؛ یک
+      <strong>شبکه معنایی</strong> از «چیزها، روابط،
+      نقش‌ها، رفتار مورد انتظار، شرایط، مشاهده و
+      شواهد» است که می‌تواند روی واقعیت‌های متفاوت
+      خودرو سوار شود، بدون این‌که تفاوت گونه یا
+      بافت را پنهان کند.
+    </p>
+  </div>
+
+  <hr class="ornament">
+
+  <div class="box navy" style="text-align:center;">
+    <p style="margin:0;color:#fff;font-weight:700;letter-spacing:1px;">
+      مدل دامنه و هستی‌شناسی سامانه تشخیص برق و الکترونیک خودرو
+    </p>
+    <p style="margin:2mm 0 0 0;color:#e6c65c;font-size:9pt;letter-spacing:1px;">
+      نسخه ۲.۰ • ساختار: متن بخش + توضیح + مثال خودرویی + نکته + بسط
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>پایان سند</span>
+    <span class="page-num">۴۵</span>
+  </footer>
+</section>
+
+</body>
+</html>

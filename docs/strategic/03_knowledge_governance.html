@@ -1,0 +1,6953 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>سند حاکمیت دانش و شواهد — نسخه ۲.۰</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<style>
+:root{
+  --navy:#16283d; --navy-2:#203b57; --gold:#b8901f; --gold-soft:#f4e9c8;
+  --ink:#1c222b; --ink-soft:#3a4553; --muted:#6b7684;
+  --line:#d9e0e7; --line-soft:#eceff3;
+  --bg:#ffffff; --bg-soft:#f7f9fb; --bg-warm:#fbf7ec;
+  --success:#176b4a; --success-soft:#f0faf5;
+  --danger:#aa3027; --danger-soft:#fff5f4;
+  --blue:#2b5b8c; --blue-soft:#eef5fc;
+  --purple:#5a3aa6; --purple-soft:#f7f4fd;
+  --radius:8px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:"Vazirmatn","Vazir","IRANSans","Segoe UI",Tahoma,sans-serif;
+  background:#eef1f4;color:var(--ink);
+  font-size:10.5pt;line-height:1.9;
+  direction:rtl;text-align:right;-webkit-font-smoothing:antialiased;
+}
+.sheet{
+  background:var(--bg);width:210mm;min-height:297mm;
+  margin:10mm auto;padding:20mm 20mm 22mm 20mm;
+  position:relative;box-shadow:0 3px 20px #0002;overflow:hidden;
+}
+.running-head{
+  position:absolute;top:10mm;right:20mm;left:20mm;
+  font-size:8.5pt;color:var(--muted);
+  display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:3mm;border-bottom:.5pt solid var(--line-soft);
+}
+.running-head .rh-left{color:var(--navy);font-weight:600;}
+.running-foot{
+  position:absolute;bottom:10mm;right:20mm;left:20mm;
+  font-size:8.5pt;color:var(--muted);
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:3mm;border-top:.5pt solid var(--line-soft);
+}
+.page-num{font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;}
+
+.cover{
+  background:linear-gradient(145deg,#102033 0%,#16283d 55%,#27425d 100%);
+  color:#fff;display:flex;flex-direction:column;justify-content:center;
+  padding:28mm 22mm;position:relative;overflow:hidden;
+}
+.cover::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:6mm;
+  background:linear-gradient(90deg,var(--gold) 0%,#e2bd4d 50%,var(--gold) 100%);
+}
+.cover::after{
+  content:"";position:absolute;bottom:0;left:0;right:0;height:2mm;background:var(--gold);
+}
+.cover .badge{
+  display:inline-block;font-size:9pt;letter-spacing:3px;color:#e2bd4d;
+  border:1pt solid var(--gold);padding:2mm 5mm;border-radius:2px;
+  margin-bottom:14mm;align-self:flex-start;font-weight:800;
+}
+.cover h1{
+  font-size:32pt;line-height:1.25;font-weight:800;
+  margin:0 0 6mm 0;color:#fff;letter-spacing:-.5px;
+}
+.cover h1 .accent{color:#e2bd4d;}
+.cover .subtitle{
+  font-size:12pt;line-height:1.9;color:#c7cfda;
+  max-width:150mm;margin:0 0 18mm 0;
+}
+.cover .meta{
+  border-top:1pt solid rgba(255,255,255,.18);padding-top:6mm;
+  display:grid;grid-template-columns:1fr 1fr;gap:4mm 8mm;font-size:10pt;
+}
+.cover .meta dt{color:#e2bd4d;font-size:8.5pt;letter-spacing:1px;margin-bottom:1mm;font-weight:800;}
+.cover .meta dd{margin:0;color:#e6ebf2;font-weight:500;}
+
+.toc-part{
+  font-weight:800;color:var(--gold);font-size:10pt;letter-spacing:1px;
+  margin:5mm 0 2mm 0;padding-bottom:1mm;border-bottom:1pt solid var(--gold-soft);
+}
+.toc-list{list-style:none;padding:0;margin:0;}
+.toc-list li{
+  display:flex;align-items:baseline;padding:1.7mm 0;
+  font-size:9.5pt;border-bottom:.5pt dotted var(--line);
+}
+.toc-list li .t{color:var(--ink);}
+.toc-list li .d{flex:1;margin:0 3mm;border-bottom:1px dotted #d8dde3;transform:translateY(-2px);}
+.toc-list li .p{color:var(--muted);font-size:8.5pt;font-variant-numeric:tabular-nums;font-weight:700;}
+
+h1,h2,h3,h4{color:var(--navy);font-weight:800;line-height:1.45;page-break-after:avoid;break-after:avoid;}
+h2{
+  font-size:16pt;margin:0 0 5mm 0;padding-bottom:3mm;
+  border-bottom:1.5pt solid var(--navy);position:relative;
+}
+h2::after{
+  content:"";position:absolute;bottom:-1.5pt;right:0;
+  width:22mm;height:1.5pt;background:var(--gold);
+}
+h3{font-size:12pt;margin:6mm 0 3mm 0;color:var(--navy-2);}
+h4{font-size:10.5pt;margin:5mm 0 2mm 0;color:var(--ink);}
+p{margin:0 0 3mm 0;text-align:justify;}
+
+.section-tag{
+  display:inline-block;font-size:9pt;letter-spacing:2px;color:var(--gold);
+  font-weight:700;border:1pt solid var(--gold);
+  padding:1.2mm 3.5mm;border-radius:2px;margin-bottom:4mm;
+}
+
+.box{
+  border:1pt solid var(--line);border-right:3pt solid var(--navy);
+  background:var(--bg-soft);border-radius:var(--radius);
+  padding:4.5mm 5.5mm;margin:4mm 0;
+  page-break-inside:avoid;break-inside:avoid;
+}
+.box .box-title{
+  font-weight:900;color:var(--navy);font-size:10pt;
+  margin:0 0 2mm 0;letter-spacing:.3px;
+  display:flex;align-items:center;gap:2mm;
+}
+.box .box-title .icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:5mm;height:5mm;border-radius:50%;
+  background:var(--navy);color:#fff;font-size:8pt;font-weight:900;
+}
+.box p:last-child{margin-bottom:0;}
+.box.gold{background:var(--bg-warm);border-color:#ead9a3;border-right-color:var(--gold);}
+.box.gold .box-title{color:var(--gold);}
+.box.gold .box-title .icon{background:var(--gold);}
+.box.green{background:var(--success-soft);border-color:#c7e6d6;border-right-color:var(--success);}
+.box.green .box-title{color:var(--success);}
+.box.green .box-title .icon{background:var(--success);}
+.box.red{background:var(--danger-soft);border-color:#efd0cd;border-right-color:var(--danger);}
+.box.red .box-title{color:var(--danger);}
+.box.red .box-title .icon{background:var(--danger);}
+.box.blue{background:var(--blue-soft);border-color:#cfe0f3;border-right-color:var(--blue);}
+.box.blue .box-title{color:var(--blue);}
+.box.blue .box-title .icon{background:var(--blue);}
+.box.purple{background:var(--purple-soft);border-color:#ddd3f0;border-right-color:var(--purple);}
+.box.purple .box-title{color:var(--purple);}
+.box.purple .box-title .icon{background:var(--purple);}
+.box.navy{
+  background:linear-gradient(135deg,#16283d 0%,#203b57 100%);
+  color:#e6ebf2;border-color:#102033;border-right-color:var(--gold);
+}
+.box.navy .box-title,.box.navy strong{color:#fff;}
+.box.navy .box-title .icon{background:var(--gold);}
+.box.navy code{background:rgba(255,255,255,.08);color:var(--gold-soft);}
+
+.axiom{
+  background:var(--navy);color:#fff;border-radius:var(--radius);
+  padding:5.5mm 6.5mm;margin:5mm 0;
+  border-right:5pt solid var(--gold);page-break-inside:avoid;
+}
+.axiom .label{
+  display:block;color:#e2bd4d;font-size:8.5pt;
+  letter-spacing:2px;margin-bottom:2mm;font-weight:800;
+}
+.axiom p{color:#e6ebf2;margin:0;font-size:10.5pt;line-height:1.9;}
+
+.chain{
+  display:flex;flex-wrap:wrap;align-items:center;gap:2mm 0;
+  margin:4mm 0;font-size:9.5pt;page-break-inside:avoid;
+}
+.chain .node{
+  background:#fff;border:1pt solid var(--line);border-radius:6px;
+  padding:1.8mm 3.5mm;color:var(--navy);font-weight:600;white-space:nowrap;
+}
+.chain .arrow{color:var(--gold);font-weight:800;padding:0 2mm;font-size:11pt;}
+
+table{
+  width:100%;border-collapse:collapse;margin:4.5mm 0;
+  font-size:9.5pt;page-break-inside:avoid;
+}
+thead th{
+  background:var(--navy);color:#fff;font-weight:700;
+  padding:2.8mm 3.5mm;text-align:right;
+  border:1pt solid var(--navy);font-size:9.5pt;
+}
+tbody td{
+  padding:2.4mm 3.5mm;border:1pt solid var(--line);
+  vertical-align:top;color:var(--ink-soft);line-height:1.7;
+}
+tbody tr:nth-child(even){background:var(--bg-soft);}
+tbody td:first-child{color:var(--navy);font-weight:700;}
+
+code{
+  font-family:"Vazirmatn Code","Consolas","Courier New",monospace;
+  background:var(--bg-soft);border:1pt solid var(--line-soft);
+  border-radius:3px;padding:.3mm 1.8mm;font-size:9pt;color:var(--navy);
+  direction:ltr;display:inline-block;
+}
+.diagram{
+  direction:ltr;text-align:left;background:#111c29;color:#eaf0f6;
+  padding:4.5mm 5.5mm;white-space:pre-wrap;
+  border-right:4pt solid var(--gold);border-radius:8px;
+  margin:4.5mm 0;font-family:"Vazirmatn Code","Consolas",monospace;
+  font-size:9pt;line-height:1.75;page-break-inside:avoid;
+}
+
+ul,ol{padding-right:6mm;margin:0 0 3.5mm 0;}
+li{margin-bottom:1.5mm;}
+ul li::marker{color:var(--gold);}
+ol li::marker{color:var(--gold);font-weight:700;}
+ul.checks{list-style:none;padding-right:0;}
+ul.checks li{position:relative;padding-right:7mm;}
+ul.checks li::before{content:"✓";position:absolute;right:0;top:0;color:var(--success);font-weight:800;}
+ul.cross{list-style:none;padding-right:0;}
+ul.cross li{position:relative;padding-right:7mm;}
+ul.cross li::before{content:"✕";position:absolute;right:0;top:0;color:var(--danger);font-weight:800;}
+
+.small{font-size:9pt;color:var(--muted);}
+.lead{font-size:10.5pt;color:var(--ink-soft);line-height:1.95;}
+hr.ornament{border:none;text-align:center;margin:6mm 0;height:auto;}
+hr.ornament::before{content:"❖ ❖ ❖";color:var(--gold);letter-spacing:6px;font-size:10pt;}
+.page-break{page-break-before:always;break-before:page;}
+.avoid-break{page-break-inside:avoid;break-inside:avoid;}
+
+@media screen and (max-width:840px){
+  body{background:#fff;}
+  .sheet{width:100%;min-height:auto;margin:0;padding:12mm 6mm 14mm 6mm;box-shadow:none;border-radius:0;}
+  .running-head,.running-foot{position:static;margin:0 0 5mm 0;}
+  .running-foot{margin:6mm 0 0 0;}
+  .cover{padding:14mm 8mm;}
+  .cover h1{font-size:22pt;}
+  .cover .meta{grid-template-columns:1fr;}
+  table{display:block;overflow-x:auto;font-size:9pt;}
+  th,td{min-width:120px;}
+  .diagram{font-size:8pt;padding:3mm;}
+}
+@page{size:A4;margin:16mm 16mm 18mm 16mm;}
+@media print{
+  html,body{background:#fff;font-size:10pt;line-height:1.8;}
+  .sheet{
+    width:auto;min-height:auto;margin:0;padding:0;
+    box-shadow:none;page-break-after:always;break-after:page;overflow:visible;
+  }
+  .sheet:last-child{page-break-after:auto;}
+  .running-head,.running-foot{display:none;}
+  .cover{padding:20mm 15mm;min-height:260mm;display:flex;page-break-after:always;}
+  .page-break{page-break-before:always;}
+  h2,h3,h4{page-break-after:avoid;}
+  .box,.axiom,table,.chain,.diagram,.avoid-break{page-break-inside:avoid;}
+  a{color:inherit;text-decoration:none;}
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+  .no-print{display:none !important;}
+}
+.print-hint{
+  position:fixed;bottom:16px;left:16px;background:var(--navy);color:#fff;
+  padding:9px 16px;border-radius:6px;font-size:10pt;
+  box-shadow:0 4px 14px rgba(0,0,0,.2);z-index:9999;cursor:pointer;
+  border:none;font-family:inherit;font-weight:600;
+}
+.print-hint:hover{background:var(--navy-2);}
+@media print{.print-hint{display:none;}}
+@media screen and (max-width:840px){.print-hint{bottom:10px;left:10px;padding:7px 12px;font-size:9pt;}}
+</style>
+</head>
+<body>
+
+<button class="print-hint no-print" onclick="window.print()">🖨️ چاپ / ذخیره PDF</button>
+
+<!-- ==================== جلد ==================== -->
+<section class="sheet cover">
+  <span class="badge">KNOWLEDGE GOVERNANCE • EVIDENCE • v2.0</span>
+  <h1>سند <span class="accent">حاکمیت دانش</span><br>و شواهد</h1>
+  <p class="subtitle">
+    قرارداد مستقل برای ورود، ارزیابی، دامنه‌بندی، نسخه‌بندی، تعارض‌زدایی،
+    انتشار و یادگیری از دانش تشخیصی در برق و الکترونیک خودرو. هر بخش با
+    توضیح عمیق، مثال خودرویی و پیوند معنایی همراه شده است.
+  </p>
+  <dl class="meta">
+    <div><dt>نسخه</dt><dd>۲.۰ — بسط‌یافته و پیوسته</dd></div>
+    <div><dt>مبنا</dt><dd>سند حاکمیت دانش و شواهد نسخه ۱.۰</dd></div>
+    <div><dt>دامنه</dt><dd>برق، الکترونیک، کنترل و شبکه خودرو</dd></div>
+    <div><dt>نوع سند</dt><dd>قرارداد حاکمیتی مستقل از پیاده‌سازی</dd></div>
+  </dl>
+</section>
+
+<!-- ==================== شناسنامه و فهرست ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">شناسنامه و فهرست</span>
+  </header>
+
+  <h2>این سند چیست</h2>
+  <p>
+    سامانه‌های تشخیصی، اگر قرار باشد سال‌ها رشد کنند و پاسخ‌هایشان
+    قابل اتکا بماند، به یک لایه حاکمیتی نیاز دارند. این لایه تعیین
+    می‌کند چه چیزی می‌تواند به‌عنوان «دانش فعال» ثبت شود،
+    چگونه پشتوانه بگیرد، در چه دامنه‌ای معتبر باشد و چگونه
+    تغییر کند.
+  </p>
+
+  <p>
+    سند حاکمیت دانش و شواهد، همان لایه است. این سند مستقل از
+    پیاده‌سازی است؛ درباره SQL، Graph DB، API یا UI تصمیم
+    نمی‌گیرد. تصمیم‌های آن در سطح «چه چیزی، چرا، در چه
+    دامنه‌ای و با چه پشتوانه‌ای قابل ثبت است» گرفته
+    می‌شود.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>اصل مرکزی سند</p>
+    <p style="margin:0;">
+      هیچ داده، تجربه، متن، خروجی ماشین یا Case، صرفاً به دلیل
+      وجود در سامانه، حقیقت یا دانش فعال محسوب نمی‌شود. برای
+      فعال شدن، باید از یک چرخه حاکمیتی مشخص عبور کند:
+      ارزیابی، دامنه‌بندی، نسخه‌بندی و انتشار.
+    </p>
+  </div>
+
+  <h3>مرزهای سند</h3>
+  <table>
+    <thead>
+      <tr><th style="width:50%;">درون حاکمیت</th><th>بیرون از حاکمیت</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Claim، Source، Evidence، Provenance، Scope، Reference، Rule، نسخه، تعارض، بازبینی و یادگیری.</td>
+        <td>طراحی SQL، Graph DB، API، UI و الگوریتم اجرایی موتور تشخیص.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>چرا این مرز اهمیت دارد</p>
+    <p style="margin:0;">
+      اگر سند حاکمیت دانش، تصمیم‌های پیاده‌سازی را هم بگیرد،
+      با تغییر فناوری، سند بی‌اعتبار می‌شود. اما اگر فقط چارچوب
+      معنایی و قواعد پذیرش را تعیین کند، می‌تواند ده‌ها سال
+      پایدار بماند و پیاده‌سازی‌های مختلف را پوشش دهد.
+    </p>
+  </div>
+
+  <hr class="ornament">
+
+  <h2>فهرست بخش‌ها</h2>
+
+  <p class="toc-part">بخش اول — بنیادها</p>
+  <ol class="toc-list">
+    <li><span class="t">۱. مأموریت و قرارداد سند</span><span class="d"></span><span class="p">۳</span></li>
+    <li><span class="t">۲. اصول الزام‌آور حاکمیت</span><span class="d"></span><span class="p">۵</span></li>
+    <li><span class="t">۳. Claim — واحد حاکمیت</span><span class="d"></span><span class="p">۷</span></li>
+    <li><span class="t">۴. طبقه‌بندی انواع دانش</span><span class="d"></span><span class="p">۹</span></li>
+  </ol>
+
+  <p class="toc-part">بخش دوم — عناصر دانش</p>
+  <ol class="toc-list">
+    <li><span class="t">۵. Source، Provenance و Evidence</span><span class="d"></span><span class="p">۱۱</span></li>
+    <li><span class="t">۶. Scope و شرایط اعتبار</span><span class="d"></span><span class="p">۱۳</span></li>
+    <li><span class="t">۷. Reference در برابر As-Found</span><span class="d"></span><span class="p">۱۵</span></li>
+    <li><span class="t">۸. کیفیت شواهد و استقلال</span><span class="d"></span><span class="p">۱۷</span></li>
+  </ol>
+
+  <p class="toc-part">بخش سوم — وضعیت و اطمینان</p>
+  <ol class="toc-list">
+    <li><span class="t">۹. وضعیت دانش و عدم قطعیت</span><span class="d"></span><span class="p">۱۹</span></li>
+    <li><span class="t">۱۰. Confidence با دلیل</span><span class="d"></span><span class="p">۲۱</span></li>
+    <li><span class="t">۱۱. Pipeline پذیرش دانش</span><span class="d"></span><span class="p">۲۳</span></li>
+    <li><span class="t">۱۲. نقش‌ها و مسئولیت‌ها</span><span class="d"></span><span class="p">۲۵</span></li>
+  </ol>
+
+  <p class="toc-part">بخش چهارم — نگهداشت و تکامل</p>
+  <ol class="toc-list">
+    <li><span class="t">۱۳. پروتکل حل تعارض</span><span class="d"></span><span class="p">۲۷</span></li>
+    <li><span class="t">۱۴. Versioning و Lineage</span><span class="d"></span><span class="p">۲۹</span></li>
+    <li><span class="t">۱۵. Concept Drift و بازبینی</span><span class="d"></span><span class="p">۳۱</span></li>
+    <li><span class="t">۱۶. از Case به Knowledge</span><span class="d"></span><span class="p">۳۳</span></li>
+    <li><span class="t">۱۷. طبقه‌بندی شکست چرخه دانش</span><span class="d"></span><span class="p">۳۵</span></li>
+    <li><span class="t">۱۸. دانش منفی و محدودیت‌ها</span><span class="d"></span><span class="p">۳۷</span></li>
+  </ol>
+
+  <p class="toc-part">بخش پنجم — کاربرد و انتشار</p>
+  <ol class="toc-list">
+    <li><span class="t">۱۹. حاکمیت Test Knowledge</span><span class="d"></span><span class="p">۳۹</span></li>
+    <li><span class="t">۲۰. AI تحت قرارداد حاکمیت</span><span class="d"></span><span class="p">۴۱</span></li>
+    <li><span class="t">۲۱. حسابرسی و ردیابی تصمیم</span><span class="d"></span><span class="p">۴۳</span></li>
+    <li><span class="t">۲۲. انتشار و بسته دانش</span><span class="d"></span><span class="p">۴۵</span></li>
+    <li><span class="t">۲۳. قیود ایمنی و حقوقی</span><span class="d"></span><span class="p">۴۷</span></li>
+    <li><span class="t">۲۴. قرارداد حداقلی دانش</span><span class="d"></span><span class="p">۴۹</span></li>
+  </ol>
+
+  <p class="toc-part">بخش ششم — تضمین و آزمون</p>
+  <ol class="toc-list">
+    <li><span class="t">۲۵. ضدالگوهای حاکمیتی</span><span class="d"></span><span class="p">۵۱</span></li>
+    <li><span class="t">۲۶. معیار بلوغ حاکمیت</span><span class="d"></span><span class="p">۵۳</span></li>
+    <li><span class="t">۲۷. سناریوی یکپارچه — افت ولتاژ زمین</span><span class="d"></span><span class="p">۵۵</span></li>
+    <li><span class="t">۲۸. سناریوی تعارض — دو مرجع، دو مقدار</span><span class="d"></span><span class="p">۵۷</span></li>
+    <li><span class="t">۲۹. قرارداد فشرده</span><span class="d"></span><span class="p">۵۹</span></li>
+  </ol>
+
+  <footer class="running-foot">
+    <span>سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="page-num">۲</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱ — مأموریت ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱ — مأموریت</span>
+  </header>
+
+  <span class="section-tag">SECTION 01</span>
+  <h2>مأموریت و قرارداد سند</h2>
+
+  <p class="lead">
+    یک سامانه تشخیصی، تنها با انباشت داده و قاعده کار نمی‌کند.
+    باید چارچوبی داشته باشد که تعیین کند «چه چیزی می‌تواند
+    به‌عنوان دانش فعال ثبت شود». این چارچوب، همان حاکمیت
+    دانش است.
+  </p>
+
+  <h3>مأموریت حاکمیت دانش</h3>
+  <p>
+    حاکمیت دانش تعیین می‌کند چه چیزی می‌تواند به‌عنوان دانش
+    قابل مصرف ثبت شود، چگونه پشتوانه بگیرد، در چه Scope
+    معتبر باشد، چگونه تغییر کند و چگونه مسیر تصمیم‌های
+    مبتنی بر آن قابل بازسازی بماند.
+  </p>
+
+  <p>
+    تفاوت این سند با یک پایگاه داده یا یک پایگاه قاعده، در
+    <strong>هدف</strong> است. پایگاه داده، جایی برای ذخیره
+    است. اما حاکمیت دانش، <strong>شرایط پذیرش، اعتبار
+    و پاسخگویی</strong> را تعیین می‌کند. یک پایگاه داده
+    می‌تواند هزاران رکورد داشته باشد؛ اما اگر آن رکوردها
+    از چرخه حاکمیتی عبور نکرده باشند، «دانش» محسوب
+    نمی‌شوند.
+  </p>
+
+  <div class="axiom">
+    <span class="label">قاعده حاکم</span>
+    <p>
+      کیفیت دانش با حجم محتوا، تعداد Rule یا تعداد Case سنجیده
+      نمی‌شود؛ با قابلیت ردیابی، محدودیت‌مندی، آزمون‌پذیری و
+      استفاده صحیح سنجیده می‌شود.
+    </p>
+  </div>
+
+  <h3>مثال خودرویی — دو رکورد، دو سرنوشت متفاوت</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>رکورد اول</p>
+    <p style="margin:0;">
+      در یک پایگاه دانش، رکوردی به این صورت ثبت شده:
+      «افت ولتاژ روی مسیر زمین غیرمجاز است».
+      <br>
+      این جمله، یک گزاره کلی است. نه دامنه دارد، نه منبع،
+      نه شواهد. اگر به‌عنوان دانش فعال ثبت شود، می‌تواند
+      به همه خودروها و همه شرایط تعمیم داده شود. سامانه
+      نمی‌داند این «غیرمجاز» یعنی چند ولت، در چه
+      شرایطی و برای کدام Variant.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>رکورد دوم</p>
+    <p style="margin:0;">
+      در همان پایگاه، رکورد دیگری ثبت شده:
+      «در Variant A، دمای ۲°C، State=CRANKING، افت ولتاژ
+      بیشتر از ۰.۵V روی مسیر Pin ۳۰ رله به پایه مثبت فن،
+      غیرمجاز است».
+      <br>
+      منبع: سند فنی خودروساز، فصل ۴، ص ۱۲، نسخه ۲۰۱۹.
+      شواهد: ۲۳ مورد میدانی تأییدکننده در کارگاه X.
+      <br><br>
+      این رکورد، همه اجزای یک Claim حاکمیتی را دارد:
+      دامنه، منبع، شواهد، نسخه و محدودیت.
+    </p>
+  </div>
+
+  <p>
+    تفاوت این دو رکورد، در <strong>قابلیت اتکا</strong> است.
+    رکورد اول را نمی‌توان با اطمینان به کار برد؛ رکورد
+    دوم را می‌توان. حاکمیت دانش، همان تفاوت را تعریف
+    و تضمین می‌کند.
+  </p>
+
+  <h3>مرز سند — درون و بیرون</h3>
+  <table>
+    <thead>
+      <tr><th style="width:50%;">درون حاکمیت</th><th>بیرون از حاکمیت</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Claim، Source، Evidence، Provenance، Scope، Reference، Rule، نسخه، تعارض، بازبینی و یادگیری.</td>
+        <td>طراحی SQL، Graph DB، API، UI و الگوریتم اجرایی موتور تشخیص.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — تفاوت پایگاه داده با حاکمیت دانش</p>
+    <p style="margin:0;">
+      برخی پروژه‌ها تصور می‌کنند با راه‌اندازی یک پایگاه داده
+      بزرگ، حاکمیت دانش را پیاده کرده‌اند. این یک اشتباه
+      رایج است. پایگاه داده، یک ظرف است. حاکمیت دانش،
+      قواعد پرکردن آن ظرف و استفاده از محتوای آن
+      را تعیین می‌کند.
+      <br><br>
+      بدون حاکمیت دانش، پایگاه داده به یک «انبار زباله
+      معنایی» تبدیل می‌شود که در آن، هر چیزی با هر
+      کیفیتی ثبت می‌شود و بعداً قابل تفکیک نیست.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۳</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱ — ادامه</span>
+  </header>
+
+  <h3>چرا به حاکمیت دانش نیاز داریم</h3>
+  <p>
+    سامانه تشخیصی بدون حاکمیت دانش، سه مشکل اساسی
+    پیدا می‌کند:
+  </p>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>مشکل اول — دانش بی‌ریشه</p>
+    <p style="margin:0;">
+      قواعد وارد سامانه می‌شوند، اما کسی نمی‌داند از کجا
+      آمده‌اند. چند سال بعد، کسی نمی‌تواند تصمیم بگیرد
+      که آیا این قاعده هنوز معتبر است یا نه.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>مشکل دوم — تعمیم ناخواسته</p>
+    <p style="margin:0;">
+      قاعده‌ای که برای یک Variant معتبر بوده، بدون توجه
+      به دامنه، به Variant دیگر اعمال می‌شود. نتیجه:
+      تشخیص‌های نادرست که منشأشان مشخص نیست.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>مشکل سوم — ناتوانی در یادگیری</p>
+    <p style="margin:0;">
+      تجربه‌های میدانی وارد سامانه می‌شوند، اما به دانش
+      قابل انتقال تبدیل نمی‌شوند. هر بار که یک
+      خودرو مشابه می‌آید، تعمیرکار مجبور است
+      از صفر شروع کند.
+    </p>
+  </div>
+
+  <p>
+    حاکمیت دانش، هر سه این مشکلات را آدرس می‌دهد.
+    با اجبار به ثبت منبع و منشأ، مسئله اول حل
+    می‌شود. با اجبار به ثبت دامنه، مسئله دوم
+    حل می‌شود. با تعریف چرخه «از Case به دانش»،
+    مسئله سوم حل می‌شود.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>سه سؤال بنیادین حاکمیت</p>
+    <p style="margin:0;">
+      <strong>۱. چه چیزی را می‌دانیم؟</strong> فهرست ادعاهای
+      فعال سامانه.
+      <br>
+      <strong>۲. این ادعا از کجا آمده و در چه دامنه‌ای معتبر
+      است؟</strong> منبع، منشأ و دامنه هر ادعا.
+      <br>
+      <strong>۳. اگر این ادعا تغییر کند، چه چیزهایی
+      تحت تأثیر قرار می‌گیرند؟</strong> وابستگی‌های
+      دانش.
+    </p>
+  </div>
+
+  <p class="small">
+    هر بخش این سند، به یکی از این سه پرسش یا به
+    چرخه پذیرش و نگهداشت دانش پاسخ می‌دهد.
+  </p>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۴</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲ — اصول ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲ — اصول</span>
+  </header>
+
+  <span class="section-tag">SECTION 02</span>
+  <h2>اصول الزام‌آور حاکمیت</h2>
+
+  <p class="lead">
+    حاکمیت دانش، بر یک مجموعه اصول بنیادین استوار است.
+    این اصول، تصمیم‌های روزمره را هدایت می‌کنند و
+    هنگام ابهام، به‌عنوان مرجع عمل می‌کنند.
+  </p>
+
+  <h3>ده اصل الزام‌آور</h3>
+  <ol>
+    <li>
+      <strong>هر ادعای مهم باید منشأ و دامنه داشته باشد.</strong>
+      Claim بدون منشأ، بی‌ریشه است؛ Claim بدون دامنه،
+      مبهم است.
+    </li>
+    <li>
+      <strong>Source، Evidence، Claim، Interpretation، Rule و
+      Hypothesis جدا بمانند.</strong> هر یک جایگاه متفاوتی
+      در زنجیره استدلال دارند.
+    </li>
+    <li>
+      <strong>عدم قطعیت و «نمی‌دانیم» وضعیت معتبر است.</strong>
+      پنهان کردن عدم قطعیت، اعتماد کاذب ایجاد می‌کند.
+    </li>
+    <li>
+      <strong>تعمیم از دامنه محدود به دامنه گسترده، یک تغییر
+      دانشی است.</strong> کپی ساده نیست؛ نیازمند شواهد
+      مستقل است.
+    </li>
+    <li>
+      <strong>تعارض نباید پنهان شود.</strong> تعارض،
+      اطلاعات ارزشمندی درباره دامنه و معنا را
+      حمل می‌کند.
+    </li>
+    <li>
+      <strong>تاریخچه تغییر نباید حذف شود.</strong> نسخه
+      قبلی، بخشی از حافظه دانش است.
+    </li>
+    <li>
+      <strong>شاهد مخالف نیز بخشی از حافظه دانش است.</strong>
+      حذف شواهد مخالف، تصمیم‌های آینده را در
+      تاریکی نگه می‌دارد.
+    </li>
+    <li>
+      <strong>AI پیشنهاددهنده است، نه صاحب اختیار حقیقت.</strong>
+      خروجی AI از مسیر حاکمیت عبور می‌کند.
+    </li>
+    <li>
+      <strong>Case ورودی یادگیری است، نه Rule خودکار.</strong>
+      تبدیل Case به Rule، نیازمند چرخه بازبینی است.
+    </li>
+    <li>
+      <strong>هر دانش فعال باید محدودیت مصرف خود را حمل کند.</strong>
+      محدودیت‌ها بخشی از معنا هستند.
+    </li>
+  </ol>
+
+  <h3>چرا این اصول، اصول‌اند</h3>
+  <p>
+    این ده اصل، از یک ویژگی مشترک برخوردارند: هر کدام
+    یک <strong>خطای شناخته‌شده</strong> در سامانه‌های
+    دانشی را مسدود می‌کنند. اگر هر یک از این اصول
+    را حذف کنیم، یک مسیر خطا در سامانه باز
+    می‌شود.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:35%;">اصل</th>
+        <th>خطایی که مسدود می‌کند</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>منشأ و دامنه الزامی</td>
+        <td>ظهور قواعد بی‌ریشه که نمی‌توان آن‌ها را به چالش کشید.</td>
+      </tr>
+      <tr>
+        <td>تفکیک عناصر</td>
+        <td>ادغام مشاهده با تفسیر که به پرش علّی منجر می‌شود.</td>
+      </tr>
+      <tr>
+        <td>«نمی‌دانیم» معتبر</td>
+        <td>جایگزین کردن حدس به‌جای عدم قطعیت.</td>
+      </tr>
+      <tr>
+        <td>تعمیم به‌عنوان تغییر دانش</td>
+        <td>اعمال ناخواسته یک قاعده در Variant دیگر.</td>
+      </tr>
+      <tr>
+        <td>تعارض پنهان نشود</td>
+        <td>یکسان‌سازی زودهنگام دو گزاره ناسازگار.</td>
+      </tr>
+      <tr>
+        <td>حفظ تاریخچه</td>
+        <td>از دست رفتن مسیر استدلال گذشته.</td>
+      </tr>
+      <tr>
+        <td>شاهد مخالف حفظ شود</td>
+        <td>سوگیری تأییدی در تصمیم‌گیری.</td>
+      </tr>
+      <tr>
+        <td>AI پیشنهاددهنده</td>
+        <td>تبدیل متن به حقیقت فعال بدون بازبینی.</td>
+      </tr>
+      <tr>
+        <td>Case ≠ Rule</td>
+        <td>تعمیم خودکار تجربه‌های منفرد.</td>
+      </tr>
+      <tr>
+        <td>حمل محدودیت</td>
+        <td>استفاده در شرایطی که دانش برای آن معتبر نیست.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «بهره‌گیری زودهنگام»</p>
+    <p style="margin:0;">
+      فشاری که برای «سریع نتیجه گرفتن» وجود دارد،
+      گاهی باعث می‌شود اصول حاکمیتی نادیده گرفته
+      شوند. مثلاً یک قاعده سریع وارد سامانه
+      می‌شود تا در یک دموی داخلی استفاده شود،
+      اما به‌عنوان دانش فعال باقی می‌ماند و
+      سال‌ها بعد باعث تصمیم‌های نادرست می‌شود.
+      <br><br>
+      راه درست: هیچ دانشی نباید به‌عنوان «موقت»
+      با معافیت از اصول وارد شود. اگر باید
+      وارد شود، از همان ابتدا باید همه
+      عناصر الزامی را داشته باشد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۵</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲ — ادامه</span>
+  </header>
+
+  <h3>مثال — سه اصل در یک سناریو</h3>
+  <p>
+    برای روشن شدن نحوه کار اصول، یک سناریوی واقعی
+    را در نظر بگیرید. تعمیرکاری در کارگاه، سه
+    خودرو با نشانه یکسان «فن رادیاتور کار نمی‌کند»
+    دریافت کرده و در هر سه، علت را «افزایش
+    مقاومت اتصال زمین» تشخیص داده است.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>اعمال اصل «منشأ و دامنه»</p>
+    <p style="margin:0;">
+      تعمیرکار نمی‌تواند فقط بنویسد «افزایش مقاومت اتصال
+      زمین، علت شایع است». باید بنویسد: «در سه مورد
+      از خودروی X، Variant A، تولید ۱۴۰۰، در
+      کارگاه Y، افت ولتاژ روی مسیر G3 مشاهده
+      شد». این جمله منشأ و دامنه دارد.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>اعمال اصل «شاهد مخالف حفظ شود»</p>
+    <p style="margin:0;">
+      در همان کارگاه، دو خودرو دیگر با نشانه مشابه
+      داشتند که علت آن‌ها «خرابی رله» بود، نه
+      «افزایش مقاومت اتصال زمین». این شواهد
+      مخالف باید در همان رکورد ثبت شوند.
+      اگر فقط سه مورد اول ثبت شود، تصویری
+      نادرست از واقعیت ایجاد می‌شود.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>اعمال اصل «تعمیم به‌عنوان تغییر دانش»</p>
+    <p style="margin:0;">
+      تعمیرکار نمی‌تواند نتیجه بگیرد «در همه خودروها،
+      افزایش مقاومت اتصال زمین، علت شایع است».
+      تعمیم از سه مورد به دامنه گسترده، یک ادعای
+      جدید است که نیازمند شواهد مستقل است.
+    </p>
+  </div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>اصول در عمل، چگونه ظاهر می‌شوند</p>
+    <p style="margin:0;">
+      این اصول انتزاعی نیستند. آن‌ها در قالب
+      تصمیم‌های روزمره ظاهر می‌شوند:
+      <br>
+      • وقتی یک قاعده را وارد سامانه می‌کنیم،
+      آن را با چه دامنه‌ای ثبت می‌کنیم؟
+      <br>
+      • وقتی یک شاهد مخالف پیدا می‌کنیم،
+      آن را در کجا و چگونه ثبت می‌کنیم؟
+      <br>
+      • وقتی می‌خواهیم یک قاعده را از
+      یک خودرو به خودروی دیگر تعمیم
+      دهیم، چه شواهدی برای این تعمیم
+      داریم؟
+      <br><br>
+      اصول، ابزار قضاوت در این موقعیت‌های
+      روزمره‌اند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۶</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۳ — Claim ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۳ — Claim</span>
+  </header>
+
+  <span class="section-tag">SECTION 03</span>
+  <h2>Claim — واحد حاکمیت</h2>
+
+  <p class="lead">
+    در سامانه حاکمیت دانش، واحد اصلی «ادعا» است. یک سند،
+    ویدیو یا Case می‌تواند ده‌ها Claim داشته باشد و یک
+    Claim نیز می‌تواند از چند منبع و شاهد پشتیبانی
+    شود.
+  </p>
+
+  <h3>چرا Claim و نه سند یا Case</h3>
+  <p>
+    یک سند فنی می‌تواند ۲۰۰ صفحه باشد و حاوی ده‌ها
+    گزاره مختلف. اگر کل سند را به‌عنوان یک واحد
+    ثبت کنیم، نمی‌توانیم بخش‌های مختلف آن را
+    ارزیابی کنیم. یکی از گزاره‌های آن ممکن است
+    دقیق و مستند باشد؛ دیگری ممکن است قدیمی
+    یا متناقض با نسخه جدید باشد.
+  </p>
+
+  <p>
+    به همین شکل، یک Case تشخیصی می‌تواند شامل چندین
+    ادعای مستقل باشد: «افت ولتاژ مشاهده شد»،
+    «اتصال زمین به احتمال زیاد علت است»،
+    «تعویض اتصال منجر به رفع مشکل شد». هر
+    یک از این‌ها یک Claim جداگانه است و باید
+    جداگانه ارزیابی شود.
+  </p>
+
+  <h3>ساختار یک Claim</h3>
+  <div class="diagram">Knowledge Claim
+├─ proposition         (متن ادعا)
+├─ claim_type          (نوع دانش)
+├─ scope               (دامنه اعتبار)
+├─ source / provenance (منبع و منشأ)
+├─ supporting evidence (شواهد موافق)
+├─ counter evidence    (شواهد مخالف)
+├─ validity status     (وضعیت اعتبار)
+├─ confidence basis    (مبنای اطمینان)
+├─ version / lineage   (نسخه و تبار)
+└─ limitations         (محدودیت‌ها)</div>
+
+  <h3>مثال — یک Claim دقیق</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Claim دقیق و قابل ارزیابی</p>
+    <p style="margin:0;">
+      <strong>proposition:</strong> «در Variant A، دمای
+      ۲°C، State=CRANKING، افت ولتاژ بیشتر از ۰.۵V
+      روی مسیر Pin ۳۰ رله به پایه مثبت فن، غیرمجاز
+      است».
+      <br>
+      <strong>claim_type:</strong> Reference (مقدار
+      مرجع).
+      <br>
+      <strong>scope:</strong> Variant A، سال ۱۴۰۰-۱۴۰۲.
+      <br>
+      <strong>source:</strong> سند فنی خودروساز، فصل ۴، ص ۱۲،
+      نسخه ۲۰۱۹.
+      <br>
+      <strong>supporting evidence:</strong> ۲۳ مورد
+      میدانی تأییدکننده، کارگاه X.
+      <br>
+      <strong>counter evidence:</strong> دو مورد که
+      در آن‌ها تا ۰.۸V هم بدون مشکل کار
+      کرده.
+      <br>
+      <strong>validity status:</strong> Under Review
+      (بازبینی در جریان).
+      <br>
+      <strong>confidence basis:</strong> منبع رسمی +
+      شواهد میدانی متعدد.
+      <br>
+      <strong>limitations:</strong> برای خودروهای
+      بالای ۱۰۰٫۰۰۰ کیلومتر تأیید نشده.
+    </p>
+  </div>
+
+  <h3>مثال — یک Claim مبهم که باید رد شود</h3>
+  <div class="box red">
+    <p class="box-title"><span class="icon">✕</span>Claim مبهم</p>
+    <p style="margin:0;">
+      <strong>proposition:</strong> «P0335 یعنی سنسور
+      خراب است».
+      <br>
+      این جمله، یک Claim قابل ارزیابی نیست. چرا؟
+      <br>
+      • «خراب است» مبهم است. چه نوع خرابی؟
+      خرابی الکتریکی؟ فاصله نامناسب؟ سیگنال
+      نویزی؟
+      <br>
+      • دامنه ندارد. برای کدام خودرو، کدام
+      Variant، کدام شرایط؟
+      <br>
+      • منبع ندارد. از کجا آمده؟
+      <br>
+      • شواهد ندارد. بر اساس چه چیزی این
+      نتیجه گرفته شده؟
+      <br><br>
+      نتیجه: این Claim نباید به‌عنوان دانش فعال
+      ثبت شود. باید یا به یک Claim دقیق تبدیل
+      شود، یا به‌عنوان دانش خام در وضعیت
+      Draft باقی بماند.
+    </p>
+  </div>
+
+  <div class="axiom">
+    <span class="label">اصل تمایز</span>
+    <p>
+      «P0335 یعنی سنسور خراب است» یک Claim نیست؛
+      یک نتیجه‌گیری مبهم است. کد خطا گزارش
+      کنترلر است و علت باید در فضای فرضیه‌ها
+      و شواهد تعیین شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۷</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۳ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۳ — ادامه</span>
+  </header>
+
+  <h3>تفاوت Claim با جمله توصیفی</h3>
+  <p>
+    هر جمله‌ای که در سامانه وارد می‌شود، Claim نیست.
+    جمله توصیفی، Claim وقتی می‌شود که قابلیت
+    ارزیابی و رد یا تأیید داشته باشد. برای
+    روشن شدن این تفاوت، سه جمله را در نظر
+    بگیرید:
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:50%;">جمله</th>
+        <th>آیا Claim است؟</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>«فن کار نمی‌کند».</td>
+        <td>خیر — این یک Observation است، نه یک Claim. Claim یک گزاره قابل ارزیابی است.</td>
+      </tr>
+      <tr>
+        <td>«افت ولتاژ روی Pin ۳۰ در Cranking برابر ۱.۴V است».</td>
+        <td>خیر — این یک Measurement است، نه یک Claim.</td>
+      </tr>
+      <tr>
+        <td>«افت ولتاژ بیشتر از ۰.۵V روی Pin ۳۰ در Cranking، نشانه مشکل مسیر است».</td>
+        <td>بله — این یک Claim است. قابل ارزیابی، قابل رد یا تأیید با شواهد.</td>
+      </tr>
+      <tr>
+        <td>«در این خودروی خاص، Pin ۳۰ از سال ساخت پایین‌تر است».</td>
+        <td>بله — Claim است. با مشاهده دوباره قابل ارزیابی.</td>
+      </tr>
+      <tr>
+        <td>«همه خودروهای این نسل، مشکل Pin ۳۰ دارند».</td>
+        <td>بله، اما Claim مبهمی است. دامنه آن ناقص است و نیاز به شواهد گسترده دارد.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>قاعده عملی — سه پرسش برای تشخیص Claim</p>
+    <p style="margin:0;">
+      پیش از ثبت یک گزاره به‌عنوان Claim، سه پرسش را
+      بررسی کنید:
+      <br>
+      <strong>۱.</strong> آیا می‌توان آن را با یک شاهد
+      بیرونی رد یا تأیید کرد؟
+      <br>
+      <strong>۲.</strong> آیا دامنه اعتبار آن قابل
+      تعیین است؟
+      <br>
+      <strong>۳.</strong> آیا از یک Observation یا
+      Measurement قابل تفکیک است؟
+      <br><br>
+      اگر پاسخ هر سه پرسش «بله» باشد، گزاره یک
+      Claim است. اگر پاسخ یکی «خیر» باشد،
+      ابتدا باید گزاره را دقیق‌تر کرد.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>چرا تجزیه به Claim اهمیت دارد</p>
+    <p style="margin:0;">
+      یک سند فنی می‌تواند ۲۰۰ صفحه باشد و ۵۰۰ Claim
+      داشته باشد. از این ۵۰۰ Claim، ممکن است
+      ۴۵۰ مورد هنوز معتبر، ۳۰ مورد نیازمند
+      بازبینی، ۱۵ مورد منقضی و ۵ مورد
+      متناقض باشند. اگر کل سند را یکجا
+      ارزیابی کنیم، نمی‌توانیم این تفاوت‌ها
+      را ببینیم.
+      <br><br>
+      تجزیه به Claim، به سامانه اجازه می‌دهد
+      دانش را در سطح دقیق ارزیابی و
+      نگهداری کند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۸</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۴ — انواع دانش ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۴ — انواع دانش</span>
+  </header>
+
+  <span class="section-tag">SECTION 04</span>
+  <h2>طبقه‌بندی انواع دانش</h2>
+
+  <p class="lead">
+    نه همه دانش، از یک جنس است. یک Claim می‌تواند یک
+    مشاهده تجربی باشد، یا یک مرجع رسمی، یا یک
+    قاعده تشخیصی، یا یک محدودیت. برای آنکه هر
+    Claim در جای درست خودش قرار بگیرد، نیاز
+    به یک طبقه‌بندی روشن داریم.
+  </p>
+
+  <h3>هفت نوع دانش</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:24%;">نوع</th>
+        <th>معنا</th>
+        <th>نمونه خودرویی</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Observation-derived</td>
+        <td>ادعا درباره یک مشاهده واقعی در شرایط مشخص.</td>
+        <td>افت ولتاژ Pin ۳۰ رله در Cranking، دمای ۲°C.</td>
+      </tr>
+      <tr>
+        <td>Reference</td>
+        <td>انتظار مستند یا پذیرفته‌شده.</td>
+        <td>محدوده ولتاژ مجاز Pin ۳۰ در Variant A.</td>
+      </tr>
+      <tr>
+        <td>Empirical Pattern</td>
+        <td>الگوی تکرارشونده در چند مشاهده.</td>
+        <td>قطع متناوب سنسور در لرزش.</td>
+      </tr>
+      <tr>
+        <td>Diagnostic Rule</td>
+        <td>رابطه شرطی برای هدایت تشخیص.</td>
+        <td>«اگر افت مسیر برگشت مشاهده شد، مسیر زمین را بررسی کن».</td>
+      </tr>
+      <tr>
+        <td>Test Knowledge</td>
+        <td>دانش درباره قدرت تفکیک و شرایط آزمون.</td>
+        <td>«آزمون افت ولتاژ زیر بار، فرضیه اتصال ضعیف را تقویت می‌کند».</td>
+      </tr>
+      <tr>
+        <td>Negative Knowledge</td>
+        <td>دانش درباره محدودیت یا عدم اعتبار.</td>
+        <td>«این Reference برای Variant دیگر معتبر نیست».</td>
+      </tr>
+      <tr>
+        <td>Exception</td>
+        <td>شرط محدودکننده یک دانش.</td>
+        <td>«در خودروهای با تعمیر قبلی ECU، این مقدار تغییر می‌کند».</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>چرا طبقه‌بندی اهمیت دارد</h3>
+  <p>
+    هر نوع دانش، نیازمندی‌های متفاوتی برای پشتوانه و
+    ارزیابی دارد. یک Reference از سند فنی رسمی،
+    سطح شواهد متفاوتی می‌خواهد از یک Empirical
+    Pattern که از مشاهدات میدانی آمده است.
+  </p>
+
+  <p>
+    اگر نوع دانش را ثبت نکنیم، سامانه نمی‌تواند
+    تصمیم بگیرد که این Claim چقدر قابل اتکاست
+    و در چه موقعیت‌هایی می‌تواند به کار
+    برود.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — دو نوع دانش با یک متن</p>
+    <p style="margin:0;">
+      جمله «ولتاژ Pin ۳۰ در Cranking بین ۱۱.۵ و
+      ۱۲.۴V باید باشد» می‌تواند در دو نوع متفاوت
+      ظاهر شود:
+      <br><br>
+      <strong>به‌عنوان Reference:</strong>
+      اگر از سند فنی خودروساز آمده باشد، یک
+      انتظار رسمی است که در همه خودروهای
+      Variant A در این شرایط باید برقرار
+      باشد.
+      <br>
+      <strong>به‌عنوان Empirical Pattern:</strong>
+      اگر از مشاهده ۳۰ خودرو در کارگاه آمده
+      باشد، یک الگوی مشاهده‌شده است که
+      نشان می‌دهد در عمل چه اتفاقی می‌افتد.
+      <br><br>
+      این دو، با یک جمله یکسان، دو نوع دانش
+      متفاوتند. در تصمیم‌گیری، Reference
+      وزن بیشتری دارد؛ اما اگر Empirical
+      Pattern با آن مخالف باشد، این
+      اختلاف خودش یک یافته مهم است.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>دانش منفی — جنس متفاوت دانش</p>
+    <p style="margin:0;">
+      Negative Knowledge یک نوع ویژه است.
+      این نوع دانش نمی‌گوید «چه چیزی درست
+      است»، بلکه می‌گوید «چه چیزی در این
+      دامنه معتبر نیست».
+      <br><br>
+      مثال: «DTC P0335 به‌تنهایی اثبات خرابی
+      سنسور میل‌لنگ نیست».
+      <br><br>
+      این نوع دانش، در حاکمیت دانش بسیار
+      ارزشمند است، چون جلوی خطاهای
+      رایج را می‌گیرد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۹</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۴ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۴ — ادامه</span>
+  </header>
+
+  <h3>Exception — چرا یک نوع جداگانه لازم است</h3>
+  <p>
+    در بسیاری از سامانه‌ها، Exception زیرمجموعه
+    Reference در نظر گرفته می‌شود. اما این
+    کار باعث می‌شود Exception به‌عنوان
+    «انحراف از قاعده» تلقی شود، در حالی که
+    Exception در واقع «شرط واقعی معتبر»
+    است.
+  </p>
+
+  <p>
+    مثال: یک Reference می‌گوید «افت ولتاژ روی
+    Pin ۳۰ نباید از ۰.۵V بیشتر باشد». اما
+    یک Exception ثبت شده: «در خودروهای
+    با تعمیر قبلی ECU، این مقدار می‌تواند
+    تا ۰.۸V باشد».
+  </p>
+
+  <p>
+    اگر Exception را به‌عنوان یک Reference
+    جدید ثبت کنیم، در واقع دو Reference
+    متناقض در سامانه خواهیم داشت. اگر
+    Exception را به‌عنوان زیرمجموعه
+    Reference ثبت کنیم، به‌عنوان
+    «انحراف» تلقی می‌شود، نه
+    شرط معتبر.
+  </p>
+
+  <p>
+    راه درست: Exception یک نوع مستقل است
+    که هم به Claim والد اشاره می‌کند،
+    هم دامنه دقیق خودش را حمل
+    می‌کند.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>سه نوع Exception رایج</p>
+    <p style="margin:0;">
+      <strong>Exception تعمیر:</strong> پس از تعمیر
+      غیرکارخانه‌ای، مقدار مرجع ممکن است
+      تغییر کند.
+      <br>
+      <strong>Exception پیکربندی:</strong> با ECU
+      یا کالیبراسیون متفاوت، رفتار
+      متفاوت است.
+      <br>
+      <strong>Exception شرایط محیطی:</strong> در
+      دماهای خاص، شرایط جاده‌ای یا
+      لرزش، رفتار متفاوت است.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «نوع دانش یکسان»</p>
+    <p style="margin:0;">
+      اگر همه Claimها با یک نوع ثبت شوند،
+      سامانه نمی‌تواند تشخیص دهد که کدام
+      Claim نیازمند چه سطحی از پشتوانه است.
+      یک Reference رسمی با یک Empirical
+      Pattern با یک Student Observation،
+      همه به یک شکل ارزیابی می‌شوند.
+      <br><br>
+      راه درست: نوع دانش باید در همان
+      لحظه ثبت Claim مشخص شود. این کار
+      هزینه اندکی در ابتدا دارد، اما
+      در ارزیابی و مصرف بعدی، بسیار
+      ارزشمند است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۱۰</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۵ — Source/Provenance/Evidence ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۵ — منشأ و شواهد</span>
+  </header>
+
+  <span class="section-tag">SECTION 05</span>
+  <h2>Source، Provenance و Evidence</h2>
+
+  <p class="lead">
+    برای آنکه یک Claim قابل اتکا باشد، باید بدانیم از
+    کجا آمده، چه مسیری را طی کرده و چه شاهدی
+    آن را پشتیبانی می‌کند. این سه مفهوم،
+    ستون‌های استناد دانش هستند.
+  </p>
+
+  <div class="diagram">Source → Extraction → Interpretation → Claim
+                         ↑              ↓
+                    Evidence ← Context / Method</div>
+
+  <h3>چهار مفهوم کلیدی</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:28%;">مفهوم</th>
+        <th>پرسشی که پاسخ می‌دهد</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Source</td>
+        <td>این اطلاعات از کدام منبع قابل شناسایی آمده؟</td>
+      </tr>
+      <tr>
+        <td>Provenance</td>
+        <td>چه کسی، چه زمانی و با چه تبدیلی آن را وارد یا تغییر داده؟</td>
+      </tr>
+      <tr>
+        <td>Evidence</td>
+        <td>چه شاهدی واقعاً وجود دارد و چگونه به Claim مربوط است؟</td>
+      </tr>
+      <tr>
+        <td>Interpretation</td>
+        <td>چه معنایی از شاهد استنباط شده و چرا؟</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>مثال — تفکیک Evidence از Interpretation</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>سناریو: افت ولتاژ روی مسیر زمین</p>
+    <p style="margin:0;">
+      در یک خودرو، تعمیرکار ولتاژ Pin ۳۰ رله را در
+      حالت Cranking و دمای ۲°C اندازه می‌گیرد و
+      عدد ۹.۱V را می‌بیند. مقدار مرجع در این
+      Variant، ۱۱.۵V است.
+      <br><br>
+      <strong>Evidence:</strong> «افت ۲.۴V روی مسیر Pin ۳۰
+      رله به پایه مثبت فن، در Conditions مشخص».
+      <br>
+      <strong>Interpretation:</strong> «این افت نشان می‌دهد
+      احتمالاً مقاومت بالایی در مسیر زمین
+      وجود دارد».
+      <br><br>
+      این دو، دو گزاره متفاوتند. Evidence یک
+      مشاهده عینی است؛ Interpretation یک
+      استنباط معنادار. اگر این دو را با
+      هم ادغام کنیم، نمی‌توانیم بین
+      «آنچه دیده شد» و «آنچه استنباط
+      شد» تفاوت بگذاریم.
+    </p>
+  </div>
+
+  <h3>Provenance — داستان زندگی یک Claim</h3>
+  <p>
+    Provenance به معنای «داستان زندگی یک Claim از
+    لحظه تولد تا امروز» است. برای روشن شدن
+    مفهوم، یک نمونه را در نظر بگیرید.
+  </p>
+
+  <div class="diagram">Claim: «افت ولتاژ بیشتر از ۰.۵V روی Pin ۳۰ رله
+        در Cranking، غیرمجاز است».
+
+Provenance:
+۱۳۹۸/۰۳ — استخراج از سند فنی خودروساز، فصل ۴، ص ۱۲
+۱۳۹۸/۰۵ — اولین مورد میدانی تأییدکننده در کارگاه X
+۱۴۰۰/۰۸ — یک مورد متناقض در Variant B مشاهده شد
+           ← دامنه محدود به Variant A
+۱۴۰۱/۱۲ — سه مورد میدانی دیگر تأیید کرد
+           ← اطمینان از «متوسط» به «بالا» ارتقا یافت
+۱۴۰۳/۰۲ — سند فنی جدید منتشر شد
+           ← عدد مرجع به‌روزرسانی شد به ۰.۶V</div>
+
+  <p>
+    این داستان زندگی، همان Provenance است. با آن،
+    هر کسی که به سامانه نگاه می‌کند، می‌داند
+    این Claim چطور شکل گرفته، چه مراحلی را
+    طی کرده و اکنون در چه وضعیتی است.
+  </p>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «Source = Claim»</p>
+    <p style="margin:0;">
+      یکی از رایج‌ترین دام‌ها این است که Source
+      با Claim یکی گرفته شود. مثلاً «سند فنی
+      خودروساز» به‌عنوان یک Claim ثبت شود.
+      در حالی که Source، منبع است؛ Claim،
+      گزاره استخراج‌شده از آن منبع است.
+      <br><br>
+      یک Source می‌تواند ده‌ها Claim داشته
+      باشد. اگر Source را با Claim یکی
+      بگیریم، نمی‌توانیم Claimها را
+      جداگانه ارزیابی کنیم.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۱۱</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۵ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۵ — ادامه</span>
+  </header>
+
+  <h3>Evidence چگونه به Claim متصل می‌شود</h3>
+  <p>
+    Evidence یکی از مهم‌ترین عناصر حاکمیت است. اما
+    Evidence خودش یک شیء مستقل نیست؛ یک رابطه
+    است. Evidence به این معناست: «این شاهد،
+    با این Claim، با این کیفیت، مربوط
+    است».
+  </p>
+
+  <p>
+    برای روشن شدن، یک Evidence را در نظر بگیرید:
+    «ولتاژ Pin ۳۰ در Cranking = ۹.۱V». این
+    Evidence می‌تواند به چند Claim متفاوت
+    متصل شود:
+  </p>
+
+  <ul>
+    <li><strong>Claim A:</strong> «افت ولتاژ روی Pin ۳۰
+    وجود دارد». (Evidence مستقیماً این را
+    پشتیبانی می‌کند.)</li>
+    <li><strong>Claim B:</strong> «مقاومت بالای اتصال
+    زمین علت افت است». (Evidence این Claim را
+    تقویت می‌کند اما اثبات نمی‌کند.)</li>
+    <li><strong>Claim C:</strong> «در همه خودروهای این
+    Variant، افت ولتاژ وجود دارد». (Evidence
+    این Claim را پشتیبانی نمی‌کند، چون
+    فقط یک مورد مشاهده شده.)</li>
+  </ul>
+
+  <p>
+    یعنی یک Evidence، بسته به Claimی که به آن
+    متصل می‌شود، معانی متفاوتی پیدا می‌کند.
+    کیفیت Evidence باید همیشه در نسبت
+    با Claim ارزیابی شود.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>سه نوع رابطه Evidence با Claim</p>
+    <p style="margin:0;">
+      <strong>Supporting:</strong> Evidence Claim را
+      تقویت می‌کند.
+      <br>
+      <strong>Counter:</strong> Evidence Claim را
+      تضعیف می‌کند.
+      <br>
+      <strong>Neutral:</strong> Evidence هیچ تأثیری
+      بر Claim ندارد (اما ثبت آن هنوز
+      می‌تواند مفید باشد).
+      <br><br>
+      در سامانه حاکمیت، باید هر سه نوع
+      ثبت شوند. اگر فقط Evidenceهای
+      Supporting ثبت شوند، سامانه
+      تصویر نادرستی از قطعیت یک
+      Claim خواهد داشت.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Independence — چرا شواهد مستقل مهم‌اند</p>
+    <p style="margin:0;">
+      شواهد، اگر از یک منبع مشترک آمده باشند،
+      در واقع «یک شاهد» هستند، نه چند شاهد.
+      برای نمونه، اگر یک تعمیرکار در
+      سه خودرو مشاهده کند که ولتاژ Pin ۳۰
+      پایین است، این «سه شاهد مستقل»
+      نیست؛ یک مشاهده توسط همان
+      تعمیرکار با همان روش در سه
+      خودرو.
+      <br><br>
+      برای استقلال واقعی، شواهد باید از
+      منابع، روش‌ها یا محققان متفاوت
+      بیایند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۱۲</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۶ — Scope ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۶ — Scope</span>
+  </header>
+
+  <span class="section-tag">SECTION 06</span>
+  <h2>Scope و شرایط اعتبار</h2>
+
+  <p class="lead">
+    Scope بخشی از معنای دانش است، نه یک برچسب تزئینی.
+    یک Claim بدون Scope، یک Claim مبهم است. یکی
+    از پرتکرارترین خطاهای حاکمیتی، حذف یا
+    نادیده گرفتن Scope است.
+  </p>
+
+  <h3>اجزای Scope</h3>
+  <p>
+    Scope می‌تواند شامل این اجزا باشد:
+  </p>
+
+  <ul>
+    <li>هویت خودرو — یک نمونه مشخص با VIN.</li>
+    <li>Variant — تیپ، موتور، گیربکس، سال ساخت.</li>
+    <li>Configuration — ECU، نرم‌افزار، کالیبراسیون.</li>
+    <li>State — حالت خودرو (OFF، Running و…).</li>
+    <li>Condition — دما، بار، ولتاژ باتری و….</li>
+    <li>بازه اعتبار — از چه زمانی تا چه زمانی معتبر است.</li>
+  </ul>
+
+  <h3>مثال — Scope کامل در مقابل ناقص</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Scope کامل</p>
+    <p style="margin:0;">
+      «این Claim در خودروی X، Variant A، ECU بوش نسخه ۳،
+      در State=CRANKING، دمای ۲°C تا ۴۰°C، سال
+      ۱۴۰۰ تا ۱۴۰۲، معتبر است».
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">✕</span>Scope ناقص</p>
+    <p style="margin:0;">
+      «این Claim برای خودروهای سواری معتبر است».
+      <br>
+      «خودروهای سواری» یک دامنه بسیار گسترده و
+      مبهم است. در این دامنه، ده‌ها Variant،
+      ده‌ها ECU و بی‌شمار Condition وجود
+      دارد. این Scope در عمل هیچ اطلاعاتی
+      ندارد.
+    </p>
+  </div>
+
+  <h3>تعمیم — یک تغییر دانشی، نه کپی ساده</h3>
+  <div class="box gold">
+    <p style="margin:0;">
+      گسترش یک Claim از Variant A به چند Variant،
+      کپی ساده نیست؛ ادعایی جدید درباره دامنه
+      بزرگ‌تر است و باید Evidence و Review
+      مستقل داشته باشد.
+    </p>
+  </div>
+
+  <p>
+    این قاعده، در نگاه اول ممکن است سخت‌گیرانه
+    به‌نظر برسد. اما دلیل آن ساده است: یک
+    Claim که در Variant A معتبر بوده،
+    ممکن است در Variant B به دلیل تفاوت
+    ECU، نرم‌افزار یا سیم‌کشی، معتبر
+    نباشد. تعمیم بدون شواهد، یعنی
+    اعمال یک قاعده در جایی که
+    درباره‌اش نمی‌دانیم.
+  </p>
+
+  <h3>وضعیت‌های Scope و رفتار سامانه</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:26%;">وضعیت Scope</th>
+        <th>رفتار سامانه</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>کامل</td>
+        <td>قابل ارزیابی و مصرف در همان دامنه.</td>
+      </tr>
+      <tr>
+        <td>ناقص</td>
+        <td>مصرف محدود؛ تعمیم خودکار ممنوع.</td>
+      </tr>
+      <tr>
+        <td>نامعلوم</td>
+        <td>دانش فعال عمومی نشود.</td>
+      </tr>
+      <tr>
+        <td>متعارض</td>
+        <td>ابتدا اختلاف دامنه یا شرایط بررسی شود.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «Scope پنهان»</p>
+    <p style="margin:0;">
+      یکی از رایج‌ترین دام‌ها این است که
+      Scope در متن آزاد پنهان شود.
+      مثلاً یک Claim به این صورت نوشته
+      می‌شود: «در این خودرو مشاهده شد
+      که ولتاژ Pin ۳۰ پایین است».
+      <br><br>
+      اما پرسش‌های Scope بی‌پاسخ
+      می‌مانند: کدام Variant؟ کدام
+      ECU؟ کدام شرایط؟ تا کی معتبر
+      است؟
+      <br><br>
+      Scope نباید در متن آزاد باشد.
+      باید یک ساختار قابل پرس‌وجو
+      داشته باشد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۱۳</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۶ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۶ — ادامه</span>
+  </header>
+
+  <h3>Scope چگونه در تصمیم‌گیری وارد می‌شود</h3>
+  <p>
+    Scope نه یک برچسب تزئینی، بلکه یک فیلتر عملی است.
+    هنگام تصمیم‌گیری، سامانه باید ابتدا بررسی کند
+    که آیا Scope دانش با Context فعلی تطبیق
+    دارد یا نه. اگر تطبیق ندارد، آن دانش
+    نباید به کار برود.
+  </p>
+
+  <div class="diagram">فیلتر Scope در تصمیم‌گیری
+────────────────────────────
+Claim فعال: «افت Pin ۳۰ بیش از ۰.۵V غیرمجاز است»
+Claim Scope: Variant A، ECU بوش، ۱۴۰۰-۱۴۰۲
+
+خودروی فعلی: Variant A، ECU بوش، ۱۴۰۱
+    ↓
+تطبیق Scope: بله
+    ↓
+دانش قابل اعمال است.
+
+────────────────────────────
+خودروی دیگر: Variant B، ECU زیمنس، ۱۴۰۳
+    ↓
+تطبیق Scope: خیر
+    ↓
+دانش اعمال نمی‌شود.
+سامانه باید به دنبال Claim دیگری
+با Scope منطبق بگردد، یا «نمی‌دانیم»
+را به‌عنوان وضعیت فعلی گزارش کند.</div>
+
+  <p>
+    این فیلتر، جلوی بسیاری از خطاهای
+    تعمیم ناخواسته را می‌گیرد. اگر
+    سامانه این کار را نکند، ممکن
+    است قاعده‌ای از Variant دیگر
+    را اعمال کند و به تشخیص
+    نادرست برسد.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — سه خودرو، سه Scope</p>
+    <p style="margin:0;">
+      سه خودرو با نشانه مشابه «فن کار نمی‌کند»
+      را در نظر بگیرید:
+      <br><br>
+      <strong>خودروی ۱:</strong> Variant A، ECU بوش،
+      ۱۴۰۱. Claim افت ولتاژ Pin ۳۰ (Scope
+      Variant A) قابل اعمال است.
+      <br>
+      <strong>خودروی ۲:</strong> Variant B، ECU
+      زیمنس، ۱۴۰۳. Claim افت ولتاژ
+      Pin ۳۰ قابل اعمال نیست؛ سامانه
+      باید به دنبال Claim دیگری
+      بگردد یا «نمی‌دانیم» گزارش
+      کند.
+      <br>
+      <strong>خودروی ۳:</strong> Variant A اما با
+      تعمیر قبلی ECU. Claim افت ولتاژ
+      Pin ۳۰ از نظر Scope قابل اعمال
+      است، اما Exception «تعمیر قبلی
+      ECU» باید بررسی شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۱۴</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۷ — Reference vs As-Found ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۷ — Reference و As-Found</span>
+  </header>
+
+  <span class="section-tag">SECTION 07</span>
+  <h2>Reference در برابر As-Found</h2>
+
+  <p class="lead">
+    یکی از تفکیک‌های بنیادین در حاکمیت دانش، تفکیک
+    «آنچه انتظار می‌رود» (Reference) از «آنچه
+    واقعاً مشاهده شد» (As-Found) است. ادغام
+    این دو، به تشخیص‌های نادرست منجر
+    می‌شود.
+  </p>
+
+  <h3>چهار مفهوم در یک جدول</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:26%;">مفهوم</th>
+        <th>پرسشی که پاسخ می‌دهد</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Reference</td>
+        <td>چه چیزی انتظار می‌رود؟</td>
+      </tr>
+      <tr>
+        <td>As-Found</td>
+        <td>در این خودرو و شرایط، چه چیزی دیده شد؟</td>
+      </tr>
+      <tr>
+        <td>Difference</td>
+        <td>چه اختلافی بین آن‌ها وجود دارد؟</td>
+      </tr>
+      <tr>
+        <td>Interpretation</td>
+        <td>چه توضیح‌هایی برای اختلاف ممکن است؟</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>مثال — یک اختلاف، چهار سطح</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>سناریو: افت ولتاژ روی Pin ۳۰ رله</p>
+    <p style="margin:0;">
+      <strong>Reference:</strong> در Variant A، State=CRANKING،
+      دمای ۲°C، انتظار می‌رود ولتاژ Pin ۳۰ حداقل
+      ۱۱.۵V باشد.
+      <br>
+      <strong>As-Found:</strong> ولتاژ اندازه‌گیری‌شده روی
+      Pin ۳۰، در همان شرایط، برابر ۹.۱V.
+      <br>
+      <strong>Difference:</strong> ۲.۴V افت.
+      <br>
+      <strong>Interpretation:</strong> افت می‌تواند از
+      باتری، اتصال زمین، سیم یا خود رله
+      بیاید.
+    </p>
+  </div>
+
+  <p>
+    نکته مهم: <strong>Difference خودش یک
+    واقعیت است، نه یک علت</strong>. یک
+    تعمیرکار ممکن است Difference را
+    ببیند و فوراً نتیجه بگیرد «پس رله
+    خراب است». اما Difference فقط
+    می‌گوید «چیزی متفاوت است»،
+    نمی‌گوید «چرا متفاوت است».
+  </p>
+
+  <div class="axiom">
+    <span class="label">قاعده</span>
+    <p>
+      یک مشاهده می‌تواند Evidence برای اصلاح
+      Reference باشد، اما صرفاً با تکرار،
+      خودکار به استاندارد تبدیل نمی‌شود.
+    </p>
+  </div>
+
+  <h3>چرا این قاعده اهمیت دارد</h3>
+  <p>
+    در بسیاری از کارگاه‌ها، تعمیرکاران
+    باتجربه به مقادیری عادت می‌کنند
+    که در عمل می‌بینند. مثلاً ممکن است
+    بگویند «در این خودروها، ولتاژ Pin ۳۰
+    در Cranking معمولاً ۱۱.۲V است».
+    اما این «معمولاً» از مشاهده
+    چند خودرو آمده؛ نه از سند فنی
+    یا شواهد گسترده.
+  </p>
+
+  <p>
+    اگر این مشاهده به‌عنوان Reference ثبت
+    شود، بدون بررسی دقیق، به یک
+    «استاندارد» تبدیل می‌شود که
+    ممکن است نادرست باشد. مثلاً
+    ممکن است آن چند خودرو،
+    همگی مشکل مشابهی داشته
+    باشند که باعث شده ولتاژ
+    پایین‌تر باشد.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>سه پرسش پیش از ارتقا Observation به Reference</p>
+    <p style="margin:0;">
+      <strong>۱.</strong> آیا این مشاهده در چند خودروی
+      با Configuration یکسان تکرار شده؟
+      <br>
+      <strong>۲.</strong> آیا آن خودروها وضعیت
+      سالمی داشتند که بتوان به مقدارشان
+      اعتماد کرد؟
+      <br>
+      <strong>۳.</strong> آیا سند فنی، مقدار
+      دیگری را ذکر نکرده که این مشاهده
+      با آن متناقض است؟
+      <br><br>
+      اگر پاسخ یکی از این پرسش‌ها «خیر»
+      باشد، مشاهده نباید به Reference
+      ارتقا یابد.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دو دام در این تفکیک</p>
+    <p style="margin:0;">
+      <strong>دام اول:</strong> یکی گرفتن As-Found با
+      Reference. یعنی مشاهده به استاندارد
+      تبدیل شود.
+      <br>
+      <strong>دام دوم:</strong> یکی گرفتن Difference
+      با علت. یعنی افت مشاهده‌شده
+      فوراً به «رله خراب» ترجمه شود.
+      <br><br>
+      هر دو دام، منشأ تشخیص‌های نادرست
+      در برق خودرو هستند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۱۵</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۷ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۷ — ادامه</span>
+  </header>
+
+  <h3>نگهداشت Reference در طول زمان</h3>
+  <p>
+    Reference نیز مانند هر Claim دیگری، در طول
+    زمان می‌تواند تغییر کند. دلایل تغییر
+    می‌تواند این باشد:
+  </p>
+
+  <ul>
+    <li>انتشار سند فنی جدید از خودروساز.</li>
+    <li>تجربه میدانی گسترده که مقدار
+    متفاوتی را نشان می‌دهد.</li>
+    <li>شناسایی خطا در Reference قبلی.</li>
+    <li>تغییر طراحی خودرو در سال ساخت
+    جدید.</li>
+  </ul>
+
+  <p>
+    هر بار که Reference تغییر می‌کند، این
+    تغییر باید در پروونانس ثبت شود.
+    Reference قبلی حذف نمی‌شود؛ به
+    وضعیت Superseded منتقل می‌شود.
+  </p>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>چرا Reference قبلی را حذف نمی‌کنیم</p>
+    <p style="margin:0;">
+      فرض کنید در سال ۱۴۰۰ یک Reference
+      برای Pin ۳۰ ثبت شد. در سال ۱۴۰۵
+      سند فنی جدید منتشر می‌شود و مقدار
+      Reference تغییر می‌کند.
+      <br><br>
+      اگر Reference قبلی را حذف کنیم،
+      تصمیم‌های ثبت‌شده بین ۱۴۰۰ و ۱۴۰۵
+      که بر اساس آن Reference گرفته
+      شده‌اند، بی‌پشتوانه می‌شوند.
+      <br><br>
+      راه درست: Reference قبلی به
+      Superseded منتقل شود و
+      مرجع آن برای تصمیم‌های
+      گذشته حفظ شود.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — سه Reference در طول زمان</p>
+    <p style="margin:0;">
+      <strong>Reference v1 (۱۳۹۸-۱۴۰۰):</strong>
+      حداقل ولتاژ Pin ۳۰ در Cranking = ۱۱.۵V.
+      منبع: سند فنی ۱۳۹۸.
+      <br>
+      <strong>Reference v2 (۱۴۰۰-۱۴۰۳):</strong>
+      حداقل ولتاژ Pin ۳۰ در Cranking = ۱۱.۲V.
+      منبع: سند فنی به‌روزرسانی‌شده ۱۴۰۰.
+      <br>
+      <strong>Reference v3 (۱۴۰۳-اکنون):</strong>
+      حداقل ولتاژ Pin ۳۰ در Cranking = ۱۱.۰V.
+      منبع: سند فنی جدید ۱۴۰۳ + شواهد میدانی
+      گسترده.
+      <br><br>
+      در سال ۱۴۰۱، تصمیمی که بر اساس
+      Reference v2 گرفته شده، امروز
+      هم قابل بازسازی است. سامانه
+      می‌داند که آن تصمیم در بستر
+      دانش زمان خودش گرفته شده.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۱۶</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۸ — کیفیت شواهد ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۸ — کیفیت شواهد</span>
+  </header>
+
+  <span class="section-tag">SECTION 08</span>
+  <h2>Quality، Strength و Independence</h2>
+
+  <p class="lead">
+    کیفیت Evidence، میزان حمایت Evidence از یک Claim
+    و وضعیت Hypothesis، سه مفهوم متفاوتند. اگر
+    این سه با هم ادغام شوند، ارزیابی دانش
+    به یک عدد مبهم فروکاسته می‌شود.
+  </p>
+
+  <h3>شش بُعد ارزیابی Evidence</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:32%;">بُعد</th>
+        <th>پرسشی که پاسخ می‌دهد</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Measurement Quality</td>
+        <td>ابزار، روش، نقطه و مرجع مناسب‌اند؟</td>
+      </tr>
+      <tr>
+        <td>Context Completeness</td>
+        <td>Variant، State، Condition و زمان معلوم است؟</td>
+      </tr>
+      <tr>
+        <td>Reproducibility</td>
+        <td>مشاهده دوباره قابل کسب است؟</td>
+      </tr>
+      <tr>
+        <td>Independence</td>
+        <td>شاهدها واقعاً مستقل‌اند یا کپی یک منبع‌اند؟</td>
+      </tr>
+      <tr>
+        <td>Claim Fit</td>
+        <td>شاهد دقیقاً همان ادعا را پشتیبانی می‌کند؟</td>
+      </tr>
+      <tr>
+        <td>Counter Evidence</td>
+        <td>شواهد مخالف ثبت شده‌اند؟</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="axiom">
+    <span class="label">اصل</span>
+    <p>
+      همه این ابعاد را در یک Trust Score پنهان نکنید؛
+      ضعف باید قابل مشاهده و قابل تشخیص بماند.
+    </p>
+  </div>
+
+  <h3>مثال — دو Evidence با کیفیت متفاوت</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Evidence با کیفیت بالا</p>
+    <p style="margin:0;">
+      «ولتاژ Pin ۳۰ رله R5، نسبت به منفی باتری،
+      با مولتی‌متر Fluke ۱۷، در خودروی X،
+      Variant A، State=CRANKING، دمای ۲°C،
+      بار کامل استارت، ۹.۱V، در ۳ اندازه‌گیری
+      تکرارشده».
+      <br><br>
+      همه شش بُعد در این Evidence رعایت شده.
+      قابل بازتولید، دامنه کامل، ابزار
+      مشخص، نقطه مشخص، شرایط کامل.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">✕</span>Evidence با کیفیت پایین</p>
+    <p style="margin:0;">
+      «ولتاژ Pin ۳۰ افت کرد».
+      <br><br>
+      چه مقدار افتاد؟ با چه ابزاری؟ در چه
+      شرایطی؟ مقدار مرجع چه بود؟ بدون
+      این اطلاعات، این Evidence
+      تقریباً بی‌فایده است.
+    </p>
+  </div>
+
+  <h3>استقلال شواهد — یک مثال روشن‌کننده</h3>
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>شواهد وابسته در مقابل مستقل</p>
+    <p style="margin:0;">
+      فرض کنید یک تعمیرکار در سه خودروی
+      مختلف، ولتاژ پایین Pin ۳۰ را مشاهده
+      کرده. این سه مشاهده، «سه شاهد مستقل»
+      نیستند، چون همه از یک منبع
+      (همان تعمیرکار)، یک روش
+      (همان مولتی‌متر)، و احتمالاً
+      یک سوگیری آمده‌اند.
+      <br><br>
+      اما اگر سه تعمیرکار مختلف در سه
+      کارگاه مختلف، با ابزارهای مختلف،
+      همان مشاهده را ثبت کنند، آن‌ها
+      سه شاهد مستقلند و توان
+      پشتیبانی‌شان از یک Claim
+      بسیار بالاتر است.
+    </p>
+  </div>
+
+  <div class="box purple">
+    <p class="box-title"><span class="icon">◆</span>چرا یک Trust Score واحد ممنوع است</p>
+    <p style="margin:0;">
+      دو Claim ممکن است هر دو «محتمل» باشند
+      ولی یکی منبع رسمی و Scope بسیار
+      محدود داشته باشد و دیگری منبع
+      میدانی با شواهد مستقل متعدد.
+      <br><br>
+      اگر یک عدد واحد (مثلاً ۰.۷) برای
+      هر دو ثبت شود، سامانه نمی‌تواند
+      تفاوت این دو را ببیند.
+      <br><br>
+      راه درست: ابعاد مختلف Confidence
+      جدا نگه داشته شوند تا ارزیاب
+      بتواند ببیند کدام بُعد قوی
+      و کدام بُعد ضعیف است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۱۷</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۸ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۸ — ادامه</span>
+  </header>
+
+  <h3>Claim Fit — یک بُعد که اغلب نادیده گرفته می‌شود</h3>
+  <p>
+    Claim Fit یعنی «آیا این شاهد، دقیقاً همان
+    Claim را پشتیبانی می‌کند؟». بسیاری از
+    Evidenceها در نگاه اول مرتبط به‌نظر
+    می‌رسند، اما در واقع Claim را
+    پشتیبانی نمی‌کنند.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — سه Claim، یک Evidence</p>
+    <p style="margin:0;">
+      Evidence: «در ۲۰ خودروی Variant A، ولتاژ
+      Pin ۳۰ در Cranking به‌طور میانگین ۱۱.۲V
+      بود».
+      <br><br>
+      <strong>Claim A:</strong> «ولتاژ Pin ۳۰ در Variant A
+      در Cranking معمولاً ۱۱.۲V است».
+      <br>
+      Claim Fit: بالا. این Evidence مستقیماً
+      این Claim را پشتیبانی می‌کند.
+      <br><br>
+      <strong>Claim B:</strong> «اگر ولتاژ Pin ۳۰ در
+      Cranking کمتر از ۱۱.۰V بود، مشکل
+      مسیر وجود دارد».
+      <br>
+      Claim Fit: متوسط. Evidence یک مقدار
+      معمول را نشان می‌دهد، اما نه یک
+      آستانه مشکل.
+      <br><br>
+      <strong>Claim C:</strong> «افت ولتاژ روی Pin ۳۰
+      در همه خودروها باعث خرابی رله
+      می‌شود».
+      <br>
+      Claim Fit: پایین. Evidence به
+      خرابی رله اشاره‌ای ندارد.
+    </p>
+  </div>
+
+  <h3>Counter Evidence — چرا باید ثبت شود</h3>
+  <p>
+    شواهد مخالف، بخشی از حافظه دانش هستند.
+    اگر یک شاهد، Claim را تضعیف می‌کند،
+    این شاهد باید در همان Claim ثبت
+    شود، نه اینکه نادیده گرفته شود.
+  </p>
+
+  <p>
+    دلیل این قاعده، اجتناب از «سوگیری
+    تأییدی» است. اگر فقط شواهد
+    موافق ثبت شوند، سامانه به تدریج
+    اعتماد کاذب پیدا می‌کند و
+    تصمیم‌هایش را با اطمینان
+    بیشتر از آنچه واقعاً شایسته
+    است، می‌گیرد.
+  </p>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — حذف شواهد مخالف</p>
+    <p style="margin:0;">
+      در برخی سامانه‌ها، شواهد مخالف
+      به‌عنوان «نویز» یا «استثنا» حذف
+      می‌شوند. این کار در کوتاه‌مدت
+      سامانه را ساده‌تر می‌کند، اما
+      در بلندمدت به یک سامانه با
+      اعتماد کاذب منجر می‌شود.
+      <br><br>
+      راه درست: شواهد مخالف ثبت شوند،
+      حتی اگر در نهایت رد شوند.
+      این شواهد در بازبینی‌های بعدی
+      می‌توانند ارزشمند باشند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۱۸</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۹ — وضعیت دانش ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۹ — وضعیت دانش</span>
+  </header>
+
+  <span class="section-tag">SECTION 09</span>
+  <h2>وضعیت دانش و عدم قطعیت</h2>
+
+  <p class="lead">
+    یک Claim در طول عمر خود، مراحل مختلفی را
+    طی می‌کند. از لحظه ثبت تا لحظه انتشار
+    عمومی، باید وضعیت آن روشن باشد. همچنین
+    باید مشخص شود که Claim در چه سطحی از
+    اطمینان قرار دارد.
+  </p>
+
+  <h3>هفت وضعیت دانش</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:26%;">وضعیت</th>
+        <th>معنا</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Draft</td>
+        <td>در حال تدوین؛ هنوز ارزیابی نشده.</td>
+      </tr>
+      <tr>
+        <td>Under Review</td>
+        <td>در حال ارزیابی توسط بازبین‌ها.</td>
+      </tr>
+      <tr>
+        <td>Active</td>
+        <td>پذیرفته‌شده برای Scope مشخص.</td>
+      </tr>
+      <tr>
+        <td>Disputed</td>
+        <td>اختلاف مستند درباره اعتبار یا معنا.</td>
+      </tr>
+      <tr>
+        <td>Superseded</td>
+        <td>نسخه جدید جایگزین شده است.</td>
+      </tr>
+      <tr>
+        <td>Deprecated</td>
+        <td>مصرف آن دیگر توصیه نمی‌شود.</td>
+      </tr>
+      <tr>
+        <td>Rejected</td>
+        <td>برای دانش فعال پذیرفته نشده.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>تفاوت وضعیت دانش با وضعیت فرضیه</h3>
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>دو مفهوم متفاوت</p>
+    <p style="margin:0;">
+      وضعیت دانش (Knowledge Status) وضعیت یک
+      Claim در لایه حاکمیت است. مثلاً یک
+      Rule می‌تواند Active باشد.
+      <br><br>
+      وضعیت فرضیه (Hypothesis Status) وضعیت
+      یک فرضیه در یک Case خاص است.
+      مثلاً در یک مورد، فرضیه «افزایش
+      مقاومت اتصال زمین» ممکن است
+      «محتمل» باشد.
+      <br><br>
+      این دو یکی نیستند. یک Rule می‌تواند
+      Active باشد، ولی Hypothesis یک
+      Case هنوز فقط «محتمل» باشد.
+      <br><br>
+      تفکیک این دو، از بزرگ‌ترین
+      منشأهای سردرگمی در سامانه‌های
+      تشخیصی جلوگیری می‌کند.
+    </p>
+  </div>
+
+  <h3>مثال — یک Claim در سه وضعیت مختلف</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Claim: «افت ولتاژ Pin ۳۰ بیش از ۰.۵V غیرمجاز است»</p>
+    <p style="margin:0;">
+      <strong>وضعیت اول — Draft:</strong> تعمیرکار در کارگاه
+      این را مشاهده کرده، اما هنوز کسی
+      آن را ارزیابی نکرده است.
+      <br>
+      <strong>وضعیت دوم — Under Review:</strong> بازبین
+      دامنه، شواهد و Counter Evidence را
+      بررسی می‌کند.
+      <br>
+      <strong>وضعیت سوم — Active:</strong> پس از تأیید
+      بازبین، Claim با دامنه مشخص
+      برای Variant A فعال می‌شود.
+      <br><br>
+      اگر در بازبینی‌های بعدی شواهد
+      مخالف قوی پیدا شود، ممکن است
+      Claim به Disputed یا Deprecated
+      منتقل شود.
+    </p>
+  </div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>چرا این هفت وضعیت لازم است</p>
+    <p style="margin:0;">
+      اگر فقط دو وضعیت (فعال/غیرفعال)
+      داشته باشیم، نمی‌توانیم تفاوت
+      بین این موارد را ببینیم:
+      <br>
+      • Claimی که در حال بررسی است.
+      <br>
+      • Claimی که مورد اختلاف است.
+      <br>
+      • Claimی که نسخه جدیدش آمده.
+      <br>
+      • Claimی که به‌دلیل کهنگی دیگر
+      توصیه نمی‌شود.
+      <br><br>
+      این تفاوت‌ها در تصمیم‌گیری اهمیت
+      دارند. مثلاً یک Claim Disputed
+      نباید به اندازه یک Claim
+      Active در تصمیم وزن داشته
+      باشد.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «وضعیت یکسان»</p>
+    <p style="margin:0;">
+      اگر همه Claimها به‌عنوان Active
+      ثبت شوند، سامانه نمی‌تواند
+      تفاوت بین دانش قطعی و دانش
+      در حال بررسی را ببیند. این
+      خطا در پروژه‌های کوچک
+      رایج است، اما در پروژه‌های
+      بزرگ به یک بحران حاکمیتی
+      تبدیل می‌شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۱۹</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۹ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۹ — ادامه</span>
+  </header>
+
+  <h3>گذر بین وضعیت‌ها</h3>
+  <p>
+    Claimها بین وضعیت‌های مختلف جابه‌جا می‌شوند.
+    این جابه‌جایی‌ها باید در Provenance ثبت
+    شوند تا مسیر زندگی Claim قابل
+    بازسازی باشد.
+  </p>
+
+  <div class="diagram">مسیرهای معمول بین وضعیت‌ها
+────────────────────────────
+Draft → Under Review → Active
+        ↓
+       Rejected
+        ↓
+       Draft (اصلاح و بازبینی)
+
+Active → Disputed (شواهد مخالف)
+Active → Deprecated (کهنگی یا خطا)
+Active → Superseded (نسخه جدید)
+
+Disputed → Active (حل اختلاف)
+Disputed → Deprecated
+Disputed → Superseded</div>
+
+  <p>
+    این گذرها، مانند چرخه حیات یک موجودیت زنده
+    هستند. هر Claim در طول عمر خود، ممکن
+    است چند بار بین وضعیت‌ها جابه‌جا شود.
+  </p>
+
+  <h3>مثال — چرخه زندگی یک Reference</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Reference افت ولتاژ Pin ۳۰</p>
+    <p style="margin:0;">
+      <strong>۱۳۹۸/۰۳ — Draft:</strong> استخراج از سند فنی.
+      <br>
+      <strong>۱۳۹۸/۰۵ — Under Review:</strong> بررسی توسط
+      بازبین دامنه.
+      <br>
+      <strong>۱۳۹۸/۰۶ — Active:</strong> تأیید و انتشار
+      برای Variant A.
+      <br>
+      <strong>۱۴۰۰/۰۸ — Disputed:</strong> یک مورد
+      متناقض در Variant B مشاهده شد.
+      <br>
+      <strong>۱۴۰۰/۰۹ — Active:</strong> پس از بررسی،
+      دامنه محدودتر به Variant A شد؛
+      اختلاف با تفکیک دامنه حل شد.
+      <br>
+      <strong>۱۴۰۳/۰۲ — Superseded:</strong> سند فنی
+      جدید منتشر شد و Reference جدید
+      جایگزین شد.
+      <br><br>
+      Reference قدیمی حذف نمی‌شود؛ برای
+      تصمیم‌های ۱۳۹۸ تا ۱۴۰۳ حفظ
+      می‌شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۲۰</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۰ — Confidence ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۰ — Confidence</span>
+  </header>
+
+  <span class="section-tag">SECTION 10</span>
+  <h2>Confidence با دلیل</h2>
+
+  <p class="lead">
+    اطمینان باید توضیح‌پذیر باشد. یک عدد بدون توضیح،
+    ارزش عملی ندارد. در حاکمیت دانش، اطمینان
+    باید از چند بُعد ساخته شود و هر بُعد
+    به‌طور مستقل قابل مشاهده باشد.
+  </p>
+
+  <h3>عوامل سازنده Confidence</h3>
+  <p>
+    اطمینان به یک Claim، از ترکیب این عوامل
+    ساخته می‌شود:
+  </p>
+
+  <ul>
+    <li>کیفیت Source.</li>
+    <li>کیفیت Evidence (شش بُعدی که پیش‌تر بحث شد).</li>
+    <li>انطباق Scope با داده‌های واقعی.</li>
+    <li>تکرارپذیری مشاهدات.</li>
+    <li>پشتیبانی مستقل از چند منبع.</li>
+    <li>حجم و کیفیت شواهد مخالف.</li>
+    <li>کیفیت Review انجام‌شده.</li>
+  </ul>
+
+  <div class="box purple">
+    <p class="box-title"><span class="icon">◆</span>دو Claim با یک سطح اطمینان، اما دو داستان متفاوت</p>
+    <p style="margin:0;">
+      دو Claim ممکن است هر دو «محتمل» باشند،
+      ولی یکی منبع رسمی و Scope بسیار
+      محدود داشته باشد و دیگری منبع
+      میدانی با شواهد مستقل متعدد.
+      <br><br>
+      یک عدد واحد این تفاوت را پنهان
+      می‌کند. اگر سامانه در هر دو مورد
+      فقط ببیند «محتمل»، نمی‌تواند
+      تفاوت را در تصمیم‌گیری لحاظ
+      کند.
+      <br><br>
+      راه درست: هر بُعد Confidence
+      جداگانه ثبت شود و در
+      تصمیم‌گیری، ابعاد مختلف
+      به‌طور مستقل وزن بگیرند.
+    </p>
+  </div>
+
+  <h3>مثال — دو Claim با توضیح Confidence</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Claim اول</p>
+    <p style="margin:0;">
+      «در Variant A، دمای ۲°C، Cranking،
+      افت بیش از ۰.۵V روی Pin ۳۰ غیرمجاز
+      است».
+      <br>
+      <strong>Source quality:</strong> بالا (سند فنی رسمی).
+      <br>
+      <strong>Evidence quality:</strong> بالا (۲۳ مورد
+      میدانی با ابزار و روش مشخص).
+      <br>
+      <strong>Scope fit:</strong> کامل.
+      <br>
+      <strong>Reproducibility:</strong> بالا.
+      <br>
+      <strong>Independence:</strong> خوب (منابع متعدد).
+      <br>
+      <strong>Counter evidence:</strong> ضعیف
+      (۲ مورد که باید بررسی شود).
+      <br>
+      <strong>Review:</strong> توسط سه بازبین مستقل.
+      <br>
+      <strong>Confidence:</strong> بالا.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Claim دوم</p>
+    <p style="margin:0;">
+      «در همه خودروهای سواری، افت Pin ۳۰
+      بیش از ۰.۵V غیرمجاز است».
+      <br>
+      <strong>Source quality:</strong> پایین (مشاهده
+      یک تعمیرکار).
+      <br>
+      <strong>Evidence quality:</strong> پایین
+      (یک مورد، بدون ابزار مشخص).
+      <br>
+      <strong>Scope fit:</strong> بسیار گسترده
+      و مبهم.
+      <br>
+      <strong>Reproducibility:</strong> نامشخص.
+      <br>
+      <strong>Independence:</strong> صفر (یک منبع).
+      <br>
+      <strong>Counter evidence:</strong> ثبت‌نشده.
+      <br>
+      <strong>Review:</strong> انجام‌نشده.
+      <br>
+      <strong>Confidence:</strong> پایین.
+    </p>
+  </div>
+
+  <div class="axiom">
+    <span class="label">اصل Confidence</span>
+    <p>
+      Confidence یک عدد نیست، یک ارزیابی چندبُعدی
+      است. اگر فقط یک عدد ثبت کنیم، در
+      تصمیم‌گیری نمی‌توانیم تفاوت بین
+      «اطمینان از یک منبع محدود» و
+      «اطمینان از چند منبع مستقل»
+      را ببینیم.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۲۱</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۰ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۰ — ادامه</span>
+  </header>
+
+  <h3>Confidence در تصمیم‌گیری روزمره</h3>
+  <p>
+    در تصمیم‌گیری روزمره، Confidence چگونه
+    وارد می‌شود؟ فرض کنید سامانه در یک
+    Case، دو فرضیه دارد و باید تصمیم
+    بگیرد کدام را اول آزمون کند.
+  </p>
+
+  <div class="diagram">مثال: انتخاب آزمون بعدی
+────────────────────────────
+فرضیه A: «افزایش مقاومت اتصال زمین»
+  Confidence: بالا (شواهد متعدد)
+  آزمون پیشنهادی: اندازه‌گیری افت ولتاژ G3
+
+فرضیه B: «خرابی رله»
+  Confidence: پایین (شواهد محدود)
+  آزمون پیشنهادی: اتصال رله معادل
+
+تصمیم: ابتدا آزمون فرضیه A.
+دلیل: Confidence بالاتر، احتمال بیشتری
+       دارد که فرضیه درست باشد.
+
+اگر آزمون A فرضیه را رد کرد،
+آنگاه سراغ فرضیه B می‌رویم.</div>
+
+  <p>
+    این ترتیب، بر اساس Confidence است.
+    اگر Confidence را به‌عنوان یک عدد
+    مبهم ثبت کنیم، ممکن است تصمیم
+    بر اساس عدد نادرست گرفته شود.
+  </p>
+
+  <h3>مثال — یک Claim با Confidence مختلط</h3>
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>Confidence مختلط</p>
+    <p style="margin:0;">
+      یک Claim ممکن است در بعضی ابعاد قوی و
+      در بعضی ابعاد ضعیف باشد. برای
+      نمونه:
+      <br><br>
+      «افت Pin ۳۰ بیش از ۰.۵V غیرمجاز است».
+      <br>
+      <strong>Source quality:</strong> بالا.
+      <br>
+      <strong>Evidence quality:</strong> متوسط
+      (شواهد میدانی از یک کارگاه).
+      <br>
+      <strong>Reproducibility:</strong> بالا.
+      <br>
+      <strong>Independence:</strong> پایین
+      (همه شواهد از یک منبع).
+      <br>
+      <strong>Counter evidence:</strong> چند مورد
+      که نیاز به بررسی دارند.
+      <br><br>
+      اگر سامانه فقط بگوید «Confidence:
+      متوسط»، این تفاوت‌ها دیده
+      نمی‌شوند. اما اگر بگوید
+      «Source: بالا، Evidence:
+      متوسط، Independence: پایین»،
+      بازبین می‌داند که برای
+      تقویت این Claim، باید
+      شواهد مستقل از منابع
+      دیگر جمع‌آوری کند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۲۲</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۱ — Pipeline ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۱ — Pipeline پذیرش</span>
+  </header>
+
+  <span class="section-tag">SECTION 11</span>
+  <h2>Pipeline پذیرش دانش</h2>
+
+  <p class="lead">
+    یک Claim برای آنکه از وضعیت Draft به وضعیت
+    Active منتقل شود، باید از یک مسیر مشخص
+    عبور کند. این مسیر، «پایپلاین پذیرش
+    دانش» است.
+  </p>
+
+  <h3>مراحل پایپلاین</h3>
+  <div class="diagram">Capture → Classify → Scope → Provenance → Evidence
+                         ↓
+                       Review
+                  ↙      ↓      ↘
+              Reject    Hold    Activate
+                                  ↓
+                             Monitor / Challenge
+                                  ↓
+                       Revise / Narrow / Supersede</div>
+
+  <ol>
+    <li>
+      <strong>Capture:</strong> Claim از یک منبع
+      (سند، مشاهده، Case، خروجی AI) استخراج
+      می‌شود.
+    </li>
+    <li>
+      <strong>Classify:</strong> نوع دانش تعیین
+      می‌شود (Reference، Rule، Pattern و…).
+    </li>
+    <li>
+      <strong>Scope:</strong> دامنه اعتبار مشخص
+      می‌شود؛ اگر ناقص است، ثبت
+      می‌شود که ناقص است.
+    </li>
+    <li>
+      <strong>Provenance:</strong> منبع و مسیر
+      ورود دانش ثبت می‌شود.
+    </li>
+    <li>
+      <strong>Evidence:</strong> شواهد موافق و
+      مخالف به Claim متصل می‌شوند.
+    </li>
+    <li>
+      <strong>Review:</strong> بازبینی متناسب
+      با نوع دانش انجام می‌شود.
+    </li>
+    <li>
+      <strong>Decision:</strong> یکی از سه حالت
+      انتخاب می‌شود: Reject، Hold
+      یا Activate.
+    </li>
+    <li>
+      <strong>Monitor:</strong> پس از فعال شدن،
+      Claim در طول زمان پایش
+      می‌شود.
+    </li>
+  </ol>
+
+  <h3>مثال — یک Claim در پایپلاین</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Claim: «افت Pin ۳۰ بیش از ۰.۵V غیرمجاز است»</p>
+    <p style="margin:0;">
+      <strong>Capture:</strong> استخراج از سند فنی،
+      فصل ۴، ص ۱۲.
+      <br>
+      <strong>Classify:</strong> نوع Reference.
+      <br>
+      <strong>Scope:</strong> Variant A، ECU
+      بوش، ۱۴۰۰-۱۴۰۲.
+      <br>
+      <strong>Provenance:</strong> نسخه سند، تاریخ
+      استخراج، استخراج‌کننده.
+      <br>
+      <strong>Evidence:</strong> دوازده مورد میدانی
+      موافق؛ دو مورد مخالف.
+      <br>
+      <strong>Review:</strong> توسط بازبین دامنه
+      و بازبین شواهد.
+      <br>
+      <strong>Decision:</strong> Activate (با
+      دامنه محدود و یادداشت
+      درباره شواهد مخالف).
+      <br>
+      <strong>Monitor:</strong> پایش در طول
+      زمان برای شواهد جدید.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «عبور از Review»</p>
+    <p style="margin:0;">
+      در فشار زمانی، گاهی Claimها
+      بدون عبور از Review فعال
+      می‌شوند. این کار در نگاه
+      اول سرعت ایجاد می‌کند،
+      اما در بلندمدت به یک
+      بحران حاکمیتی منجر
+      می‌شود.
+      <br><br>
+      راه درست: حتی در پروژه‌های
+      کوچک، Review نباید حذف
+      شود. اگر منابع بازبینی
+      محدود است، حداقل
+      بازبینی باید انجام
+      شود، اما نباید
+      به‌کل نادیده
+      گرفته شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۲۳</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۱ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۱ — ادامه</span>
+  </header>
+
+  <h3>سه حالت تصمیم در Review</h3>
+  <p>
+    پس از بازبینی، سه حالت ممکن است:
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Reject</p>
+    <p style="margin:0;">
+      Claim به‌عنوان دانش فعال پذیرفته
+      نمی‌شود. ممکن است به‌دلیل
+      Scope نامشخص، شواهد ضعیف،
+      یا متناقض بودن با دانش
+      موجود باشد.
+      <br><br>
+      نکته: Reject به معنای «حذف»
+      نیست. Claim در وضعیت
+      Rejected باقی می‌ماند و
+      می‌تواند بعداً با شواهد
+      جدید بازبینی شود.
+    </p>
+  </div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>Hold</p>
+    <p style="margin:0;">
+      Claim در وضعیت میانی باقی می‌ماند.
+      نه پذیرفته می‌شود، نه رد. منتظر
+      شواهد بیشتر یا بازبینی دقیق‌تر
+      است.
+      <br><br>
+      Hold برای Claimهایی مناسب است
+      که در نگاه اول معتبر به‌نظر
+      می‌رسند، اما شواهد کافی
+      برای فعال شدن ندارند.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Activate</p>
+    <p style="margin:0;">
+      Claim به‌عنوان دانش فعال پذیرفته
+      می‌شود. از این پس، می‌تواند
+      در تصمیم‌گیری‌ها استفاده
+      شود.
+      <br><br>
+      نکته: Activate در دامنه مشخص
+      انجام می‌شود. اگر Scope
+      ناقص است، Claim فقط
+      برای مصرف محدود فعال
+      می‌شود.
+    </p>
+  </div>
+
+  <h3>Monitor و Challenge — پایش پس از فعال شدن</h3>
+  <p>
+    پس از فعال شدن، Claim در طول زمان
+    پایش می‌شود. اگر شواهد مخالف
+    جدید یا نشانه‌های کهنگی ظاهر
+    شد، Claim دوباره بازبینی
+    می‌شود.
+  </p>
+
+  <p>
+    این پایش، از انجماد دانش جلوگیری
+    می‌کند. یک Claim که در سه سال
+    پیش معتبر بوده، ممکن است
+    امروز به‌دلیل تغییر طراحی
+    خودرو یا نسخه نرم‌افزار
+    جدید، دیگر معتبر نباشد.
+  </p>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۲۴</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۲ — نقش‌ها ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۲ — نقش‌ها</span>
+  </header>
+
+  <span class="section-tag">SECTION 12</span>
+  <h2>نقش‌ها و مسئولیت‌ها</h2>
+
+  <p class="lead">
+    حاکمیت دانش بدون نقش‌های مشخص، به هرج‌ومرج
+    تبدیل می‌شود. در این بخش، پنج نقش کلیدی
+    معرفی می‌شود که هر کدام مسئولیت
+    مشخصی در چرخه دانش دارد.
+  </p>
+
+  <h3>پنج نقش کلیدی</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:30%;">نقش</th>
+        <th>مسئولیت</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Knowledge Steward</td>
+        <td>سلامت چرخه، نسخه، منشأ و ثبت تصمیم‌ها.</td>
+      </tr>
+      <tr>
+        <td>Domain Reviewer</td>
+        <td>صحت معنای فنی و سازگاری با دامنه.</td>
+      </tr>
+      <tr>
+        <td>Evidence Reviewer</td>
+        <td>کیفیت و کفایت شواهد.</td>
+      </tr>
+      <tr>
+        <td>Scope Reviewer</td>
+        <td>Variant، Configuration و شرایط اعتبار.</td>
+      </tr>
+      <tr>
+        <td>Safety/Legal Reviewer</td>
+        <td>موارد نیازمند بررسی ایمنی یا حقوقی.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>شرح مسئولیت‌ها</h3>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Knowledge Steward</p>
+    <p style="margin:0;">
+      نگهبان کلی چرخه دانش است. وظیفه او
+      تضمین این است که هیچ Claimی بدون
+      عبور از پایپلاین پذیرش، به
+      دانش فعال تبدیل نشود. همچنین
+      مسئول نگهداری تاریخچه تغییرات،
+      نسخه‌بندی و Lineage است.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Domain Reviewer</p>
+    <p style="margin:0;">
+      بررسی می‌کند که Claim با واقعیت فنی
+      حوزه مطابقت دارد. برای Claimهای
+      حوزه برق و الکترونیک خودرو،
+      این نقش نیازمند تخصص فنی
+      در برق خودرو، ECU، شبکه و
+      مدارات است.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Evidence Reviewer</p>
+    <p style="margin:0;">
+      کیفیت و کفایت شواهد را بررسی می‌کند.
+      برای نمونه، برای یک Claim،
+      تعداد و کیفیت شواهد موافق
+      و مخالف، استقلال شواهد،
+      و انطباق Evidence با Claim
+      را ارزیابی می‌کند.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Scope Reviewer</p>
+    <p style="margin:0;">
+      دامنه اعتبار Claim را بررسی می‌کند.
+      برای نمونه، تعیین می‌کند
+      که Claim برای کدام Variant،
+      Configuration و Conditions
+      معتبر است.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Safety/Legal Reviewer</p>
+    <p style="margin:0;">
+      مواردی که به ایمنی یا حقوق
+      مرتبط است بررسی می‌کند.
+      برای نمونه، Claimهایی
+      که به آزمون‌های پرخطر
+      (Airbag، ترمز) اشاره
+      دارند، باید از این
+      بازبینی عبور کنند.
+    </p>
+  </div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>تعدد نقش‌ها در پروژه‌های کوچک</p>
+    <p style="margin:0;">
+      در یک پروژه کوچک، ممکن است یک نفر
+      چند نقش داشته باشد. اما حتی در
+      آن حالت، نقش‌ها و مراحل تصمیم
+      باید در ثبت حاکمیتی از هم
+      قابل تشخیص بمانند.
+      <br><br>
+      مثلاً اگر یک نفر هم Domain Reviewer
+      باشد و هم Evidence Reviewer،
+      در ثبت باید مشخص باشد که
+      کدام نقش در کدام مرحله
+      تصمیم گرفته است.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «نقش‌های نامرئی»</p>
+    <p style="margin:0;">
+      در بسیاری از پروژه‌های کوچک،
+      نقش‌ها نامرئی‌اند. یک نفر
+      همه کارها را انجام می‌دهد
+      بدون آنکه تصمیم‌هایش
+      به‌عنوان نقش‌های مختلف
+      ثبت شوند.
+      <br><br>
+      این کار در ابتدا ساده به‌نظر
+      می‌رسد، اما وقتی پروژه
+      بزرگ‌تر می‌شود، مشخص
+      نیست چه کسی مسئول چه
+      تصمیمی بوده است.
+      <br><br>
+      راه درست: حتی در پروژه
+      کوچک، هنگام ثبت
+      تصمیم، نقش تصمیم‌گیرنده
+      به‌طور صریح نوشته شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۲۵</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۲ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۲ — ادامه</span>
+  </header>
+
+  <h3>رابطه بین نقش‌ها</h3>
+  <p>
+    نقش‌ها در حاکمیت دانش، مستقل از هم نیستند.
+    در بسیاری از موارد، تصمیم‌گیری
+    نیازمند همکاری چند نقش است. برای
+    روشن شدن این روابط، یک نمونه
+    را در نظر بگیرید.
+  </p>
+
+  <div class="diagram">مثال: پذیرش یک Claim جدید
+────────────────────────────
+Claim: «افت Pin ۳۰ بیش از ۰.۵V
+        در Variant A غیرمجاز است».
+
+Knowledge Steward  → ثبت اولیه و
+                     تعیین وضعیت Draft.
+Domain Reviewer    → بررسی معنای فنی.
+Evidence Reviewer  → بررسی شواهد موافق
+                     و مخالف.
+Scope Reviewer     → بررسی دامنه Variant A.
+Safety/Legal       → بررسی مسائل ایمنی.
+Knowledge Steward  → تصمیم نهایی و
+                     ثبت در Provenance.</div>
+
+  <h3>تعارض بین نقش‌ها</h3>
+  <p>
+    گاهی دو نقش مختلف درباره یک Claim
+    به نتایج متفاوتی می‌رسند. برای
+    نمونه، Domain Reviewer ممکن
+    است Claim را از نظر فنی درست
+    بداند، اما Evidence Reviewer
+    شواهد را ناکافی ببیند.
+  </p>
+
+  <p>
+    در این حالت، Claim نباید به
+    وضعیت Active منتقل شود.
+    باید در وضعیت Hold باقی
+    بماند تا شواهد بیشتر
+    جمع‌آوری شود.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>قاعده تصمیم در تعارض نقش‌ها</p>
+    <p style="margin:0;">
+      هرگاه دو نقش مختلف درباره یک
+      Claim به نتیجه متفاوتی
+      برسند، تصمیم به سمت
+      محافظه‌کارانه‌تر می‌رود.
+      یعنی Claim فعال نمی‌شود
+      تا زمانی که هر دو نقش
+      به توافق برسند.
+      <br><br>
+      این قاعده، جلوی فعال شدن
+      Claimهای ضعیف را در
+      شرایط فشار می‌گیرد.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>چرا نقش‌ها از هم جدا هستند</p>
+    <p style="margin:0;">
+      تفکیک نقش‌ها، از یک خطای رایج
+      جلوگیری می‌کند: «تعارض
+      منافع». اگر یک نفر هم
+      Claim را پیشنهاد دهد و
+      هم آن را تأیید کند،
+      انگیزه‌ای برای
+      خودانتقادی وجود
+      ندارد.
+      <br><br>
+      تفکیک نقش‌ها، تضمین
+      می‌کند که Claimها
+      از چند زاویه بررسی
+      شوند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۲۶</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۳ — تعارض ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۳ — حل تعارض</span>
+  </header>
+
+  <span class="section-tag">SECTION 13</span>
+  <h2>پروتکل حل تعارض</h2>
+
+  <p class="lead">
+    در سامانه دانش، همیشه Claimهای متناقض
+    وجود دارند. این تناقض، نه یک فاجعه،
+    بلکه یک فرصت است. تفاوت‌ها معمولاً
+    نشان‌دهنده دامنه‌های متفاوت،
+    زمان‌های متفاوت یا منابع
+    متفاوتند.
+  </p>
+
+  <h3>مسیر حل تعارض</h3>
+  <div class="diagram">Conflict detected
+ ↓
+Semantic check
+ ↓
+Scope / Context / Time check
+ ↓
+Source / Provenance / Evidence check
+ ↓
+Resolution
+ ├─ coexist with narrower scopes
+ ├─ revise
+ ├─ supersede
+ ├─ retain as disputed
+ ├─ reject
+ └─ insufficient evidence → unknown</div>
+
+  <h3>پنج گام بررسی تعارض</h3>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>گام ۱ — بررسی معنایی</p>
+    <p style="margin:0;">
+      ابتدا بررسی کنید که دو Claim
+      واقعاً به یک چیز اشاره می‌کنند.
+      گاهی دو Claim متفاوت، به
+      دلیل تفاوت در واژگان،
+      متناقض به‌نظر می‌رسند اما
+      در واقع به دو جنبه متفاوت
+      اشاره دارند.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>گام ۲ — بررسی دامنه، بافت و زمان</p>
+    <p style="margin:0;">
+      بررسی کنید که دو Claim در یک
+      Variant، یک Condition و
+      یک بازه زمانی معتبرند یا
+      نه. بسیاری از تعارض‌های
+      ظاهری، از تفاوت دامنه
+      می‌آیند.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>گام ۳ — بررسی منبع و شواهد</p>
+    <p style="margin:0;">
+      منابع و شواهد هر دو Claim را
+      بررسی کنید. کدام منبع
+      معتبرتر است؟ کدام
+      شواهد قوی‌ترند؟ آیا
+      شواهد مستقل وجود
+      دارند؟
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>گام ۴ — تصمیم در مورد رابطه</p>
+    <p style="margin:0;">
+      پس از بررسی، تصمیم بگیرید که
+      دو Claim چگونه با هم
+      مرتبطند: می‌توانند در
+      کنار هم باشند (coexist)
+      یا یکی باید جایگزین
+      شود.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>گام ۵ — ثبت تصمیم و دلیل</p>
+    <p style="margin:0;">
+      تصمیم نهایی و دلیل آن باید
+      در Provenance هر دو
+      Claim ثبت شود تا
+      بعداً قابل بازسازی
+      باشد.
+    </p>
+  </div>
+
+  <h3>مثال — تعارض دو مرجع در یک Variant</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>دو مرجع متناقض</p>
+    <p style="margin:0;">
+      <strong>Claim A:</strong> «حداقل ولتاژ Pin ۳۰
+      در Cranking = ۱۱.۵V. منبع: سند فنی
+      ۱۳۹۸».
+      <br>
+      <strong>Claim B:</strong> «حداقل ولتاژ Pin ۳۰
+      در Cranking = ۱۱.۰V. منبع: سند فنی
+      ۱۴۰۳».
+      <br><br>
+      <strong>بررسی:</strong>
+      <br>
+      • معنایی: هر دو به یک چیز اشاره
+      می‌کنند (همان Pin).
+      <br>
+      • دامنه: هر دو برای Variant A.
+      <br>
+      • زمان: Claim A برای ۱۳۹۸-۱۴۰۲،
+      Claim B برای ۱۴۰۳-اکنون.
+      <br>
+      • منابع: هر دو سند رسمی.
+      <br><br>
+      <strong>تصمیم:</strong> دو Claim
+      در کنار هم معتبرند، اما در
+      بازه‌های زمانی متفاوت. Claim A
+      به Superseded منتقل می‌شود،
+      اما در حافظه تاریخی حفظ
+      می‌شود.
+    </p>
+  </div>
+
+  <div class="axiom">
+    <span class="label">ممنوعیت</span>
+    <p>
+      حل تعارض صرفاً با رأی اکثریت یا Trust
+      Score واحد ممنوع است. تصمیم
+      باید دلیل و شواهد قابل بازسازی
+      داشته باشد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۲۷</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۳ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۳ — ادامه</span>
+  </header>
+
+  <h3>انواع تعارض و راه‌حل‌ها</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:30%;">نوع تعارض</th>
+        <th>راه‌حل معمول</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>تعارض دامنه</td>
+        <td>هر Claim برای دامنه خودش معتبر است؛ دامنه‌ها ناهمپوشان‌اند.</td>
+      </tr>
+      <tr>
+        <td>تعارض زمانی</td>
+        <td>Claim جدید جایگزین قبلی می‌شود (Supersede)؛ قبلی برای تاریخچه حفظ می‌شود.</td>
+      </tr>
+      <tr>
+        <td>تعارض منبع</td>
+        <td>منبع معتبرتر اولویت می‌گیرد؛ اگر مساوی بودند، وضعیت Disputed حفظ می‌شود.</td>
+      </tr>
+      <tr>
+        <td>تعارض تفسیری</td>
+        <td>بازبینی شواهد و ارزیابی جدید؛ ممکن است یکی از تفسیرها رد شود.</td>
+      </tr>
+      <tr>
+        <td>تعارض کل‌نگر</td>
+        <td>هر دو Claim به‌عنوان معتبر در وضعیت Disputed باقی می‌مانند تا شواهد بیشتر.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>مثال — تعارض با دامنه متفاوت</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>دو Claim با دامنه متفاوت</p>
+    <p style="margin:0;">
+      <strong>Claim A:</strong> «افت Pin ۳۰ بیش از
+      ۰.۵V در Variant A غیرمجاز است».
+      <br>
+      <strong>Claim B:</strong> «افت Pin ۳۰ بیش از
+      ۰.۸V در Variant B غیرمجاز است».
+      <br><br>
+      <strong>تحلیل:</strong> این دو Claim
+      متناقض نیستند؛ در دامنه‌های
+      متفاوت معتبرند. هر دو
+      Active می‌مانند.
+      <br><br>
+      <strong>نکته مهم:</strong> اگر کسی
+      بخواهد Claim A را به Variant B
+      تعمیم دهد، این یک Claim جدید
+      است که باید شواهد مستقل
+      داشته باشد.
+    </p>
+  </div>
+
+  <h3>مثال — تعارض باقی‌مانده</h3>
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>تعارض حل‌نشده</p>
+    <p style="margin:0;">
+      دو منبع معتبر (سند فنی خودروساز
+      و یک مطالعه میدانی گسترده)
+      دو مقدار متفاوت را برای
+      یک پارامتر در یک Variant
+      ارائه می‌دهند. هر دو منبع
+      قابل اتکا هستند و شواهد
+      کافی برای رد یکی وجود
+      ندارد.
+      <br><br>
+      <strong>تصمیم:</strong> هر دو Claim
+      در وضعیت Disputed باقی
+      می‌مانند. سامانه در
+      تصمیم‌گیری، هر دو
+      مقدار را به‌عنوان
+      «محدوده» گزارش
+      می‌کند، نه یک
+      مقدار قطعی.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۲۸</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۴ — Versioning ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۴ — Versioning</span>
+  </header>
+
+  <span class="section-tag">SECTION 14</span>
+  <h2>Versioning و Lineage</h2>
+
+  <p class="lead">
+    دانش، یک موجودیت زنده است. در طول عمر
+    خود تغییر می‌کند، اصلاح می‌شود،
+    منقضی می‌شود. برای آنکه این
+    تغییرات قابل ردیابی باشند،
+    نیازمند یک نظام نسخه‌بندی
+    و ثبت Lineage هستیم.
+  </p>
+
+  <h3>شش نوع رویداد نسخه‌بندی</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:24%;">رویداد</th>
+        <th>ثبت لازم</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Create</td>
+        <td>Claim، سازنده، Source، Scope، زمان.</td>
+      </tr>
+      <tr>
+        <td>Review</td>
+        <td>بازبین، نقش، Evidence و نتیجه.</td>
+      </tr>
+      <tr>
+        <td>Revise</td>
+        <td>دقیقاً چه چیزی و چرا تغییر کرد.</td>
+      </tr>
+      <tr>
+        <td>Supersede</td>
+        <td>رابطه نسخه قدیم و جدید.</td>
+      </tr>
+      <tr>
+        <td>Narrow/Expand</td>
+        <td>دامنه قبل/بعد و شواهد مبنا.</td>
+      </tr>
+      <tr>
+        <td>Retire</td>
+        <td>علت خروج از مصرف.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>پنج پرسش اجباری تغییر</h3>
+  <p>
+    هر بار که یک Claim تغییر می‌کند، پنج
+    پرسش باید پاسخ داده شود. این
+    کار از تغییرات ناخواسته و
+    ناسازگاری با دانش موجود
+    جلوگیری می‌کند.
+  </p>
+
+  <div class="diagram">پنج پرسش اجباری تغییر
+────────────────────────────
+۱. چه تغییر کرد؟
+   متن دقیق تغییر، از چه به چه.
+
+۲. چه شاهدی باعث شد؟
+   Evidence که تغییر را ایجاب کرد.
+
+۳. چه دامنه‌ای متأثر است؟
+   Scopeهای تحت تأثیر.
+
+۴. چه دانش وابسته‌ای ممکن است متأثر شود؟
+   Claimهای وابسته، Ruleها، Testها.
+
+۵. چه چیزی هنوز نامطمئن است؟
+   محدودیت‌های باقی‌مانده.</div>
+
+  <h3>مثال — تغییر یک Reference در طول زمان</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Reference حداقل ولتاژ Pin ۳۰</p>
+    <p style="margin:0;">
+      <strong>Create (۱۳۹۸/۰۳):</strong> حداقل ولتاژ
+      = ۱۱.۵V. منبع: سند فنی ۱۳۹۸.
+      <br>
+      <strong>Review (۱۳۹۸/۰۵):</strong> تأیید توسط
+      Domain Reviewer و Evidence Reviewer.
+      <br>
+      <strong>Narrow (۱۴۰۰/۰۸):</strong> دامنه از
+      «همه خودروهای این نسل» به «Variant A»
+      محدود شد. شاهد: مشاهده رفتار
+      متفاوت در Variant B.
+      <br>
+      <strong>Revise (۱۴۰۳/۰۲):</strong> حداقل ولتاژ
+      به ۱۱.۰V تغییر یافت. شاهد: سند
+      فنی جدید + شواهد میدانی
+      گسترده.
+      <br>
+      <strong>Supersede (۱۴۰۳/۰۲):</strong> نسخه
+      جدید جایگزین نسخه قبلی شد،
+      اما نسخه قبلی برای تاریخچه
+      حفظ شد.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «overwrite»</p>
+    <p style="margin:0;">
+      یکی از بزرگ‌ترین دام‌های حاکمیت
+      دانش، حذف نسخه قدیم به‌جای
+      حفظ آن است. اگر نسخه قدیم
+      حذف شود، تصمیم‌های گذشته
+      که بر اساس آن گرفته
+      شده‌اند، بی‌پشتوانه
+      می‌شوند.
+      <br><br>
+      راه درست: هیچ نسخه‌ای حذف
+      نمی‌شود. نسخه قدیم به
+      وضعیت Superseded
+      منتقل می‌شود و
+      برای مراجعه
+      تاریخی باقی
+      می‌ماند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۲۹</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۴ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۴ — ادامه</span>
+  </header>
+
+  <h3>Lineage — تبار یک Claim</h3>
+  <p>
+    Lineage به معنای «تبار یک Claim» است.
+    یعنی می‌توانیم دنبال کنیم که
+    یک Claim فعلی، از کدام
+    Claimهای قبلی آمده، چه
+    تغییراتی کرده و به کدام
+    Claimهای بعدی منجر
+    شده است.
+  </p>
+
+  <div class="diagram">مثال Lineage
+────────────────────────────
+Claim v1 (۱۳۹۸/۰۳)
+  حداقل ولتاژ Pin ۳۰ = ۱۱.۵V
+  │
+  ├─ Narrow → Claim v2 (۱۴۰۰/۰۸)
+  │           دامنه محدود به Variant A
+  │           │
+  │           └─ Revise → Claim v3 (۱۴۰۳/۰۲)
+  │                       حداقل ولتاژ = ۱۱.۰V
+  │                       وضعیت: Active
+  │
+  └─ وابستگی: Rule A بر اساس Claim v1
+              Rule A به‌روزرسانی شد در ۱۴۰۳</div>
+
+  <p>
+    این تبار، به سامانه اجازه می‌دهد
+    در صورت نیاز، همه تصمیم‌های
+    تحت تأثیر یک Claim را
+    بیابد. مثلاً اگر Claim v3
+    فردا بازبینی شود، سامانه
+    می‌داند کدام Ruleها و
+    کدام تصمیم‌های ثبت‌شده
+    باید بازبینی شوند.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>چرا Lineage اهمیت دارد</p>
+    <p style="margin:0;">
+      بدون Lineage، سامانه در
+      صورت تغییر یک Claim،
+      نمی‌داند کدام بخش‌های
+      دیگر دانش باید
+      بازبینی شوند. نتیجه:
+      ناسازگاری تدریجی در
+      سامانه.
+      <br><br>
+      با Lineage، سامانه
+      می‌تواند «اثر تغییر»
+      را محاسبه کند و
+      بازبینی هدفمند
+      انجام دهد.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>سه نوع وابستگی در Lineage</p>
+    <p style="margin:0;">
+      <strong>وابستگی سلسله‌مراتبی:</strong>
+      Claim جدید از Claim قدیم آمده
+      (Version).
+      <br>
+      <strong>وابستگی معنایی:</strong>
+      Ruleها که بر اساس یک Claim
+      ساخته شده‌اند.
+      <br>
+      <strong>وابستگی تصمیمی:</strong>
+      تصمیم‌های ثبت‌شده که
+      بر اساس یک Claim گرفته
+      شده‌اند.
+      <br><br>
+      همه این وابستگی‌ها باید
+      در بازبینی در نظر گرفته
+      شوند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۳۰</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۵ — Concept Drift ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۵ — Concept Drift</span>
+  </header>
+
+  <span class="section-tag">SECTION 15</span>
+  <h2>Concept Drift و بازبینی</h2>
+
+  <p class="lead">
+    دانش، در خلأ رشد نمی‌کند. خودرو، ECU،
+    نرم‌افزار، تعمیرات و شرایط میدان
+    در طول زمان تغییر می‌کنند. این
+    تغییرات می‌توانند اعتبار
+    یک Claim را جابه‌جا کنند.
+  </p>
+
+  <h3>منابع Concept Drift</h3>
+  <ul>
+    <li><strong>تغییر طراحی خودرو:</strong> نسخه جدید
+    یک Variant با سیم‌کشی، ECU یا
+    کالیبراسیون متفاوت.</li>
+    <li><strong>تغییر نرم‌افزار:</strong> نسخه جدید
+    ECU که رفتار تشخیصی متفاوت
+    دارد.</li>
+    <li><strong>تعمیرات:</strong> تعمیرات غیرکارخانه‌ای
+    که ممکن است رفتار سیستم را
+    تغییر دهند.</li>
+    <li><strong>شرایط میدان:</strong> تغییر
+    شرایط استفاده (آب‌وهوا،
+    سبک رانندگی).</li>
+    <li><strong>فرسودگی:</strong> تغییر رفتار
+    قطعات در طول زمان.</li>
+  </ul>
+
+  <h3>بازبینی بر اساس اهمیت، نه زمان</h3>
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>قاعده بازبینی</p>
+    <p style="margin:0;">
+      بازبینی باید بر اساس اهمیت،
+      تغییر محصول، شواهد مخالف
+      یا نشانه‌های تغییر انجام
+      شود. یک فاصله زمانی
+      ثابت برای همه دانش،
+      الزام منطقی نیست.
+      <br><br>
+      یعنی یک Claim که در یک
+      Variant پرکاربرد است،
+      ممکن است زودتر بازبینی
+      شود، در حالی که Claim
+      مربوط به یک Variant
+      کم‌کاربرد می‌تواند
+      بازه بازبینی
+      طولانی‌تری داشته
+      باشد.
+    </p>
+  </div>
+
+  <h3>منقضی شدن در برابر غلط بودن</h3>
+  <p>
+    یکی از تفکیک‌های مهم در Concept
+    Drift، تفکیک «منقضی شدن» از
+    «غلط بودن» است.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:30%;">وضعیت</th>
+        <th>معنا</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>غلط بودن</td>
+        <td>Claim از ابتدا نادرست بوده است.</td>
+      </tr>
+      <tr>
+        <td>منقضی شدن</td>
+        <td>Claim در دامنه اصلی خود درست بوده، اما دامنه تغییر کرده است.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — تفاوت غلط بودن و منقضی شدن</p>
+    <p style="margin:0;">
+      <strong>سناریو ۱ — غلط بودن:</strong> در سال
+      ۱۳۹۸، یک Reference اشتباه (حداقل
+      ولتاژ ۱۰.۵V به‌جای ۱۱.۵V) ثبت
+      شد. این Reference از ابتدا
+      غلط بود.
+      <br><br>
+      <strong>سناریو ۲ — منقضی شدن:</strong> در سال
+      ۱۴۰۳، خودروساز ECU جدید با
+      کالیبراسیون متفاوت عرضه
+      کرد. Reference قدیم برای
+      ECU قدیم درست بود، اما
+      برای ECU جدید دیگر
+      معتبر نیست.
+      <br><br>
+      این دو وضعیت، راه‌حل
+      متفاوتی دارند. اولی
+      نیازمند تصحیح است.
+      دومی نیازمند دامنه‌بندی
+      مجدد.
+    </p>
+  </div>
+
+  <h3>محدود کردن Scope به‌جای حذف</h3>
+  <p>
+    اگر یک Rule فقط بیش از حد
+    عمومی بوده، می‌توان Scope
+    را محدود کرد بدون حذف
+    Evidence تاریخی.
+  </p>
+
+  <p>
+    برای نمونه، یک Rule که
+    برای «همه خودروهای این
+    مدل» معتبر فرض شده بود،
+    می‌تواند به «Variant A»
+    محدود شود. Evidenceهای
+    قبلی که در Variant A
+    جمع شده‌اند، همچنان
+    معتبر می‌مانند.
+  </p>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «حذف به‌جای محدودسازی»</p>
+    <p style="margin:0;">
+      در برخی سامانه‌ها، وقتی یک
+      Rule در یک مورد خاص
+      کار نمی‌کند، به‌کل حذف
+      می‌شود. این کار در
+      نگاه اول ساده است،
+      اما در واقع دانش
+      ارزشمند را از دست
+      می‌دهد.
+      <br><br>
+      راه درست: به‌جای حذف،
+      Scope را محدود کنید.
+      Evidenceهای قبلی
+      حفظ می‌شوند و
+      در دامنه خودشان
+      معتبر می‌مانند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۳۱</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۵ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۵ — ادامه</span>
+  </header>
+
+  <h3>نشانه‌های هشدار Concept Drift</h3>
+  <p>
+    سیستم باید بتواند نشانه‌های تغییر را تشخیص
+    دهد. این نشانه‌ها معمولاً در قالب موارد
+    زیر ظاهر می‌شوند:
+  </p>
+
+  <ul>
+    <li><strong>افزایش شواهد مخالف:</strong> تعداد مواردی
+    که با یک Claim متناقضند در حال
+    افزایش است.</li>
+    <li><strong>کاهش قدرت پیش‌بینی:</strong> Claimهایی
+    که در گذشته دقیق بودند، اکنون
+    پیش‌بینی‌هایشان درست از آب
+    در نمی‌آید.</li>
+    <li><strong>افزایش موارد Disputed:</strong> تعداد
+    Claimهایی که در وضعیت Disputed
+    هستند، در یک حوزه خاص،
+    افزایش یافته.</li>
+    <li><strong>تغییر توزیع Observationها:</strong>
+    مقادیر مشاهده‌شده در عمل،
+    توزیع متفاوتی پیدا
+    کرده‌اند.</li>
+  </ul>
+
+  <h3>مثال — یک سناریوی کامل Concept Drift</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>تغییر کالیبراسیون ECU</p>
+    <p style="margin:0;">
+      در سال ۱۳۹۸، یک Reference برای
+      حداقل ولتاژ Pin ۳۰ ثبت شد:
+      ۱۱.۵V.
+      <br><br>
+      در سال ۱۴۰۰، خودروساز نسخه
+      جدید ECU را با کالیبراسیون
+      متفاوت عرضه کرد. ECU
+      جدید، ولتاژ کاری Pin ۳۰
+      را کمی پایین‌تر تنظیم
+      می‌کند.
+      <br><br>
+      در سال ۱۴۰۱، تعمیرکاران شروع
+      کردند به مشاهده مقادیر
+      پایین‌تر در خودروهای
+      جدید. این مشاهدات به
+      تدریج جمع شدند.
+      <br><br>
+      در سال ۱۴۰۲، Evidence Reviewer
+      متوجه شد که شواهد مخالف
+      در حال افزایش است.
+      <br><br>
+      در سال ۱۴۰۳، پس از بررسی،
+      تصمیم گرفته شد که
+      Reference به دو بخش
+      تقسیم شود: یکی برای
+      ECU قدیم (۱۱.۵V) و
+      یکی برای ECU جدید
+      (۱۱.۰V).
+    </p>
+  </div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>درس این سناریو</p>
+    <p style="margin:0;">
+      Concept Drift در برق خودرو،
+      اغلب از تغییر در قطعات
+      یا نرم‌افزار می‌آید.
+      سامانه‌ای که این
+      تغییرات را نبیند،
+      به تدریج از واقعیت
+      جدا می‌شود.
+      <br><br>
+      راه درست: ایجاد یک
+      سازوکار پایش دائمی
+      که نشانه‌های تغییر
+      را زود تشخیص
+      دهد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۳۲</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۶ — Case to Knowledge ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۶ — از Case به Knowledge</span>
+  </header>
+
+  <span class="section-tag">SECTION 16</span>
+  <h2>از Case به Knowledge</h2>
+
+  <p class="lead">
+    یک Case تشخیصی، یک تجربه منفرد است. برای
+    تبدیل آن به دانش قابل انتقال، باید
+    از یک چرخه مشخص عبور کند. در این
+    چرخه، Case به Pattern، Pattern به
+    Claim و Claim به دانش فعال
+    تبدیل می‌شود.
+  </p>
+
+  <h3>چرخه تبدیل</h3>
+  <div class="diagram">Case Evidence
+   ↓
+Observed Pattern
+   ↓
+Candidate Claim
+   ↓
+Scope + Alternatives
+   ↓
+Evidence Aggregation
+   ↓
+Review
+   ├─ local knowledge
+   ├─ revised reference
+   ├─ diagnostic rule
+   ├─ test knowledge
+   ├─ negative knowledge
+   └─ knowledge gap</div>
+
+  <h3>شرح مراحل چرخه</h3>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Case Evidence</p>
+    <p style="margin:0;">
+      نقطه شروع، یک Case تشخیصی است:
+      یک خودرو با یک نشانه،
+      مشاهدات، فرضیه‌ها،
+      آزمون‌ها و نتیجه.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Observed Pattern</p>
+    <p style="margin:0;">
+      در Case، یک الگو مشاهده می‌شود:
+      مثلاً «افت ولتاژ روی مسیر
+      زمین زیر بار».
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Candidate Claim</p>
+    <p style="margin:0;">
+      الگو به یک Claim تبدیل
+      می‌شود، اما در وضعیت
+      Draft باقی می‌ماند.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Scope + Alternatives</p>
+    <p style="margin:0;">
+      دامنه Claim مشخص می‌شود.
+      Alternatives (تفسیرهای
+      جایگزین) نیز ثبت
+      می‌شوند.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Evidence Aggregation</p>
+    <p style="margin:0;">
+      شواهد از Caseهای مشابه
+      جمع‌آوری می‌شوند. اگر
+      Caseهای مشابه در
+      Variantهای مختلف
+      یافت شوند، این
+      یک یافته مهم
+      است.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Review</p>
+    <p style="margin:0;">
+      بازبینی توسط نقش‌های
+      مختلف. خروجی
+      Review می‌تواند
+      یکی از شش حالت
+      زیر باشد.
+    </p>
+  </div>
+
+  <h3>شش خروجی ممکن از Review</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:30%;">خروجی</th>
+        <th>معنا</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Local Knowledge</td>
+        <td>دانش محلی که فقط برای همان Case یا خودرو معتبر است.</td>
+      </tr>
+      <tr>
+        <td>Revised Reference</td>
+        <td>اصلاح یک Reference موجود بر اساس شواهد جدید.</td>
+      </tr>
+      <tr>
+        <td>Diagnostic Rule</td>
+        <td>قاعده تشخیصی جدید که از الگوی مشاهده‌شده استخراج شده.</td>
+      </tr>
+      <tr>
+        <td>Test Knowledge</td>
+        <td>دانش درباره یک آزمون مؤثر یا غیرمؤثر.</td>
+      </tr>
+      <tr>
+        <td>Negative Knowledge</td>
+        <td>دانش درباره محدودیت یا عدم اعتبار.</td>
+      </tr>
+      <tr>
+        <td>Knowledge Gap</td>
+        <td>اعلام این که شکاف دانشی وجود دارد.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — یادگیری ≠ افزودن Rule</p>
+    <p style="margin:0;">
+      یادگیری الزاماً به معنی افزودن
+      Rule جدید نیست. ممکن است
+      بهترین خروجی، محدود کردن
+      یک Rule، ثبت استثنا،
+      اصلاح Reference یا اعلام
+      Knowledge Gap باشد.
+      <br><br>
+      اگر سامانه به‌طور خودکار
+      هر Case را به Rule تبدیل
+      کند، در چند ماه، صدها
+      Rule ضعیف و متناقض
+      تولید می‌شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۳۳</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۶ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۶ — ادامه</span>
+  </header>
+
+  <h3>مثال — سه Case، یک الگو</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>سه Case با نشانه مشابه</p>
+    <p style="margin:0;">
+      <strong>Case 1:</strong> خودروی X، Variant A،
+      نشانه: «فن کار نمی‌کند». علت: افزایش
+      مقاومت اتصال زمین G3.
+      <br>
+      <strong>Case 2:</strong> خودروی Y، Variant A،
+      نشانه: «فن کار نمی‌کند». علت: افزایش
+      مقاومت اتصال زمین G3.
+      <br>
+      <strong>Case 3:</strong> خودروی Z، Variant A،
+      نشانه: «فن کار نمی‌کند». علت: افزایش
+      مقاومت اتصال زمین G3.
+      <br><br>
+      <strong>الگوی مشاهده‌شده:</strong> در سه مورد،
+      افزایش مقاومت اتصال G3 علت بوده.
+      <br><br>
+      <strong>Candidate Claim:</strong> «در Variant A،
+      افزایش مقاومت اتصال G3 می‌تواند
+      علت عدم کارکرد فن باشد».
+      <br><br>
+      <strong>Scope:</strong> Variant A، سال ۱۴۰۰-۱۴۰۲.
+      <br><br>
+      <strong>Alternatives:</strong> ممکن است در
+      موارد دیگر، علت «خرابی رله» یا
+      «خرابی خود فن» باشد.
+      <br><br>
+      <strong>تصمیم:</strong> Candidate Claim
+      به‌عنوان یک Diagnostic Rule
+      با دامنه محدود و به‌عنوان
+      «محتمل» فعال می‌شود.
+    </p>
+  </div>
+
+  <h3>مثال — Caseهای متناقض</h3>
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>شواهد متناقض</p>
+    <p style="margin:0;">
+      اگر در بین Caseها، برخی علت‌های
+      متفاوت داشته باشند، این
+      تفاوت خودش یک یافته است.
+      <br><br>
+      مثلاً: ۵ مورد با علت «افزایش
+      مقاومت G3»، ۲ مورد با علت
+      «خرابی رله». در این حالت،
+      نمی‌توان گفت «همه موارد
+      از افزایش مقاومت G3
+      می‌آیند».
+      <br><br>
+      راه درست: Claim به‌عنوان
+      «محتمل‌ترین علت: افزایش
+      مقاومت G3» ثبت شود،
+      با ذکر Alternatives
+      و شواهد متناقض.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۳۴</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۷ — طبقه‌بندی شکست ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۷ — طبقه‌بندی شکست</span>
+  </header>
+
+  <span class="section-tag">SECTION 17</span>
+  <h2>طبقه‌بندی شکست چرخه دانش</h2>
+
+  <p class="lead">
+    حتی در سامانه‌های حاکمیتی خوب، شکست‌هایی
+    رخ می‌دهد. آنچه اهمیت دارد این است
+    که شکست‌ها شناخته‌شده و طبقه‌بندی
+    شوند، تا بتوان آن‌ها را رفع
+    کرد.
+  </p>
+
+  <h3>هشت دسته شکست</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:30%;">دسته</th>
+        <th>نمونه خودرویی</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Knowledge Gap</td>
+        <td>برای یک نشانه خاص، هیچ Rule یا Reference در سامانه وجود ندارد.</td>
+      </tr>
+      <tr>
+        <td>Knowledge Quality</td>
+        <td>دانش قدیمی یا ضعیف که با واقعیت فعلی نمی‌خواند.</td>
+      </tr>
+      <tr>
+        <td>Model Gap</td>
+        <td>یک مفهوم لازم (مثلاً یک نوع سیگنال) قابل نمایش نیست.</td>
+      </tr>
+      <tr>
+        <td>Scope/Configuration Gap</td>
+        <td>دانش Variant A برای Variant B استفاده می‌شود.</td>
+      </tr>
+      <tr>
+        <td>Observation Gap</td>
+        <td>شاهد ناقص یا کم‌کیفیت است.</td>
+      </tr>
+      <tr>
+        <td>Test Gap</td>
+        <td>آزمون تفکیک‌کننده مناسب برای یک فرضیه وجود ندارد.</td>
+      </tr>
+      <tr>
+        <td>Reasoning Gap</td>
+        <td>شواهد وجود داشته، اما تفسیر اشتباه بوده.</td>
+      </tr>
+      <tr>
+        <td>Governance Gap</td>
+        <td>فرایند نسخه‌بندی، انتشار یا بازبینی شکست خورده است.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>مثال — هر شکست در عمل چگونه ظاهر می‌شود</h3>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Knowledge Gap</p>
+    <p style="margin:0;">
+      یک خودرو با نشانه جدید وارد کارگاه
+      می‌شود. سامانه هیچ Reference
+      یا Rule مرتبطی ندارد. این
+      شکست باید به‌عنوان «Knowledge
+      Gap» ثبت شود تا اولویت‌بندی
+      شود.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Model Gap</p>
+    <p style="margin:0;">
+      سامانه نمی‌تواند یک «سیگنال با
+      فرکانس متغیر در طول زمان»
+      را مدل کند، چون مدل
+      فعلی فقط دامنه و
+      فرکانس ثابت را
+      پشتیبانی می‌کند. این
+      یک Model Gap است.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Test Gap</p>
+    <p style="margin:0;">
+      سامانه دو فرضیه دارد، اما
+      هیچ آزمون تفکیک‌کننده‌ای
+      بین آن‌ها نمی‌شناسد.
+      این وضعیت به‌عنوان
+      Test Gap ثبت
+      می‌شود.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>Reasoning Gap</p>
+    <p style="margin:0;">
+      شواهد کافی برای تشخیص
+      درست وجود داشته، اما
+      سامانه به نتیجه
+      نادرست رسیده. این
+      یک خطا در سطح
+      استدلال است و
+      باید به‌عنوان
+      Reasoning Gap
+      ثبت شود.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — طبقه‌بندی نادرست شکست</p>
+    <p style="margin:0;">
+      اگر یک شکست را در
+      دسته اشتباه طبقه‌بندی
+      کنیم، راه‌حل نادرستی
+      برای آن انتخاب
+      می‌کنیم. مثلاً
+      اگر یک Governance
+      Gap را به‌عنوان
+      Knowledge Gap
+      ببینیم، سعی
+      می‌کنیم دانش
+      جدید جمع کنیم،
+      در حالی که
+      مشکل در فرایند
+      بوده است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۳۵</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۷ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۷ — ادامه</span>
+  </header>
+
+  <h3>چگونه شکست‌ها را شناسایی کنیم</h3>
+  <p>
+    شناسایی شکست‌ها نیازمند سازوکارهای
+    پایش است. برخی از این سازوکارها
+    خودکار، برخی نیازمند
+    بازبینی انسانی‌اند.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:32%;">شکست</th>
+        <th>سازوکار شناسایی</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Knowledge Gap</td>
+        <td>ثبت نشانه‌هایی که در سامانه، Claim مرتبطی ندارند.</td>
+      </tr>
+      <tr>
+        <td>Knowledge Quality</td>
+        <td>پایش نرخ شواهد مخالف جدید در Claimهای موجود.</td>
+      </tr>
+      <tr>
+        <td>Model Gap</td>
+        <td>ثبت مواردی که تیم فنی نمی‌تواند با مدل فعلی نمایش دهد.</td>
+      </tr>
+      <tr>
+        <td>Scope Gap</td>
+        <td>پایش مواردی که Scope Claim با Context خودروی فعلی تطبیق ندارد.</td>
+      </tr>
+      <tr>
+        <td>Observation Gap</td>
+        <td>بازبینی خودکار Observationهای ناقص.</td>
+      </tr>
+      <tr>
+        <td>Test Gap</td>
+        <td>ثبت مواردی که در آن‌ها فرضیه‌ها بدون آزمون تفکیک‌کننده باقی می‌مانند.</td>
+      </tr>
+      <tr>
+        <td>Reasoning Gap</td>
+        <td>مقایسه تصمیم‌های سامانه با نتیجه نهایی (در صورت دسترسی).</td>
+      </tr>
+      <tr>
+        <td>Governance Gap</td>
+        <td>بازبینی دوره‌ای فرایندهای نسخه‌بندی، انتشار و بازبینی.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>درس اصلی این بخش</p>
+    <p style="margin:0;">
+      شکست‌ها در حاکمیت دانش،
+      بخشی از چرخه طبیعی‌اند.
+      آنچه مهم است، تشخیص
+      درست و پاسخ مناسب
+      است. یک سامانه
+      حاکمیتی خوب،
+      سامانه‌ای نیست
+      که هیچ شکستی
+      ندارد؛ سامانه‌ای
+      است که شکست‌ها
+      را زود تشخیص
+      می‌دهد و برای
+      هر شکست،
+      راه‌حل
+      مناسب
+      دارد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۳۶</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۸ — دانش منفی ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۸ — دانش منفی</span>
+  </header>
+
+  <span class="section-tag">SECTION 18</span>
+  <h2>دانش منفی و محدودیت‌ها</h2>
+
+  <p class="lead">
+    دانستن «چه چیزی کار نمی‌کند» بخشی از
+    دانش است. در بسیاری از سامانه‌ها
+    فقط دانش مثبت ثبت می‌شود؛ اما
+    دانش منفی به همان اندازه
+    ارزشمند است.
+  </p>
+
+  <h3>چهار نوع دانش منفی</h3>
+  <ul>
+    <li>
+      <strong>عدم اعتبار دامنه‌ای:</strong> «این Reference
+      برای Variant دیگر معتبر نیست».
+    </li>
+    <li>
+      <strong>عدم کفایت آزمون:</strong> «این آزمون در حالت
+      بی‌بار، سلامت مسیر توان را اثبات
+      نمی‌کند».
+    </li>
+    <li>
+      <strong>عدم کفایت DTC:</strong> «این DTC به‌تنهایی
+      علت قطعه را ثابت نمی‌کند».
+    </li>
+    <li>
+      <strong>رد یک فرضیه در یک Case خاص:</strong>
+      «این فرضیه در Case مشخص با شواهد
+      رد شده است».
+    </li>
+  </ul>
+
+  <h3>مثال — چهار نمونه در بافت خودرویی</h3>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>نمونه اول — عدم اعتبار دامنه‌ای</p>
+    <p style="margin:0;">
+      «Reference حداقل ولتاژ Pin ۳۰ = ۱۱.۵V
+      برای Variant A معتبر است، اما برای
+      Variant B معتبر نیست».
+      <br><br>
+      این دانش منفی، جلوی تعمیم ناخواسته
+      را می‌گیرد.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>نمونه دوم — عدم کفایت آزمون</p>
+    <p style="margin:0;">
+      «اندازه‌گیری ولتاژ Pin ۸۷ در حالت
+      بی‌بار (فن وصل نیست) به‌تنهایی
+      برای اثبات سلامت مسیر توان
+      کافی نیست».
+      <br><br>
+      این دانش منفی، تعمیرکار را به
+      سمت اندازه‌گیری در حالت
+      بارگذاری هدایت می‌کند.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>نمونه سوم — عدم کفایت DTC</p>
+    <p style="margin:0;">
+      «DTC P0335 به‌تنهایی ثابت نمی‌کند
+      که سنسور میل‌لنگ معیوب است».
+      <br><br>
+      این دانش منفی، جلوی پرش علّی
+      از DTC به «سنسور خراب» را
+      می‌گیرد.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>نمونه چهارم — رد یک فرضیه در یک Case</p>
+    <p style="margin:0;">
+      «در Case شماره ۱۴۰۳-۰۲-۱۵، فرضیه
+      "خرابی رله" با آزمون "اتصال
+      مستقیم فن به باتری" رد شد».
+      <br><br>
+      این دانش منفی، در Caseهای
+      بعدی با نشانه مشابه
+      می‌تواند مفید باشد.
+    </p>
+  </div>
+
+  <div class="box purple">
+    <p class="box-title"><span class="icon">★</span>قاعده دانش منفی</p>
+    <p style="margin:0;">
+      دانش منفی معمولاً Scope‌دار
+      است و نباید بدون دلیل به
+      ممنوعیت مطلق تبدیل شود.
+      <br><br>
+      «این آزمون در حالت بی‌بار،
+      سلامت مسیر توان را اثبات
+      نمی‌کند» یک دانش منفی
+      Scope‌دار است. اما
+      «هرگز از اندازه‌گیری
+      بی‌بار استفاده نکن»
+      یک ممنوعیت مطلق است
+      که ممکن است در
+      برخی موارد
+      نادرست
+      باشد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۳۷</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۸ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۸ — ادامه</span>
+  </header>
+
+  <h3>چرا دانش منفی ارزشمند است</h3>
+  <p>
+    دانش منفی، ارزش خود را در چند
+    موقعیت نشان می‌دهد:
+  </p>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>جلوگیری از تعمیم ناخواسته</p>
+    <p style="margin:0;">
+      وقتی می‌دانیم یک Reference
+      برای Variant B معتبر
+      نیست، جلوی تعمیم
+      ناخواسته را می‌گیریم.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>هدایت به آزمون درست</p>
+    <p style="margin:0;">
+      وقتی می‌دانیم یک آزمون
+      در حالت بی‌بار کافی
+      نیست، به سمت آزمون
+      درست هدایت
+      می‌شویم.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>جلوگیری از پرش علّی</p>
+    <p style="margin:0;">
+      وقتی می‌دانیم یک DTC
+      به‌تنهایی علت را
+      ثابت نمی‌کند،
+      از پرش علّی
+      جلوگیری
+      می‌کنیم.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>صرفه‌جویی در زمان</p>
+    <p style="margin:0;">
+      دانش منفی از Caseهای
+      قبلی، در Caseهای
+      بعدی صرفه‌جویی
+      در زمان ایجاد
+      می‌کند.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «حذف دانش منفی»</p>
+    <p style="margin:0;">
+      در برخی سامانه‌ها،
+      دانش منفی حذف
+      می‌شود چون
+      «اطلاعات مثبت
+      نیست». این
+      کار باعث
+      می‌شود
+      همان
+      خطاهای
+      گذشته
+      تکرار
+      شوند.
+      <br><br>
+      راه درست: دانش
+      منفی، بخش
+      رسمی از
+      حافظه
+      دانش
+      است.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۳۸</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۹ — Test Knowledge ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۹ — Test Knowledge</span>
+  </header>
+
+  <span class="section-tag">SECTION 19</span>
+  <h2>حاکمیت Test Knowledge</h2>
+
+  <p class="lead">
+    آزمون، یکی از ابزارهای اصلی تشخیص
+    است. اگر دانش مربوط به آزمون‌ها
+    مدیریت نشود، سامانه نمی‌تواند
+    به‌درستی تصمیم بگیرد که کدام
+    آزمون را اول انجام دهد.
+  </p>
+
+  <h3>هشت جزء یک Test Knowledge</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:24%;">جزء</th>
+        <th>پرسشی که پاسخ می‌دهد</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Target</td>
+        <td>چه چیزی بررسی می‌شود؟</td>
+      </tr>
+      <tr>
+        <td>Precondition</td>
+        <td>چه شرایطی لازم است؟</td>
+      </tr>
+      <tr>
+        <td>Procedure</td>
+        <td>چگونه اجرا می‌شود؟</td>
+      </tr>
+      <tr>
+        <td>Outcomes</td>
+        <td>نتیجه‌های ممکن چه معنایی دارند؟</td>
+      </tr>
+      <tr>
+        <td>Discrimination</td>
+        <td>کدام فرضیه‌ها را تفکیک می‌کند؟</td>
+      </tr>
+      <tr>
+        <td>Safety</td>
+        <td>ریسک و Stop Condition چیست؟</td>
+      </tr>
+      <tr>
+        <td>Evidence</td>
+        <td>چه شاهدی تولید می‌کند؟</td>
+      </tr>
+      <tr>
+        <td>Limitations</td>
+        <td>کجا قابل تفسیر نیست؟</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>مثال — یک Test Knowledge کامل</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>آزمون اتصال مستقیم فن به باتری</p>
+    <p style="margin:0;">
+      <strong>Target:</strong> بررسی سلامت موتور فن.
+      <br>
+      <strong>Precondition:</strong> برق خودرو قطع؛
+      فن از رله جدا شده.
+      <br>
+      <strong>Procedure:</strong> اتصال مستقیم پایه
+      مثبت فن به قطب مثبت باتری و
+      پایه منفی به قطب منفی،
+      برای ۲ ثانیه.
+      <br>
+      <strong>Outcomes:</strong>
+      <br>
+      • اگر فن چرخید: فن سالم است.
+      <br>
+      • اگر فن نچرخید: فن معیوب است.
+      <br>
+      • اگر فن با تأخیر چرخید: فن یا
+      مسیر آن ممکن است مشکل
+      داشته باشد.
+      <br>
+      <strong>Discrimination:</strong> این آزمون
+      فرضیه «فن معیوب» را از
+      فرضیه‌های دیگر جدا
+      می‌کند.
+      <br>
+      <strong>Safety:</strong> بدون ریسک جدی؛
+      Stop Condition: اگر بوی
+      سوختگی یا دود مشاهده
+      شد، متوقف شود.
+      <br>
+      <strong>Evidence:</strong> چرخیدن یا نچرخیدن
+      فن، به‌عنوان شاهد مستقیم
+      سلامت یا خرابی.
+      <br>
+      <strong>Limitations:</strong> این آزمون
+      بار کامل را شبیه‌سازی
+      نمی‌کند؛ در برخی
+      موارد، فن در بی‌بار
+      می‌چرخد اما در
+      بار کامل مشکل
+      دارد.
+    </p>
+  </div>
+
+  <h3>چرا Test Knowledge جدا مدیریت می‌شود</h3>
+  <p>
+    Test Knowledge با Rule و Reference
+    متفاوت است. یک Rule می‌گوید
+    «چه چیزی درست است»؛ یک
+    Test Knowledge می‌گوید
+    «چگونه تفاوت را تشخیص
+    دهیم». این دو، کارکرد
+    متفاوتی دارند و
+    باید جدا مدیریت
+    شوند.
+  </p>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «آزمون بدون مستندسازی»</p>
+    <p style="margin:0;">
+      در بسیاری از کارگاه‌ها،
+      آزمون‌ها به‌صورت شفاهی
+      و غیرمستند انجام
+      می‌شوند. اگر یک
+      آزمون خوب پیدا
+      شد، اما مستند
+      نشد، در آینده
+      نمی‌توان از آن
+      استفاده
+      کرد.
+      <br><br>
+      راه درست: هر آزمون
+      مؤثر باید به‌عنوان
+      Test Knowledge
+      با هشت جزء
+      ثبت شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۳۹</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۱۹ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۱۹ — ادامه</span>
+  </header>
+
+  <h3>انتخاب آزمون بعدی — کاربرد Test Knowledge</h3>
+  <p>
+    در یک Case، سامانه ممکن است چند فرضیه
+    داشته باشد و باید تصمیم بگیرد
+    کدام آزمون را اول انجام دهد.
+    این تصمیم، بر اساس Test
+    Knowledge گرفته می‌شود.
+  </p>
+
+  <div class="diagram">مثال: انتخاب آزمون
+────────────────────────────
+فرضیه‌های باز:
+A. رله معیوب
+B. فن معیوب
+C. ECU فرمان نمی‌دهد
+D. افت ولتاژ روی G3
+
+آزمون‌های موجود:
+T1: اتصال مستقیم فن (Discrimination: بالا)
+T2: چک ولتاژ Pin 85 (Discrimination: متوسط)
+T3: اندازه‌گیری G3 (Discrimination: متوسط)
+
+تحلیل:
+T1 فرضیه B را از A، C، D جدا می‌کند.
+T2 فرضیه C را از A، B، D جدا می‌کند.
+T3 فرضیه D را از A، B، C جدا می‌کند.
+
+تصمیم: ابتدا T1 (قدرت تفکیک بالا،
+                هزینه پایین، بی‌خطر).
+
+اگر T1 فن را سالم تشخیص داد،
+آنگاه سراغ T2 و T3 می‌رویم.</div>
+
+  <h3>سه معیار انتخاب آزمون</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:30%;">معیار</th>
+        <th>توضیح</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>قدرت تفکیک</td>
+        <td>آزمون چند فرضیه را از هم جدا می‌کند؟</td>
+      </tr>
+      <tr>
+        <td>هزینه و ریسک</td>
+        <td>آزمون چقدر زمان، هزینه یا ریسک دارد؟</td>
+      </tr>
+      <tr>
+        <td>برگشت‌پذیری</td>
+        <td>آیا نتیجه آزمون قابل بازگشت است؟</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    این سه معیار، در انتخاب آزمون بعدی
+    به کار می‌روند. ابتدا آزمون‌هایی
+    که قدرت تفکیک بالا، هزینه و
+    ریسک پایین و برگشت‌پذیری
+    بالا دارند، انجام
+    می‌شوند.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>چرا Test Knowledge در حاکمیت دانش اهمیت دارد</p>
+    <p style="margin:0;">
+      بدون Test Knowledge، سامانه
+      نمی‌تواند تصمیم بگیرد
+      که کدام آزمون را اول
+      انجام دهد. نتیجه:
+      آزمون‌های تصادفی
+      یا آزمون‌های تکراری
+      که زمان و هزینه
+      را هدر می‌دهند.
+      <br><br>
+      با Test Knowledge، سامانه
+      می‌تواند از میان
+      آزمون‌های موجود،
+      بهترین را انتخاب
+      کند و ترتیب آزمون‌ها
+      را بهینه سازد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۴۰</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۰ — AI ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۰ — AI</span>
+  </header>
+
+  <span class="section-tag">SECTION 20</span>
+  <h2>AI تحت قرارداد حاکمیت</h2>
+
+  <p class="lead">
+    هوش مصنوعی می‌تواند در بسیاری از
+    مراحل حاکمیت دانش کمک کند.
+    اما این کمک، باید در چارچوب
+    مشخصی باشد. AI نباید
+    صاحب اختیار حقیقت شود.
+  </p>
+
+  <h3>AI چه کارهایی می‌تواند بکند</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:50%;">AI می‌تواند</th>
+        <th>AI نمی‌تواند بدون Review</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Claim استخراج کند.</td>
+        <td>Claim را حقیقت فعال کند.</td>
+      </tr>
+      <tr>
+        <td>Scope پیشنهاد دهد.</td>
+        <td>Scope را خودکار تعمیم دهد.</td>
+      </tr>
+      <tr>
+        <td>تعارض احتمالی پیدا کند.</td>
+        <td>تعارض را خودسرانه حل کند.</td>
+      </tr>
+      <tr>
+        <td>Evidence را گروه‌بندی کند.</td>
+        <td>کیفیت آن را صرفاً از زبان متن تعیین کند.</td>
+      </tr>
+      <tr>
+        <td>Rule پیشنهاد کند.</td>
+        <td>Rule را بی‌پشتوانه منتشر کند.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>مثال — AI در استخراج Claim</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>نقش AI در یک سند فنی</p>
+    <p style="margin:0;">
+      یک سند فنی خودروساز با ۲۰۰ صفحه
+      به سامانه داده می‌شود. AI
+      می‌تواند:
+      <br>
+      • فصل‌های مختلف را تفکیک کند.
+      <br>
+      • Claimهای بالقوه را استخراج
+      کند.
+      <br>
+      • برای هر Claim، منبع دقیق
+      (فصل، ص، نسخه) را ثبت
+      کند.
+      <br>
+      • پیشنهاد کند که این Claim
+      چه نوع دانشی است.
+      <br><br>
+      اما AI نمی‌تواند تصمیم بگیرد
+      که کدام Claim باید فعال
+      شود. این تصمیم، بر
+      عهده نقش‌های
+      انسانی است.
+    </p>
+  </div>
+
+  <h3>مثال — AI در شناسایی تعارض</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>AI به‌عنوان دستیار تشخیص تعارض</p>
+    <p style="margin:0;">
+      دو Claim با موضوع مشابه در سامانه
+      وجود دارد:
+      <br>
+      • Claim A: حداقل ولتاژ Pin ۳۰ = ۱۱.۵V
+      (Variant A).
+      <br>
+      • Claim B: حداقل ولتاژ Pin ۳۰ = ۱۱.۰V
+      (Variant A).
+      <br><br>
+      AI می‌تواند این تعارض بالقوه را
+      تشخیص دهد و به بازبین اطلاع
+      دهد. اما AI نمی‌تواند تصمیم
+      بگیرد که کدام Claim درست
+      است. این تصمیم نیازمند
+      بررسی Scope، زمان،
+      منبع و شواهد است.
+    </p>
+  </div>
+
+  <div class="axiom">
+    <span class="label">قرارداد AI</span>
+    <p>
+      خروجی زبانی، حتی اگر بسیار
+      قانع‌کننده باشد، جای Source،
+      Provenance، Scope و Evidence
+      را نمی‌گیرد.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «AI صاحب حقیقت»</p>
+    <p style="margin:0;">
+      در برخی سامانه‌ها، AI
+      به‌عنوان صاحب حقیقت
+      در نظر گرفته می‌شود
+      و خروجی آن مستقیماً
+      به دانش فعال تبدیل
+      می‌شود. این کار
+      در نگاه اول
+      کارآمد است، اما
+      در بلندمدت به
+      بحران حاکمیتی
+      منجر می‌شود.
+      <br><br>
+      راه درست: AI دستیار
+      است، نه صاحب
+      اختیار. هر خروجی
+      AI باید از مسیر
+      Review عبور
+      کند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۴۱</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۰ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۰ — ادامه</span>
+  </header>
+
+  <h3>سه سطح استفاده از AI</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:26%;">سطح</th>
+        <th>نقش AI</th>
+        <th>نیاز به Review</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>سطح ۱ — استخراج</td>
+        <td>استخراج Claim از متن</td>
+        <td>بله</td>
+      </tr>
+      <tr>
+        <td>سطح ۲ — پیشنهاد</td>
+        <td>پیشنهاد Scope، Evidence یا Rule</td>
+        <td>بله</td>
+      </tr>
+      <tr>
+        <td>سطح ۳ — تحلیل</td>
+        <td>شناسایی تعارض، گروه‌بندی Evidence</td>
+        <td>بله برای تصمیم نهایی</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    در همه سه سطح، Review انسانی
+    ضروری است. AI در هیچ
+    سطحی نمی‌تواند مستقیم
+    به دانش فعال تبدیل
+    شود.
+  </p>
+
+  <h3>مثال — مرزهای AI</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>AI و تشخیص خودرو</p>
+    <p style="margin:0;">
+      تصور کنید سامانه‌ای مبتنی بر AI
+      ادعا می‌کند: «بر اساس شواهد
+      موجود، علت احتمالی خرابی،
+      رله R5 است».
+      <br><br>
+      این ادعا در سامانه، به‌عنوان
+      یک Candidate Claim ثبت
+      می‌شود، نه یک حقیقت
+      فعال. برای فعال شدن،
+      باید از مسیر Review
+      عبور کند:
+      <br>
+      • چه شواهدی این Claim را
+      پشتیبانی می‌کند؟
+      <br>
+      • چه شواهدی مخالف آن است؟
+      <br>
+      • در چه دامنه‌ای معتبر است؟
+      <br>
+      • در چه شرایطی می‌تواند
+      نادرست باشد؟
+      <br>
+      • آیا Review توسط نقش‌های
+      مختلف انجام شده؟
+      <br><br>
+      تنها پس از عبور از این
+      مسیر، Claim می‌تواند
+      در تصمیم‌گیری به
+      کار برود.
+    </p>
+  </div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>چرا این قرارداد اهمیت دارد</p>
+    <p style="margin:0;">
+      AI در تولید متن بسیار قوی است.
+      این قدرت، اگر بدون قرارداد
+      باشد، می‌تواند به تولید
+      انبوهی از Claimهای
+      ظاهراً معتبر اما
+      بی‌پشتوانه منجر
+      شود.
+      <br><br>
+      قرارداد AI، جلوی این
+      مشکل را می‌گیرد.
+      AI به‌عنوان
+      دستیار کارآمد
+      باقی می‌ماند،
+      اما حقیقت از
+      مسیر حاکمیت
+      عبور می‌کند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۴۲</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۱ — حسابرسی ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۱ — حسابرسی</span>
+  </header>
+
+  <span class="section-tag">SECTION 21</span>
+  <h2>حسابرسی و ردیابی تصمیم</h2>
+
+  <p class="lead">
+    برای آنکه تصمیم‌های سامانه قابل اتکا
+    باشند، باید بتوان مسیر از Decision
+    تا Source را بازسازی کرد. این
+    مسیر، دو طرف دارد: از تصمیم
+    به شواهد، و از تصمیم به
+    دانشی که به کار رفته.
+  </p>
+
+  <h3>دو مسیر حسابرسی</h3>
+  <div class="diagram">مسیر اول — از تصمیم به Observation:
+
+Decision
+ ↓
+Hypothesis / Reasoning
+ ↓
+Evidence
+ ↓
+Observation / Measurement
+ ↓
+Context + Variant
+ ↓
+Method + Instrument
+
+مسیر دوم — از تصمیم به دانش:
+
+Decision
+ ↓
+Knowledge Rule used
+ ↓
+Rule Version
+ ↓
+Claim
+ ↓
+Provenance + Review
+ ↓
+Source / Evidence</div>
+
+  <h3>پرسش‌های حسابرسی</h3>
+  <ul>
+    <li>کدام Claimها در این تصمیم استفاده شدند؟</li>
+    <li>نسخه آن‌ها چه بود؟</li>
+    <li>Scope آن‌ها با خودروی فعلی منطبق بود؟</li>
+    <li>چه شواهد موافق و مخالف وجود داشت؟</li>
+    <li>چه فرضیه‌هایی رد شدند؟</li>
+    <li>اگر دانش امروز تغییر کند، کدام تصمیم‌ها تحت
+    تأثیر قرار می‌گیرند؟</li>
+  </ul>
+
+  <h3>مثال — حسابرسی یک تصمیم</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>تصمیم: «افزایش مقاومت اتصال G3 علت اصلی است»</p>
+    <p style="margin:0;">
+      <strong>Observationها:</strong>
+      <br>
+      • افت ولتاژ روی Pin ۳۰ در Cranking.
+      <br>
+      • ولتاژ G3 پایین‌تر از حد معمول.
+      <br><br>
+      <strong>Evidence:</strong>
+      <br>
+      • اندازه‌گیری با مولتی‌متر Fluke ۱۷.
+      <br>
+      • در خودروی X، Variant A، دمای ۲°C.
+      <br><br>
+      <strong>Knowledge Rules used:</strong>
+      <br>
+      • Rule R-G3-01: «افت Pin ۳۰ بیش از
+      ۰.۵V در Cranking، نشانه مشکل
+      مسیر است» (نسخه ۲، Active).
+      <br>
+      • Reference REF-P30-02: «حداقل
+      ولتاژ Pin ۳۰ در Variant A = ۱۱.۵V»
+      (نسخه ۳، Active).
+      <br><br>
+      <strong>Hypotheses rejected:</strong>
+      <br>
+      • «فن معیوب» — با اتصال مستقیم
+      فن به باتری رد شد.
+      <br>
+      • «رله معیوب» — با تعویض رله
+      معادل رد شد.
+      <br><br>
+      <strong>Decision:</strong> «افزایش
+      مقاومت اتصال G3 علت اصلی
+      است».
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>چرا حسابرسی اهمیت دارد</p>
+    <p style="margin:0;">
+      حسابرسی در چند موقعیت
+      حیاتی است:
+      <br>
+      • در بازبینی یک تصمیم
+      گذشته: چرا این
+      نتیجه گرفته شد؟
+      <br>
+      • در بروز خطا: کدام
+      بخش از مسیر اشتباه
+      بود؟
+      <br>
+      • در به‌روزرسانی دانش:
+      اگر یک Claim تغییر
+      کند، کدام تصمیم‌ها
+      تحت تأثیر قرار
+      می‌گیرند؟
+      <br>
+      • در آموزش: چگونه
+      سامانه به این
+      نتیجه رسید؟
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «تصمیم بدون مسیر»</p>
+    <p style="margin:0;">
+      اگر سامانه فقط نتیجه را
+      ثبت کند، بدون مسیر
+      استدلال، در بلندمدت
+      نمی‌تواند از تجربه‌های
+      گذشته یاد بگیرد و
+      نمی‌تواند خطاهای
+      خود را شناسایی
+      کند.
+      <br><br>
+      راه درست: هر تصمیم
+      مهم باید مسیر
+      استدلال خود را
+      حمل کند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۴۳</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۱ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۱ — ادامه</span>
+  </header>
+
+  <h3>سه سطح حسابرسی</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:26%;">سطح</th>
+        <th>پرسش</th>
+        <th>ابزار</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>سطح ۱ — کوتاه‌مدت</td>
+        <td>در همین Case، چه چیزهایی رد یا تأیید شد؟</td>
+        <td>مسیر Observation → Evidence → Hypothesis</td>
+      </tr>
+      <tr>
+        <td>سطح ۲ — میان‌مدت</td>
+        <td>در تصمیم‌های مشابه، چه الگویی وجود دارد؟</td>
+        <td>تحلیل چند Case با نشانه مشابه</td>
+      </tr>
+      <tr>
+        <td>سطح ۳ — بلندمدت</td>
+        <td>آیا دانشی که در تصمیم‌ها استفاده شده، هنوز معتبر است؟</td>
+        <td>پایش تغییرات دانش و اثر آن بر تصمیم‌ها</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>مثال — اثر تغییر دانش بر تصمیم‌های گذشته</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>تغییر Reference و پیامد آن</p>
+    <p style="margin:0;">
+      فرض کنید Reference «حداقل ولتاژ Pin ۳۰
+      در Cranking = ۱۱.۵V» در سال ۱۴۰۳
+      به ۱۱.۰V تغییر می‌کند. با
+      حسابرسی، سامانه می‌تواند
+      بیابد که:
+      <br>
+      • در ۱۲ تصمیم ثبت‌شده
+      بین ۱۳۹۸ تا ۱۴۰۳، این
+      Reference استفاده شده.
+      <br>
+      • در ۳ تصمیم از این ۱۲،
+      مقدار ولتاژ مشاهده‌شده
+      بین ۱۱.۰V و ۱۱.۵V بوده
+      و با Reference جدید،
+      آن تصمیم‌ها دیگر
+      معتبر نیستند.
+      <br><br>
+      سامانه می‌تواند این ۳
+      تصمیم را برای بازبینی
+      علامت‌گذاری کند.
+    </p>
+  </div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>چرا حسابرسی دو مسیر دارد</p>
+    <p style="margin:0;">
+      مسیر اول (از تصمیم به Observation)
+      به ما می‌گوید «چه چیزهایی
+      در این تصمیم استفاده شد».
+      این مسیر، برای بازبینی
+      Case به کار می‌رود.
+      <br><br>
+      مسیر دوم (از تصمیم به دانش)
+      به ما می‌گوید «کدام دانش
+      در این تصمیم نقش داشت».
+      این مسیر، برای بررسی
+      اثر تغییرات دانش به
+      کار می‌رود.
+      <br><br>
+      هر دو مسیر در حسابرسی
+      لازم‌اند. یکی بدون
+      دیگری، تصویر ناقصی
+      می‌دهد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۴۴</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۲ — Release ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۲ — انتشار</span>
+  </header>
+
+  <span class="section-tag">SECTION 22</span>
+  <h2>انتشار و بسته دانش</h2>
+
+  <p class="lead">
+    دانش فعال باید با بسته‌ای مشخص منتشر
+    شود. این بسته، نه تنها Claimهای
+    فعال را شامل می‌شود، بلکه محدودیت‌ها
+    و دامنه اعتبار را نیز حمل
+    می‌کند.
+  </p>
+
+  <h3>اجزای یک بسته دانش</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:26%;">جزء</th>
+        <th>محتوا</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Version</td>
+        <td>نسخه دقیق دانش.</td>
+      </tr>
+      <tr>
+        <td>Scope</td>
+        <td>دامنه مصرف.</td>
+      </tr>
+      <tr>
+        <td>Active Claims</td>
+        <td>ادعاهای فعال.</td>
+      </tr>
+      <tr>
+        <td>Limitations</td>
+        <td>مرزهای استفاده.</td>
+      </tr>
+      <tr>
+        <td>Disputed/Excluded</td>
+        <td>دانش اختلافی یا کنارگذاشته‌شده.</td>
+      </tr>
+      <tr>
+        <td>Change Summary</td>
+        <td>تغییرات نسبت به نسخه قبلی.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>چرا محدودیت‌ها در بسته دانش لازم‌اند</h3>
+  <p>
+    در بسیاری از سامانه‌ها، بسته دانش
+    فقط Claimهای فعال را شامل
+    می‌شود. اما این کار، استفاده
+    کننده را در تاریکی نگه
+    می‌دارد. اگر کاربر
+    نداند که یک Claim
+    در چه دامنه‌ای
+    معتبر است، ممکن
+    است آن را در
+    دامنه اشتباه
+    به کار ببرد.
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>مثال — یک بسته دانش کوچک</p>
+    <p style="margin:0;">
+      <strong>Version:</strong> v1.5 — ۱۴۰۳/۰۴.
+      <br>
+      <strong>Scope:</strong> Variant A، ECU بوش،
+      ۱۴۰۰-۱۴۰۲.
+      <br>
+      <strong>Active Claims:</strong>
+      <br>
+      • Reference REF-P30-02: حداقل ولتاژ
+      Pin ۳۰ در Cranking = ۱۱.۰V.
+      <br>
+      • Rule R-G3-01: افت Pin ۳۰ بیش از
+      ۰.۵V نشانه مشکل مسیر است.
+      <br>
+      • Test T-Fan-01: اتصال مستقیم فن
+      به باتری.
+      <br>
+      <strong>Limitations:</strong>
+      <br>
+      • این بسته برای خودروهای بالای
+      ۱۰۰٫۰۰۰ کیلومتر تأیید نشده.
+      <br>
+      • در دمای زیر -۵°C، Reference
+      ممکن است متفاوت باشد.
+      <br>
+      <strong>Disputed:</strong> Reference REF-P30-03
+      (مقدار ۱۱.۲V) — در حال بازبینی.
+      <br>
+      <strong>Change Summary:</strong> Reference
+      REF-P30-02 از ۱۱.۵V به ۱۱.۰V
+      به‌روزرسانی شد (۱۴۰۳/۰۳).
+    </p>
+  </div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>چرا Disputed در بسته لازم است</p>
+    <p style="margin:0;">
+      دانش Disputed، بخشی از
+      واقعیت سامانه است.
+      پنهان کردن آن از
+      کاربر، اعتماد
+      کاذب ایجاد
+      می‌کند.
+      <br><br>
+      با نمایش Disputed،
+      کاربر می‌داند
+      که در این
+      حوزه،
+      اختلاف
+      وجود
+      دارد و
+      باید با
+      احتیاط
+      تصمیم
+      بگیرد.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «بسته بدون محدودیت»</p>
+    <p style="margin:0;">
+      اگر بسته دانش فقط شامل
+      Claimهای فعال باشد
+      و محدودیت‌ها را
+      حذف کند، کاربر
+      در عمل دامنه
+      اعتبار را
+      نمی‌بیند.
+      <br><br>
+      راه درست: محدودیت‌ها
+      و دامنه، بخش
+      جدانشدنی
+      بسته
+      دانش
+      هستند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۴۵</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۲ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۲ — ادامه</span>
+  </header>
+
+  <h3>چرخه انتشار</h3>
+  <p>
+    انتشار بسته دانش، یک چرخه است،
+    نه یک رویداد یک‌باره. در
+    هر چرخه، دانش جدید اضافه
+    می‌شود، دانش قدیم بازبینی
+    می‌شود و نسخه جدید
+    منتشر می‌شود.
+  </p>
+
+  <div class="diagram">چرخه انتشار
+────────────────────────────
+۱. Snapshot
+   ← دانش فعلی فعال
+   ← همراه با Scope، Limitations
+   ← و Disputed
+
+۲. Change Summary
+   ← تفاوت با نسخه قبلی
+   ← دلیل هر تغییر
+   ← اثر تغییر بر دانش وابسته
+
+۳. Release Notes
+   ← توضیح تغییرات برای کاربر
+   ← نکات مهم در استفاده
+
+۴. Distribution
+   ← انتشار به کاربران
+   ← اطلاع‌رسانی محدودیت‌ها
+   ← آموزش تغییرات
+
+۵. Feedback
+   ← دریافت بازخورد و شواهد جدید
+   ← شروع چرخه بعدی</div>
+
+  <h3>مثال — یک تغییر نسخه</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Release v1.5</p>
+    <p style="margin:0;">
+      <strong>Snapshot:</strong> ۵۰ Claim فعال برای
+      Variant A، ۱۲ Claim Disputed،
+      ۲۰ Claim در بازبینی.
+      <br>
+      <strong>Change Summary:</strong>
+      <br>
+      • Reference REF-P30-02 به‌روزرسانی شد:
+      ۱۱.۵V → ۱۱.۰V. دلیل: سند فنی
+      جدید + شواهد میدانی.
+      <br>
+      • Rule R-G3-01 اضافه شد.
+      <br>
+      • Test T-Fan-01 اضافه شد.
+      <br>
+      • Reference REF-P30-03 به
+      Disputed منتقل شد.
+      <br>
+      <strong>Release Notes:</strong> کاربران
+      باید توجه کنند که در خودروهای
+      با ECU نسل قبل، Reference
+      جدید ممکن است اعمال
+      نشود.
+      <br>
+      <strong>Distribution:</strong> انتشار به
+      کارگاه‌های مجاز.
+      <br>
+      <strong>Feedback:</strong> ۵ مورد بازخورد
+      در هفته اول؛ در حال
+      تحلیل.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۴۶</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۳ — ایمنی و حقوق ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۳ — ایمنی و حقوق</span>
+  </header>
+
+  <span class="section-tag">SECTION 23</span>
+  <h2>قیود ایمنی و حقوقی</h2>
+
+  <p class="lead">
+    دانش فنی، اگر به آزمون یا تعمیر
+    منجر شود، می‌تواند پیامدهای
+    ایمنی داشته باشد. همچنین
+    استفاده از داده‌ها و
+    اسناد، ابعاد حقوقی
+    دارد. این بخش، به
+    این دو حوزه
+    می‌پردازد.
+  </p>
+
+  <h3>قیود ایمنی</h3>
+  <ul>
+    <li>
+      دانش آزمون یا تعمیر پرریسک باید
+      شرایط ایمن، Stop Condition و
+      مرز صلاحیت را آشکار کند.
+    </li>
+    <li>
+      در موارد پرخطر، دانش باید
+      «توصیه» باشد، نه «دستور».
+    </li>
+    <li>
+      عدم قطعیت باید در نمایش
+      به کاربر، آشکار باشد.
+    </li>
+    <li>
+      مسئولیت نهایی در موارد
+      پرخطر، بر عهده انسان
+      حرفه‌ای است.
+    </li>
+  </ul>
+
+  <h3>مثال — یک Test Knowledge پرریسک</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>آزمون مسیر Airbag</p>
+    <p style="margin:0;">
+      <strong>Test:</strong> بررسی مدار Airbag.
+      <br>
+      <strong>Precondition:</strong> برق خودرو قطع؛
+      ۳۰ دقیقه انتظار برای تخلیه
+      خازن.
+      <br>
+      <strong>Procedure:</strong> بررسی مقاومت
+      و اتصالات با ابزار مخصوص.
+      <br>
+      <strong>Safety:</strong>
+      <br>
+      • هشدار: تماس مستقیم با
+      مدار Airbag می‌تواند
+      منجر به انفجار و
+      آسیب جدی شود.
+      <br>
+      • Stop Condition: در صورت
+      مشاهده هرگونه بوی
+      سوختگی یا دود،
+      متوقف شود.
+      <br>
+      • صلاحیت: این آزمون
+      فقط توسط تکنسین
+      دارای گواهینامه
+      Airbag.
+      <br>
+      <strong>Limitations:</strong> نتیجه آزمون
+      ممکن است در برخی
+      شرایط، قطعی نباشد.
+    </p>
+  </div>
+
+  <h3>قیود حقوقی</h3>
+  <ul>
+    <li>
+      منشأ و حق استفاده از سند، تصویر،
+      نقشه یا داده باید قابل تعیین
+      باشد.
+    </li>
+    <li>
+      داده‌های غیرضروری و شخصی نباید
+      بی‌دلیل به دانش عمومی تبدیل
+      شوند.
+    </li>
+    <li>
+      محدودیت حقوقی یا ایمنی نباید
+      برای ساده‌سازی متن حذف
+      شود.
+    </li>
+    <li>
+      در صورت استفاده از منبعی که
+      حق بازنشر ندارد، دانش باید
+      یا با اجازه رسمی منتشر
+      شود، یا به‌صورت خلاصه
+      و با ارجاع منتشر
+      شود.
+    </li>
+  </ul>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>هشدار — دام «ساده‌سازی افراطی»</p>
+    <p style="margin:0;">
+      گاهی برای ساده‌سازی، محدودیت‌های
+      ایمنی یا حقوقی از متن حذف
+      می‌شوند. این کار در نگاه
+      اول متن را خواناتر می‌کند،
+      اما در بلندمدت به
+      پیامدهای جدی
+      منجر می‌شود.
+      <br><br>
+      راه درست: محدودیت‌ها
+      بخشی از معنای دانش
+      هستند و نباید حذف
+      شوند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۴۷</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۳ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۳ — ادامه</span>
+  </header>
+
+  <h3>سه سطح ریسک</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%;">سطح</th>
+        <th>نمونه</th>
+        <th>نحوه ارائه دانش</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>سطح ۱ — کم‌خطر</td>
+        <td>اندازه‌گیری ولتاژ با مولتی‌متر</td>
+        <td>پیشنهاد مستقیم؛ نیازی به تأکید ویژه نیست.</td>
+      </tr>
+      <tr>
+        <td>سطح ۲ — متوسط</td>
+        <td>جدا کردن کانکتور، تعویض قطعه</td>
+        <td>پیشنهاد با ذکر شرایط ایمن.</td>
+      </tr>
+      <tr>
+        <td>سطح ۳ — پرخطر</td>
+        <td>کار روی Airbag، ترمز، سیستم سوخت</td>
+        <td>توصیه با هشدار ایمنی؛ تأکید بر صلاحیت فرد.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>نمایش عدم قطعیت</h3>
+  <p>
+    در موارد پرریسک، عدم قطعیت باید
+    در نمایش به کاربر، آشکار
+    باشد. برای نمونه، اگر
+    سیستم ۷۰٪ اطمینان دارد
+    که علت «خرابی رله» است،
+    این باید در نمایش
+    مشخص باشد، نه اینکه
+    به‌عنوان «حقیقت»
+    نمایش داده شود.
+  </p>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>نمایش پنج حالته</p>
+    <p style="margin:0;">
+      در نمایش به کاربر، هر
+      Claim باید در یکی از
+      این پنج حالت نمایش
+      داده شود:
+      <br>
+      • <strong>محتمل:</strong> شواهد
+      نسبی وجود دارد.
+      <br>
+      • <strong>تأییدشده:</strong> شواهد
+      قوی وجود دارد.
+      <br>
+      • <strong>ردشده:</strong> شواهد
+      مخالف قوی وجود
+      دارد.
+      <br>
+      • <strong>نامشخص:</strong> شواهد
+      کافی نیست.
+      <br>
+      • <strong>متعارض:</strong> شواهد
+      متناقض وجود
+      دارد.
+      <br><br>
+      این پنج حالت، از پنج حالت
+      هفت‌گانه وضعیت دانش
+      متفاوتند. اولی در
+      نمایش کاربر
+      ظاهر می‌شود؛
+      دومی در لایه
+      حاکمیت.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>مسئولیت نهایی</p>
+    <p style="margin:0;">
+      در همه سطوح ریسک،
+      مسئولیت نهایی
+      بر عهده
+      انسان
+      حرفه‌ای
+      است. سامانه
+      تصمیم‌یار
+      است، نه
+      تصمیم‌ساز.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۴۸</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۴ — قرارداد حداقلی ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۴ — قرارداد حداقلی</span>
+  </header>
+
+  <span class="section-tag">SECTION 24</span>
+  <h2>قرارداد حداقلی دانش</h2>
+
+  <p class="lead">
+    برای آنکه یک Claim به دانش فعال
+    تبدیل شود، باید حداقل‌هایی
+    را داشته باشد. این
+    حداقل‌ها، در «قرارداد
+    حداقلی دانش» تعریف
+    می‌شوند.
+  </p>
+
+  <h3>دوازده عنصر الزامی</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:26%;">عنصر</th>
+        <th>الزام</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Identity</td><td>شناسه پایدار.</td></tr>
+      <tr><td>Claim</td><td>ادعای دقیق.</td></tr>
+      <tr><td>Type</td><td>نوع دانش.</td></tr>
+      <tr><td>Scope</td><td>دامنه اعتبار.</td></tr>
+      <tr><td>Source</td><td>منشأ قابل شناسایی.</td></tr>
+      <tr><td>Provenance</td><td>مسیر ورود / تغییر.</td></tr>
+      <tr><td>Evidence</td><td>پشتیبان و مخالف.</td></tr>
+      <tr><td>Status</td><td>وضعیت فعلی.</td></tr>
+      <tr><td>Confidence Basis</td><td>مبنای اطمینان.</td></tr>
+      <tr><td>Version</td><td>نسخه و Lineage.</td></tr>
+      <tr><td>Limitations</td><td>مرزهای مصرف.</td></tr>
+      <tr><td>Review</td><td>بازبینی و نتیجه.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>مثال — دو Claim با و بدون قرارداد حداقلی</h3>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Claim کامل</p>
+    <p style="margin:0;">
+      <strong>Identity:</strong> REF-P30-02-v3.
+      <br>
+      <strong>Claim:</strong> «حداقل ولتاژ Pin ۳۰ رله
+      در Cranking، در Variant A = ۱۱.۰V».
+      <br>
+      <strong>Type:</strong> Reference.
+      <br>
+      <strong>Scope:</strong> Variant A، ECU بوش،
+      ۱۴۰۰-۱۴۰۲.
+      <br>
+      <strong>Source:</strong> سند فنی خودروساز،
+      نسخه ۱۴۰۳، فصل ۴، ص ۱۲.
+      <br>
+      <strong>Provenance:</strong> استخراج ۱۴۰۳/۰۲؛
+      تأیید توسط Domain Reviewer و
+      Evidence Reviewer.
+      <br>
+      <strong>Evidence:</strong> ۱۲ مورد میدانی
+      موافق، ۲ مورد مخالف.
+      <br>
+      <strong>Status:</strong> Active.
+      <br>
+      <strong>Confidence Basis:</strong> منبع رسمی
+      + شواهد میدانی گسترده.
+      <br>
+      <strong>Version:</strong> v3، supersedes v2.
+      <br>
+      <strong>Limitations:</strong> برای خودروهای
+      بالای ۱۰۰٫۰۰۰ کیلومتر تأیید
+      نشده.
+      <br>
+      <strong>Review:</strong> توسط سه بازبین
+      مستقل، تأییدشده.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">✕</span>Claim ناقص</p>
+    <p style="margin:0;">
+      <strong>Claim:</strong> «ولتاژ Pin ۳۰ نباید
+      پایین باشد».
+      <br><br>
+      <strong>عناصر غایب:</strong>
+      <br>
+      • Identity ندارد.
+      <br>
+      • Type ندارد.
+      <br>
+      • Scope ندارد (کدام Variant؟).
+      <br>
+      • Source ندارد.
+      <br>
+      • Provenance ندارد.
+      <br>
+      • Evidence ندارد.
+      <br>
+      • Status ندارد.
+      <br>
+      • Confidence Basis ندارد.
+      <br>
+      • Version ندارد.
+      <br>
+      • Limitations ندارد.
+      <br>
+      • Review ندارد.
+      <br><br>
+      این Claim نمی‌تواند به دانش
+      فعال تبدیل شود. باید یا
+      کامل شود، یا در وضعیت
+      Draft باقی بماند.
+    </p>
+  </div>
+
+  <div class="box navy">
+    <p class="box-title" style="color:var(--gold);">قاعده فعال‌سازی</p>
+    <p style="margin:0;color:#fff;">
+      اگر با نقص یک عنصر نتوان فهمید
+      این ادعا چیست، کجا معتبر است،
+      از کجا آمده و چرا قابل
+      اتکاست، نباید در وضعیت
+      مصرف عمومی فعال
+      شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۴۹</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۴ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۴ — ادامه</span>
+  </header>
+
+  <h3>چرا این دوازده عنصر انتخاب شده‌اند</h3>
+  <p>
+    هر یک از این دوازده عنصر، به یک
+    پرسش بنیادین پاسخ می‌دهد.
+    بدون آن، سامانه نمی‌تواند
+    در مورد Claim تصمیم
+    بگیرد.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:30%;">عنصر</th>
+        <th>پرسش بنیادین</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Identity</td><td>این Claim کدام است؟</td></tr>
+      <tr><td>Claim</td><td>دقیقاً چه می‌گوید؟</td></tr>
+      <tr><td>Type</td><td>از چه جنسی است؟</td></tr>
+      <tr><td>Scope</td><td>در چه دامنه‌ای معتبر است؟</td></tr>
+      <tr><td>Source</td><td>از کجا آمده؟</td></tr>
+      <tr><td>Provenance</td><td>چه مسیری را طی کرده؟</td></tr>
+      <tr><td>Evidence</td><td>چه شاهدی دارد؟</td></tr>
+      <tr><td>Status</td><td>اکنون در چه وضعیتی است؟</td></tr>
+      <tr><td>Confidence Basis</td><td>چرا قابل اتکاست؟</td></tr>
+      <tr><td>Version</td><td>چه رابطه‌ای با نسخه‌های قبلی دارد؟</td></tr>
+      <tr><td>Limitations</td><td>کجا نباید استفاده شود؟</td></tr>
+      <tr><td>Review</td><td>چه کسی آن را بازبینی کرد؟</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>کاربرد در عمل</p>
+    <p style="margin:0;">
+      این قرارداد حداقلی، در
+      سه موقعیت عملی
+      به کار می‌رود:
+      <br>
+      • <strong>در ورود دانش:</strong>
+      هر Claim جدید، پیش
+      از فعال شدن، باید
+      این عناصر را
+      داشته باشد.
+      <br>
+      • <strong>در بازبینی:</strong>
+      هر بازبینی، باید
+      از کامل بودن
+      این عناصر
+      مطمئن شود.
+      <br>
+      • <strong>در حسابرسی:</strong>
+      هر تصمیم، باید
+      بتواند به این
+      عناصر ارجاع
+      دهد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۵۰</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۵ — ضدالگوها ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۵ — ضدالگوها</span>
+  </header>
+
+  <span class="section-tag">SECTION 25</span>
+  <h2>ضدالگوهای حاکمیتی</h2>
+
+  <p class="lead">
+    در حاکمیت دانش، برخی الگوهای
+    نادرست مکرراً ظاهر می‌شوند.
+    شناسایی این ضدالگوها،
+    به جلوگیری از آن‌ها
+    کمک می‌کند.
+  </p>
+
+  <h3>هشت ضدالگوی رایج</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%;">ضدالگو</th>
+        <th>پیامد</th>
+        <th>اصلاح</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Rule بدون Source</td>
+        <td>دانش بی‌ریشه.</td>
+        <td>منشأ یا وضعیت محدود.</td>
+      </tr>
+      <tr>
+        <td>Case = Rule</td>
+        <td>تعمیم غلط.</td>
+        <td>چرخه Evidence و Review.</td>
+      </tr>
+      <tr>
+        <td>DTC = Cause</td>
+        <td>پرش علّی.</td>
+        <td>گزارش → Hypothesis → Test.</td>
+      </tr>
+      <tr>
+        <td>Trust Score واحد</td>
+        <td>ضعف پنهان.</td>
+        <td>ابعاد جداگانه.</td>
+      </tr>
+      <tr>
+        <td>Overwrite</td>
+        <td>حذف تاریخچه.</td>
+        <td>Version/Lineage.</td>
+      </tr>
+      <tr>
+        <td>Silent Scope Expansion</td>
+        <td>تعمیم پنهان.</td>
+        <td>Claim جدید برای دامنه جدید.</td>
+      </tr>
+      <tr>
+        <td>AI Auto-publish</td>
+        <td>تبدیل متن به حقیقت.</td>
+        <td>AI پیشنهاددهنده.</td>
+      </tr>
+      <tr>
+        <td>Conflict by Vote</td>
+        <td>حذف دلیل اختلاف.</td>
+        <td>تحلیل Scope/Time/Source/Evidence.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>شرح چهار ضدالگوی اصلی</h3>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">✕</span>ضدالگو — Case = Rule</p>
+    <p style="margin:0;">
+      در برخی سامانه‌ها، هر Case
+      تشخیصی مستقیماً به یک
+      Rule تبدیل می‌شود.
+      مثلاً تعمیرکار یک
+      خودرو را تعمیر
+      می‌کند و سامانه
+      از آن یک Rule
+      می‌سازد.
+      <br><br>
+      این کار، به تعمیم
+      خودکار تجربه‌های
+      منفرد منجر
+      می‌شود.
+      یک Case
+      ممکن است
+      نتیجه‌ای
+      داشته
+      باشد که
+      در شرایط
+      خاص آن
+      خودرو
+      صادق
+      بوده،
+      اما در
+      خودروهای
+      دیگر
+      نباشد.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">✕</span>ضدالگو — Trust Score واحد</p>
+    <p style="margin:0;">
+      برخی سامانه‌ها، برای هر Claim
+      یک عدد بین ۰ و ۱ به‌عنوان
+      «Trust Score» ثبت
+      می‌کنند.
+      <br><br>
+      این کار، ابعاد مختلف
+      کیفیت را در یک
+      عدد پنهان می‌کند.
+      ممکن است یک Claim
+      منبع معتبر اما
+      شواهد کم داشته
+      باشد، و Claim
+      دیگری منبع ضعیف
+      اما شواهد
+      گسترده
+      داشته
+      باشد.
+      هر دو
+      ممکن
+      است
+      عدد
+      مشابهی
+      بگیرند.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">✕</span>ضدالگو — Silent Scope Expansion</p>
+    <p style="margin:0;">
+      گاهی یک Claim که برای Variant A
+      معتبر بوده، بی‌سروصدا برای
+      Variant B هم به کار می‌رود،
+      بدون آنکه رسماً دامنه
+      گسترش یابد.
+      <br><br>
+      این کار، منشأ
+      بسیاری از خطاهای
+      تعمیم است. باید
+      جلوی این کار
+      گرفته شود:
+      هر گسترش
+      دامنه،
+      یک
+      Claim
+      جدید
+      است.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">✕</span>ضدالگو — Conflict by Vote</p>
+    <p style="margin:0;">
+      در برخی سامانه‌ها، تعارض
+      بین دو Claim با رأی
+      اکثریت حل می‌شود.
+      مثلاً «چون ۵ نفر
+      گفتند Claim A
+      درست است،
+      پس Claim B
+      رد است».
+      <br><br>
+      این کار، دلیل
+      اختلاف را
+      پنهان می‌کند.
+      اختلاف معمولاً
+      به دلیل تفاوت
+      در Scope،
+      زمان،
+      Source
+      یا
+      Evidence
+      است.
+      حل تعارض
+      باید مبتنی
+      بر تحلیل
+      این تفاوت‌ها
+      باشد، نه
+      رأی
+      اکثریت.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۵۱</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۵ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۵ — ادامه</span>
+  </header>
+
+  <h3>چگونه ضدالگوها را شناسایی کنیم</h3>
+  <p>
+    شناسایی ضدالگوها نیازمند یک
+    نگاه انتقادی به چرخه
+    حاکمیت است. برخی
+    نشانه‌ها که به
+    وجود ضدالگو
+    اشاره
+    می‌کنند:
+  </p>
+
+  <ul>
+    <li>افزایش سریع تعداد Ruleها بدون افزایش متناسب در کیفیت تشخیص.</li>
+    <li>Claimهایی که در آن‌ها Source یا Scope ناقص است.</li>
+    <li>Claimهایی که به‌طور مکرر در وضعیت Disputed قرار می‌گیرند.</li>
+    <li>تصمیم‌هایی که در بازبینی، بی‌پشتوانه تشخیص داده می‌شوند.</li>
+    <li>افزایش تعداد Caseهایی که به نتیجه قطعی نمی‌رسند.</li>
+    <li>افزایش تعداد شواهد مخالف که ثبت نشده‌اند.</li>
+  </ul>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>پرسش‌های بازبینی ضدالگو</p>
+    <p style="margin:0;">
+      در بازبینی دوره‌ای
+      حاکمیت دانش، این
+      پرسش‌ها باید پاسخ
+      داده شوند:
+      <br>
+      • آیا در دوره اخیر،
+      Claimهایی بدون
+      Source ثبت
+      شده‌اند؟
+      <br>
+      • آیا Caseهایی
+      مستقیماً به
+      Rule تبدیل
+      شده‌اند؟
+      <br>
+      • آیا Claimهایی
+      وجود دارند
+      که Scope
+      آن‌ها
+      به‌طور
+      پنهان
+      گسترش
+      یافته؟
+      <br>
+      • آیا در حل
+      تعارض،
+      رأی
+      اکثریت
+      جایگزین
+      تحلیل
+      شده؟
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۵۲</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۶ — معیار بلوغ ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۶ — معیار بلوغ</span>
+  </header>
+
+  <span class="section-tag">SECTION 26</span>
+  <h2>معیار بلوغ حاکمیت</h2>
+
+  <p class="lead">
+    سامانه‌ای که حاکمیت دانش را
+    پیاده کرده، باید بتواند
+    بلوغ خود را در قالب
+    معیارهای مشخص
+    بسنجد. این معیارها،
+    هم برای ارزیابی
+    وضعیت فعلی و
+    هم برای تعیین
+    مسیر بهبود
+    به کار می‌روند.
+  </p>
+
+  <h3>نه معیار بلوغ</h3>
+  <ol>
+    <li>
+      هر دانش فعال تا Claim، Source،
+      Provenance و Evidence قابل
+      ردیابی باشد.
+    </li>
+    <li>
+      Scope هر Claim روشن باشد.
+    </li>
+    <li>
+      Reference، As-Found، Evidence،
+      Interpretation و Hypothesis
+      قاطی نشوند.
+    </li>
+    <li>
+      تعارض‌های حل‌نشده قابل
+      مشاهده باشند.
+    </li>
+    <li>
+      تغییر دانش، تاریخچه را
+      حذف نکند.
+    </li>
+    <li>
+      شاهد مخالف و شکست پیش‌بینی
+      قابل ثبت باشد.
+    </li>
+    <li>
+      Case بتواند به Knowledge تبدیل
+      شود، اما نه خودکار.
+    </li>
+    <li>
+      AI نتواند بدون قرارداد
+      حاکمیتی، حقیقت جدید را
+      فعال کند.
+    </li>
+    <li>
+      متخصص مستقل بتواند دلیل
+      فعال بودن و محدودیت
+      یک Claim را بفهمد.
+    </li>
+  </ol>
+
+  <h3>آزمون نهایی بلوغ</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>آزمون نهایی</p>
+    <p style="margin:0;">
+      اگر دو متخصص اختلاف دارند،
+      باید بتوانند بگویند
+      اختلاف درباره معنا،
+      Scope، Evidence،
+      تفسیر یا داوری
+      است؛ نه اینکه
+      فقط درباره
+      یک عدد
+      اعتماد
+      مبهم
+      بحث
+      کنند.
+      <br><br>
+      این آزمون، ساده‌ترین
+      و در عین حال
+      سخت‌ترین آزمون
+      بلوغ است. اگر
+      دو متخصص
+      بتوانند
+      اختلاف
+      خود را
+      به
+      یکی
+      از
+      این
+      پنج
+      دسته
+      نسبت
+      دهند،
+      حاکمیت
+      دانش
+      به
+      بلوغ
+      رسیده
+      است.
+    </p>
+  </div>
+
+  <h3>پنج دسته اختلاف</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:26%;">دسته</th>
+        <th>پرسش</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>معنا</td>
+        <td>آیا هر دو نفر یک چیز را می‌فهمند؟</td>
+      </tr>
+      <tr>
+        <td>Scope</td>
+        <td>آیا هر دو نفر یک دامنه را در نظر دارند؟</td>
+      </tr>
+      <tr>
+        <td>Evidence</td>
+        <td>آیا هر دو نفر یک مجموعه شواهد را می‌بینند؟</td>
+      </tr>
+      <tr>
+        <td>تفسیر</td>
+        <td>آیا هر دو نفر از یک شاهد، یک معنا استنباط می‌کنند؟</td>
+      </tr>
+      <tr>
+        <td>داوری</td>
+        <td>آیا هر دو نفر معیار یکسانی برای تصمیم دارند؟</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۵۳</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۶ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۶ — ادامه</span>
+  </header>
+
+  <h3>چهار سطح بلوغ</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:16%;">سطح</th>
+        <th>ویژگی</th>
+        <th>نمونه</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>سطح ۱</td>
+        <td>دانش انبارشده، بدون چارچوب.</td>
+        <td>فایل‌های PDF و ویدیوها بدون ساختار.</td>
+      </tr>
+      <tr>
+        <td>سطح ۲</td>
+        <td>دانش ساختاریافته، اما حاکمیت محدود.</td>
+        <td>پایگاه داده‌ای که همه Claimها را Active در نظر می‌گیرد.</td>
+      </tr>
+      <tr>
+        <td>سطح ۳</td>
+        <td>حاکمیت پیاده‌شده، با معیارهای روشن.</td>
+        <td>پایپلاین پذیرش، حل تعارض، نسخه‌بندی.</td>
+      </tr>
+      <tr>
+        <td>سطح ۴</td>
+        <td>حاکمیت بالغ، با خودپایشی و یادگیری مستمر.</td>
+        <td>سامانه‌ای که می‌تواند نشانه‌های Concept Drift را تشخیص دهد.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>چگونه از یک سطح به سطح بالاتر برویم</h3>
+  <p>
+    در بسیاری از پروژه‌ها، شروع از
+    سطح ۱ طبیعی است. اما اگر
+    در سطح ۱ بمانیم، سامانه
+    نمی‌تواند به‌عنوان یک
+    ابزار قابل اتکا عمل
+    کند.
+  </p>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>از سطح ۱ به سطح ۲</p>
+    <p style="margin:0;">
+      تعریف ساختار Claim. الزام به
+      ثبت Identity، Claim و Type.
+      حتی اگر عناصر دیگری
+      وجود نداشته باشد،
+      همین سه عنصر
+      یک ساختار پایه
+      ایجاد می‌کند.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>از سطح ۲ به سطح ۳</p>
+    <p style="margin:0;">
+      اضافه کردن الزامات Scope،
+      Source، Provenance و
+      Evidence. تعریف
+      پایپلاین پذیرش.
+      تعریف نقش‌های
+      بازبینی.
+    </p>
+  </div>
+
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>از سطح ۳ به سطح ۴</p>
+    <p style="margin:0;">
+      اضافه کردن پایش دائمی،
+      شناسایی Concept Drift،
+      و چرخه یادگیری
+      از Caseها.
+    </p>
+  </div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>نکته مهم در مسیر بلوغ</p>
+    <p style="margin:0;">
+      پیشرفت از سطح ۱ به سطح ۴
+      نباید در یک گام انجام
+      شود. هر گام، باید
+      در عمل تثبیت شود
+      قبل از حرکت به
+      گام بعد. سامانه‌ای
+      که سعی کند در یک
+      ماه از سطح ۱ به
+      سطح ۴ برود،
+      در عمل به
+      سطح ۱.۵
+      بازمی‌گردد.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۵۴</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۷ — سناریوی یکپارچه ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۷ — سناریوی یکپارچه</span>
+  </header>
+
+  <span class="section-tag">SECTION 27</span>
+  <h2>سناریوی یکپارچه — افت ولتاژ زمین</h2>
+
+  <p class="lead">
+    برای روشن شدن نحوه کار همه
+    بخش‌های این سند، یک
+    سناریوی واقعی را
+    گام‌به‌گام بررسی
+    می‌کنیم.
+  </p>
+
+  <h3>شروع — یک Case جدید</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Case ورودی</p>
+    <p style="margin:0;">
+      یک خودروی Variant A، تولید ۱۴۰۱،
+      با نشانه «فن رادیاتور در دمای
+      بالا کار نمی‌کند» وارد
+      کارگاه می‌شود.
+      <br>
+      <strong>مشاهدات اولیه:</strong>
+      <br>
+      • فن با اتصال مستقیم به باتری
+      می‌چرخد.
+      <br>
+      • ولتاژ Pin ۳۰ رله در Cranking
+      برابر ۹.۱V است.
+      <br>
+      • مقدار مرجع (طبق سند فنی) =
+      ۱۱.۵V.
+      <br>
+      <strong>فرضیه‌های ممکن:</strong>
+      <br>
+      الف) رله معیوب.
+      <br>
+      ب) ECU فرمان نمی‌دهد.
+      <br>
+      ج) افت ولتاژ روی مسیر زمین.
+    </p>
+  </div>
+
+  <h3>گام ۱ — ثبت Evidence اولیه</h3>
+  <div class="diagram">Evidence E1:
+Point: Pin 30 relay R5
+Reference: negative battery terminal
+Tool: Fluke 17 multimeter
+State: CRANKING
+Condition: temp 2°C
+Value: 9.1V
+
+Evidence E2:
+Point: fan positive terminal
+Reference: negative battery terminal
+Tool: Fluke 17 multimeter
+State: direct connection to battery
+Condition: 2-second test
+Value: fan rotated normally</div>
+
+  <h3>گام ۲ — تفکیک فرضیه‌ها</h3>
+  <div class="diagram">Hypothesis A: relay faulty
+  Evidence E2 supports: fan works with direct connection
+  Evidence E1 neutral: pin 30 low voltage is upstream of relay
+  Status: weakening
+
+Hypothesis B: ECU does not command
+  Evidence E2 neutral
+  Evidence E1 neutral
+  Status: open (needs pin 85 measurement)
+
+Hypothesis C: ground path voltage drop
+  Evidence E1 supports: low voltage under load
+  Evidence E2 supports: fan healthy
+  Status: strengthening</div>
+
+  <h3>گام ۳ — آزمون تفکیک‌کننده</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>آزمون</p>
+    <p style="margin:0;">
+      اندازه‌گیری ولتاژ G3 (نقطه اتصال
+      بدنه) نسبت به قطب منفی باتری،
+      در حالت بارگذاری (فن روشن).
+      <br>
+      <strong>نتیجه:</strong> ۱.۴V افت.
+      <br>
+      <strong>Interpretation:</strong> این افت
+      غیرمجاز است. مقاومت اتصال G3
+      به‌طور غیرمعمول بالاست.
+      <br>
+      <strong>Evidence E3:</strong> افت ۱.۴V
+      روی G3.
+    </p>
+  </div>
+
+  <h3>گام ۴ — تصمیم</h3>
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>Decision</p>
+    <p style="margin:0;">
+      بر اساس شواهد E1، E2، E3:
+      <br>
+      • فرضیه A (رله معیوب) ضعیف
+      شده.
+      <br>
+      • فرضیه B (ECU) هنوز باز
+      است اما تقویت نشده.
+      <br>
+      • فرضیه C (افت زمین) تقویت
+      شده.
+      <br><br>
+      <strong>تصمیم:</strong> تمرکز بر
+      تعمیر G3. بررسی دقیق
+      اتصال، تمیز کردن و
+      محکم کردن.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۵۵</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۷ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۷ — ادامه</span>
+  </header>
+
+  <h3>گام ۵ — تعمیر و راستی‌آزمایی</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>Repair و Verification</p>
+    <p style="margin:0;">
+      <strong>Repair:</strong> تمیز کردن نقطه اتصال G3،
+      محکم کردن پیچ، پاک کردن
+      خوردگی.
+      <br><br>
+      <strong>Verification:</strong>
+      <br>
+      • اندازه‌گیری مجدد افت ولتاژ
+      روی G3 در حالت بارگذاری:
+      ۰.۱V (در محدوده مجاز).
+      <br>
+      • اندازه‌گیری ولتاژ Pin ۳۰ در
+      Cranking: ۱۱.۶V (در محدوده
+      مجاز).
+      <br>
+      • کارکرد فن در دمای ۹۵°C:
+      فعال شد.
+      <br><br>
+      سه شاهد مستقل، رفع مشکل
+      را تأیید می‌کنند.
+    </p>
+  </div>
+
+  <h3>گام ۶ — یادگیری</h3>
+  <p>
+    این Case اکنون به‌عنوان ورودی
+    برای یادگیری استفاده
+    می‌شود. اما تبدیل آن
+    به دانش، خودکار نیست.
+    باید از چرخه تبدیل
+    عبور کند.
+  </p>
+
+  <div class="diagram">Case Evidence
+   ↓
+Observed Pattern: «افت ولتاژ زمین در Cranking
+                  منجر به عدم کارکرد فن می‌شود»
+   ↓
+Candidate Claim: «در Variant A، افزایش مقاومت
+                 اتصال G3 می‌تواند علت
+                 عدم کارکرد فن باشد»
+   ↓
+Scope: Variant A، سال ۱۴۰۰-۱۴۰۲
+   ↓
+Alternatives: «خرابی رله»، «خرابی فن»،
+              «ECU» (in این Case رد شدند)
+   ↓
+Evidence Aggregation: مقایسه با Caseهای مشابه
+                     در Variant A (۴ مورد مشابه)
+   ↓
+Review
+   ↓
+Outcome: Diagnostic Rule
+
+Diagnostic Rule:
+«اگر در Variant A، ولتاژ Pin 30 در Cranking
+ پایین بود و اتصال مستقیم فن به باتری
+ سالم بود، احتمالاً مقاومت اتصال G3
+ افزایش یافته است».</div>
+
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>نکته اصلی این سناریو</p>
+    <p style="margin:0;">
+      نکته اصلی این است که
+      نتیجه حاکمیتی از قبل
+      تعیین نشده است.
+      ممکن بود شواهد
+      برای Rule عمومی
+      کافی نباشند و
+      فقط یک Pattern
+      محدود باقی
+      بماند.
+      <br><br>
+      حاکمیت دانش،
+      این تصمیم را
+      از قبل نمی‌گیرد.
+      تصمیم بر اساس
+      شواهد و در
+      چرخه Review
+      گرفته
+      می‌شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۵۶</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۸ — سناریوی تعارض ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۸ — سناریوی تعارض</span>
+  </header>
+
+  <span class="section-tag">SECTION 28</span>
+  <h2>سناریوی تعارض — دو مرجع، دو مقدار</h2>
+
+  <p class="lead">
+    برای روشن شدن نحوه حل تعارض،
+    یک سناریوی واقعی را
+    بررسی می‌کنیم. در
+    این سناریو، دو
+    Claim معتبر با
+    دو مقدار
+    متفاوت
+    وجود
+    دارند.
+  </p>
+
+  <h3>شروع — دو Claim متناقض</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>دو Claim موجود در سامانه</p>
+    <p style="margin:0;">
+      <strong>Claim A:</strong> «حداقل ولتاژ Pin ۳۰
+      رله در Cranking، در Variant A
+      = ۱۱.۵V».
+      <br>
+      <strong>منبع:</strong> سند فنی ۱۳۹۸.
+      <br>
+      <strong>دامنه:</strong> Variant A.
+      <br>
+      <strong>وضعیت:</strong> Active.
+      <br>
+      <strong>Evidence:</strong> ۸ مورد میدانی
+      موافق، ۲ مورد مخالف.
+      <br><br>
+      <strong>Claim B:</strong> «حداقل ولتاژ Pin ۳۰
+      رله در Cranking، در Variant A
+      = ۱۱.۰V».
+      <br>
+      <strong>منبع:</strong> سند فنی ۱۴۰۳.
+      <br>
+      <strong>دامنه:</strong> Variant A.
+      <br>
+      <strong>وضعیت:</strong> Draft.
+      <br>
+      <strong>Evidence:</strong> ۳ مورد میدانی
+      موافق.
+    </p>
+  </div>
+
+  <h3>گام ۱ — تشخیص تعارض</h3>
+  <p>
+    سامانه، دو Claim را به‌عنوان
+    متناقض بالقوه شناسایی
+    می‌کند، چون هر دو
+    درباره یک پارامتر
+    در یک Variant،
+    دو مقدار
+    متفاوت
+    می‌دهند.
+  </p>
+
+  <h3>گام ۲ — بررسی معنایی</h3>
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>بررسی معنایی</p>
+    <p style="margin:0;">
+      هر دو Claim به یک چیز اشاره
+      می‌کنند: حداقل ولتاژ Pin ۳۰
+      رله در Cranking. اما
+      پرسش کلیدی: آیا در
+      یک بازه زمانی
+      یکسان معتبرند؟
+    </p>
+  </div>
+
+  <h3>گام ۳ — بررسی Scope، Context و زمان</h3>
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>بررسی تفصیلی</p>
+    <p style="margin:0;">
+      <strong>Scope:</strong> هر دو برای Variant A.
+      <br>
+      <strong>Context:</strong> هر دو در Cranking،
+      بدون تفاوت مشخص.
+      <br>
+      <strong>زمان:</strong>
+      <br>
+      • Claim A از سند ۱۳۹۸.
+      <br>
+      • Claim B از سند ۱۴۰۳.
+      <br>
+      <strong>یافته مهم:</strong> بین ۱۳۹۸ و ۱۴۰۳،
+      خودروساز نسخه جدید ECU را
+      عرضه کرده. بنابراین
+      تفاوت زمان، همراه
+      با تفاوت در Configuration
+      است.
+    </p>
+  </div>
+
+  <h3>گام ۴ — بررسی منبع و شواهد</h3>
+  <div class="box blue">
+    <p class="box-title"><span class="icon">i</span>مقایسه منابع و شواهد</p>
+    <p style="margin:0;">
+      <strong>Claim A:</strong>
+      <br>
+      • منبع: سند فنی ۱۳۹۸، معتبر در زمان خود.
+      <br>
+      • شواهد: ۸ موافق، ۲ مخالف.
+      <br><br>
+      <strong>Claim B:</strong>
+      <br>
+      • منبع: سند فنی ۱۴۰۳، جدیدترین.
+      <br>
+      • شواهد: ۳ موافق، ۰ مخالف.
+      <br><br>
+      <strong>نکته:</strong> شواهد Claim A
+      ممکن است مربوط به خودروهای
+      قبل از ۱۴۰۰ باشند. باید
+      بررسی شود.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۵۷</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۸ ادامه ==================== -->
+<section class="sheet">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۸ — ادامه</span>
+  </header>
+
+  <h3>گام ۵ — تصمیم در مورد رابطه</h3>
+  <p>
+    پس از بررسی، سه تصمیم ممکن است:
+  </p>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>تصمیم اول — Supersede</p>
+    <p style="margin:0;">
+      اگر شواهد نشان دهد که
+      ECU جدید، واقعاً مقدار
+      متفاوتی دارد، Claim A
+      به Superseded منتقل
+      می‌شود و Claim B
+      جایگزین آن می‌شود.
+      <br><br>
+      Claim A برای تصمیم‌های
+      ۱۳۹۸ تا ۱۴۰۳ حفظ
+      می‌شود.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>تصمیم دوم — Narrow</p>
+    <p style="margin:0;">
+      اگر شواهد نشان دهد که
+      خودروهای دارای ECU
+      قدیم مقدار ۱۱.۵V
+      و ECU جدید
+      مقدار ۱۱.۰V
+      دارند، هر دو
+      Claim با دامنه
+      محدودتر
+      حفظ
+      می‌شوند.
+      <br><br>
+      Claim A: برای ECU قدیم
+      (۱۴۰۰-).
+      <br>
+      Claim B: برای ECU جدید
+      (۱۴۰۰+).
+      <br>
+      هر دو Active، اما
+      با Scope
+      متفاوت.
+    </p>
+  </div>
+
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>تصمیم سوم — Disputed</p>
+    <p style="margin:0;">
+      اگر شواهد کافی برای
+      تصمیم قطعی وجود
+      نداشته باشد، هر
+      دو Claim در
+      وضعیت
+      Disputed
+      باقی
+      می‌مانند.
+      <br><br>
+      سامانه در
+      تصمیم‌گیری،
+      هر دو مقدار
+      را به‌عنوان
+      محدوده
+      گزارش
+      می‌کند:
+      «۱۱.۰ تا ۱۱.۵V».
+    </p>
+  </div>
+
+  <h3>گام ۶ — ثبت تصمیم</h3>
+  <div class="box gold">
+    <p class="box-title"><span class="icon">★</span>ثبت تصمیم در Provenance</p>
+    <p style="margin:0;">
+      در هر سه حالت، تصمیم و
+      دلیل آن در Provenance
+      هر دو Claim ثبت
+      می‌شود.
+      <br>
+      <strong>ثبت می‌شود:</strong>
+      <br>
+      • تاریخ تصمیم.
+      <br>
+      • تصمیم‌گیرنده (Knowledge
+      Steward + Domain
+      Reviewer).
+      <br>
+      • دلیل تصمیم (تفاوت
+      Configuration).
+      <br>
+      • اثر تصمیم بر Claimهای
+      وابسته.
+      <br>
+      • محدودیت‌های باقی‌مانده.
+    </p>
+  </div>
+
+  <div class="box red">
+    <p class="box-title"><span class="icon">!</span>نکته مهم این سناریو</p>
+    <p style="margin:0;">
+      در این سناریو، ممکن است
+      هر سه تصمیم معتبر باشند،
+      بسته به شواهد موجود.
+      حاکمیت دانش، تصمیم
+      را از قبل تعیین
+      نمی‌کند. تصمیم
+      بر اساس تحلیل
+      دقیق Scope،
+      زمان، منبع
+      و شواهد
+      گرفته
+      می‌شود.
+      <br><br>
+      آنچه در همه
+      حالت‌ها مشترک
+      است، ثبت تصمیم
+      و دلیل آن است.
+      این کار، مسیر
+      بازسازی
+      را حفظ
+      می‌کند.
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>حاکمیت دانش</span>
+    <span class="page-num">۵۸</span>
+  </footer>
+</section>
+
+<!-- ==================== بخش ۲۹ — قرارداد فشرده ==================== -->
+<section class="sheet page-break">
+  <header class="running-head">
+    <span class="rh-left">سند حاکمیت دانش و شواهد — نسخه ۲.۰</span>
+    <span class="rh-right">بخش ۲۹ — قرارداد فشرده</span>
+  </header>
+
+  <span class="section-tag">SECTION 29</span>
+  <h2>قرارداد فشرده</h2>
+
+  <p class="lead">
+    در این بخش، همه اصول و قواعد
+    سند در قالب یک قرارداد
+    فشرده جمع‌بندی
+    می‌شود.
+  </p>
+
+  <h3>تعریف دانش قابل مصرف</h3>
+  <div class="axiom">
+    <span class="label">تعریف</span>
+    <p>
+      دانش قابل مصرف = ادعای دقیق +
+      نوع مشخص + Scope روشن +
+      Source قابل شناسایی +
+      Provenance + Evidence
+      موافق/مخالف + وضعیت
+      آشکار + مبنای اطمینان +
+      نسخه و Lineage + محدودیت
+      + Review متناسب.
+    </p>
+  </div>
+
+  <h3>بایدها و نبایدها</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:50%;">باید</th>
+        <th>نباید</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>دانش را قابل اعتراض و اصلاح نگه دارد.</td>
+        <td>عدم قطعیت را پنهان کند.</td>
+      </tr>
+      <tr>
+        <td>از تجربه میدان یاد بگیرد.</td>
+        <td>هر Case را Rule فرض کند.</td>
+      </tr>
+      <tr>
+        <td>تعمیم را به‌عنوان تغییر دانش ببیند.</td>
+        <td>Scope را بی‌صدا گسترش دهد.</td>
+      </tr>
+      <tr>
+        <td>AI را در مسیر حاکمیت قرار دهد.</td>
+        <td>AI را صاحب حقیقت کند.</td>
+      </tr>
+      <tr>
+        <td>تاریخچه را نگه دارد.</td>
+        <td>نسخه قبلی را overwrite کند.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>پرسش دائمی</h3>
+  <div class="box green">
+    <p class="box-title"><span class="icon">◆</span>پرسشی که در هر تصمیم باید پرسیده شود</p>
+    <p style="margin:0;">
+      <strong>۱.</strong> چه می‌دانیم؟
+      <br>
+      <strong>۲.</strong> از کجا می‌دانیم؟
+      <br>
+      <strong>۳.</strong> برای کجا معتبر است؟
+      <br>
+      <strong>۴.</strong> چه چیزی خلاف آن است؟
+      <br>
+      <strong>۵.</strong> چه چیزی هنوز نامعلوم است؟
+      <br>
+      <strong>۶.</strong> و اگر تغییر کند، چگونه
+      متوجه می‌شویم؟
+    </p>
+  </div>
+
+  <h3>بستن</h3>
+  <p>
+    سند حاکمیت دانش و شواهد، یک
+    قرارداد زنده است. این
+    سند در طول زمان،
+    ممکن است اصلاح
+    یا تکمیل شود.
+    اما اصول
+    بنیادین آن
+    — یعنی
+    قابل
+    ردیابی
+    بودن
+    دانش،
+    احترام
+    به
+    عدم
+    قطعیت،
+    و
+    حفظ
+    امکان
+    یادگیری
+    — پایدار
+    می‌مانند.
+  </p>
+
+  <div class="box navy">
+    <p style="margin:0;color:#fff;text-align:center;font-weight:700;letter-spacing:1px;">
+      سند حاکمیت دانش و شواهد — نسخه ۲.۰
+    </p>
+  </div>
+
+  <footer class="running-foot">
+    <span>پایان سند</span>
+    <span class="page-num">۵۹</span>
+  </footer>
+</section>
+
+</body>
+</html>
