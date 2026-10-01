@@ -99,3 +99,25 @@
 
 نسخه‌ها با الگوی `v{شماره}_{توضیح}.sql` نام‌گذاری می‌شوند.
 هر migration در `e01_676_01_tb` ثبت می‌شود با تاریخ و توضیح.
+
+---
+
+## [v158] — 2026-10-01
+
+### Added
+- **AI_HANDOFF.md** — سند قانون اساسی پروژه (۲۹۱ خط، ۱۲ بخش)
+  - راهنمای کامل برای هر AI که روی پروژه کار می‌کند
+  - شامل: هدف، فلسفه، معماری، قوانین، خطوط سرخ
+  - به‌عنوان «حافظه بلندمدت» در هر گفتگو با AI استفاده می‌شود
+- **v158_attribute_expansion.sql** — گسترش لایه ویژگی‌ها
+  - ۱۵ ویژگی جدید (BaseQuantity + DerivedQuantity + QualitativeProperty + Identifier)
+  - ۲۶ واحد جدید
+  - has_unit relation type + ۲ قاعده
+  - has_value relation rules
+  - concept:engine + اتصال به powertrain-system
+  - ۱۶ اتصال has_unit
+  - ۳۳ اتصال applies_to
+
+### Changed
+- تعداد relations از ۲۱۵۹ به ۲۱۶۰ (افزودن has_direct_part برای engine)
+
