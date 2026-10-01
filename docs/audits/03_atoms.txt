@@ -1,0 +1,93 @@
+atom_uid  category  statement                                                     
+--------  --------  --------------------------------------------------------------
+A01       A         Keep entities                                                 
+A02       A         Keep values                                                   
+A03       A         Keep relations                                                
+B06       B         Validate relation type                                        
+B10       B         Enforce object_kind                                           
+C01       C         Prevent type cycle                                            
+C02       C         Prevent is_a cycle                                            
+D02       D         Sync FTS on insert                                            
+D05       D         Sync context_key                                              
+E01       E         Provenance fallback                                           
+F03       F         FTS text search                                               
+G01       G         Vehicle report                                                
+H05       H         Need tree                                                     
+I01       B         Any lookup non-NULL or ABORT                                  
+I02       B         Diagnostic view parens                                        
+I03       H         Shared logic once                                             
+I04       H         No seed trace on FK                                           
+I05       A         Each FK has trigger                                           
+I06       H         Each view docs check                                          
+I07       H         Min SQLite version                                            
+I08       H         Need-atom explicit                                            
+I09       B         Triggers check semantic                                       
+I10       B         Triggers no cascade                                           
+I11       B         Each column has CHECK                                         
+I12       H         Explicit NULL                                                 
+I13       H         Trigger cost in meta                                          
+R01       R         e01_516_01_tb.need_uid to e01_506_01_tb.need_uid              
+R02       R         e01_516_01_tb.atom_uid to e01_506_02_tb.atom_uid              
+R03       R         e01_506_03_tb.need_uid to e01_506_01_tb.need_uid              
+R04       R         e01_506_04_tb.atom_uid to e01_506_02_tb.atom_uid              
+R05       R         e01_506_04_tb.element_name to e01_506_03_tb.element_name      
+R06       R         e01_506_05_tb.parent_uid to e01_506_05_tb.question_uid        
+R07       R         e01_506_06_tb.need_uid to e01_506_01_tb.need_uid              
+R08       R         e01_506_06_tb.parent_id to e01_506_06_tb.node_id              
+R09       R         e01_506_06_tb.question_uid to e01_506_05_tb.question_uid      
+R10       R         e01_506_08_tb.dim_uid to e01_506_07_tb.dim_uid                
+R11       R         e01_200_01_tb.parent_id to e01_200_01_tb.type_id              
+R12       R         e01_120_01_tb.desc_id to e01_200_01_tb.type_id                
+R13       R         e01_120_01_tb.anc_id to e01_200_01_tb.type_id                 
+R14       R         e01_202_01_tb.inverse_uid to e01_202_01_tb.type_uid           
+R15       R         e01_112_01_tb.reltype_id to e01_202_01_tb.reltype_id          
+R16       R         e01_112_01_tb.target_type_id to e01_200_01_tb.type_id         
+R17       R         e01_201_01_tb.dom_id to e01_200_02_tb.dom_id                  
+R18       R         e01_201_03_tb.parent_id to e01_201_02_tb.val_id               
+R19       R         e01_201_03_tb.member_val_id to e01_201_02_tb.val_id           
+R20       R         e01_201_03_tb.member_ent_id to e01_200_03_tb.ent_id           
+R21       R         e01_200_03_tb.type_id to e01_200_01_tb.type_id                
+R22       R         e01_200_03_tb.prv_id to e01_303_01_tb.prv_id                  
+R23       R         e01_201_02_tb.enum_id to e01_201_01_tb.val_id                 
+R24       R         e01_201_02_tb.prv_id to e01_303_01_tb.prv_id                  
+R25       R         e01_302_01_tb.subj_ent_id to e01_200_03_tb.ent_id             
+R26       R         e01_302_01_tb.reltype_id to e01_202_01_tb.reltype_id          
+R27       R         e01_222_01_tb.lin_id to e01_302_01_tb.lin_id                  
+R28       R         e01_222_01_tb.reltype_id to e01_202_01_tb.reltype_id          
+R29       R         e01_222_01_tb.subj_ent_id to e01_200_03_tb.ent_id             
+R30       R         e01_222_01_tb.obj_ent_id to e01_200_03_tb.ent_id              
+R31       R         e01_222_01_tb.obj_val_id to e01_201_02_tb.val_id              
+R32       R         e01_222_01_tb.reif_ent_id to e01_200_03_tb.ent_id             
+R33       R         e01_222_01_tb.prv_id to e01_303_01_tb.prv_id                  
+R34       R         e01_305_01_tb.ent_id to e01_200_03_tb.ent_id                  
+R35       R         e01_305_01_tb.ctx_ent_id to e01_200_03_tb.ent_id              
+R36       R         e01_305_01_tb.ctx_val_id to e01_201_02_tb.val_id              
+R37       R         e01_305_01_tb.prv_id to e01_303_01_tb.prv_id                  
+R38       R         e01_305_02_tb.val_id to e01_201_02_tb.val_id                  
+R39       R         e01_305_02_tb.ctx_ent_id to e01_200_03_tb.ent_id              
+R40       R         e01_305_02_tb.ctx_val_id to e01_201_02_tb.val_id              
+R41       R         e01_305_02_tb.prv_id to e01_303_01_tb.prv_id                  
+R42       R         e01_305_03_tb.rel_id to e01_222_01_tb.rel_id                  
+R43       R         e01_305_03_tb.ctx_ent_id to e01_200_03_tb.ent_id              
+R44       R         e01_305_03_tb.ctx_val_id to e01_201_02_tb.val_id              
+R45       R         e01_305_03_tb.prv_id to e01_303_01_tb.prv_id                  
+R46       R         e01_300_01_tb.ent_a_id to e01_200_03_tb.ent_id                
+R47       R         e01_300_01_tb.ent_b_id to e01_200_03_tb.ent_id                
+R48       R         e01_300_01_tb.prv_id to e01_303_01_tb.prv_id                  
+R49       R         e01_330_01_tb.ent_id to e01_200_03_tb.ent_id                  
+R50       R         e01_330_01_tb.supersedes_id to e01_330_01_tb.vers_id          
+R51       R         e01_330_01_tb.approved_by_id to e01_200_03_tb.ent_id          
+R52       R         e01_330_02_tb.ent_id to e01_200_03_tb.ent_id                  
+R53       R         e01_330_02_tb.vers_id to e01_330_01_tb.vers_id                
+R54       R         e01_778_01_tb.need_uid to e01_506_01_tb.need_uid              
+R55       R         e01_778_01_tb.parent_code to e01_778_01_tb.code               
+R56       R         e01_778_02_tb.element_name to e01_506_03_tb.element_name      
+R57       R         e01_778_02_tb.need_uid to e01_506_01_tb.need_uid              
+R58       R         e01_778_02_tb.code to e01_778_01_tb.code                      
+R59       R         e01_778_03_tb.root_need_uid to e01_506_01_tb.need_uid         
+R60       R         e01_778_04_tb.chain_uid to e01_778_03_tb.chain_uid            
+R61       R         e01_778_04_tb.element_name to e01_506_03_tb.element_name      
+R62       R         e01_778_04_tb.need_uid to e01_506_01_tb.need_uid              
+R63       R         e01_506_02_tb.verb_code to e01_506_09_tb.verb_code            
+R64       R         e01_506_02_tb.entity_code to e01_506_10_tb.entity_code        
+R65       R         e01_506_02_tb.constraint_code to e01_506_11_tb.constraint_code

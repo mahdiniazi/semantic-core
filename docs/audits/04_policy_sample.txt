@@ -1,0 +1,52 @@
+policy_id  element_name   need_uid  policy_kind  fk_ref_id  exec_name   rationale                                                          is_mandatory  created_at         
+---------  -------------  --------  -----------  ---------  ----------  -----------------------------------------------------------------  ------------  -------------------
+195        POLICY:N00     N00       audit                   POLICY:N00  Audit placeholder for Project scope (fulfilled via view)           1             2026-09-29 20:41:03
+196        POLICY:N01     N01       audit                   POLICY:N01  Audit placeholder for Find vehicle by VIN (fulfilled via view)     1             2026-09-29 20:41:03
+197        POLICY:N02     N02       audit                   POLICY:N02  Audit placeholder for Register case (fulfilled via view)           1             2026-09-29 20:41:03
+198        POLICY:N03     N03       audit                   POLICY:N03  Audit placeholder for Text search (fulfilled via view)             1             2026-09-29 20:41:03
+199        POLICY:N14     N14       audit                   POLICY:N14  Audit placeholder for instance_of uniqueness (fulfilled via view)  1             2026-09-29 20:41:03
+200        POLICY:N21     N21       audit                   POLICY:N21  Audit placeholder for Model DTC (fulfilled via view)               1             2026-09-29 20:41:03
+201        POLICY:N34     N34       audit                   POLICY:N34  Audit placeholder for Assertion history (fulfilled via view)       1             2026-09-29 20:41:03
+202        POLICY:N40     N40       audit                   POLICY:N40  Audit placeholder for Fast lookup (fulfilled via view)             1             2026-09-29 20:41:03
+203        POLICY:N42     N42       audit                   POLICY:N42  Audit placeholder for Current state (fulfilled via view)           1             2026-09-29 20:41:03
+204        POLICY:N51     N51       audit                   POLICY:N51  Audit placeholder for Overlap analysis (fulfilled via view)        1             2026-09-29 20:41:03
+205        POLICY:N52     N52       audit                   POLICY:N52  Audit placeholder for Dead element detection (fulfilled via view)  1             2026-09-29 20:41:03
+206        POLICY:N60     N60       audit                   POLICY:N60  Audit placeholder for Closure materialized (deferred)              0             2026-09-29 20:41:03
+207        POLICY:N61     N61       audit                   POLICY:N61  Audit placeholder for Diagnostic procedures (deferred)             0             2026-09-29 20:41:03
+208        POLICY:N62     N62       audit                   POLICY:N62  Audit placeholder for Change log (deferred)                        0             2026-09-29 20:41:03
+209        POLICY:N63     N63       audit                   POLICY:N63  Audit placeholder for Idempotent migration (deferred)              0             2026-09-29 20:41:03
+18         e01_112_01_tb  N12       fk           15                     FK e01_112_01_tb.reltype_id to e01_202_01_tb.reltype_id            1             2026-09-29 18:13:43
+19         e01_112_01_tb  N30       fk           16                     FK e01_112_01_tb.target_type_id to e01_200_01_tb.type_id           1             2026-09-29 18:13:43
+15         e01_120_01_tb  N30       fk           12                     FK e01_120_01_tb.desc_id to e01_200_01_tb.type_id                  1             2026-09-29 18:13:43
+16         e01_120_01_tb  N30       fk           13                     FK e01_120_01_tb.anc_id to e01_200_01_tb.type_id                   1             2026-09-29 18:13:43
+14         e01_200_01_tb  N30       fk           11                     FK e01_200_01_tb.parent_id to e01_200_01_tb.type_id                1             2026-09-29 18:13:43
+24         e01_200_03_tb  N30       fk           21                     FK e01_200_03_tb.type_id to e01_200_01_tb.type_id                  1             2026-09-29 18:13:43
+50         e01_200_03_tb  N31       fk           22                     Provenance FK e01_200_03_tb.prv_id                                 1             2026-09-29 18:13:43
+20         e01_201_01_tb  N30       fk           17                     FK e01_201_01_tb.dom_id to e01_200_02_tb.dom_id                    1             2026-09-29 18:13:43
+25         e01_201_02_tb  N30       fk           23                     FK e01_201_02_tb.enum_id to e01_201_01_tb.val_id                   1             2026-09-29 18:13:43
+51         e01_201_02_tb  N31       fk           24                     Provenance FK e01_201_02_tb.prv_id                                 1             2026-09-29 18:13:43
+21         e01_201_03_tb  N30       fk           18                     FK e01_201_03_tb.parent_id to e01_201_02_tb.val_id                 1             2026-09-29 18:13:43
+22         e01_201_03_tb  N30       fk           19                     FK e01_201_03_tb.member_val_id to e01_201_02_tb.val_id             1             2026-09-29 18:13:43
+23         e01_201_03_tb  N30       fk           20                     FK e01_201_03_tb.member_ent_id to e01_200_03_tb.ent_id             1             2026-09-29 18:13:43
+17         e01_202_01_tb  N12       fk           14                     FK e01_202_01_tb.inverse_uid to e01_202_01_tb.type_uid             1             2026-09-29 18:13:43
+28         e01_222_01_tb  N30       fk           27                     FK e01_222_01_tb.lin_id to e01_302_01_tb.lin_id                    1             2026-09-29 18:13:43
+29         e01_222_01_tb  N12       fk           28                     FK e01_222_01_tb.reltype_id to e01_202_01_tb.reltype_id            1             2026-09-29 18:13:43
+30         e01_222_01_tb  N30       fk           29                     FK e01_222_01_tb.subj_ent_id to e01_200_03_tb.ent_id               1             2026-09-29 18:13:43
+31         e01_222_01_tb  N30       fk           30                     FK e01_222_01_tb.obj_ent_id to e01_200_03_tb.ent_id                1             2026-09-29 18:13:43
+32         e01_222_01_tb  N30       fk           31                     FK e01_222_01_tb.obj_val_id to e01_201_02_tb.val_id                1             2026-09-29 18:13:43
+33         e01_222_01_tb  N30       fk           32                     FK e01_222_01_tb.reif_ent_id to e01_200_03_tb.ent_id               1             2026-09-29 18:13:43
+52         e01_222_01_tb  N31       fk           33                     Provenance FK e01_222_01_tb.prv_id                                 1             2026-09-29 18:13:43
+34         e01_300_01_tb  N23       fk           46                     FK e01_300_01_tb.ent_a_id to e01_200_03_tb.ent_id                  1             2026-09-29 18:13:43
+35         e01_300_01_tb  N23       fk           47                     FK e01_300_01_tb.ent_b_id to e01_200_03_tb.ent_id                  1             2026-09-29 18:13:43
+53         e01_300_01_tb  N31       fk           48                     Provenance FK e01_300_01_tb.prv_id                                 1             2026-09-29 18:13:43
+26         e01_302_01_tb  N30       fk           25                     FK e01_302_01_tb.subj_ent_id to e01_200_03_tb.ent_id               1             2026-09-29 18:13:43
+27         e01_302_01_tb  N12       fk           26                     FK e01_302_01_tb.reltype_id to e01_202_01_tb.reltype_id            1             2026-09-29 18:13:43
+54         e01_305_01_tb  N31       fk           37                     Provenance FK e01_305_01_tb.prv_id                                 1             2026-09-29 18:13:43
+57         e01_305_01_tb  N32       fk           35                     Context FK e01_305_01_tb.ctx_ent_id                                1             2026-09-29 18:13:43
+58         e01_305_01_tb  N32       fk           36                     Context FK e01_305_01_tb.ctx_val_id                                1             2026-09-29 18:13:43
+59         e01_305_01_tb  N32       fk           34                     Context FK e01_305_01_tb.ent_id                                    1             2026-09-29 18:13:43
+55         e01_305_02_tb  N31       fk           41                     Provenance FK e01_305_02_tb.prv_id                                 1             2026-09-29 18:13:43
+60         e01_305_02_tb  N32       fk           39                     Context FK e01_305_02_tb.ctx_ent_id                                1             2026-09-29 18:13:43
+61         e01_305_02_tb  N32       fk           40                     Context FK e01_305_02_tb.ctx_val_id                                1             2026-09-29 18:13:43
+62         e01_305_02_tb  N32       fk           38                     Context FK e01_305_02_tb.val_id                                    1             2026-09-29 18:13:43
+56         e01_305_03_tb  N31       fk           45                     Provenance FK e01_305_03_tb.prv_id                                 1             2026-09-29 18:13:43

@@ -1,0 +1,34 @@
+need_uid  need_label                      need_kind    priority  status  
+--------  ------------------------------  -----------  --------  --------
+N00       Project scope                   domain       1         active  
+N01       Find vehicle by VIN             user         1         active  
+N02       Register case                   user         1         active  
+N03       Text search                     user         2         active  
+N10       Prevent abstract instantiation  system       1         active  
+N11       Prevent cycles                  system       1         active  
+N12       Validate relation type          system       1         active  
+N13       Functional uniqueness           system       1         active  
+N14       instance_of uniqueness          system       1         active  
+N15       Sync ctx_key                    system       1         active  
+N20       Model vehicle and unit          domain       1         active  
+N21       Model DTC                       domain       1         active  
+N22       Diagnostic chain                domain       1         active  
+N23       Distinguish concept/instance    domain       1         active  
+N30       Referential integrity           quality      1         active  
+N31       Provenance tracking             quality      2         active  
+N32       Contextualization               quality      2         active  
+N33       Time versioning                 quality      2         active  
+N34       Assertion history               quality      3         active  
+N40       Fast lookup                     performance  2         active  
+N41       Fast FTS                        performance  3         active  
+N42       Current state                   performance  2         active  
+N50       Design language                 quality      3         active  
+N51       Overlap analysis                quality      3         active  
+N52       Dead element detection          quality      3         active  
+N60       Closure materialized            performance  3         deferred
+N61       Diagnostic procedures           domain       3         deferred
+N62       Change log                      quality      3         deferred
+N63       Idempotent migration            quality      2         deferred
+N70       Register need per element       quality      1         active  
+N71       Define chains                   quality      2         active  
+N99       Design phase end                quality      1         active  

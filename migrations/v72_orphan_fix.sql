@@ -1,0 +1,171 @@
+-- v72 — رفع یتیم‌ها + تکمیل قطعات گم‌شده
+.mode column
+.headers on
+
+BEGIN;
+
+-- =====================================================================
+-- ۱. کلاس جدید: کامیون یخچال‌دار
+-- =====================================================================
+INSERT OR IGNORE INTO e01_200_01_tb (type_uid, label, is_abstract) VALUES
+('RefrigeratedTruckClass','کامیون یخچال‌دار',0);
+
+UPDATE e01_200_01_tb 
+SET parent_id = (SELECT type_id FROM e01_200_01_tb WHERE type_uid='Truck')
+WHERE type_uid = 'RefrigeratedTruckClass';
+
+-- =====================================================================
+-- ۲. اتصال یتیم‌ها
+-- =====================================================================
+
+-- reefer → refrigerated-truck class
+INSERT OR IGNORE INTO e01_222_01_tb (rel_uid, reltype_id, subj_ent_id, obj_ent_id, status, prv_id)
+VALUES
+('r:refrigerated-truck-has-reefer',
+ (SELECT reltype_id FROM e01_202_01_tb WHERE type_uid='has_part'),
+ (SELECT ent_id FROM e01_200_03_tb WHERE ent_uid='concept:refrigerated-truck'),
+ (SELECT ent_id FROM e01_200_03_tb WHERE ent_uid='concept:reefer'),
+ 'asserted', 2);
+
+-- battery-module و battery-cell → زیرمجموعه battery-pack
+-- ابتدا نوع رابطه جدید: composed_of
+INSERT OR IGNORE INTO e01_202_01_tb (type_uid, label, description, object_kind) VALUES
+('composed_of', 'تشکیل شده از', 'کل از اجزا', 'entity');
+
+INSERT OR IGNORE INTO e01_202_02_tb (reltype_id, reify_rule, category, reason)
+SELECT reltype_id, 'never', 'structural', 'ترکیب ساختاری — بدون داده'
+FROM e01_202_01_tb WHERE type_uid = 'composed_of';
+
+-- battery-pack → composed_of → battery-module
+INSERT OR IGNORE INTO e01_222_01_tb (rel_uid, reltype_id, subj_ent_id, obj_ent_id, status, prv_id)
+VALUES
+('r:battery-pack-composed-of-module',
+ (SELECT reltype_id FROM e01_202_01_tb WHERE type_uid='composed_of'),
+ (SELECT ent_id FROM e01_200_03_tb WHERE ent_uid='concept:battery-pack'),
+ (SELECT ent_id FROM e01_200_03_tb WHERE ent_uid='concept:battery-module'),
+ 'asserted', 2),
+('r:battery-module-composed-of-cell',
+ (SELECT reltype_id FROM e01_202_01_tb WHERE type_uid='composed_of'),
+ (SELECT ent_id FROM e01_200_03_tb WHERE ent_uid='concept:battery-module'),
+ (SELECT ent_id FROM e01_200_03_tb WHERE ent_uid='concept:battery-cell'),
+ 'asserted', 2);
+
+-- =====================================================================
+-- ۳. تکمیل قطعات گمشده‌ی vehicle
+-- =====================================================================
+-- این‌ها باید در concept:vehicle باشند (هر وسیله نقلیه‌ای دارد)
+
+INSERT OR IGNORE INTO e01_200_03_tb (ent_uid, type_id, nature, label, description, prv_id) VALUES
+('concept:wiring',         (SELECT type_id FROM e01_200_01_tb WHERE type_uid='Wiring'),'concept','سیم‌کشی','دسته سیم برق',2),
+('concept:headlight-low',  (SELECT type_id FROM e01_200_01_tb WHERE type_uid='HeadlightLow'),'concept','چراغ پایین','چراغ پایین',2),
+('concept:headlight-high', (SELECT type_id FROM e01_200_01_tb WHERE type_uid='HeadlightHigh'),'concept','چراغ بالا','چراغ بالا',2),
+('concept:tail-light',     (SELECT type_id FROM e01_200_01_tb WHERE type_uid='TailLight'),'concept','چراغ عقب','چراغ عقب',2),
+('concept:brake-light',    (SELECT type_id FROM e01_200_01_tb WHERE type_uid='BrakeLight'),'concept','چراغ ترمز','چراغ ترمز',2),
+('concept:turn-signal',    (SELECT type_id FROM e01_200_01_tb WHERE type_uid='TurnSignal'),'concept','راهنما','چراغ راهنما',2);
+
+INSERT INTO e01_222_01_tb (rel_uid, reltype_id, subj_ent_id, obj_ent_id, status, prv_id)
+SELECT
+  'r:vehicle-has-' || REPLACE(p.obj_uid, 'concept:', ''),
+  (SELECT reltype_id FROM e01_202_01_tb WHERE type_uid='has_part'),
+  (SELECT ent_id FROM e01_200_03_tb WHERE ent_uid='concept:vehicle'),
+  (SELECT ent_id FROM e01_200_03_tb WHERE ent_uid=p.obj_uid),
+  'asserted', 2
+FROM (
+  SELECT 'concept:wiring' AS obj_uid UNION ALL
+  SELECT 'concept:headlight-low' UNION ALL
+  SELECT 'concept:headlight-high' UNION ALL
+  SELECT 'concept:tail-light' UNION ALL
+  SELECT 'concept:brake-light' UNION ALL
+  SELECT 'concept:turn-signal'
+) p
+WHERE NOT EXISTS (SELECT 1 FROM e01_222_01_tb r WHERE r.rel_uid = 'r:vehicle-has-' || REPLACE(p.obj_uid, 'concept:', ''));
+
+-- =====================================================================
+-- ۴. تکمیل قطعات گمشده‌ی passenger-car
+-- =====================================================================
+-- موتور بنزینی: سوخت‌رسانی، جرقه، مدیریت موتور
+
+INSERT OR IGNORE INTO e01_200_03_tb (ent_uid, type_id, nature, label, description, prv_id) VALUES
+('concept:fuel-pump',      (SELECT type_id FROM e01_200_01_tb WHERE type_uid='FuelPump'),'concept','پمپ بنزین','پمپ سوخت',2),
+('concept:map-sensor',     (SELECT type_id FROM e01_200_01_tb WHERE type_uid='MAPSensor'),'concept','سنسور فشار منیفولد','MAP',2),
+('concept:camshaft-sensor',(SELECT type_id FROM e01_200_01_tb WHERE type_uid='CamshaftSensor'),'concept','سنسور میل‌سوپاپ','Camshaft',2),
+('concept:spark-plug',     (SELECT type_id FROM e01_200_01_tb WHERE type_uid='SparkPlug'),'concept','شمع','Spark plug',2),
+('concept:knock-sensor',   (SELECT type_id FROM e01_200_01_tb WHERE type_uid='KnockSensor'),'concept','سنسور ناک','Knock sensor',2),
+('concept:tps',            (SELECT type_id FROM e01_200_01_tb WHERE type_uid='ThrottlePositionSensor'),'concept','سنسور موقعیت دریچه','TPS',2);
+
+INSERT INTO e01_222_01_tb (rel_uid, reltype_id, subj_ent_id, obj_ent_id, status, prv_id)
+SELECT
+  'r:passengercar-has-' || REPLACE(p.obj_uid, 'concept:', ''),
+  (SELECT reltype_id FROM e01_202_01_tb WHERE type_uid='has_part'),
+  (SELECT ent_id FROM e01_200_03_tb WHERE ent_uid='concept:passenger-car'),
+  (SELECT ent_id FROM e01_200_03_tb WHERE ent_uid=p.obj_uid),
+  'asserted', 2
+FROM (
+  SELECT 'concept:fuel-pump' AS obj_uid UNION ALL
+  SELECT 'concept:map-sensor' UNION ALL
+  SELECT 'concept:camshaft-sensor' UNION ALL
+  SELECT 'concept:spark-plug' UNION ALL
+  SELECT 'concept:knock-sensor' UNION ALL
+  SELECT 'concept:tps'
+) p
+WHERE NOT EXISTS (SELECT 1 FROM e01_222_01_tb r WHERE r.rel_uid = 'r:passengercar-has-' || REPLACE(p.obj_uid, 'concept:', ''));
+
+-- =====================================================================
+-- ۵. لاگ
+-- =====================================================================
+INSERT OR IGNORE INTO e01_676_01_tb (migration_uid, notes)
+VALUES ('v72_orphan_fix','Fixed orphans: battery-cell/module, reefer + completed vehicle and passenger-car parts');
+
+UPDATE e01_676_02_tb SET schema_ver = schema_ver + 1 WHERE id = 1;
+
+COMMIT;
+
+-- =====================================================================
+-- گزارش نهایی
+-- =====================================================================
+SELECT 'entities' AS k, COUNT(*) AS n FROM e01_200_03_tb
+UNION ALL SELECT 'relations', COUNT(*) FROM e01_222_01_tb;
+
+SELECT '=== شمارش نهایی هر کلاس ===' AS section;
+SELECT 
+  src.ent_uid AS class,
+  COUNT(*) AS n_direct_parts
+FROM e01_222_01_tb r
+JOIN e01_202_01_tb rt ON rt.reltype_id = r.reltype_id AND rt.type_uid='has_part'
+JOIN e01_200_03_tb src ON src.ent_id = r.subj_ent_id
+WHERE src.ent_uid IN ('concept:vehicle','concept:passenger-car','concept:ev',
+                      'concept:motorcycle','concept:truck','concept:bus',
+                      'concept:ambulance','concept:fire-truck','concept:police',
+                      'concept:refrigerated-truck')
+GROUP BY src.ent_uid
+ORDER BY n_direct_parts DESC;
+
+SELECT '=== یتیم‌های باقی‌مانده ===' AS section;
+SELECT 
+  e.ent_uid AS orphan,
+  t.type_uid AS type
+FROM e01_200_03_tb e
+JOIN e01_200_01_tb t ON t.type_id = e.type_id
+WHERE e.ent_uid LIKE 'concept:%'
+  AND t.type_uid IN (
+    'Battery','LeadAcidBattery','LithiumIonBattery','Alternator','Fuse','Relay','Wiring',
+    'StarterMotor','IgnitionCoil','SparkPlug','Injector','FuelPump',
+    'CrankshaftSensor','CamshaftSensor','MAPSensor','CoolantTempSensor','O2Sensor',
+    'KnockSensor','ThrottlePositionSensor','MassAirFlowSensor',
+    'TractionMotor','Inverter','BatteryPack','BatteryModule','BatteryCell',
+    'OnboardCharger','ChargingPort','BMS','DCDCConverter','RegenerativeBrake',
+    'ThermalManagement','HighVoltageCable',
+    'BrakeMasterCylinder','BrakeBooster','BrakeDisc','BrakePad','BrakeCaliper','BrakeFluid','BrakeLine',
+    'SteeringWheel','SteeringColumn','SteeringRack','PowerSteeringPump','TieRod',
+    'CoilSpring','ShockAbsorber','ControlArm','BallJoint','Bushing',
+    'ACCompressor','ACCondenser','ACExpansionValve','ACRefrigerant','BlowerMotor','CabinAirFilter','HeaterCore',
+    'HeadlightLow','HeadlightHigh','TailLight','BrakeLight','TurnSignal',
+    'CANBus','WarningLight','Siren','HydraulicLift','WheelchairRamp',
+    'FirePump','Ladder','Reefer','Tank'
+  )
+  AND e.ent_id NOT IN (
+    SELECT obj.ent_id FROM e01_222_01_tb r
+    JOIN e01_202_01_tb rt ON rt.reltype_id = r.reltype_id AND rt.type_uid='has_part'
+    JOIN e01_200_03_tb obj ON obj.ent_id = r.obj_ent_id
+  )
+ORDER BY t.type_uid, e.ent_uid;

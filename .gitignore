@@ -1,0 +1,55 @@
+# ─── دیتابیس‌های باینری (حجم بالا، در Git نگهداری نمی‌شوند)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+
+# ─── آرشیوها (در Git نگهداری نمی‌شوند)
+*.tar.gz
+*.tgz
+*.zip
+*.7z
+*.gz
+
+# ─── dumpها (به‌صورت فایل جدا نگهداری می‌شوند، نه در Git)
+db/dumps/
+db/stable/
+*.dump
+*.sql.gz
+
+# ─── آرشیوهای snapshots
+snapshots/
+
+# ─── فایل‌های موقت
+*.tmp
+*.bak
+*.bak-*
+*.swp
+*~
+.DS_Store
+
+# ─── لاگ‌ها
+*.log
+
+# ─── Python/Node
+__pycache__/
+*.py[cod]
+node_modules/
+.venv/
+venv/
+
+# ─── IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# ─── پوشه‌های بکاپ و آرشیو (نباید در Git باشند)
+backups/
+docs/logs/
+runs/
+v34/
+
+# ─── فایل‌های مانیتورینگ
+*.sha256
