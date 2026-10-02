@@ -44,3 +44,9 @@ bash ~/semantic_core/factory/scripts/mcp_tools_list.sh
 1. code --install-extension saoudrizwan.claude-dev
 2. code ~/semantic_core
 3. Cline sidebar → MCP → project-monitor
+
+## VS Code Extensions Status
+- saoudrizwan.claude-dev (Cline)
+- Continue.continue
+- GitHub.copilot-chat
+- بررسی: code --list-extensions
