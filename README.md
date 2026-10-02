@@ -1,24 +1,28 @@
-# Semantic Core v1.0.0 — هسته معنایی برق خودرو
+# Semantic Core — v1.3.0
 
 ## وضعیت
-- **تگ:** v1.0.0
-- **تاریخ:** 1405/07/10
-- **۵ فاز:** زیرساخت، مدل دامنه، حاکمیت دانش، موتور تشخیص، کسب‌وکار
-- **۸۷ تسک:** ۶۳ اتمی + ۲۴ غیراتمی — همه verified
+- 2 پروژه فعال: semantic-core + workshop-manager
+- 131 تسک verified (63+44 SC، 25+19 WM)
+- زیرسیستم فیدبک فعال: 5 جدول + 9 اسکریپت + 12 صفحه وب + 3 cron
+- 5 View یکپارچه جدید
+- 7 FK یتیم رفع شد (v161)
+- قوانین ۱۲ و ۱۳ فعال
 
-## محتوا
-- 526 نوع | 1179 موجودیت | 2160 رابطه
-- 3 Claim + 3 Evidence + 1 Hypothesis + 1 Episode
-- 20 Attribute + 26 Unit
-- 21 View | 125 Trigger | 164 Migration
+## معماری یکپارچه
+- PostgreSQL `project_monitor` — کارخانه
+- SQLite `semantic_core.db` — محصول ۱
+- SQLite `workshop.db` — محصول ۲
+- SQLPage `http://localhost:8080` — داشبورد وب
 
-## معماری
-- **محصول:** SQLite در `products/semantic_core/db/semantic_core.db`
-- **کارخانه:** PostgreSQL در `project_monitor` (8 جدول)
-- **API:** `products/semantic_core/api/server.py` — localhost:8888
-- **Webhook:** `products/semantic_core/api/webhook.py` — localhost:8889
+## Views جدید
+- v_project_progress: پیشرفت هر پروژه
+- v_task_health: سلامت هر تسک
+- v_feedback_summary: خلاصه فیدبک
+- v_unified_timeline: تایم‌لاین رخدادها
+- v_scope_with_guard: scope+guard
 
-## منابع
-- AI_HANDOFF.md — قانون اساسی پروژه
-- factory/CHANGELOG.md — تاریخ نسخه‌ها
-- factory/scripts/dashboard.sh — داشبورد
+## Tags
+- v1.0.0 — پایه SC
+- v1.1.0 — systemd + cron + workshop scripts
+- v1.2.0 — feedback subsystem
+- v1.3.0 — قانون ۱۲+۱۳ + view یکپارچه + FK رفع

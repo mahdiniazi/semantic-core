@@ -76,3 +76,7 @@ psql -U monitor_ai -d project_monitor -h localhost -f ../schema/bootstrap.sql
 - ../AI_HANDOFF.md — راهنمای کار با AI
 - ../product/README.md — محصول اول (هسته خودرو)
 - ../docs/reference/database_schema.md — مرجع کامل طرحواره
+
+## قوانین ۱۲ و ۱۳ (نسخه v1.3.0)
+- **۱۲:** حفظ یکپارچگی — هر تغییر با بکاپ + integrity_check
+- **۱۳:** استفاده مجدد — از جداول/ویوهای موجود استفاده کن، تکرار مکن

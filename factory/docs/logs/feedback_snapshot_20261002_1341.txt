@@ -1,0 +1,8 @@
+project_id|events|patterns|applied|pending|reviews
+semantic-core|6|5|3|0|0
+workshop-manager|2|1|1|0|3
+(2 rows)
+project_id|display_name|total_tasks|done_tasks|pct|fb_events
+semantic-core|هسته معنایی برق خودرو|66|63|95.5|6
+workshop-manager|سامانه مدیریت تعمیرگاه هوشمند|26|25|96.2|2
+(2 rows)

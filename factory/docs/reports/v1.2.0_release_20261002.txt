@@ -1,0 +1,50 @@
+═══════════════════════════════════════════════════
+  v1.2.0 — زیرسیستم فیدبک فعال
+  2026-10-02 13:23
+═══════════════════════════════════════════════════
+═══ DOCTOR v2 — 2026-10-02 13:23 ═══
+SC integrity: ok
+SC FK orphans: 7
+WM integrity: ok
+PG conn: 1
+PG projects: 2
+PG verified tasks: 131
+SC size: 2.4M | WM size: 68K
+Git HEAD: 6022565
+═══════════════════════════════════════════
+
+═══ Feedback Summary ═══
+    project_id    | events | patterns | applied | pending | reviews 
+------------------+--------+----------+---------+---------+---------
+ semantic-core    |      6 |        5 |       0 |       5 |       0
+ workshop-manager |      2 |        1 |       0 |       1 |       3
+(2 rows)
+
+
+═══ Top Patterns (30d) ═══
+             pattern_uid             | occurrences | severity_avg |            last_seen             
+-------------------------------------+-------------+--------------+----------------------------------
+ pat_check_task_issue_warn           |           1 | warn         | 2026-10-02 13:18:19.281379+03:30
+ pat_verification_command_drift_warn |           1 | warn         | 2026-10-02 13:18:51.064909+03:30
+ pat_fk_orphans_warn                 |           1 | warn         | 2026-10-02 13:18:51.246397+03:30
+ pat_subsystem_initialized_info      |           1 | info         | 2026-10-02 13:16:29.979101+03:30
+ pat_test_cycle_info                 |           1 | info         | 2026-10-02 13:16:40.711508+03:30
+ pat_missing_script_critical         |           1 | critical     | 2026-10-02 13:18:51.145644+03:30
+(6 rows)
+
+
+═══ Pending Actions ═══
+ action_id | action_type |                        left                        | scope_check 
+-----------+-------------+----------------------------------------------------+-------------
+         4 | fix_schema  | رسیدگی به الگو: missing_script در سطح critical     | in_scope
+         5 | new_task    | رسیدگی به الگو: fk_orphans در سطح warn             | in_scope
+         6 | new_task    | رسیدگی به الگو: verification_command_drift در سطح  | in_scope
+         3 | new_task    | رسیدگی به الگو: check_task_issue در سطح warn       | in_scope
+         1 | no_action   | رسیدگی به الگو: test_cycle در سطح info             | in_scope
+         2 | no_action   | رسیدگی به الگو: subsystem_initialized در سطح info  | in_scope
+(6 rows)
+
+─── Git ───
+6022565 v1.2.0: feedback subsystem (AI_HANDOFF section 12 + 5 tables + 9 scripts + 4 SQLPage pages + 3 cron)
+df5bff1 v1.1.0: systemd sqlpage + cron + workshop scripts + doctor/track/search
+c747e34 project-2: 17 Python scripts + workshop schema + doctor.sh + track.sh
