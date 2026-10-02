@@ -1,0 +1,4 @@
+project_id|events|patterns|applied|pending|reviews
+semantic-core|5|5|0|5|0
+workshop-manager|1|1|0|1|1
+(2 rows)
