@@ -1,11 +1,24 @@
-# QUICK START — 5 گام
+# QUICK START — 5 گام برای AI بعدی
 
-## گام 1: خواندن زمینه
+نسخه: v1.4.0
+
+## گام 1: پیام خوشامد
+bash ~/semantic_core/factory/scripts/welcome.sh
 
 ## گام 2: دیدن نسک‌ها
+psql -U monitor_ai -d project_monitor -h localhost -c "SELECT * FROM v_clues_open"
 
-## گام 3: وضعیت کلی
+## گام 3: وضعیت کامل
+bash ~/semantic_core/factory/scripts/handoff.sh
 
 ## گام 4: بررسی سلامت
+bash ~/semantic_core/factory/scripts/doctor.sh
 
 ## گام 5: آماده کار
+- باز کردن: http://localhost:8080
+- دیدن تسک‌ها: SELECT * FROM v_project_progress;
+- خواندن: ~/semantic_core/factory/AI_HANDOFF.md
+
+## در صورت ابهام
+- bash ~/semantic_core/factory/scripts/widgets.sh  (فهرست ویجت‌ها)
+- http://localhost:8080/clues.sql  (نسک‌های باز)

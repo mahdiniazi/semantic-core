@@ -1,0 +1,36 @@
+═══ v1.4.0 Release — 2026-10-02 16:05 ═══
+Laws: 14 (widget), 15 (readme), 16 (clue)
+New: ai_clues, ai_handoff_log, widget_registry, auto_doc_state, doc_relations
+Scripts: welcome, handoff, capture_clue, doc_generator, widgets, doc_health
+Pages: clues.sql, widgets.sql (total 15)
+
+# HANDOFF — برای AI بعدی
+نسخه: v1.4.0 | تاریخ: $(date '+%Y-%m-%d %H:%M')
+
+## 🎯 خلاصه یک‌خطی
+پروژه‌ی Semantic Core = کارخانه‌ی نرم‌افزارسازی که با WBS + AI + فیدبک،
+دو محصول (SC و WM) را ساخته، با 16 قانون حاکمیت، 13 صفحه وب، 5 tag.
+
+## 🚀 شروع سریع (۵ دستور)
+
+
+## 📂 ساختار
+- `~/semantic_core/factory/` — کارخانه (PostgreSQL project_monitor)
+- `~/semantic_core/products/semantic_core/` — محصول 1
+- `~/semantic_core/products/workshop_manager/` — محصول 2
+- `~/semantic_core/docs_auto/` — اسناد خودکار
+- Git tags: v1.0.0 → v1.4.0
+
+## 🧠 نسک‌های کلیدی (ai_clues)
+
+## 🎨 ویجت‌ها
+- `/clues.sql` — نسک‌ها برای AI بعدی (اول این را بخوان)
+- `/widgets.sql` — فهرست کامل
+- 13 صفحه SQLPage فعال روی localhost:8080
+
+## 📜 16 قانون
+11 قانون قدیم + 12 (integrity) + 13 (reuse) + 14 (widget) + 15 (readme) + 16 (clue)
+متن کامل: `factory/AI_HANDOFF.md` بخش 12-14
+
+## ⚙️ فیدبک
+`capture_feedback.sh` → `analyze` → `propose` → `apply`

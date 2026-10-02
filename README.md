@@ -37,3 +37,8 @@
 `/clues.sql` `/widgets.sql` `/projects.sql` `/feedback.sql` `/integrity.sql`
 
 ## 🔧 اسکریپت‌های کلیدی
+
+## 🚀 برای AI جدید — شروع فوری
+- `START_HERE.md` — 5 دستور شروع
+- `docs_auto/HANDOFF_FOR_NEXT_AI.md` — سند اصلی
+- `docs_auto/QUICK_START.md` — 5 گام
