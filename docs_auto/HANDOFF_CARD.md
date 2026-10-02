@@ -36,3 +36,7 @@ bash ~/semantic_core/factory/scripts/handoff.sh
 - 16 قانون در AI_HANDOFF بخش 12-14
 - git log --no-pager
 - SQLPage با DATABASE_URL env
+
+## 10 ابزار MCP
+get_project_status, get_clues, get_feedback, get_handoff, get_integrity,
+get_tasks, get_widgets, get_roadmap, get_propositions, run_safe_query

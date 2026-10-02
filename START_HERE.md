@@ -9,3 +9,9 @@
 5. باز کن: http://localhost:8080/clues.sql
 
 بعد از این ۵ گام، کامل می‌دانی کجایی و چه باید بکنی.
+
+## 🔌 MCP Server (نسخه 2.0)
+اگر از Claude Desktop یا Cursor استفاده می‌کنی:
+- 10 ابزار خودکار: docs_auto/MCP_TOOLS.md
+- وضعیت: docs_auto/MCP_STATUS.md
+- تست: bash ~/semantic_core/factory/scripts/test_mcp.sh
