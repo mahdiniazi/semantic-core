@@ -1,78 +1,63 @@
 # Semantic Core — هسته معنایی دانش برق خودرو
 
-یک پایگاه دانش معنایی (semantic knowledge base) برای دامنه برق و الکترونیک خودرو، بنا شده بر پنج سند راهبردی:
+یک پروژه دو-محصولی برای مدیریت دانش و تشخیص عیب برق خودرو.
 
-1. **قانون اساسی** — چارچوب بنیادین پروژه
-2. **مدل دامنه** — هستی‌شناسی (Entity, Role, Path, Signal, Context)
-3. **حاکمیت دانش** — پذیرش، نسخه‌بندی و حل تعارض
-4. **مدل تشخیص** — موتور استدلال تشخیصی
-5. **کسب‌وکار** — مدل ترکیبی مرحله‌ای
+## دو محصول
 
-## ساختار پروژه
+### محصول ۱ — هسته معنایی خودرو
+دیتابیس SQLite با ۵۱۷ نوع، ۱٬۱۷۶ موجودیت، و ۲٬۱۵۹ رابطه.
+محل: db/semantic_core.db
+مستند: product/README.md
 
-semantic_core/
-  db/                          دیتابیس و dumpها
-    semantic_core.db           دیتابیس اصلی (SQLite)
-    stable/                    نسخه‌های پایدار نسخه‌بندی‌شده
-    dumps/                     dumpهای SQL
-  migrations/                  اسکریپت‌های تغییر دیتابیس
-    00_initial/                اسکریپت‌های ساخت اولیه
-    old/                       تاریخچه (v27 تا v64)
-    v65...v157.sql             migrationهای مدرن
-  backups/                     بکاپ‌های دیتابیس
-  snapshots/                   آرشیوهای کامل پروژه (tar.gz)
-  scripts/                     ابزارهای کمکی
-  docs/                        مستندات و گزارش‌ها
-  .gitignore
+### محصول ۲ — کارخانه مدیریت پروژه
+دیتابیس PostgreSQL با ۵۵۱ گزاره اتمی، ۸۷ وظیفه WBS، ۳ View.
+محل: PostgreSQL server — project_monitor
+مستند: factory/README.md
 
-## آمار فعلی
+## شروع سریع
 
-| مورد | تعداد |
-|---|---|
-| Type | 517 |
-| Entity | 1,176 |
-| Relation | 2,159 |
-| Migration | ~190 |
-| آخرین نسخه | v157_attribute_hierarchy |
+برای دیدن وضعیت پروژه:
 
-## اجرا
+    ./scripts/dashboard.sh
 
-### مشاهده محتوای دیتابیس
-    sqlite3 db/semantic_core.db
+برای دیدن نقشه راه:
 
-### اجرای یک migration
-    sqlite3 db/semantic_core.db < migrations/vXXX.sql
+    ./scripts/roadmap.sh
 
-### ساخت بکاپ
-    cp db/semantic_core.db backups/manual/semantic_core-$(date +%Y%m%d-%H%M%S).db
+برای کار با پروژه، اول این را بخوان:
 
-## نسخه‌بندی
+    AI_HANDOFF.md
 
-migrationها با الگوی زیر نام‌گذاری می‌شوند:
+## ساختار
 
-- v27.x — فاز ۲ تا ۵ (Context, Identity, Versioning, Monitor)
-- v28-v64 — گسترش دامنه (خودروها، قطعات، سیستم‌ها)
-- v65-v99 — لایه‌بندی و روابط (chain, inherent, direct-part)
-- v100-v139 — لایه‌های پیشرفته (health, gate, roles)
-- v141-v157 — لایه ویژگی‌ها (Attribute, Unit, has_value)
+    product/      — محصول اول
+    factory/      — محصول دوم
+    schema/       — طرحواره PostgreSQL
+    migrations/   — تغییرات SQLite
+    scripts/      — ابزارهای اجرایی
+    docs/
+      ├── strategic/   — پنج سند راهبردی HTML
+      ├── guides/      — چهار راهنمای کاربری
+      └── reference/   — سه مرجع فنی
 
-## اسناد راهبردی
+## پنج سند راهبردی
 
-پنج سند راهبردی پروژه در docs/ نگهداری می‌شوند:
+در docs/strategic/:
 
-1. قانون اساسی
-2. مدل دامنه
-3. حاکمیت دانش
-4. مدل تشخیص
-5. کسب‌وکار
+1. قانون اساسی (v5.0)
+2. مدل دامنه (v2.0)
+3. حاکمیت دانش (v2.0)
+4. مدل تشخیص (v2.0)
+5. کسب‌وکار (v2.0)
 
-## وضعیت فعلی
+## مستندات
 
-- [x] لایه مدل دامنه (Attribute + Unit) پیاده‌سازی شده
-- [ ] لایه حاکمیت دانش در حال ساخت
-- [ ] لایه تشخیص در دست طراحی
-- [ ] کسب‌وکار در مرحله برنامه‌ریزی
+- AI_HANDOFF.md — راهنمای AI (نقطه ورود)
+- docs/guides/ — شروع، جریان کار، محصول جدید، حل مشکلات
+- docs/reference/ — طرحواره، اسکریپت‌ها، ادغام AI
+- product/README.md — محصول اول
+- factory/README.md — محصول دوم
 
-## مجوز
+## مخزن
 
-Internal project — all rights reserved.
+github.com/mahdiniazi/semantic-core
