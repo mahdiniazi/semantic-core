@@ -1,62 +1,73 @@
-# Semantic Core — هسته معنایی دانش برق خودرو
+# Semantic Workspace
 
-یک پروژه دو-محصولی برای مدیریت دانش و تشخیص عیب برق خودرو.
-
-## دو محصول
-
-### محصول ۱ — هسته معنایی خودرو
-دیتابیس SQLite با ۵۱۷ نوع، ۱٬۱۷۶ موجودیت، و ۲٬۱۵۹ رابطه.
-محل: db/semantic_core.db
-مستند: product/README.md
-
-### محصول ۲ — کارخانه مدیریت پروژه
-دیتابیس PostgreSQL با ۵۵۱ گزاره اتمی، ۸۷ وظیفه WBS، ۳ View.
-محل: PostgreSQL server — project_monitor
-مستند: factory/README.md
-
-## شروع سریع
-
-برای دیدن وضعیت پروژه:
-
-    ./scripts/dashboard.sh
-
-برای دیدن نقشه راه:
-
-    ./scripts/roadmap.sh
-
-برای کار با پروژه، اول این را بخوان:
-
-    AI_HANDOFF.md
+این یک Workspace است که شامل کارخانه و محصولات می‌شود.
 
 ## ساختار
 
-    product/      — محصول اول
-    factory/      — محصول دوم
-    schema/       — طرحواره PostgreSQL
-    migrations/   — تغییرات SQLite
-    scripts/      — ابزارهای اجرایی
-    docs/
-      ├── strategic/   — پنج سند راهبردی HTML
-      ├── guides/      — چهار راهنمای کاربری
-      └── reference/   — سه مرجع فنی
+    factory/                   — کارخانه (مدیریت همه محصولات)
+      AI_HANDOFF.md           — راهنمای AI
+      CHANGELOG.md
+      README.md
+      schema/                 — طرح‌واره PostgreSQL
+      scripts/                — dashboard, roadmap, task, search
+      web/                    — پنل وب SQLPage
+      docs/
+        guides/
+        reference/
+        audits/
+        logs/
 
-## پنج سند راهبردی
+    products/                  — محصولات
+      semantic_core/          — محصول ۱: پایگاه دانش خودرو
+        README.md
+        db/                   — semantic_core.db (SQLite)
+        migrations/
+        backups/
+        snapshots/
+        scripts/              — backup, migrate, audit, run
+        docs/
+          strategic/          — پنج سند راهبردی HTML
 
-در docs/strategic/:
+## کارخانه
 
-1. قانون اساسی (v5.0)
-2. مدل دامنه (v2.0)
-3. حاکمیت دانش (v2.0)
-4. مدل تشخیص (v2.0)
-5. کسب‌وکار (v2.0)
+کارخانه، همه محصولات را در یک دیتابیس PostgreSQL به نام project_monitor مدیریت می‌کند.
 
-## مستندات
+- ۵۵۱ گزاره اتمی
+- ۸۷ وظیفه WBS
+- ۴۵ لینک گزاره-وظیفه
+- ۳ View آماده
 
-- AI_HANDOFF.md — راهنمای AI (نقطه ورود)
-- docs/guides/ — شروع، جریان کار، محصول جدید، حل مشکلات
-- docs/reference/ — طرحواره، اسکریپت‌ها، ادغام AI
-- product/README.md — محصول اول
-- factory/README.md — محصول دوم
+مستندات: factory/README.md و factory/AI_HANDOFF.md
+
+## محصول ۱ — هسته معنایی خودرو
+
+پایگاه دانش خودرو با ۵۱۷ نوع، ۱۱۷۶ موجودیت، ۲۱۶۰ رابطه.
+
+مستندات: products/semantic_core/README.md و products/semantic_core/docs/strategic/
+
+## شروع سریع
+
+وضعیت کلی کارخانه:
+
+    ~/semantic_core/factory/scripts/dashboard.sh
+
+نقشه راه پروژه:
+
+    ~/semantic_core/factory/scripts/roadmap.sh
+
+بکاپ محصول:
+
+    ~/semantic_core/products/semantic_core/scripts/backup.sh
+
+## پنج سند راهبردی محصول
+
+در products/semantic_core/docs/strategic/:
+
+1. قانون اساسی
+2. مدل دامنه
+3. حاکمیت دانش
+4. مدل تشخیص
+5. کسب‌وکار
 
 ## مخزن
 

@@ -1,0 +1,7080 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE e01_506_01_tb(
+    need_uid TEXT PRIMARY KEY, need_label TEXT NOT NULL,
+    need_kind TEXT NOT NULL CHECK(need_kind IN ('user','system','domain','quality','performance')),
+    need_statement TEXT, priority INTEGER NOT NULL DEFAULT 2 CHECK(priority IN (1,2,3)),
+    status TEXT NOT NULL DEFAULT 'active' CHECK(status IN ('active','deferred','dropped')),
+    created_at TEXT NOT NULL DEFAULT (datetime('now')));
+INSERT INTO e01_506_01_tb VALUES('N00','Project scope','domain','ICE car electrical DTC',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N01','Find vehicle by VIN','user','User finds vehicle via VIN',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N02','Register case','user','Technician registers diagnostic case',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N03','Text search','user','Find entity by label or description',2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N10','Prevent abstract instantiation','system','Instance must not be from abstract',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N11','Prevent cycles','system','is_a and parent must not cycle',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N12','Validate relation type','system','subject/object must comply',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N13','Functional uniqueness','system','Functional not asserted twice',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N14','instance_of uniqueness','system','Each instance has one concept',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N15','Sync ctx_key','system','ctx_key matches context rows',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N20','Model vehicle and unit','domain','Vehicle ECU Sensor Actuator Signal',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N21','Model DTC','domain','DTC and its unit relation',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N22','Diagnostic chain','domain','Observation to Repair',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N23','Distinguish concept/instance','domain','Vehicle vs specific',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N30','Referential integrity','quality','No orphan references',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N31','Provenance tracking','quality','Each fact has source',2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N32','Contextualization','quality','Each claim has conditions',2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N33','Time versioning','quality','valid_from/valid_to',2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N34','Assertion history','quality','Claim lifecycle',3,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N40','Fast lookup','performance','O(log n) common queries',2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N41','Fast FTS','performance','FTS5 label/desc',3,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N42','Current state','performance','Latest state per entity',2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N50','Design language','quality','Living document',3,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N51','Overlap analysis','quality','Detect shared needs',3,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N52','Dead element detection','quality','Detect dead code',3,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N60','Closure materialized','performance','Materialized closure',3,'deferred','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N61','Diagnostic procedures','domain','Procedures with branches',3,'deferred','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N62','Change log','quality','Auto observation on label',3,'deferred','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N63','Idempotent migration','quality','Delta runs twice safely',2,'deferred','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N70','Register need per element','quality','Each element has need',1,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N71','Define chains','quality','Complex relations explicit',2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_01_tb VALUES('N99','Design phase end','quality','v26 design end',1,'active','2026-09-29 18:02:15');
+CREATE TABLE e01_506_09_tb(verb_code TEXT PRIMARY KEY CHECK(verb_code GLOB '[0-9]'), label TEXT NOT NULL, description TEXT, sort_order INTEGER NOT NULL DEFAULT 0);
+INSERT INTO e01_506_09_tb VALUES('0','PRS',NULL,10);
+INSERT INTO e01_506_09_tb VALUES('1','VAL',NULL,20);
+INSERT INTO e01_506_09_tb VALUES('2','PRV',NULL,30);
+INSERT INTO e01_506_09_tb VALUES('3','SYN',NULL,40);
+INSERT INTO e01_506_09_tb VALUES('4','TRC',NULL,50);
+INSERT INTO e01_506_09_tb VALUES('5','PERF',NULL,60);
+INSERT INTO e01_506_09_tb VALUES('6','EXT',NULL,70);
+INSERT INTO e01_506_09_tb VALUES('7','META',NULL,80);
+CREATE TABLE e01_506_10_tb(entity_code TEXT PRIMARY KEY, label TEXT NOT NULL, description TEXT, sort_order INTEGER NOT NULL DEFAULT 0);
+INSERT INTO e01_506_10_tb VALUES('ENT','Entity',NULL,10);
+INSERT INTO e01_506_10_tb VALUES('VAL','Value',NULL,20);
+INSERT INTO e01_506_10_tb VALUES('REL','Relation',NULL,30);
+INSERT INTO e01_506_10_tb VALUES('PRV','Provenance',NULL,40);
+INSERT INTO e01_506_10_tb VALUES('FTS','FTS',NULL,50);
+INSERT INTO e01_506_10_tb VALUES('CTX','Context',NULL,60);
+INSERT INTO e01_506_10_tb VALUES('NOD','Node',NULL,70);
+INSERT INTO e01_506_10_tb VALUES('VEH','Vehicle',NULL,80);
+INSERT INTO e01_506_10_tb VALUES('REF','Reference',NULL,90);
+INSERT INTO e01_506_10_tb VALUES('DTC','DTC',NULL,100);
+INSERT INTO e01_506_10_tb VALUES('SUB','Subject',NULL,110);
+INSERT INTO e01_506_10_tb VALUES('VW','View',NULL,120);
+INSERT INTO e01_506_10_tb VALUES('LOGIC','Logic',NULL,130);
+INSERT INTO e01_506_10_tb VALUES('SEED','Seed',NULL,140);
+INSERT INTO e01_506_10_tb VALUES('FK','Foreign Key',NULL,150);
+INSERT INTO e01_506_10_tb VALUES('TRG','Trigger',NULL,160);
+INSERT INTO e01_506_10_tb VALUES('COL','Column',NULL,170);
+INSERT INTO e01_506_10_tb VALUES('NULL','Null',NULL,180);
+INSERT INTO e01_506_10_tb VALUES('TYP','Type',NULL,190);
+INSERT INTO e01_506_10_tb VALUES('ISA','Is-a',NULL,200);
+INSERT INTO e01_506_10_tb VALUES('CYC-TYP','CycleType',NULL,210);
+INSERT INTO e01_506_10_tb VALUES('CYC-ISA','CycleIsA',NULL,220);
+CREATE TABLE e01_506_11_tb(constraint_code TEXT PRIMARY KEY, label TEXT NOT NULL, description TEXT, sort_order INTEGER NOT NULL DEFAULT 0);
+INSERT INTO e01_506_11_tb VALUES('NONEMPTY','Non-empty',NULL,10);
+INSERT INTO e01_506_11_tb VALUES('TYPED','Typed',NULL,20);
+INSERT INTO e01_506_11_tb VALUES('XOR','Xor',NULL,30);
+INSERT INTO e01_506_11_tb VALUES('TYPE','Valid type',NULL,40);
+INSERT INTO e01_506_11_tb VALUES('KIND','Valid kind',NULL,50);
+INSERT INTO e01_506_11_tb VALUES('NOCYC','No cycle',NULL,60);
+INSERT INTO e01_506_11_tb VALUES('CONSIST','Consistent',NULL,70);
+INSERT INTO e01_506_11_tb VALUES('NOTNULL','Not null',NULL,80);
+INSERT INTO e01_506_11_tb VALUES('FAST','Fast',NULL,90);
+INSERT INTO e01_506_11_tb VALUES('DET','Deterministic',NULL,100);
+INSERT INTO e01_506_11_tb VALUES('TREE','Tree',NULL,110);
+INSERT INTO e01_506_11_tb VALUES('PAREN','Explicit parens',NULL,120);
+INSERT INTO e01_506_11_tb VALUES('ONCE','Once',NULL,130);
+INSERT INTO e01_506_11_tb VALUES('NOFK','No FK',NULL,140);
+INSERT INTO e01_506_11_tb VALUES('GUARD','Guard',NULL,150);
+INSERT INTO e01_506_11_tb VALUES('DOC','Documented',NULL,160);
+INSERT INTO e01_506_11_tb VALUES('VER','Versioned',NULL,170);
+INSERT INTO e01_506_11_tb VALUES('LINK','Linked',NULL,180);
+INSERT INTO e01_506_11_tb VALUES('FKFIRST','FK first',NULL,190);
+INSERT INTO e01_506_11_tb VALUES('NOCASC','No cascade',NULL,200);
+INSERT INTO e01_506_11_tb VALUES('CHECK','Has check',NULL,210);
+INSERT INTO e01_506_11_tb VALUES('fkref:11','FKref11',NULL,1011);
+INSERT INTO e01_506_11_tb VALUES('fkref:12','FKref12',NULL,1012);
+INSERT INTO e01_506_11_tb VALUES('fkref:13','FKref13',NULL,1013);
+INSERT INTO e01_506_11_tb VALUES('fkref:16','FKref16',NULL,1016);
+INSERT INTO e01_506_11_tb VALUES('fkref:21','FKref21',NULL,1021);
+INSERT INTO e01_506_11_tb VALUES('fkref:17','FKref17',NULL,1017);
+INSERT INTO e01_506_11_tb VALUES('fkref:20','FKref20',NULL,1020);
+INSERT INTO e01_506_11_tb VALUES('fkref:25','FKref25',NULL,1025);
+INSERT INTO e01_506_11_tb VALUES('fkref:29','FKref29',NULL,1029);
+INSERT INTO e01_506_11_tb VALUES('fkref:30','FKref30',NULL,1030);
+INSERT INTO e01_506_11_tb VALUES('fkref:32','FKref32',NULL,1032);
+INSERT INTO e01_506_11_tb VALUES('fkref:34','FKref34',NULL,1034);
+INSERT INTO e01_506_11_tb VALUES('fkref:35','FKref35',NULL,1035);
+INSERT INTO e01_506_11_tb VALUES('fkref:39','FKref39',NULL,1039);
+INSERT INTO e01_506_11_tb VALUES('fkref:43','FKref43',NULL,1043);
+INSERT INTO e01_506_11_tb VALUES('fkref:46','FKref46',NULL,1046);
+INSERT INTO e01_506_11_tb VALUES('fkref:47','FKref47',NULL,1047);
+INSERT INTO e01_506_11_tb VALUES('fkref:49','FKref49',NULL,1049);
+INSERT INTO e01_506_11_tb VALUES('fkref:51','FKref51',NULL,1051);
+INSERT INTO e01_506_11_tb VALUES('fkref:52','FKref52',NULL,1052);
+INSERT INTO e01_506_11_tb VALUES('fkref:23','FKref23',NULL,1023);
+INSERT INTO e01_506_11_tb VALUES('fkref:18','FKref18',NULL,1018);
+INSERT INTO e01_506_11_tb VALUES('fkref:19','FKref19',NULL,1019);
+INSERT INTO e01_506_11_tb VALUES('fkref:31','FKref31',NULL,1031);
+INSERT INTO e01_506_11_tb VALUES('fkref:36','FKref36',NULL,1036);
+INSERT INTO e01_506_11_tb VALUES('fkref:38','FKref38',NULL,1038);
+INSERT INTO e01_506_11_tb VALUES('fkref:40','FKref40',NULL,1040);
+INSERT INTO e01_506_11_tb VALUES('fkref:44','FKref44',NULL,1044);
+INSERT INTO e01_506_11_tb VALUES('fkref:14','FKref14',NULL,1014);
+INSERT INTO e01_506_11_tb VALUES('fkref:15','FKref15',NULL,1015);
+INSERT INTO e01_506_11_tb VALUES('fkref:26','FKref26',NULL,1026);
+INSERT INTO e01_506_11_tb VALUES('fkref:28','FKref28',NULL,1028);
+INSERT INTO e01_506_11_tb VALUES('fkref:42','FKref42',NULL,1042);
+INSERT INTO e01_506_11_tb VALUES('fkref:27','FKref27',NULL,1027);
+INSERT INTO e01_506_11_tb VALUES('fkref:22','FKref22',NULL,1022);
+INSERT INTO e01_506_11_tb VALUES('fkref:24','FKref24',NULL,1024);
+INSERT INTO e01_506_11_tb VALUES('fkref:33','FKref33',NULL,1033);
+INSERT INTO e01_506_11_tb VALUES('fkref:37','FKref37',NULL,1037);
+INSERT INTO e01_506_11_tb VALUES('fkref:41','FKref41',NULL,1041);
+INSERT INTO e01_506_11_tb VALUES('fkref:45','FKref45',NULL,1045);
+INSERT INTO e01_506_11_tb VALUES('fkref:48','FKref48',NULL,1048);
+INSERT INTO e01_506_11_tb VALUES('fkref:50','FKref50',NULL,1050);
+INSERT INTO e01_506_11_tb VALUES('fkref:53','FKref53',NULL,1053);
+INSERT INTO e01_506_11_tb VALUES('fkref:1','FKref1',NULL,1001);
+INSERT INTO e01_506_11_tb VALUES('fkref:3','FKref3',NULL,1003);
+INSERT INTO e01_506_11_tb VALUES('fkref:7','FKref7',NULL,1007);
+INSERT INTO e01_506_11_tb VALUES('fkref:54','FKref54',NULL,1054);
+INSERT INTO e01_506_11_tb VALUES('fkref:57','FKref57',NULL,1057);
+INSERT INTO e01_506_11_tb VALUES('fkref:59','FKref59',NULL,1059);
+INSERT INTO e01_506_11_tb VALUES('fkref:62','FKref62',NULL,1062);
+INSERT INTO e01_506_11_tb VALUES('fkref:2','FKref2',NULL,1002);
+INSERT INTO e01_506_11_tb VALUES('fkref:4','FKref4',NULL,1004);
+INSERT INTO e01_506_11_tb VALUES('fkref:5','FKref5',NULL,1005);
+INSERT INTO e01_506_11_tb VALUES('fkref:56','FKref56',NULL,1056);
+INSERT INTO e01_506_11_tb VALUES('fkref:61','FKref61',NULL,1061);
+INSERT INTO e01_506_11_tb VALUES('fkref:6','FKref6',NULL,1006);
+INSERT INTO e01_506_11_tb VALUES('fkref:9','FKref9',NULL,1009);
+INSERT INTO e01_506_11_tb VALUES('fkref:8','FKref8',NULL,1008);
+INSERT INTO e01_506_11_tb VALUES('fkref:10','FKref10',NULL,1010);
+INSERT INTO e01_506_11_tb VALUES('fkref:63','FKref63',NULL,1063);
+INSERT INTO e01_506_11_tb VALUES('fkref:64','FKref64',NULL,1064);
+INSERT INTO e01_506_11_tb VALUES('fkref:65','FKref65',NULL,1065);
+INSERT INTO e01_506_11_tb VALUES('fkref:55','FKref55',NULL,1055);
+INSERT INTO e01_506_11_tb VALUES('fkref:58','FKref58',NULL,1058);
+INSERT INTO e01_506_11_tb VALUES('fkref:60','FKref60',NULL,1060);
+CREATE TABLE e01_506_02_tb(
+    atom_uid TEXT PRIMARY KEY, category TEXT NOT NULL CHECK(category IN ('A','B','C','D','E','F','G','H','R')),
+    origin TEXT NOT NULL DEFAULT 'design' CHECK(origin IN ('design','inferred','observed','derived')),
+    statement TEXT NOT NULL, verb_code TEXT NOT NULL, entity_code TEXT NOT NULL,
+    constraint_code TEXT, acceptance TEXT, verification TEXT,
+    priority INTEGER NOT NULL DEFAULT 2 CHECK(priority IN (1,2,3)),
+    status TEXT NOT NULL DEFAULT 'active' CHECK(status IN ('active','deferred','dropped')),
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    CONSTRAINT fk_atom_verb FOREIGN KEY (verb_code) REFERENCES e01_506_09_tb(verb_code) ON DELETE RESTRICT,
+    CONSTRAINT fk_atom_entity FOREIGN KEY (entity_code) REFERENCES e01_506_10_tb(entity_code) ON DELETE RESTRICT,
+    CONSTRAINT fk_atom_constraint FOREIGN KEY (constraint_code) REFERENCES e01_506_11_tb(constraint_code) ON DELETE RESTRICT);
+INSERT INTO e01_506_02_tb VALUES('A01','A','design','Keep entities','0','ENT','NONEMPTY','e01_200_03_tb',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('A02','A','design','Keep values','0','VAL','TYPED','e01_201_02_tb',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('A03','A','design','Keep relations','0','REL','XOR','e01_222_01_tb',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('B06','B','design','Validate relation type','1','REL','TYPE','e03_312_01_tr',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('B10','B','design','Enforce object_kind','1','REL','KIND','e03_312_01_tr',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('C01','C','design','Prevent type cycle','2','CYC-TYP','NOCYC','e03_120_01_tr',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('C02','C','design','Prevent is_a cycle','2','CYC-ISA','NOCYC','e03_122_01_tr',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('D02','D','design','Sync FTS on insert','3','FTS','CONSIST','e03_434_01_tr',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('D05','D','design','Sync context_key','3','CTX','CONSIST','e03_135_01_tr',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('E01','E','design','Provenance fallback','4','PRV','NOTNULL','e03_343_01_tr',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('F03','F','design','FTS text search','5','FTS','FAST','e02_404_01_ft',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('G01','G','design','Vehicle report','6','VEH','DET','e04_267_01_vw',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('H05','H','design','Need tree','7','NOD','TREE','e01_506_06_tb',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('I01','B','inferred','Any lookup non-NULL or ABORT','1','SUB','NOTNULL','seed',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('I02','B','inferred','Diagnostic view parens','1','VW','PAREN','view drift',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('I03','H','inferred','Shared logic once','1','LOGIC','ONCE','no dup',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('I04','H','inferred','No seed trace on FK','1','SEED','NOFK','traces after',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('I05','A','inferred','Each FK has trigger','1','FK','GUARD','guards active',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('I06','H','inferred','Each view docs check','7','VW','DOC','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('I07','H','inferred','Min SQLite version','7','VW','VER','meta.notes',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('I08','H','inferred','Need-atom explicit','7','NOD','LINK','e01_516_01_tb',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('I09','B','inferred','Triggers check semantic','1','TRG','FKFIRST','ABORT',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('I10','B','inferred','Triggers no cascade','1','TRG','NOCASC','single upd',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('I11','B','inferred','Each column has CHECK','1','COL','CHECK','cat A-H',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('I12','H','inferred','Explicit NULL','7','NULL','DOC','view',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('I13','H','inferred','Trigger cost in meta','7','TRG','PERF','warning',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R01','R','design','e01_516_01_tb.need_uid to e01_506_01_tb.need_uid','1','REF','fkref:1','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R02','R','design','e01_516_01_tb.atom_uid to e01_506_02_tb.atom_uid','1','REF','fkref:2','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R03','R','design','e01_506_03_tb.need_uid to e01_506_01_tb.need_uid','1','REF','fkref:3','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R04','R','design','e01_506_04_tb.atom_uid to e01_506_02_tb.atom_uid','1','REF','fkref:4','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R05','R','design','e01_506_04_tb.element_name to e01_506_03_tb.element_name','1','REF','fkref:5','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R06','R','design','e01_506_05_tb.parent_uid to e01_506_05_tb.question_uid','1','REF','fkref:6','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R07','R','design','e01_506_06_tb.need_uid to e01_506_01_tb.need_uid','1','REF','fkref:7','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R08','R','design','e01_506_06_tb.parent_id to e01_506_06_tb.node_id','1','REF','fkref:8','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R09','R','design','e01_506_06_tb.question_uid to e01_506_05_tb.question_uid','1','REF','fkref:9','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R10','R','design','e01_506_08_tb.dim_uid to e01_506_07_tb.dim_uid','1','REF','fkref:10','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R11','R','design','e01_200_01_tb.parent_id to e01_200_01_tb.type_id','1','REF','fkref:11','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R12','R','design','e01_120_01_tb.desc_id to e01_200_01_tb.type_id','1','REF','fkref:12','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R13','R','design','e01_120_01_tb.anc_id to e01_200_01_tb.type_id','1','REF','fkref:13','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R14','R','design','e01_202_01_tb.inverse_uid to e01_202_01_tb.type_uid','1','REF','fkref:14','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R15','R','design','e01_112_01_tb.reltype_id to e01_202_01_tb.reltype_id','1','REF','fkref:15','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R16','R','design','e01_112_01_tb.target_type_id to e01_200_01_tb.type_id','1','REF','fkref:16','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R17','R','design','e01_201_01_tb.dom_id to e01_200_02_tb.dom_id','1','REF','fkref:17','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R18','R','design','e01_201_03_tb.parent_id to e01_201_02_tb.val_id','1','REF','fkref:18','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R19','R','design','e01_201_03_tb.member_val_id to e01_201_02_tb.val_id','1','REF','fkref:19','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R20','R','design','e01_201_03_tb.member_ent_id to e01_200_03_tb.ent_id','1','REF','fkref:20','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R21','R','design','e01_200_03_tb.type_id to e01_200_01_tb.type_id','1','REF','fkref:21','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R22','R','design','e01_200_03_tb.prv_id to e01_303_01_tb.prv_id','1','REF','fkref:22','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R23','R','design','e01_201_02_tb.enum_id to e01_201_01_tb.val_id','1','REF','fkref:23','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R24','R','design','e01_201_02_tb.prv_id to e01_303_01_tb.prv_id','1','REF','fkref:24','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R25','R','design','e01_302_01_tb.subj_ent_id to e01_200_03_tb.ent_id','1','REF','fkref:25','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R26','R','design','e01_302_01_tb.reltype_id to e01_202_01_tb.reltype_id','1','REF','fkref:26','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R27','R','design','e01_222_01_tb.lin_id to e01_302_01_tb.lin_id','1','REF','fkref:27','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R28','R','design','e01_222_01_tb.reltype_id to e01_202_01_tb.reltype_id','1','REF','fkref:28','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R29','R','design','e01_222_01_tb.subj_ent_id to e01_200_03_tb.ent_id','1','REF','fkref:29','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R30','R','design','e01_222_01_tb.obj_ent_id to e01_200_03_tb.ent_id','1','REF','fkref:30','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R31','R','design','e01_222_01_tb.obj_val_id to e01_201_02_tb.val_id','1','REF','fkref:31','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R32','R','design','e01_222_01_tb.reif_ent_id to e01_200_03_tb.ent_id','1','REF','fkref:32','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R33','R','design','e01_222_01_tb.prv_id to e01_303_01_tb.prv_id','1','REF','fkref:33','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R34','R','design','e01_305_01_tb.ent_id to e01_200_03_tb.ent_id','1','REF','fkref:34','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R35','R','design','e01_305_01_tb.ctx_ent_id to e01_200_03_tb.ent_id','1','REF','fkref:35','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R36','R','design','e01_305_01_tb.ctx_val_id to e01_201_02_tb.val_id','1','REF','fkref:36','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R37','R','design','e01_305_01_tb.prv_id to e01_303_01_tb.prv_id','1','REF','fkref:37','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R38','R','design','e01_305_02_tb.val_id to e01_201_02_tb.val_id','1','REF','fkref:38','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R39','R','design','e01_305_02_tb.ctx_ent_id to e01_200_03_tb.ent_id','1','REF','fkref:39','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R40','R','design','e01_305_02_tb.ctx_val_id to e01_201_02_tb.val_id','1','REF','fkref:40','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R41','R','design','e01_305_02_tb.prv_id to e01_303_01_tb.prv_id','1','REF','fkref:41','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R42','R','design','e01_305_03_tb.rel_id to e01_222_01_tb.rel_id','1','REF','fkref:42','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R43','R','design','e01_305_03_tb.ctx_ent_id to e01_200_03_tb.ent_id','1','REF','fkref:43','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R44','R','design','e01_305_03_tb.ctx_val_id to e01_201_02_tb.val_id','1','REF','fkref:44','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R45','R','design','e01_305_03_tb.prv_id to e01_303_01_tb.prv_id','1','REF','fkref:45','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R46','R','design','e01_300_01_tb.ent_a_id to e01_200_03_tb.ent_id','1','REF','fkref:46','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R47','R','design','e01_300_01_tb.ent_b_id to e01_200_03_tb.ent_id','1','REF','fkref:47','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R48','R','design','e01_300_01_tb.prv_id to e01_303_01_tb.prv_id','1','REF','fkref:48','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R49','R','design','e01_330_01_tb.ent_id to e01_200_03_tb.ent_id','1','REF','fkref:49','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R50','R','design','e01_330_01_tb.supersedes_id to e01_330_01_tb.vers_id','1','REF','fkref:50','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R51','R','design','e01_330_01_tb.approved_by_id to e01_200_03_tb.ent_id','1','REF','fkref:51','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R52','R','design','e01_330_02_tb.ent_id to e01_200_03_tb.ent_id','1','REF','fkref:52','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R53','R','design','e01_330_02_tb.vers_id to e01_330_01_tb.vers_id','1','REF','fkref:53','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R54','R','design','e01_778_01_tb.need_uid to e01_506_01_tb.need_uid','1','REF','fkref:54','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R55','R','design','e01_778_01_tb.parent_code to e01_778_01_tb.code','1','REF','fkref:55','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R56','R','design','e01_778_02_tb.element_name to e01_506_03_tb.element_name','1','REF','fkref:56','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R57','R','design','e01_778_02_tb.need_uid to e01_506_01_tb.need_uid','1','REF','fkref:57','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R58','R','design','e01_778_02_tb.code to e01_778_01_tb.code','1','REF','fkref:58','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R59','R','design','e01_778_03_tb.root_need_uid to e01_506_01_tb.need_uid','1','REF','fkref:59','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R60','R','design','e01_778_04_tb.chain_uid to e01_778_03_tb.chain_uid','1','REF','fkref:60','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R61','R','design','e01_778_04_tb.element_name to e01_506_03_tb.element_name','1','REF','fkref:61','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R62','R','design','e01_778_04_tb.need_uid to e01_506_01_tb.need_uid','1','REF','fkref:62','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R63','R','design','e01_506_02_tb.verb_code to e01_506_09_tb.verb_code','1','REF','fkref:63','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R64','R','design','e01_506_02_tb.entity_code to e01_506_10_tb.entity_code','1','REF','fkref:64','meta',NULL,2,'active','2026-09-29 18:02:15');
+INSERT INTO e01_506_02_tb VALUES('R65','R','design','e01_506_02_tb.constraint_code to e01_506_11_tb.constraint_code','1','REF','fkref:65','meta',NULL,2,'active','2026-09-29 18:02:15');
+CREATE TABLE e01_506_03_tb(
+    element_name TEXT PRIMARY KEY, element_code TEXT UNIQUE,
+    element_level INTEGER CHECK(element_level IN (1,2,3,4)),
+    element_layer TEXT NOT NULL CHECK(element_layer IN ('M','T','C','X','I','V','A')),
+    element_kind TEXT NOT NULL CHECK(element_kind IN ('tb','tr','vw','ix','ft')),
+    need_uid TEXT, purpose TEXT, notes TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    CHECK (element_code IS NULL OR element_code GLOB 'e[0-9][0-9]_[0-9][0-9][0-9]_[0-9][0-9]_[a-z][a-z]'),
+    CONSTRAINT fk_ele_need FOREIGN KEY (need_uid) REFERENCES e01_506_01_tb(need_uid) ON DELETE RESTRICT);
+INSERT INTO e01_506_03_tb VALUES('e01_506_01_tb','e01_506_01_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_506_09_tb','e01_506_09_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_506_10_tb','e01_506_10_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_506_11_tb','e01_506_11_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_506_02_tb','e01_506_02_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_10_ix','e02_506_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_11_ix','e02_506_11_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_12_ix','e02_506_12_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_13_ix','e02_506_13_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_14_ix','e02_506_14_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_516_01_tb','e01_516_01_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_516_10_ix','e02_516_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_516_11_ix','e02_516_11_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_506_03_tb','e01_506_03_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_15_ix','e02_506_15_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_16_ix','e02_506_16_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_17_ix','e02_506_17_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_506_04_tb','e01_506_04_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_18_ix','e02_506_18_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_19_ix','e02_506_19_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_506_05_tb','e01_506_05_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_20_ix','e02_506_20_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_506_06_tb','e01_506_06_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_21_ix','e02_506_21_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_22_ix','e02_506_22_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_23_ix','e02_506_23_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_24_ix','e02_506_24_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_676_01_tb','e01_676_01_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_676_02_tb','e01_676_02_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_676_03_tb','e01_676_03_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_378_01_tb','e01_378_01_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_378_10_ix','e02_378_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_378_11_ix','e02_378_11_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_506_07_tb','e01_506_07_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_506_08_tb','e01_506_08_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_506_25_ix','e02_506_25_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_778_01_tb','e01_778_01_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_778_10_ix','e02_778_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_778_11_ix','e02_778_11_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_778_12_ix','e02_778_12_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_778_02_tb','e01_778_02_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_778_20_ix','e02_778_20_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_778_21_ix','e02_778_21_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_778_22_ix','e02_778_22_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_778_23_ix','e02_778_23_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_778_03_tb','e01_778_03_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_778_30_ix','e02_778_30_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_778_31_ix','e02_778_31_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_778_04_tb','e01_778_04_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_778_40_ix','e02_778_40_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_778_41_ix','e02_778_41_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_778_42_ix','e02_778_42_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_200_01_tb','e01_200_01_tb',1,'T','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_200_10_ix','e02_200_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_120_01_tb','e01_120_01_tb',1,'T','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_120_10_ix','e02_120_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_202_01_tb','e01_202_01_tb',1,'T','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_202_10_ix','e02_202_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_202_11_ix','e02_202_11_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_112_01_tb','e01_112_01_tb',1,'T','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_112_10_ix','e02_112_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_112_11_ix','e02_112_11_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_112_12_ix','e02_112_12_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_112_13_ix','e02_112_13_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_200_02_tb','e01_200_02_tb',1,'T','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_201_01_tb','e01_201_01_tb',1,'T','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_201_10_ix','e02_201_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_303_01_tb','e01_303_01_tb',1,'C','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_303_10_ix','e02_303_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_303_11_ix','e02_303_11_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_303_12_ix','e02_303_12_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_200_03_tb','e01_200_03_tb',1,'C','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_200_20_ix','e02_200_20_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_200_21_ix','e02_200_21_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_200_22_ix','e02_200_22_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_200_23_ix','e02_200_23_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_200_24_ix','e02_200_24_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_201_02_tb','e01_201_02_tb',1,'C','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_201_20_ix','e02_201_20_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_201_21_ix','e02_201_21_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_201_22_ix','e02_201_22_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_201_23_ix','e02_201_23_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_201_24_ix','e02_201_24_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_201_25_ix','e02_201_25_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_201_03_tb','e01_201_03_tb',1,'C','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_201_30_ix','e02_201_30_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_201_31_ix','e02_201_31_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_201_32_ix','e02_201_32_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_302_01_tb','e01_302_01_tb',1,'C','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_302_10_ix','e02_302_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_302_11_ix','e02_302_11_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_222_01_tb','e01_222_01_tb',1,'C','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_222_10_ix','e02_222_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_222_11_ix','e02_222_11_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_222_12_ix','e02_222_12_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_222_13_ix','e02_222_13_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_222_14_ix','e02_222_14_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_222_15_ix','e02_222_15_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_222_16_ix','e02_222_16_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_222_17_ix','e02_222_17_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_222_18_ix','e02_222_18_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_222_19_ix','e02_222_19_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_222_20_ix','e02_222_20_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_305_01_tb','e01_305_01_tb',1,'X','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_305_10_ix','e02_305_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_305_11_ix','e02_305_11_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_305_12_ix','e02_305_12_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_305_02_tb','e01_305_02_tb',1,'X','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_305_20_ix','e02_305_20_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_305_21_ix','e02_305_21_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_305_22_ix','e02_305_22_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_305_03_tb','e01_305_03_tb',1,'X','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_305_30_ix','e02_305_30_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_305_31_ix','e02_305_31_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_305_32_ix','e02_305_32_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_300_01_tb','e01_300_01_tb',1,'I','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_300_10_ix','e02_300_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_300_11_ix','e02_300_11_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_300_12_ix','e02_300_12_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_300_13_ix','e02_300_13_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_330_01_tb','e01_330_01_tb',1,'V','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_330_10_ix','e02_330_10_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_330_02_tb','e01_330_02_tb',1,'V','tb',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_330_20_ix','e02_330_20_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_330_21_ix','e02_330_21_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_312_01_tr','e03_312_01_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_312_02_tr','e03_312_02_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_112_01_tr','e03_112_01_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_135_01_tr','e03_135_01_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_135_02_tr','e03_135_02_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_135_03_tr','e03_135_03_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_343_01_tr','e03_343_01_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_343_02_tr','e03_343_02_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_343_03_tr','e03_343_03_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_343_04_tr','e03_343_04_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_343_05_tr','e03_343_05_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_343_06_tr','e03_343_06_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_343_07_tr','e03_343_07_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_343_08_tr','e03_343_08_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_343_09_tr','e03_343_09_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_311_01_tr','e03_311_01_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_311_02_tr','e03_311_02_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_311_03_tr','e03_311_03_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_311_04_tr','e03_311_04_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_516_01_tr','e03_516_01_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_516_02_tr','e03_516_02_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_126_01_tr','e03_126_01_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_126_02_tr','e03_126_02_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_126_03_tr','e03_126_03_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_320_01_tr','e03_320_01_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_320_02_tr','e03_320_02_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_320_03_tr','e03_320_03_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_320_04_tr','e03_320_04_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_320_05_tr','e03_320_05_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_320_06_tr','e03_320_06_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_320_07_tr','e03_320_07_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_320_08_tr','e03_320_08_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_320_09_tr','e03_320_09_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_30_tr','e03_370_30_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_32_tr','e03_370_32_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_33_tr','e03_370_33_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_34_tr','e03_370_34_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_360_01_tr','e03_360_01_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_01_tr','e03_370_01_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_02_tr','e03_370_02_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_03_tr','e03_370_03_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_04_tr','e03_370_04_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_05_tr','e03_370_05_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_06_tr','e03_370_06_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_07_tr','e03_370_07_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_08_tr','e03_370_08_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_11_tr','e03_370_11_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_12_tr','e03_370_12_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_13_tr','e03_370_13_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_14_tr','e03_370_14_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_15_tr','e03_370_15_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_16_tr','e03_370_16_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_17_tr','e03_370_17_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_18_tr','e03_370_18_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_21_tr','e03_370_21_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_22_tr','e03_370_22_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_23_tr','e03_370_23_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_24_tr','e03_370_24_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_25_tr','e03_370_25_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_370_26_tr','e03_370_26_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_310_03_tr','e03_310_03_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_310_04_tr','e03_310_04_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_310_05_tr','e03_310_05_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_310_06_tr','e03_310_06_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_01_tr','e03_328_01_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_02_tr','e03_328_02_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_03_tr','e03_328_03_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_04_tr','e03_328_04_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_05_tr','e03_328_05_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_06_tr','e03_328_06_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_07_tr','e03_328_07_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_08_tr','e03_328_08_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_09_tr','e03_328_09_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_10_tr','e03_328_10_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_11_tr','e03_328_11_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_12_tr','e03_328_12_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_13_tr','e03_328_13_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_14_tr','e03_328_14_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_15_tr','e03_328_15_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_16_tr','e03_328_16_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_17_tr','e03_328_17_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_18_tr','e03_328_18_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_19_tr','e03_328_19_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_20_tr','e03_328_20_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_21_tr','e03_328_21_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_22_tr','e03_328_22_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_23_tr','e03_328_23_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_24_tr','e03_328_24_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_25_tr','e03_328_25_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_26_tr','e03_328_26_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_27_tr','e03_328_27_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_28_tr','e03_328_28_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_29_tr','e03_328_29_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_30_tr','e03_328_30_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_31_tr','e03_328_31_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_32_tr','e03_328_32_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_33_tr','e03_328_33_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_34_tr','e03_328_34_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_35_tr','e03_328_35_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_36_tr','e03_328_36_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e03_328_37_tr','e03_328_37_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_200_01_vw','e04_200_01_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_230_01_vw','e04_230_01_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_230_02_vw','e04_230_02_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_340_01_vw','e04_340_01_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_340_02_vw','e04_340_02_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_340_04_vw','e04_340_04_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_325_01_vw','e04_325_01_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_310_01_vw','e04_310_01_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_311_01_vw','e04_311_01_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_122_01_vw','e04_122_01_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_267_01_vw','e04_267_01_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_267_02_vw','e04_267_02_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_260_01_vw','e04_260_01_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_260_02_vw','e04_260_02_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_260_03_vw','e04_260_03_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_110_01_vw','e04_110_01_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_110_02_vw','e04_110_02_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_310_02_vw','e04_310_02_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e04_978_01_vw','e04_978_01_vw',4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e02_404_01_ft','e02_404_01_ft',1,'A','ft',NULL,NULL,NULL,'2026-09-29 18:05:06');
+INSERT INTO e01_506_03_tb VALUES('e01_778_05_tb','e01_778_05_tb',1,'M','tb',NULL,NULL,NULL,'2026-09-29 18:09:17');
+INSERT INTO e01_506_03_tb VALUES('e02_778_50_ix','e02_778_50_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:09:17');
+INSERT INTO e01_506_03_tb VALUES('e02_778_51_ix','e02_778_51_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:09:17');
+INSERT INTO e01_506_03_tb VALUES('e02_778_52_ix','e02_778_52_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:09:17');
+INSERT INTO e01_506_03_tb VALUES('e02_778_53_ix','e02_778_53_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:09:17');
+INSERT INTO e01_506_03_tb VALUES('e02_778_54_ix','e02_778_54_ix',2,'M','ix',NULL,NULL,NULL,'2026-09-29 18:09:17');
+INSERT INTO e01_506_03_tb VALUES('e03_778_10_tr','e03_778_10_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:09:17');
+INSERT INTO e01_506_03_tb VALUES('e03_778_11_tr','e03_778_11_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:10:05');
+INSERT INTO e01_506_03_tb VALUES('e03_778_13_tr','e03_778_13_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:10:05');
+INSERT INTO e01_506_03_tb VALUES('e03_778_14_tr','e03_778_14_tr',3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:10:05');
+INSERT INTO e01_506_03_tb VALUES('e03_778_10b_tr',NULL,3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:17:40');
+INSERT INTO e01_506_03_tb VALUES('e03_120_04_tr',NULL,3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:25:46');
+INSERT INTO e01_506_03_tb VALUES('e03_120_05_tr',NULL,3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:25:46');
+INSERT INTO e01_506_03_tb VALUES('e03_120_01_tr',NULL,3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:25:46');
+INSERT INTO e01_506_03_tb VALUES('e03_122_01_tr',NULL,3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:25:46');
+INSERT INTO e01_506_03_tb VALUES('e03_122_02_tr',NULL,3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:25:46');
+INSERT INTO e01_506_03_tb VALUES('e03_434_01_tr',NULL,3,'M','tr',NULL,NULL,NULL,'2026-09-29 18:25:46');
+INSERT INTO e01_506_03_tb VALUES('e04_900_01_vw',NULL,4,'M','vw',NULL,NULL,NULL,'2026-09-29 18:58:56');
+INSERT INTO e01_506_03_tb VALUES('e03_120_02_tr',NULL,3,'M','tr',NULL,NULL,NULL,'2026-09-29 20:00:21');
+INSERT INTO e01_506_03_tb VALUES('e03_120_03_tr',NULL,3,'M','tr',NULL,NULL,NULL,'2026-09-29 20:00:21');
+INSERT INTO e01_506_03_tb VALUES('e03_434_02_tr',NULL,3,'M','tr',NULL,NULL,NULL,'2026-09-29 20:00:21');
+INSERT INTO e01_506_03_tb VALUES('e03_434_03_tr',NULL,3,'M','tr',NULL,NULL,NULL,'2026-09-29 20:00:21');
+INSERT INTO e01_506_03_tb VALUES('e03_434_04_tr',NULL,3,'M','tr',NULL,NULL,NULL,'2026-09-29 20:00:21');
+INSERT INTO e01_506_03_tb VALUES('e03_434_05_tr',NULL,3,'M','tr',NULL,NULL,NULL,'2026-09-29 20:00:21');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N00',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N01',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N02',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N03',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N10',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N11',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N12',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N13',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N14',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N15',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N20',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N21',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N22',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N23',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N30',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N31',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N32',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N33',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N34',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N40',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N41',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N42',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N50',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N51',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N52',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N60',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N61',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N62',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N63',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N70',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N71',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('POLICY:N99',NULL,NULL,'M','vw',NULL,NULL,NULL,'2026-09-29 20:36:54');
+INSERT INTO e01_506_03_tb VALUES('e03_778_02_ins_tr',NULL,3,'M','tr',NULL,NULL,NULL,'2026-09-29 20:57:58');
+INSERT INTO e01_506_03_tb VALUES('e01_506_12_tb',NULL,1,'M','tb',NULL,NULL,NULL,'2026-09-29 21:07:38');
+INSERT INTO e01_506_03_tb VALUES('e02_222_21_ix',NULL,2,'C','ix',NULL,NULL,NULL,'2026-09-29 21:08:41');
+INSERT INTO e01_506_03_tb VALUES('e02_222_22_ix',NULL,2,'C','ix',NULL,NULL,NULL,'2026-09-29 21:08:41');
+INSERT INTO e01_506_03_tb VALUES('e02_222_23_ix',NULL,2,'C','ix',NULL,NULL,NULL,'2026-09-29 21:08:41');
+INSERT INTO e01_506_03_tb VALUES('e02_222_24_ix',NULL,2,'C','ix',NULL,NULL,NULL,'2026-09-29 21:08:41');
+INSERT INTO e01_506_03_tb VALUES('e02_200_25_ix',NULL,2,'C','ix',NULL,NULL,NULL,'2026-09-29 21:08:41');
+CREATE TABLE e01_506_04_tb(
+    trace_id INTEGER PRIMARY KEY AUTOINCREMENT, atom_uid TEXT NOT NULL, element_name TEXT NOT NULL,
+    trace_type TEXT NOT NULL CHECK(trace_type IN ('implements','verifies','constrains','documents','db_decl','db_guard','db_sync','db_audit','app_layer')),
+    UNIQUE(atom_uid, element_name, trace_type),
+    CONSTRAINT fk_tra_atom FOREIGN KEY (atom_uid) REFERENCES e01_506_02_tb(atom_uid) ON DELETE RESTRICT,
+    CONSTRAINT fk_tra_elem FOREIGN KEY (element_name) REFERENCES e01_506_03_tb(element_name) ON DELETE RESTRICT);
+INSERT INTO e01_506_04_tb VALUES(1,'R15','e01_112_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(2,'R16','e01_112_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(3,'R12','e01_120_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(4,'R13','e01_120_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(5,'R11','e01_200_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(6,'R21','e01_200_03_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(7,'R22','e01_200_03_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(8,'R17','e01_201_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(9,'R23','e01_201_02_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(10,'R24','e01_201_02_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(11,'R18','e01_201_03_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(12,'R19','e01_201_03_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(13,'R20','e01_201_03_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(14,'R14','e01_202_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(15,'R27','e01_222_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(16,'R28','e01_222_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(17,'R29','e01_222_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(18,'R30','e01_222_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(19,'R31','e01_222_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(20,'R32','e01_222_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(21,'R33','e01_222_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(22,'R46','e01_300_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(23,'R47','e01_300_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(24,'R48','e01_300_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(25,'R25','e01_302_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(26,'R26','e01_302_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(27,'R34','e01_305_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(28,'R35','e01_305_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(29,'R36','e01_305_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(30,'R37','e01_305_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(31,'R38','e01_305_02_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(32,'R39','e01_305_02_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(33,'R40','e01_305_02_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(34,'R41','e01_305_02_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(35,'R42','e01_305_03_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(36,'R43','e01_305_03_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(37,'R44','e01_305_03_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(38,'R45','e01_305_03_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(39,'R49','e01_330_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(40,'R50','e01_330_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(41,'R51','e01_330_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(42,'R52','e01_330_02_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(43,'R53','e01_330_02_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(44,'R63','e01_506_02_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(45,'R64','e01_506_02_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(46,'R65','e01_506_02_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(47,'R03','e01_506_03_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(48,'R04','e01_506_04_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(49,'R05','e01_506_04_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(50,'R06','e01_506_05_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(51,'R07','e01_506_06_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(52,'R08','e01_506_06_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(53,'R09','e01_506_06_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(54,'R10','e01_506_08_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(55,'R01','e01_516_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(56,'R02','e01_516_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(57,'R54','e01_778_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(58,'R55','e01_778_01_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(59,'R56','e01_778_02_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(60,'R57','e01_778_02_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(61,'R58','e01_778_02_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(62,'R59','e01_778_03_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(63,'R60','e01_778_04_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(64,'R61','e01_778_04_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(65,'R62','e01_778_04_tb','db_decl');
+INSERT INTO e01_506_04_tb VALUES(131,'A01','e01_200_03_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(132,'A02','e01_201_02_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(133,'A03','e01_222_01_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(134,'B06','e03_312_01_tr','implements');
+INSERT INTO e01_506_04_tb VALUES(135,'B10','e03_312_01_tr','implements');
+INSERT INTO e01_506_04_tb VALUES(136,'C01','e03_120_01_tr','implements');
+INSERT INTO e01_506_04_tb VALUES(137,'C02','e03_122_01_tr','implements');
+INSERT INTO e01_506_04_tb VALUES(138,'D02','e03_434_01_tr','implements');
+INSERT INTO e01_506_04_tb VALUES(139,'D05','e03_135_01_tr','implements');
+INSERT INTO e01_506_04_tb VALUES(140,'E01','e03_343_01_tr','implements');
+INSERT INTO e01_506_04_tb VALUES(141,'F03','e02_404_01_ft','implements');
+INSERT INTO e01_506_04_tb VALUES(142,'G01','e04_267_01_vw','implements');
+INSERT INTO e01_506_04_tb VALUES(143,'H05','e01_506_06_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(144,'I01','e03_312_01_tr','verifies');
+INSERT INTO e01_506_04_tb VALUES(145,'I02','e04_978_01_vw','implements');
+INSERT INTO e01_506_04_tb VALUES(146,'I03','e01_506_03_tb','documents');
+INSERT INTO e01_506_04_tb VALUES(147,'I04','e01_506_04_tb','documents');
+INSERT INTO e01_506_04_tb VALUES(148,'I05','e03_312_01_tr','implements');
+INSERT INTO e01_506_04_tb VALUES(149,'I05','e03_312_02_tr','implements');
+INSERT INTO e01_506_04_tb VALUES(150,'I06','e01_506_03_tb','documents');
+INSERT INTO e01_506_04_tb VALUES(151,'I07','e01_506_03_tb','documents');
+INSERT INTO e01_506_04_tb VALUES(152,'I08','e01_516_01_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(153,'I09','e03_312_01_tr','implements');
+INSERT INTO e01_506_04_tb VALUES(154,'I09','e03_312_02_tr','implements');
+INSERT INTO e01_506_04_tb VALUES(155,'I10','e03_360_01_tr','implements');
+INSERT INTO e01_506_04_tb VALUES(156,'I11','e01_506_01_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(157,'I11','e01_506_03_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(158,'I11','e01_506_02_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(159,'I11','e01_200_03_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(160,'I11','e01_201_02_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(161,'I11','e01_222_01_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(162,'I11','e01_200_01_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(163,'I11','e01_202_01_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(164,'I11','e01_201_01_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(165,'I12','e01_201_02_tb','implements');
+INSERT INTO e01_506_04_tb VALUES(166,'I13','e01_506_03_tb','documents');
+CREATE TABLE e01_506_05_tb(
+    question_uid TEXT PRIMARY KEY, parent_uid TEXT, label TEXT NOT NULL, purpose TEXT NOT NULL,
+    answer_kind TEXT NOT NULL CHECK(answer_kind IN ('text','entity_ref','value','boolean','criterion','free')),
+    required_rule TEXT NOT NULL CHECK(required_rule IN ('always','by_need_kind','conditional','optional')),
+    seq INTEGER NOT NULL CHECK(seq >= 0),
+    CONSTRAINT fk_que_parent FOREIGN KEY (parent_uid) REFERENCES e01_506_05_tb(question_uid) ON DELETE RESTRICT);
+INSERT INTO e01_506_05_tb VALUES('Q00',NULL,'Need?','start','text','always',0);
+INSERT INTO e01_506_05_tb VALUES('Q01','Q00','Why?','purpose','text','always',1);
+INSERT INTO e01_506_05_tb VALUES('Q02','Q01','Goal?','expected','text','always',2);
+INSERT INTO e01_506_05_tb VALUES('Q03','Q02','Object?','object','entity_ref','by_need_kind',3);
+INSERT INTO e01_506_05_tb VALUES('Q04','Q03','Actor?','actor','entity_ref','conditional',4);
+INSERT INTO e01_506_05_tb VALUES('Q05','Q04','Action?','action','text','by_need_kind',5);
+INSERT INTO e01_506_05_tb VALUES('Q06','Q05','Input?','input','value','conditional',6);
+INSERT INTO e01_506_05_tb VALUES('Q07','Q06','Context?','context','text','conditional',7);
+INSERT INTO e01_506_05_tb VALUES('Q08','Q07','Result?','result','text','always',8);
+INSERT INTO e01_506_05_tb VALUES('Q09','Q08','Constraint?','constraint','text','conditional',9);
+INSERT INTO e01_506_05_tb VALUES('Q10','Q09','Exception?','exception','text','conditional',10);
+INSERT INTO e01_506_05_tb VALUES('Q11','Q10','Acceptance?','acceptance','criterion','always',11);
+INSERT INTO e01_506_05_tb VALUES('Q12','Q11','Mechanism?','mechanism','entity_ref','always',12);
+INSERT INTO e01_506_05_tb VALUES('Q13','Q12','Verification?','verification','criterion','always',13);
+CREATE TABLE e01_506_06_tb(
+    node_id INTEGER PRIMARY KEY AUTOINCREMENT, need_uid TEXT NOT NULL, parent_id INTEGER,
+    question_uid TEXT NOT NULL, slot TEXT, answer_text TEXT,
+    answer_source TEXT NOT NULL DEFAULT 'not_recorded' CHECK(answer_source IN ('source','derived','not_recorded','not_applicable')),
+    status TEXT NOT NULL DEFAULT 'open' CHECK(status IN ('open','answered','not_applicable','blocked')),
+    ordinal INTEGER NOT NULL DEFAULT 1 CHECK(ordinal >= 1),
+    UNIQUE(need_uid, parent_id, question_uid, ordinal),
+    CONSTRAINT fk_nod_need FOREIGN KEY (need_uid) REFERENCES e01_506_01_tb(need_uid) ON DELETE RESTRICT,
+    CONSTRAINT fk_nod_parent FOREIGN KEY (parent_id) REFERENCES e01_506_06_tb(node_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_nod_que FOREIGN KEY (question_uid) REFERENCES e01_506_05_tb(question_uid) ON DELETE RESTRICT);
+CREATE TABLE e01_676_01_tb(migration_uid TEXT PRIMARY KEY, applied_at TEXT NOT NULL DEFAULT (datetime('now')), notes TEXT);
+INSERT INTO e01_676_01_tb VALUES('v26.0_final','2026-09-29 18:05:06','Core DB v26.0 schema_ver=27');
+INSERT INTO e01_676_01_tb VALUES('v27.0_phase1_bridge','2026-09-29 18:09:17','Phase 1 - Bridge Schema. 5 indexes + 2 immutability + 4 FK + 8 registry.');
+INSERT INTO e01_676_01_tb VALUES('v27.0_phase2_policy','2026-09-29 18:10:05','Phase 2 - 3 enforce triggers');
+INSERT INTO e01_676_01_tb VALUES('v27.0_phase3_fk_anchor','2026-09-29 18:13:43','Phase 3 - FK anchor migration');
+INSERT INTO e01_676_01_tb VALUES('v27.0_phase4_trigger_anchor','2026-09-29 18:14:56','Phase 4 - Trigger anchor migration');
+INSERT INTO e01_676_01_tb VALUES('v27.0_phase5_audit_views','2026-09-29 18:20:39','Phase 5 - 4 audit views');
+INSERT INTO e01_676_01_tb VALUES('v27.0_phase7_e2e','2026-09-29 18:34:48','Phase 7 - end-to-end tests passed');
+INSERT INTO e01_676_01_tb VALUES('v27.0_phase8_cutover','2026-09-29 18:34:59','Phase 8 - cutover complete');
+INSERT INTO e01_676_01_tb VALUES('v27.0.1_placeholder_fix','2026-09-29 18:44:06','Restored placeholder triggers to full logic');
+INSERT INTO e01_676_01_tb VALUES('v27.2_monitor','2026-09-29 18:58:56','Consolidated monitoring into single view');
+INSERT INTO e01_676_01_tb VALUES('v27.2_fix','2026-09-29 19:00:18','Self-contained monitor views');
+INSERT INTO e01_676_01_tb VALUES('v27.3_bidirectional','2026-09-29 19:04:14','Bidirectional monitoring with coverage percentage');
+INSERT INTO e01_676_01_tb VALUES('v27.4_root_fix','2026-09-29 19:14:44','Generate R traces, clean ghosts, add severity classification');
+INSERT INTO e01_676_01_tb VALUES('v27.4_fix','2026-09-29 19:16:00','Fixed FK orphan + ghost cleanup order');
+INSERT INTO e01_676_01_tb VALUES('v27.5_base_traces','2026-09-29 19:19:09','Inserted 26 base atom traces + registered 4 orphan elements');
+INSERT INTO e01_676_01_tb VALUES('v27.5_base_traces_v2','2026-09-29 19:22:18','Inserted 26 base traces with real elements');
+INSERT INTO e01_676_01_tb VALUES('v27.6_final_gaps','2026-09-29 19:23:24','Closed 2 atom links, 4 orphans, 24 matrix gaps');
+INSERT INTO e01_676_01_tb VALUES('v27.7_fts_exclude','2026-09-29 19:26:28','Excluded FTS shadow tables from orphan count');
+INSERT INTO e01_676_01_tb VALUES('v27.8_phase0_critical','2026-09-29 20:00:21','Restored 6 missing triggers + rebuilt closure + FTS');
+INSERT INTO e01_676_01_tb VALUES('v27.8_phase1_fix','2026-09-29 20:10:18','Backfilled label_norm, rebuilt FTS, restored enum');
+INSERT INTO e01_676_01_tb VALUES('v27.9_phase2_1_context','2026-09-29 20:22:20','Seeded Context layer + tested ctx_key trigger');
+INSERT INTO e01_676_01_tb VALUES('v27.9_phase2_2_identity','2026-09-29 20:25:23','Seeded Identity layer: 1 same_as + 1 distinct_from');
+INSERT INTO e01_676_01_tb VALUES('v27.9_phase2_3_versioning','2026-09-29 20:28:56','Seeded Versioning layer: 2 versions + 2 snapshots');
+INSERT INTO e01_676_01_tb VALUES('v27.10_phase3_n30_rebalance','2026-09-29 20:32:15','Rebalanced N30 policy distribution');
+INSERT INTO e01_676_01_tb VALUES('v27.10_phase3_fixed','2026-09-29 20:34:46','Rebalanced N30 + weakened immutability to protect only element+kind');
+INSERT INTO e01_676_01_tb VALUES('v27.11_phase3_5_coverage','2026-09-29 20:36:54','Added audit policies for uncovered needs');
+INSERT INTO e01_676_01_tb VALUES('v27.11_phase3_5_fixed','2026-09-29 20:38:30','Coverage for uncovered needs (order fixed)');
+INSERT INTO e01_676_01_tb VALUES('v27.11_phase3_5_final','2026-09-29 20:41:03','Covered all active+deferred needs + weakened trigger');
+INSERT INTO e01_676_01_tb VALUES('v27.13_phase4_monitor','2026-09-29 20:43:52','Rebuilt monitor with coverage-first logic');
+INSERT INTO e01_676_01_tb VALUES('v27.14_phase4_4_final','2026-09-29 20:46:37','Fixed monitor: exclude POLICY:* + anchor 6 triggers');
+INSERT INTO e01_676_01_tb VALUES('v27.15_phase4_complete','2026-09-29 20:50:26','All 12 monitoring domains healthy or info');
+INSERT INTO e01_676_01_tb VALUES('v27.16_phase5_1a','2026-09-29 20:52:42','WITHOUT ROWID for e01_516_01_tb');
+INSERT INTO e01_676_01_tb VALUES('v27.16_phase5_1b','2026-09-29 20:53:46','WITHOUT ROWID for e01_778_02_tb');
+INSERT INTO e01_676_01_tb VALUES('v27.16_phase5_1_final_fix','2026-09-29 20:57:58','Restored 3 lost triggers + fixed overwrite + proper insert guard');
+INSERT INTO e01_676_01_tb VALUES('v27.16_phase5_1_last_fix','2026-09-29 20:59:55','Anchored e03_778_02_ins_tr');
+INSERT INTO e01_676_01_tb VALUES('v27.18_phase5_2','2026-09-29 21:04:35','Checksum + ANALYZE statistics');
+INSERT INTO e01_676_01_tb VALUES('v27.19_phase5_3','2026-09-29 21:07:39','Materialized need tree cache');
+INSERT INTO e01_676_01_tb VALUES('v27.20_phase5_4','2026-09-29 21:08:41','Covering indexes for hot queries');
+INSERT INTO e01_676_01_tb VALUES('v28.1_constraints','2026-09-29 21:53:29','Seeded 24 relation constraints');
+INSERT INTO e01_676_01_tb VALUES('v28.1_rollback','2026-09-29 22:07:31','Removed all relation constraints - philosophy: guards belong to application layer');
+INSERT INTO e01_676_01_tb VALUES('v29.1_reset_and_build','2026-09-29 22:25:49','Full reset of entities + electrical system hierarchy (root: EESystem, 5 systems, 17 subsystems, 40+ types, 20 sample instances)');
+INSERT INTO e01_676_01_tb VALUES('v29.4_retype_old_entities','2026-09-29 22:34:27','Retyped 3 entities: battery→LeadAcidBattery, env→OperatingState');
+INSERT INTO e01_676_01_tb VALUES('v29.5_seed_new_entities','2026-09-29 22:41:48','Seeded 14 new electrical entities');
+INSERT INTO e01_676_01_tb VALUES('v30.0_seed_relations','2026-09-29 22:44:34','Seeded 18 real electrical relations');
+INSERT INTO e01_676_01_tb VALUES('v31.0_add_vehicle','2026-09-29 22:48:41','Added sample vehicle + 7 installed_on relations');
+INSERT INTO e01_676_01_tb VALUES('v32.0_diagnostic_scenario','2026-09-29 22:53:45','Full P0301 diagnostic scenario: 5 diagnostic entities + 7 diagnostic relations');
+INSERT INTO e01_676_01_tb VALUES('v34.1_lighting','2026-09-29 22:59:19','Lighting system: 12 types + 10 instances + 4 failure modes + 2 DTCs + 17 relations');
+INSERT INTO e01_676_01_tb VALUES('v34.2_sensors_extended','2026-09-29 23:02:16','Sensors extended: 13 types, 15 sensors, 10 failure modes, 15 DTCs');
+INSERT INTO e01_676_01_tb VALUES('v34.3_actuators_extended','2026-09-29 23:12:43','Actuators extended: 17 types, 21 instances, 15 failure modes, 14 DTCs');
+INSERT INTO e01_676_01_tb VALUES('v34.4_diagnostic_chains','2026-09-29 23:14:43','3 diagnostic chains: P0115, P0130, P0505');
+INSERT INTO e01_676_01_tb VALUES('v35.0_reification','2026-09-29 23:23:44','Reification rules: 60 relation types categorized');
+INSERT INTO e01_676_01_tb VALUES('v35.1_apply_reification','2026-09-29 23:24:38','Applied reification rules to existing relations');
+INSERT INTO e01_676_01_tb VALUES('v34.5_three_chains','2026-09-29 23:30:40','Three more diagnostic chains: P0300, P0420, P0121');
+INSERT INTO e01_676_01_tb VALUES('v36_vehicle_gallery','2026-09-29 23:34:20','Vehicle gallery: Pride, Peugeot 206, Dena + shared and specific components');
+INSERT INTO e01_676_01_tb VALUES('v37_complete_gallery','2026-09-29 23:35:46','Completed vehicle gallery with shared electrical components');
+INSERT INTO e01_676_01_tb VALUES('v37.1_fix_gallery','2026-09-29 23:37:12','Fixed gallery with NOT EXISTS checks');
+INSERT INTO e01_676_01_tb VALUES('v40_class_template','2026-09-29 23:45:54','Class-level structure: 13 concepts, 13 has_part relations');
+INSERT INTO e01_676_01_tb VALUES('v40.1_fix_class_template','2026-09-29 23:47:26','Fixed class template: created concept entities for classes');
+INSERT INTO e01_676_01_tb VALUES('v41_inheritance','2026-09-29 23:50:42','Inheritance chain: concept:pride is_a concept:passenger-car is_a concept:vehicle');
+INSERT INTO e01_676_01_tb VALUES('v44_cleanup_generic','2026-09-29 23:56:13','Retracted redundant installed_on relations (now via inheritance)');
+INSERT INTO e01_676_01_tb VALUES('v45_more_systems','2026-09-30 00:01:12','Vertical expansion: braking, steering, suspension, HVAC');
+INSERT INTO e01_676_01_tb VALUES('v46_more_vehicles','2026-09-30 00:02:56','Horizontal expansion: 405, Samand, Tiba, Quick, Shahin');
+INSERT INTO e01_676_01_tb VALUES('v47_specific_parts','2026-09-30 00:06:37','Specific parts: 3 parts × 9 vehicles = 27 instances');
+INSERT INTO e01_676_01_tb VALUES('v48_brake_diagnostic','2026-09-30 00:09:36','Brake diagnostic chain: pad, fluid, disc, caliper, pump');
+INSERT INTO e01_676_01_tb VALUES('v49_hvac_diagnostic','2026-09-30 00:12:28','HVAC diagnostic chain: compressor, blower, filter, heater, expansion');
+INSERT INTO e01_676_01_tb VALUES('v50_steering_diagnostic','2026-09-30 00:14:43','Steering diagnostic chain: hard, leak, loose, sensors');
+INSERT INTO e01_676_01_tb VALUES('v50.1_fix_pump_collision','2026-09-30 00:17:23','Fixed name collision: pump (ABS) vs steering pump');
+INSERT INTO e01_676_01_tb VALUES('v51_suspension_diagnostic','2026-09-30 00:21:18','Suspension diagnostic chain: shock, spring, balljoint, bushing, alignment');
+INSERT INTO e01_676_01_tb VALUES('v52_manufacturers','2026-09-30 00:26:40','Manufacturers: 30 companies across 7 countries');
+INSERT INTO e01_676_01_tb VALUES('v53_korean_cars','2026-09-30 00:27:56','Korean cars: Hyundai (5), Kia (5) + 6 instances');
+INSERT INTO e01_676_01_tb VALUES('v54_japanese_cars','2026-09-30 00:29:08','Japanese cars: Toyota (4), Honda (3), Nissan (3) + 6 instances');
+INSERT INTO e01_676_01_tb VALUES('v55_german_cars','2026-09-30 00:30:11','German cars: BMW (3), Mercedes (3), VW (3), Audi (2), Porsche (1)');
+INSERT INTO e01_676_01_tb VALUES('v56_chinese_cars','2026-09-30 00:31:21','Chinese cars: Chery (2), JAC (3), Brilliance (3), Lifan (2), Haval (2), Geely (2), BYD (2)');
+INSERT INTO e01_676_01_tb VALUES('v57_american_cars','2026-09-30 00:32:20','American cars: Chevrolet (2), Ford (3)');
+INSERT INTO e01_676_01_tb VALUES('v58_motorcycles','2026-09-30 00:33:32','Motorcycles: 9 makers + 5 models + 12 shared parts');
+INSERT INTO e01_676_01_tb VALUES('v59_trucks','2026-09-30 00:34:45','Trucks: 11 manufacturers, 8 models, shared parts');
+INSERT INTO e01_676_01_tb VALUES('v61_buses','2026-09-30 00:39:32','Buses: 9 makers, 9 models + vans + special vehicles');
+INSERT INTO e01_676_01_tb VALUES('v62_special_vehicles','2026-09-30 00:41:31','Special vehicles: police, taxi, ambulance, fire, van, tow, garbage, tanker');
+INSERT INTO e01_676_01_tb VALUES('v63_electric_vehicles','2026-09-30 00:42:52','EV: 6 manufacturers, 11 models + EV-specific parts');
+INSERT INTO e01_676_01_tb VALUES('v64_french_cars','2026-09-30 00:44:52','French cars: Peugeot (5 more), Citroën (4), Renault (7)');
+INSERT INTO e01_676_01_tb VALUES('v65_license_platform','2026-09-30 00:46:51','License and platform relations for Iranian cars');
+CREATE TABLE e01_676_02_tb(id INTEGER PRIMARY KEY CHECK(id = 1), schema_ver INTEGER NOT NULL, last_scan_at TEXT NOT NULL DEFAULT (datetime('now')), checksum TEXT, counted_tables INTEGER, counted_triggers INTEGER, counted_views INTEGER);
+INSERT INTO e01_676_02_tb VALUES(1,115,'2026-09-29 22:59:19','d664403a4602d95b6c17a0a5867442964d012ac6954dce48a9d215df7b099c64',40,119,20);
+CREATE TABLE e01_676_03_tb(param_uid TEXT PRIMARY KEY, int_value INTEGER, text_value TEXT, description TEXT);
+INSERT INTO e01_676_03_tb VALUES('max_depth',100,NULL,'max type closure depth');
+INSERT INTO e01_676_03_tb VALUES('max_isa_depth',50,NULL,'max isa cycle depth');
+INSERT INTO e01_676_03_tb VALUES('max_member_depth',100,NULL,'max value member depth');
+INSERT INTO e01_676_03_tb VALUES('max_version_depth',100,NULL,'max supersedes depth');
+INSERT INTO e01_676_03_tb VALUES('min_coverage_pct',70,NULL,'min health percent');
+INSERT INTO e01_676_03_tb VALUES('seed_frozen_v26',1,NULL,'phase migration active');
+INSERT INTO e01_676_03_tb VALUES('migration_started_at',NULL,'2026-09-29 18:09:17','migration started');
+INSERT INTO e01_676_03_tb VALUES('phase1_completed_at',NULL,'2026-09-29 18:09:17','phase 1 done');
+INSERT INTO e01_676_03_tb VALUES('phase1_status',1,NULL,'phase 1 PASS');
+CREATE TABLE e01_378_01_tb(
+    ref_id INTEGER PRIMARY KEY AUTOINCREMENT, child_table TEXT NOT NULL, child_col TEXT NOT NULL,
+    parent_table TEXT NOT NULL, parent_col TEXT NOT NULL,
+    action_on_del TEXT NOT NULL DEFAULT 'restrict' CHECK(action_on_del IN ('restrict','cascade','set_null')),
+    layer_from TEXT CHECK(layer_from IN ('M','T','C','X','I','V','A')),
+    layer_to TEXT CHECK(layer_to IN ('M','T','C','X','I','V','A')),
+    note TEXT, UNIQUE(child_table, child_col));
+INSERT INTO e01_378_01_tb VALUES(1,'e01_516_01_tb','need_uid','e01_506_01_tb','need_uid','restrict','M','M','meta');
+INSERT INTO e01_378_01_tb VALUES(2,'e01_516_01_tb','atom_uid','e01_506_02_tb','atom_uid','restrict','M','M','meta');
+INSERT INTO e01_378_01_tb VALUES(3,'e01_506_03_tb','need_uid','e01_506_01_tb','need_uid','restrict','M','M','meta');
+INSERT INTO e01_378_01_tb VALUES(4,'e01_506_04_tb','atom_uid','e01_506_02_tb','atom_uid','restrict','M','M','meta');
+INSERT INTO e01_378_01_tb VALUES(5,'e01_506_04_tb','element_name','e01_506_03_tb','element_name','restrict','M','M','meta');
+INSERT INTO e01_378_01_tb VALUES(6,'e01_506_05_tb','parent_uid','e01_506_05_tb','question_uid','restrict','M','M','meta self');
+INSERT INTO e01_378_01_tb VALUES(7,'e01_506_06_tb','need_uid','e01_506_01_tb','need_uid','restrict','M','M','meta');
+INSERT INTO e01_378_01_tb VALUES(8,'e01_506_06_tb','parent_id','e01_506_06_tb','node_id','restrict','M','M','meta self');
+INSERT INTO e01_378_01_tb VALUES(9,'e01_506_06_tb','question_uid','e01_506_05_tb','question_uid','restrict','M','M','meta');
+INSERT INTO e01_378_01_tb VALUES(10,'e01_506_08_tb','dim_uid','e01_506_07_tb','dim_uid','restrict','M','M','meta');
+INSERT INTO e01_378_01_tb VALUES(11,'e01_200_01_tb','parent_id','e01_200_01_tb','type_id','restrict','T','T','type self');
+INSERT INTO e01_378_01_tb VALUES(12,'e01_120_01_tb','desc_id','e01_200_01_tb','type_id','restrict','T','T','closure');
+INSERT INTO e01_378_01_tb VALUES(13,'e01_120_01_tb','anc_id','e01_200_01_tb','type_id','restrict','T','T','closure');
+INSERT INTO e01_378_01_tb VALUES(14,'e01_202_01_tb','inverse_uid','e01_202_01_tb','type_uid','set_null','T','T','type self');
+INSERT INTO e01_378_01_tb VALUES(15,'e01_112_01_tb','reltype_id','e01_202_01_tb','reltype_id','restrict','T','T','type');
+INSERT INTO e01_378_01_tb VALUES(16,'e01_112_01_tb','target_type_id','e01_200_01_tb','type_id','restrict','T','T','type');
+INSERT INTO e01_378_01_tb VALUES(17,'e01_201_01_tb','dom_id','e01_200_02_tb','dom_id','restrict','T','T','type');
+INSERT INTO e01_378_01_tb VALUES(18,'e01_201_03_tb','parent_id','e01_201_02_tb','val_id','cascade','C','C','core');
+INSERT INTO e01_378_01_tb VALUES(19,'e01_201_03_tb','member_val_id','e01_201_02_tb','val_id','restrict','C','C','core');
+INSERT INTO e01_378_01_tb VALUES(20,'e01_201_03_tb','member_ent_id','e01_200_03_tb','ent_id','restrict','C','C','core');
+INSERT INTO e01_378_01_tb VALUES(21,'e01_200_03_tb','type_id','e01_200_01_tb','type_id','restrict','C','T','core');
+INSERT INTO e01_378_01_tb VALUES(22,'e01_200_03_tb','prv_id','e01_303_01_tb','prv_id','set_null','C','C','core');
+INSERT INTO e01_378_01_tb VALUES(23,'e01_201_02_tb','enum_id','e01_201_01_tb','val_id','restrict','C','T','core');
+INSERT INTO e01_378_01_tb VALUES(24,'e01_201_02_tb','prv_id','e01_303_01_tb','prv_id','set_null','C','C','core');
+INSERT INTO e01_378_01_tb VALUES(25,'e01_302_01_tb','subj_ent_id','e01_200_03_tb','ent_id','restrict','C','C','core');
+INSERT INTO e01_378_01_tb VALUES(26,'e01_302_01_tb','reltype_id','e01_202_01_tb','reltype_id','restrict','C','T','core');
+INSERT INTO e01_378_01_tb VALUES(27,'e01_222_01_tb','lin_id','e01_302_01_tb','lin_id','set_null','C','C','core');
+INSERT INTO e01_378_01_tb VALUES(28,'e01_222_01_tb','reltype_id','e01_202_01_tb','reltype_id','restrict','C','T','core');
+INSERT INTO e01_378_01_tb VALUES(29,'e01_222_01_tb','subj_ent_id','e01_200_03_tb','ent_id','restrict','C','C','core');
+INSERT INTO e01_378_01_tb VALUES(30,'e01_222_01_tb','obj_ent_id','e01_200_03_tb','ent_id','restrict','C','C','core');
+INSERT INTO e01_378_01_tb VALUES(31,'e01_222_01_tb','obj_val_id','e01_201_02_tb','val_id','restrict','C','C','core');
+INSERT INTO e01_378_01_tb VALUES(32,'e01_222_01_tb','reif_ent_id','e01_200_03_tb','ent_id','restrict','C','C','core');
+INSERT INTO e01_378_01_tb VALUES(33,'e01_222_01_tb','prv_id','e01_303_01_tb','prv_id','set_null','C','C','core');
+INSERT INTO e01_378_01_tb VALUES(34,'e01_305_01_tb','ent_id','e01_200_03_tb','ent_id','restrict','X','C','ctx');
+INSERT INTO e01_378_01_tb VALUES(35,'e01_305_01_tb','ctx_ent_id','e01_200_03_tb','ent_id','restrict','X','C','ctx');
+INSERT INTO e01_378_01_tb VALUES(36,'e01_305_01_tb','ctx_val_id','e01_201_02_tb','val_id','restrict','X','C','ctx');
+INSERT INTO e01_378_01_tb VALUES(37,'e01_305_01_tb','prv_id','e01_303_01_tb','prv_id','set_null','X','C','ctx');
+INSERT INTO e01_378_01_tb VALUES(38,'e01_305_02_tb','val_id','e01_201_02_tb','val_id','cascade','X','C','ctx');
+INSERT INTO e01_378_01_tb VALUES(39,'e01_305_02_tb','ctx_ent_id','e01_200_03_tb','ent_id','restrict','X','C','ctx');
+INSERT INTO e01_378_01_tb VALUES(40,'e01_305_02_tb','ctx_val_id','e01_201_02_tb','val_id','restrict','X','C','ctx');
+INSERT INTO e01_378_01_tb VALUES(41,'e01_305_02_tb','prv_id','e01_303_01_tb','prv_id','set_null','X','C','ctx');
+INSERT INTO e01_378_01_tb VALUES(42,'e01_305_03_tb','rel_id','e01_222_01_tb','rel_id','restrict','X','C','ctx');
+INSERT INTO e01_378_01_tb VALUES(43,'e01_305_03_tb','ctx_ent_id','e01_200_03_tb','ent_id','restrict','X','C','ctx');
+INSERT INTO e01_378_01_tb VALUES(44,'e01_305_03_tb','ctx_val_id','e01_201_02_tb','val_id','restrict','X','C','ctx');
+INSERT INTO e01_378_01_tb VALUES(45,'e01_305_03_tb','prv_id','e01_303_01_tb','prv_id','set_null','X','C','ctx');
+INSERT INTO e01_378_01_tb VALUES(46,'e01_300_01_tb','ent_a_id','e01_200_03_tb','ent_id','restrict','I','C','identity');
+INSERT INTO e01_378_01_tb VALUES(47,'e01_300_01_tb','ent_b_id','e01_200_03_tb','ent_id','restrict','I','C','identity');
+INSERT INTO e01_378_01_tb VALUES(48,'e01_300_01_tb','prv_id','e01_303_01_tb','prv_id','set_null','I','C','identity');
+INSERT INTO e01_378_01_tb VALUES(49,'e01_330_01_tb','ent_id','e01_200_03_tb','ent_id','restrict','V','C','version');
+INSERT INTO e01_378_01_tb VALUES(50,'e01_330_01_tb','supersedes_id','e01_330_01_tb','vers_id','restrict','V','V','version self');
+INSERT INTO e01_378_01_tb VALUES(51,'e01_330_01_tb','approved_by_id','e01_200_03_tb','ent_id','restrict','V','C','version');
+INSERT INTO e01_378_01_tb VALUES(52,'e01_330_02_tb','ent_id','e01_200_03_tb','ent_id','restrict','V','C','version');
+INSERT INTO e01_378_01_tb VALUES(53,'e01_330_02_tb','vers_id','e01_330_01_tb','vers_id','restrict','V','V','version');
+INSERT INTO e01_378_01_tb VALUES(54,'e01_778_01_tb','need_uid','e01_506_01_tb','need_uid','restrict','M','M','semantic');
+INSERT INTO e01_378_01_tb VALUES(55,'e01_778_01_tb','parent_code','e01_778_01_tb','code','restrict','M','M','semantic self');
+INSERT INTO e01_378_01_tb VALUES(56,'e01_778_02_tb','element_name','e01_506_03_tb','element_name','restrict','M','M','semantic');
+INSERT INTO e01_378_01_tb VALUES(57,'e01_778_02_tb','need_uid','e01_506_01_tb','need_uid','restrict','M','M','semantic');
+INSERT INTO e01_378_01_tb VALUES(58,'e01_778_02_tb','code','e01_778_01_tb','code','restrict','M','M','semantic');
+INSERT INTO e01_378_01_tb VALUES(59,'e01_778_03_tb','root_need_uid','e01_506_01_tb','need_uid','restrict','M','M','semantic');
+INSERT INTO e01_378_01_tb VALUES(60,'e01_778_04_tb','chain_uid','e01_778_03_tb','chain_uid','restrict','M','M','semantic');
+INSERT INTO e01_378_01_tb VALUES(61,'e01_778_04_tb','element_name','e01_506_03_tb','element_name','set_null','M','M','semantic');
+INSERT INTO e01_378_01_tb VALUES(62,'e01_778_04_tb','need_uid','e01_506_01_tb','need_uid','set_null','M','M','semantic');
+INSERT INTO e01_378_01_tb VALUES(63,'e01_506_02_tb','verb_code','e01_506_09_tb','verb_code','restrict','M','M','vocab');
+INSERT INTO e01_378_01_tb VALUES(64,'e01_506_02_tb','entity_code','e01_506_10_tb','entity_code','restrict','M','M','vocab');
+INSERT INTO e01_378_01_tb VALUES(65,'e01_506_02_tb','constraint_code','e01_506_11_tb','constraint_code','restrict','M','M','vocab');
+INSERT INTO e01_378_01_tb VALUES(66,'e01_778_05_tb','element_name','e01_506_03_tb','element_name','restrict','M','M','policy elem');
+INSERT INTO e01_378_01_tb VALUES(67,'e01_778_05_tb','need_uid','e01_506_01_tb','need_uid','restrict','M','M','policy need');
+INSERT INTO e01_378_01_tb VALUES(68,'e01_778_05_tb','fk_ref_id','e01_378_01_tb','ref_id','restrict','M','M','policy fk');
+INSERT INTO e01_378_01_tb VALUES(69,'e01_778_05_tb','exec_name','e01_506_03_tb','element_name','restrict','M','M','policy exec');
+CREATE TABLE e01_506_07_tb(dim_uid TEXT PRIMARY KEY, label TEXT NOT NULL, description TEXT, seq INTEGER NOT NULL);
+CREATE TABLE e01_506_08_tb(value_id INTEGER PRIMARY KEY AUTOINCREMENT, dim_uid TEXT NOT NULL, value_uid TEXT NOT NULL, label TEXT NOT NULL, sort_order INTEGER, UNIQUE(dim_uid, value_uid), CONSTRAINT fk_dim_val_dim FOREIGN KEY (dim_uid) REFERENCES e01_506_07_tb(dim_uid) ON DELETE RESTRICT);
+CREATE TABLE e01_778_01_tb(
+    code_id INTEGER PRIMARY KEY AUTOINCREMENT, need_uid TEXT NOT NULL, code TEXT NOT NULL UNIQUE,
+    code_kind TEXT NOT NULL CHECK(code_kind IN ('need','atom','element','chain','invariant')),
+    parent_code TEXT, label TEXT NOT NULL, description TEXT, seq INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    CONSTRAINT fk_rc_need FOREIGN KEY (need_uid) REFERENCES e01_506_01_tb(need_uid) ON DELETE RESTRICT,
+    CONSTRAINT fk_rc_parent FOREIGN KEY (parent_code) REFERENCES e01_778_01_tb(code) ON DELETE RESTRICT);
+INSERT INTO e01_778_01_tb VALUES(1,'N00','N00','need',NULL,'Project scope',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(2,'N01','N01','need',NULL,'Find vehicle by VIN',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(3,'N02','N02','need',NULL,'Register case',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(4,'N03','N03','need',NULL,'Text search',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(5,'N10','N10','need',NULL,'Prevent abstract instantiation',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(6,'N11','N11','need',NULL,'Prevent cycles',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(7,'N12','N12','need',NULL,'Validate relation type',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(8,'N13','N13','need',NULL,'Functional uniqueness',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(9,'N14','N14','need',NULL,'instance_of uniqueness',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(10,'N15','N15','need',NULL,'Sync ctx_key',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(11,'N20','N20','need',NULL,'Model vehicle and unit',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(12,'N21','N21','need',NULL,'Model DTC',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(13,'N22','N22','need',NULL,'Diagnostic chain',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(14,'N23','N23','need',NULL,'Distinguish concept/instance',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(15,'N30','N30','need',NULL,'Referential integrity',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(16,'N31','N31','need',NULL,'Provenance tracking',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(17,'N32','N32','need',NULL,'Contextualization',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(18,'N33','N33','need',NULL,'Time versioning',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(19,'N34','N34','need',NULL,'Assertion history',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(20,'N40','N40','need',NULL,'Fast lookup',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(21,'N41','N41','need',NULL,'Fast FTS',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(22,'N42','N42','need',NULL,'Current state',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(23,'N50','N50','need',NULL,'Design language',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(24,'N51','N51','need',NULL,'Overlap analysis',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(25,'N52','N52','need',NULL,'Dead element detection',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(26,'N60','N60','need',NULL,'Closure materialized',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(27,'N61','N61','need',NULL,'Diagnostic procedures',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(28,'N62','N62','need',NULL,'Change log',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(29,'N63','N63','need',NULL,'Idempotent migration',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(30,'N70','N70','need',NULL,'Register need per element',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(31,'N71','N71','need',NULL,'Define chains',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(32,'N99','N99','need',NULL,'Design phase end',NULL,0,'2026-09-29 18:05:06');
+INSERT INTO e01_778_01_tb VALUES(33,'N70','INV:policy','invariant',NULL,'Policy validation invariant',NULL,0,'2026-09-29 18:10:05');
+INSERT INTO e01_778_01_tb VALUES(34,'N30','INV:del','invariant',NULL,'Delete protection invariant',NULL,0,'2026-09-29 18:10:05');
+CREATE TABLE e01_778_03_tb(
+    chain_uid TEXT PRIMARY KEY, code TEXT NOT NULL UNIQUE, root_need_uid TEXT NOT NULL, label TEXT NOT NULL, purpose TEXT,
+    chain_kind TEXT NOT NULL CHECK(chain_kind IN ('integrity','workflow','diagnostic','provenance','enforcement','validation')),
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    CONSTRAINT fk_chain_need FOREIGN KEY (root_need_uid) REFERENCES e01_506_01_tb(need_uid) ON DELETE RESTRICT);
+INSERT INTO e01_778_03_tb VALUES('CHN:REF:21','CHN-R21','N30','Ref chain','chk type','integrity','2026-09-29 18:05:06');
+INSERT INTO e01_778_03_tb VALUES('CHN:ISA:CYC','CHN-ISA','N11','ISA chain','recursive detect','enforcement','2026-09-29 18:05:06');
+INSERT INTO e01_778_03_tb VALUES('CHN:CLOS:SYNC','CHN-CLOS','N11','Closure chain','rebuild','integrity','2026-09-29 18:05:06');
+INSERT INTO e01_778_03_tb VALUES('CHN:FTS:SYNC','CHN-FTS','N41','FTS chain','mirror','validation','2026-09-29 18:05:06');
+INSERT INTO e01_778_03_tb VALUES('CHN:PRV:FALL','CHN-PRV','N31','Provenance chain','ensure prv','provenance','2026-09-29 18:05:06');
+CREATE TABLE e01_778_04_tb(
+    chain_uid TEXT NOT NULL, ordinal INTEGER NOT NULL CHECK(ordinal >= 1),
+    step_kind TEXT NOT NULL CHECK(step_kind IN ('source','transform','enforce','verify','sink','branch')),
+    element_name TEXT, need_uid TEXT, code TEXT, description TEXT NOT NULL,
+    PRIMARY KEY (chain_uid, ordinal),
+    CONSTRAINT fk_step_chain FOREIGN KEY (chain_uid) REFERENCES e01_778_03_tb(chain_uid) ON DELETE RESTRICT,
+    CONSTRAINT fk_step_elem FOREIGN KEY (element_name) REFERENCES e01_506_03_tb(element_name) ON DELETE SET NULL,
+    CONSTRAINT fk_step_need FOREIGN KEY (need_uid) REFERENCES e01_506_01_tb(need_uid) ON DELETE SET NULL);
+INSERT INTO e01_778_04_tb VALUES('CHN:REF:21',1,'source','e01_200_01_tb',NULL,NULL,'source');
+INSERT INTO e01_778_04_tb VALUES('CHN:REF:21',2,'enforce','e03_120_04_tr',NULL,NULL,'chk type');
+INSERT INTO e01_778_04_tb VALUES('CHN:REF:21',3,'enforce','e03_320_03_tr',NULL,NULL,'protect');
+INSERT INTO e01_778_04_tb VALUES('CHN:REF:21',4,'verify','e04_310_02_vw',NULL,NULL,'verify');
+INSERT INTO e01_778_04_tb VALUES('CHN:REF:21',5,'sink','e01_200_03_tb',NULL,NULL,'sink');
+INSERT INTO e01_778_04_tb VALUES('CHN:FTS:SYNC',1,'source','e01_200_03_tb',NULL,NULL,'source');
+INSERT INTO e01_778_04_tb VALUES('CHN:FTS:SYNC',2,'enforce','e03_434_01_tr',NULL,NULL,'insert');
+INSERT INTO e01_778_04_tb VALUES('CHN:FTS:SYNC',3,'enforce','e03_434_03_tr',NULL,NULL,'update');
+INSERT INTO e01_778_04_tb VALUES('CHN:FTS:SYNC',4,'enforce','e03_434_02_tr',NULL,NULL,'delete');
+INSERT INTO e01_778_04_tb VALUES('CHN:FTS:SYNC',5,'sink','e02_404_01_ft',NULL,NULL,'sink');
+INSERT INTO e01_778_04_tb VALUES('CHN:ISA:CYC',1,'source','e01_222_01_tb',NULL,NULL,'source');
+INSERT INTO e01_778_04_tb VALUES('CHN:ISA:CYC',2,'enforce','e03_122_01_tr',NULL,NULL,'insert');
+INSERT INTO e01_778_04_tb VALUES('CHN:ISA:CYC',3,'enforce','e03_122_02_tr',NULL,NULL,'update');
+INSERT INTO e01_778_04_tb VALUES('CHN:ISA:CYC',4,'verify','e04_122_01_vw',NULL,NULL,'verify');
+INSERT INTO e01_778_04_tb VALUES('CHN:CLOS:SYNC',1,'source','e01_200_01_tb',NULL,NULL,'source');
+INSERT INTO e01_778_04_tb VALUES('CHN:CLOS:SYNC',2,'enforce','e03_120_02_tr',NULL,NULL,'insert');
+INSERT INTO e01_778_04_tb VALUES('CHN:CLOS:SYNC',3,'enforce','e03_120_03_tr',NULL,NULL,'update');
+INSERT INTO e01_778_04_tb VALUES('CHN:CLOS:SYNC',4,'verify','e04_110_01_vw',NULL,NULL,'verify');
+INSERT INTO e01_778_04_tb VALUES('CHN:PRV:FALL',1,'source','e01_303_01_tb',NULL,NULL,'source');
+INSERT INTO e01_778_04_tb VALUES('CHN:PRV:FALL',2,'enforce','e03_343_01_tr',NULL,NULL,'fb ent');
+INSERT INTO e01_778_04_tb VALUES('CHN:PRV:FALL',3,'enforce','e03_343_02_tr',NULL,NULL,'fb val');
+INSERT INTO e01_778_04_tb VALUES('CHN:PRV:FALL',4,'enforce','e03_343_03_tr',NULL,NULL,'fb rel');
+INSERT INTO e01_778_04_tb VALUES('CHN:PRV:FALL',5,'enforce','e03_343_08_tr',NULL,NULL,'protect');
+CREATE TABLE e01_200_01_tb(
+    type_id INTEGER PRIMARY KEY AUTOINCREMENT, type_uid TEXT NOT NULL UNIQUE, label TEXT NOT NULL, description TEXT,
+    parent_id INTEGER, is_abstract INTEGER NOT NULL DEFAULT 0 CHECK(is_abstract IN (0,1)),
+    CHECK (parent_id IS NULL OR parent_id <> type_id),
+    CONSTRAINT fk_ety_parent FOREIGN KEY (parent_id) REFERENCES e01_200_01_tb(type_id) ON DELETE RESTRICT);
+INSERT INTO e01_200_01_tb VALUES(1,'Vehicle','Vehicle',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(2,'VehicleModel','VehicleModel',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(3,'Make','Make',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(4,'Unit','Unit',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(5,'ECU','ECU',NULL,65,0);
+INSERT INTO e01_200_01_tb VALUES(6,'Sensor','Sensor',NULL,66,0);
+INSERT INTO e01_200_01_tb VALUES(7,'Actuator','Actuator',NULL,67,0);
+INSERT INTO e01_200_01_tb VALUES(8,'Connector','Connector',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(9,'Pin','Pin',NULL,8,0);
+INSERT INTO e01_200_01_tb VALUES(10,'Signal','Signal',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(11,'Bus','Bus',NULL,1,0);
+INSERT INTO e01_200_01_tb VALUES(12,'Frame','Frame',NULL,11,0);
+INSERT INTO e01_200_01_tb VALUES(13,'DTC','DTC',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(14,'Observation','Observation',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(15,'Measurement','Measurement',NULL,14,0);
+INSERT INTO e01_200_01_tb VALUES(16,'Claim','Claim',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(17,'Evidence','Evidence',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(18,'Hypothesis','Hypothesis',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(19,'Diagnosis','Diagnosis',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(20,'Repair','Repair',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(21,'Knowledge','Knowledge',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(22,'FunctionalChain','FunctionalChain',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(23,'Configuration','Configuration',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(24,'OperatingState','OperatingState',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(25,'Customer','Customer',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(26,'Technician','Technician',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(27,'Case','Case',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(28,'ReifiedRelation','ReifiedRelation',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(29,'StateSnapshot','StateSnapshot',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(30,'CrankshaftSensor','CrankshaftSensor',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(31,'CamshaftSensor','CamshaftSensor',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(32,'MapSensor','MapSensor',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(33,'CoolantTempSensor','CoolantTempSensor',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(34,'O2Sensor','O2Sensor',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(35,'IgnitionCoil','IgnitionCoil',NULL,62,0);
+INSERT INTO e01_200_01_tb VALUES(36,'Injector','Injector',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(37,'ThrottleBody','ThrottleBody',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(38,'FuelPump','FuelPump',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(39,'Battery','Battery',NULL,55,0);
+INSERT INTO e01_200_01_tb VALUES(40,'Relay','Relay',NULL,58,0);
+INSERT INTO e01_200_01_tb VALUES(41,'Fuse','Fuse',NULL,57,0);
+INSERT INTO e01_200_01_tb VALUES(42,'Wiring','Wiring',NULL,59,0);
+INSERT INTO e01_200_01_tb VALUES(43,'CrankSignal','CrankSignal',NULL,10,0);
+INSERT INTO e01_200_01_tb VALUES(44,'FuelPressure','FuelPressure',NULL,10,0);
+INSERT INTO e01_200_01_tb VALUES(45,'FunctionalRole','FunctionalRole',NULL,NULL,1);
+INSERT INTO e01_200_01_tb VALUES(46,'FailureMode','FailureMode',NULL,21,0);
+INSERT INTO e01_200_01_tb VALUES(47,'Test','Test',NULL,21,0);
+INSERT INTO e01_200_01_tb VALUES(48,'Procedure','Procedure',NULL,21,0);
+INSERT INTO e01_200_01_tb VALUES(49,'EESystem','سیستم الکتریکی/الکترونیکی',NULL,NULL,1);
+INSERT INTO e01_200_01_tb VALUES(50,'PowerSupplySystem','سیستم تأمین برق',NULL,49,1);
+INSERT INTO e01_200_01_tb VALUES(51,'StartingSystem','سیستم راه‌اندازی',NULL,49,1);
+INSERT INTO e01_200_01_tb VALUES(52,'IgnitionSystem','سیستم جرقه‌زنی',NULL,49,1);
+INSERT INTO e01_200_01_tb VALUES(53,'ChargingSystem','سیستم شارژ',NULL,49,1);
+INSERT INTO e01_200_01_tb VALUES(54,'ControlCommSystem','سیستم کنترل و ارتباط',NULL,49,1);
+INSERT INTO e01_200_01_tb VALUES(55,'BatterySystem','سیستم باتری',NULL,50,1);
+INSERT INTO e01_200_01_tb VALUES(56,'AlternatorSystem','سیستم دینام',NULL,50,1);
+INSERT INTO e01_200_01_tb VALUES(57,'FuseBoxSystem','سیستم جعبه فیوز',NULL,50,1);
+INSERT INTO e01_200_01_tb VALUES(58,'RelaySystem','سیستم رله',NULL,50,1);
+INSERT INTO e01_200_01_tb VALUES(59,'WiringSystem','سیستم سیم‌کشی',NULL,50,1);
+INSERT INTO e01_200_01_tb VALUES(60,'StarterMotorSystem','سیستم استارت',NULL,51,1);
+INSERT INTO e01_200_01_tb VALUES(61,'IgnitionSwitchSystem','سیستم سوئیچ',NULL,51,1);
+INSERT INTO e01_200_01_tb VALUES(62,'IgnitionCoilSystem','سیستم کوئل',NULL,52,1);
+INSERT INTO e01_200_01_tb VALUES(63,'SparkPlugSystem','سیستم شمع',NULL,52,1);
+INSERT INTO e01_200_01_tb VALUES(64,'VoltageRegulatorSystem','سیستم تنظیم ولتاژ',NULL,53,1);
+INSERT INTO e01_200_01_tb VALUES(65,'ECUSystem','سیستم ECU',NULL,54,1);
+INSERT INTO e01_200_01_tb VALUES(66,'SensorSystem','سیستم سنسور',NULL,54,1);
+INSERT INTO e01_200_01_tb VALUES(67,'ActuatorSystem','سیستم عملگر',NULL,54,1);
+INSERT INTO e01_200_01_tb VALUES(68,'BusSystem','سیستم شبکه',NULL,54,1);
+INSERT INTO e01_200_01_tb VALUES(69,'StarterMotor','استارت',NULL,60,0);
+INSERT INTO e01_200_01_tb VALUES(70,'StarterRelay','رله استارت',NULL,60,0);
+INSERT INTO e01_200_01_tb VALUES(71,'IgnitionSwitch','سوئیچ ignition',NULL,61,0);
+INSERT INTO e01_200_01_tb VALUES(72,'SparkPlug','شمع',NULL,63,0);
+INSERT INTO e01_200_01_tb VALUES(73,'IgnitionModule','ماژول جرقه',NULL,62,0);
+INSERT INTO e01_200_01_tb VALUES(74,'Alternator','دینام',NULL,56,0);
+INSERT INTO e01_200_01_tb VALUES(75,'VoltageRegulator','تنظیم‌کننده ولتاژ',NULL,64,0);
+INSERT INTO e01_200_01_tb VALUES(76,'ChargeIndicator','نشانگر شارژ',NULL,64,0);
+INSERT INTO e01_200_01_tb VALUES(77,'LeadAcidBattery','باتری سربی-اسیدی',NULL,55,0);
+INSERT INTO e01_200_01_tb VALUES(78,'LithiumIonBattery','باتری لیتیوم-یونی',NULL,55,0);
+INSERT INTO e01_200_01_tb VALUES(79,'EngineECU','ECU موتور',NULL,65,0);
+INSERT INTO e01_200_01_tb VALUES(80,'TransmissionECU','ECU گیربکس',NULL,65,0);
+INSERT INTO e01_200_01_tb VALUES(81,'BodyECU','ECU بدنه',NULL,65,0);
+INSERT INTO e01_200_01_tb VALUES(82,'ABS_ECU','ECU ترمز ABS',NULL,65,0);
+INSERT INTO e01_200_01_tb VALUES(83,'KnockSensor','سنسور ناک',NULL,66,0);
+INSERT INTO e01_200_01_tb VALUES(84,'SpeedSensor','سنسور سرعت',NULL,66,0);
+INSERT INTO e01_200_01_tb VALUES(85,'ThrottlePositionSensor','سنسور موقعیت دریچه گاز',NULL,66,0);
+INSERT INTO e01_200_01_tb VALUES(86,'IdleAirControlValve','استپر موتور',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(87,'CANBus','شبکه CAN',NULL,68,0);
+INSERT INTO e01_200_01_tb VALUES(88,'LINBus','شبکه LIN',NULL,68,0);
+INSERT INTO e01_200_01_tb VALUES(89,'FlexRayBus','شبکه FlexRay',NULL,68,0);
+INSERT INTO e01_200_01_tb VALUES(90,'AutomotiveEthernet','اترنت خودرویی',NULL,68,0);
+INSERT INTO e01_200_01_tb VALUES(91,'LightingSystem','سیستم روشنایی',NULL,49,1);
+INSERT INTO e01_200_01_tb VALUES(92,'ExteriorLighting','روشنایی بیرونی',NULL,91,1);
+INSERT INTO e01_200_01_tb VALUES(93,'InteriorLighting','روشنایی داخلی',NULL,91,1);
+INSERT INTO e01_200_01_tb VALUES(94,'HeadlightLow','چراغ پایین',NULL,92,0);
+INSERT INTO e01_200_01_tb VALUES(95,'HeadlightHigh','چراغ بالا',NULL,92,0);
+INSERT INTO e01_200_01_tb VALUES(96,'TailLight','چراغ عقب',NULL,92,0);
+INSERT INTO e01_200_01_tb VALUES(97,'BrakeLight','چراغ ترمز',NULL,92,0);
+INSERT INTO e01_200_01_tb VALUES(98,'TurnSignal','راهنما',NULL,92,0);
+INSERT INTO e01_200_01_tb VALUES(99,'ReverseLight','چراغ دنده عقب',NULL,92,0);
+INSERT INTO e01_200_01_tb VALUES(100,'FogLight','چراغ مه‌شکن',NULL,92,0);
+INSERT INTO e01_200_01_tb VALUES(101,'LicensePlateLight','چراغ پلاک',NULL,92,0);
+INSERT INTO e01_200_01_tb VALUES(102,'InteriorLight','چراغ سقفی',NULL,93,0);
+INSERT INTO e01_200_01_tb VALUES(103,'DashLight','نور صفحه کیلومتر',NULL,93,0);
+INSERT INTO e01_200_01_tb VALUES(104,'HeadlightRelay','رله چراغ',NULL,92,0);
+INSERT INTO e01_200_01_tb VALUES(105,'HeadlightFuse','فیوز چراغ',NULL,92,0);
+INSERT INTO e01_200_01_tb VALUES(121,'MassAirFlowSensor','سنسور دبی هوا (MAF)',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(122,'IntakeAirTempSensor','سنسور دمای هوای ورودی (IAT)',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(123,'BarometricPressureSensor','سنسور فشار بارومتریک',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(124,'FuelLevelSensor','سنسور سطح سوخت',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(125,'FuelPressureSensor','سنسور فشار سوخت',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(126,'OilPressureSensor','سنسور فشار روغن',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(127,'OilTempSensor','سنسور دمای روغن',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(128,'VehicleSpeedSensor','سنسور سرعت خودرو (VSS)',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(129,'WheelSpeedSensor','سنسور سرعت چرخ',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(130,'EGRPositionSensor','سنسور موقعیت EGR',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(131,'TurboBoostSensor','سنسور فشار توربو',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(132,'UpstreamO2Sensor','سنسور اکسیژن بالادست',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(133,'DownstreamO2Sensor','سنسور اکسیژن پایین‌دست',NULL,6,0);
+INSERT INTO e01_200_01_tb VALUES(134,'ThrottleActuator','عملگر دریچه گاز',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(138,'EGRValve','شیر EGR',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(139,'VVTSolenoid','سلنوئید VVT',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(140,'TurboWastegate','وزگیت توربو',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(141,'EVAPPurgeValve','شیر EVAP',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(142,'CoolingFanMotor','موتور فن خنک‌کننده',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(143,'Horn','بوق',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(144,'WiperMotor','موتور برف‌پاک‌کن',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(145,'WindowMotor','موتور بالابر شیشه',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(146,'DoorLockActuator','عملگر قفل مرکزی',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(147,'MirrorMotor','موتور آینه برقی',NULL,7,0);
+INSERT INTO e01_200_01_tb VALUES(148,'FuelPumpRelay','رله پمپ بنزین',NULL,40,0);
+INSERT INTO e01_200_01_tb VALUES(149,'CoolingFanRelay','رله فن',NULL,40,0);
+INSERT INTO e01_200_01_tb VALUES(150,'ACCompressorClutch','کلاچ کمپرسور کولر',NULL,158,0);
+INSERT INTO e01_200_01_tb VALUES(151,'PassengerCar','خودرو سواری',NULL,1,0);
+INSERT INTO e01_200_01_tb VALUES(152,'Pride','پراید',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(153,'Peugeot206','پژو ۲۰۶',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(154,'Dena','دنا',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(155,'BrakingSystem','سیستم ترمز',NULL,49,1);
+INSERT INTO e01_200_01_tb VALUES(156,'SteeringSystem','سیستم فرمان',NULL,49,1);
+INSERT INTO e01_200_01_tb VALUES(157,'SuspensionSystem','سیستم تعلیق',NULL,49,1);
+INSERT INTO e01_200_01_tb VALUES(158,'HVACSystem','سیستم تهویه',NULL,49,1);
+INSERT INTO e01_200_01_tb VALUES(159,'BrakeMasterCylinder','پمپ ترمز',NULL,155,0);
+INSERT INTO e01_200_01_tb VALUES(160,'BrakeBooster','بوستر ترمز',NULL,155,0);
+INSERT INTO e01_200_01_tb VALUES(161,'BrakeDisc','دیسک ترمز',NULL,155,0);
+INSERT INTO e01_200_01_tb VALUES(162,'BrakePad','لنت ترمز',NULL,155,0);
+INSERT INTO e01_200_01_tb VALUES(163,'BrakeCaliper','کالیپر ترمز',NULL,155,0);
+INSERT INTO e01_200_01_tb VALUES(164,'BrakeFluid','روغن ترمز',NULL,155,0);
+INSERT INTO e01_200_01_tb VALUES(165,'BrakeLine','لوله ترمز',NULL,155,0);
+INSERT INTO e01_200_01_tb VALUES(166,'SteeringWheel','فلکه فرمان',NULL,156,0);
+INSERT INTO e01_200_01_tb VALUES(167,'SteeringColumn','ستون فرمان',NULL,156,0);
+INSERT INTO e01_200_01_tb VALUES(168,'SteeringRack','جعبه فرمان',NULL,156,0);
+INSERT INTO e01_200_01_tb VALUES(169,'PowerSteeringPump','پمپ هیدرولیک فرمان',NULL,156,0);
+INSERT INTO e01_200_01_tb VALUES(170,'TieRod','میل موجی فرمان',NULL,156,0);
+INSERT INTO e01_200_01_tb VALUES(171,'CoilSpring','فنر لول',NULL,157,0);
+INSERT INTO e01_200_01_tb VALUES(172,'ShockAbsorber','کمک فنر',NULL,157,0);
+INSERT INTO e01_200_01_tb VALUES(173,'ControlArm','سیبک/طبق',NULL,157,0);
+INSERT INTO e01_200_01_tb VALUES(174,'BallJoint','سیبک چرخ',NULL,157,0);
+INSERT INTO e01_200_01_tb VALUES(175,'Bushing','بوش',NULL,157,0);
+INSERT INTO e01_200_01_tb VALUES(176,'ACCompressor','کمپرسور کولر',NULL,158,0);
+INSERT INTO e01_200_01_tb VALUES(177,'ACCondenser','کندانسور کولر',NULL,158,0);
+INSERT INTO e01_200_01_tb VALUES(178,'ACExpansionValve','شیر انبساط کولر',NULL,158,0);
+INSERT INTO e01_200_01_tb VALUES(179,'ACRefrigerant','گاز کولر',NULL,158,0);
+INSERT INTO e01_200_01_tb VALUES(180,'BlowerMotor','فن بخاری',NULL,158,0);
+INSERT INTO e01_200_01_tb VALUES(181,'CabinAirFilter','فیلتر کابین',NULL,158,0);
+INSERT INTO e01_200_01_tb VALUES(182,'HeaterCore','رادیاتور بخاری',NULL,158,0);
+INSERT INTO e01_200_01_tb VALUES(183,'Peugeot405','پژو ۴۰۵',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(184,'Samand','سمند',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(185,'Tiba','تیبا',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(186,'Quick','کوییک',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(187,'Shahin','شاهین',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(188,'Manufacturer','سازنده خودرو',NULL,NULL,1);
+INSERT INTO e01_200_01_tb VALUES(189,'IranianManufacturer','سازنده ایرانی',NULL,188,1);
+INSERT INTO e01_200_01_tb VALUES(190,'KoreanManufacturer','سازنده کره‌ای',NULL,188,1);
+INSERT INTO e01_200_01_tb VALUES(191,'JapaneseManufacturer','سازنده ژاپنی',NULL,188,1);
+INSERT INTO e01_200_01_tb VALUES(192,'GermanManufacturer','سازنده آلمانی',NULL,188,1);
+INSERT INTO e01_200_01_tb VALUES(193,'FrenchManufacturer','سازنده فرانسوی',NULL,188,1);
+INSERT INTO e01_200_01_tb VALUES(194,'ChineseManufacturer','سازنده چینی',NULL,188,1);
+INSERT INTO e01_200_01_tb VALUES(195,'AmericanManufacturer','سازنده آمریکایی',NULL,188,1);
+INSERT INTO e01_200_01_tb VALUES(196,'HyundaiAccent','هیوندای اکسنت',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(197,'HyundaiElantra','هیوندای النترا',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(198,'HyundaiTucson','هیوندای توسان',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(199,'HyundaiSantaFe','هیوندای سانتافه',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(200,'HyundaiSonata','هیوندای سوناتا',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(201,'KiaRio','کیا ریو',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(202,'KiaCerato','کیا سراتو',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(203,'KiaSportage','کیا اسپورتیج',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(204,'KiaSorento','کیا سورنتو',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(205,'KiaOptima','کیا اپتیما',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(206,'ToyotaCorolla','تویوتا کرولا',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(207,'ToyotaCamry','تویوتا کمری',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(208,'ToyotaRAV4','تویوتا راو۴',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(209,'ToyotaLandCruiser','تویوتا لندکروزر',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(210,'HondaCivic','هوندا سیویک',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(211,'HondaAccord','هوندا اکورد',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(212,'HondaCRV','هوندا CR-V',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(213,'NissanSunny','نیسان سانی',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(214,'NissanAltima','نیسان آلتیما',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(215,'NissanXTrail','نیسان ایکس‌تریل',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(216,'BMW3Series','بی‌ام‌و سری ۳',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(217,'BMW5Series','بی‌ام‌و سری ۵',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(218,'BMWX5','بی‌ام‌و X5',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(219,'MercedesCClass','مرسدس C-Class',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(220,'MercedesEClass','مرسدس E-Class',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(221,'MercedesSClass','مرسدس S-Class',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(222,'VWGolf','فولکس‌واگن گلف',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(223,'VWPassat','فولکس‌واگن پاسات',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(224,'VWTiguan','فولکس‌واگن تیگوان',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(225,'AudiA4','آئودی A4',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(226,'AudiA6','آئودی A6',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(227,'Porsche911','پورشه ۹۱۱',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(228,'CheryTiggo','چری تیگو',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(229,'CheryArrizo','چری آریزو',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(230,'JACS3','جک S3',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(231,'JACS5','جک S5',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(232,'JACJ4','جک J4',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(233,'BrillianceH230','برلیانس H230',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(234,'BrillianceH320','برلیانس H320',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(235,'BrillianceH530','برلیانس H530',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(236,'LifanX60','لیفان X60',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(237,'Lifan820','لیفان ۸۲۰',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(238,'HavalH6','هاوال H6',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(239,'HavalH2','هاوال H2',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(240,'GeelyEmgrand','جیلی امگرند',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(241,'GeelyCoolray','جیلی کولری',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(242,'BYDSong','BYD سانگ',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(243,'BYDAtto3','BYD Atto 3',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(244,'ChevroletCruze','شورولت کروز',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(245,'ChevroletMalibu','شورولت مالیبو',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(246,'FordFocus','فورد فوکوس',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(247,'FordMustang','فورد موستانگ',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(248,'FordF150','فورد F-150',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(249,'Motorcycle','موتورسیکلت',NULL,1,1);
+INSERT INTO e01_200_01_tb VALUES(250,'Moped','موتور گازی',NULL,249,0);
+INSERT INTO e01_200_01_tb VALUES(251,'Scooter','اسکوتر',NULL,249,0);
+INSERT INTO e01_200_01_tb VALUES(252,'SportBike','موتور اسپرت',NULL,249,0);
+INSERT INTO e01_200_01_tb VALUES(253,'CruiserBike','موتور کروزر',NULL,249,0);
+INSERT INTO e01_200_01_tb VALUES(254,'OffRoadBike','موتور آفرود',NULL,249,0);
+INSERT INTO e01_200_01_tb VALUES(255,'TouringBike','موتور توریستی',NULL,249,0);
+INSERT INTO e01_200_01_tb VALUES(256,'MotorcycleManufacturer','سازنده موتورسیکلت',NULL,188,1);
+INSERT INTO e01_200_01_tb VALUES(257,'Truck','کامیون',NULL,1,1);
+INSERT INTO e01_200_01_tb VALUES(258,'LightTruck','کامیونت',NULL,257,0);
+INSERT INTO e01_200_01_tb VALUES(259,'HeavyTruck','کامیون سنگین',NULL,257,0);
+INSERT INTO e01_200_01_tb VALUES(260,'PickupTruck','وانت',NULL,257,0);
+INSERT INTO e01_200_01_tb VALUES(261,'TruckManufacturer','سازنده کامیون',NULL,188,1);
+INSERT INTO e01_200_01_tb VALUES(262,'ToyotaHilux','تویوتا هایلوکس',NULL,260,0);
+INSERT INTO e01_200_01_tb VALUES(263,'MitsubishiL200','میتسوبیشی L200',NULL,260,0);
+INSERT INTO e01_200_01_tb VALUES(264,'NissanNavara','نیسان ناوارا',NULL,260,0);
+INSERT INTO e01_200_01_tb VALUES(265,'IsuzuNPR','ایسوزو NPR',NULL,258,0);
+INSERT INTO e01_200_01_tb VALUES(266,'HyundaiMighty','هیوندای مایتی',NULL,258,0);
+INSERT INTO e01_200_01_tb VALUES(267,'VolvoFH','ولوو FH',NULL,259,0);
+INSERT INTO e01_200_01_tb VALUES(268,'ScaniaR','اسکانیا R',NULL,259,0);
+INSERT INTO e01_200_01_tb VALUES(269,'MAN_TGX','MAN TGX',NULL,259,0);
+INSERT INTO e01_200_01_tb VALUES(271,'Minibus','مینی‌بوس',NULL,11,0);
+INSERT INTO e01_200_01_tb VALUES(272,'CityBus','اتوبوس شهری',NULL,11,0);
+INSERT INTO e01_200_01_tb VALUES(273,'IntercityBus','اتوبوس بین‌شهری',NULL,11,0);
+INSERT INTO e01_200_01_tb VALUES(274,'TourBus','اتوبوس توریستی',NULL,11,0);
+INSERT INTO e01_200_01_tb VALUES(275,'ArticulatedBus','اتوبوس مفصلی',NULL,11,0);
+INSERT INTO e01_200_01_tb VALUES(276,'DoubleDeckerBus','اتوبوس دوطبقه',NULL,11,0);
+INSERT INTO e01_200_01_tb VALUES(277,'SchoolBus','اتوبوس مدرسه',NULL,11,0);
+INSERT INTO e01_200_01_tb VALUES(278,'Van','ون',NULL,281,0);
+INSERT INTO e01_200_01_tb VALUES(279,'Ambulance','آمبولانس',NULL,281,0);
+INSERT INTO e01_200_01_tb VALUES(280,'FireTruck','آتش‌نشانی',NULL,281,0);
+INSERT INTO e01_200_01_tb VALUES(281,'SpecialVehicle','خودروی ویژه',NULL,1,1);
+INSERT INTO e01_200_01_tb VALUES(282,'BusManufacturer','سازنده اتوبوس',NULL,188,1);
+INSERT INTO e01_200_01_tb VALUES(283,'Volvo7900','ولوو ۷۹۰۰',NULL,273,0);
+INSERT INTO e01_200_01_tb VALUES(284,'VolvoB11R','ولوو B11R',NULL,273,0);
+INSERT INTO e01_200_01_tb VALUES(285,'ScaniaTouring','اسکانیا تورینگ',NULL,273,0);
+INSERT INTO e01_200_01_tb VALUES(286,'MANLionsCoach','MAN Lions Coach',NULL,273,0);
+INSERT INTO e01_200_01_tb VALUES(287,'MercedesTourismo','مرسدس توریسمو',NULL,273,0);
+INSERT INTO e01_200_01_tb VALUES(288,'YutongZK','یوتانگ ZK',NULL,272,0);
+INSERT INTO e01_200_01_tb VALUES(289,'IvecoCrossway','ایوکو کراس‌وی',NULL,273,0);
+INSERT INTO e01_200_01_tb VALUES(290,'IKD_TJ','ایران خودرو دیزل TJ',NULL,272,0);
+INSERT INTO e01_200_01_tb VALUES(291,'OghabCity','عقاب شهری',NULL,272,0);
+INSERT INTO e01_200_01_tb VALUES(314,'PoliceCar','خودروی پلیس',NULL,281,0);
+INSERT INTO e01_200_01_tb VALUES(315,'Taxi','تاکسی',NULL,281,0);
+INSERT INTO e01_200_01_tb VALUES(316,'GarbageTruck','خودروی زباله',NULL,257,0);
+INSERT INTO e01_200_01_tb VALUES(317,'TowTruck','خودروی یدک‌کش',NULL,281,0);
+INSERT INTO e01_200_01_tb VALUES(318,'DeliveryVan','ون تحویل',NULL,278,0);
+INSERT INTO e01_200_01_tb VALUES(319,'PassengerVan','ون مسافربری',NULL,278,0);
+INSERT INTO e01_200_01_tb VALUES(320,'RefrigeratedTruck','کامیون یخچال‌دار',NULL,257,0);
+INSERT INTO e01_200_01_tb VALUES(321,'TankerTruck','تانکر',NULL,257,0);
+INSERT INTO e01_200_01_tb VALUES(322,'BusFireTruck','آتش‌نشانی سنگین',NULL,280,0);
+INSERT INTO e01_200_01_tb VALUES(323,'RescueVehicle','خودروی امداد',NULL,281,0);
+INSERT INTO e01_200_01_tb VALUES(324,'WarningLight','چراغ هشدار',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(325,'Siren','آژیر',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(326,'HydraulicLift','بالابر هیدرولیک',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(327,'WheelchairRamp','رمپ ویلچر',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(328,'FirePump','پمپ آتش‌نشانی',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(329,'Ladder','نردبان',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(330,'Reefer','یخچال کامیون',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(331,'Tank','تانک',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(332,'SpecialVehicleManufacturer','سازنده خودروی ویژه',NULL,188,1);
+INSERT INTO e01_200_01_tb VALUES(333,'Sprinter','اسپرینتر',NULL,318,0);
+INSERT INTO e01_200_01_tb VALUES(334,'Daily','دیلی',NULL,318,0);
+INSERT INTO e01_200_01_tb VALUES(335,'ZamyadZ24','زمیاد Z24',NULL,260,0);
+INSERT INTO e01_200_01_tb VALUES(336,'Khavar','خاور',NULL,260,0);
+INSERT INTO e01_200_01_tb VALUES(337,'PeugeotBoxer','پژو باکسر',NULL,318,0);
+INSERT INTO e01_200_01_tb VALUES(338,'FiatDucato','فیات دوکاتو',NULL,318,0);
+INSERT INTO e01_200_01_tb VALUES(339,'ElectricVehicle','خودروی برقی',NULL,1,1);
+INSERT INTO e01_200_01_tb VALUES(340,'BatteryElectricVehicle','خودروی تمام برقی',NULL,339,0);
+INSERT INTO e01_200_01_tb VALUES(341,'HybridVehicle','خودروی هیبرید',NULL,339,1);
+INSERT INTO e01_200_01_tb VALUES(342,'PlugInHybrid','هیبرید پلاگ‌این',NULL,341,0);
+INSERT INTO e01_200_01_tb VALUES(343,'MildHybrid','هیبرید ملایم',NULL,341,0);
+INSERT INTO e01_200_01_tb VALUES(344,'FuelCellVehicle','خودروی سلول سوختی',NULL,339,0);
+INSERT INTO e01_200_01_tb VALUES(345,'TractionMotor','موتور کششی',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(346,'Inverter','اینورتر',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(347,'BatteryPack','پک باتری',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(348,'BatteryModule','ماژول باتری',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(349,'BatteryCell','سلول باتری',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(350,'OnboardCharger','شارژر داخلی',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(351,'ChargingPort','پورت شارژ',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(352,'BMS','مدیر باتری BMS',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(353,'DCDCConverter','مبدل DC/DC',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(354,'RegenerativeBrake','ترمز بازیابی',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(355,'ThermalManagement','مدیریت حرارتی',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(356,'HighVoltageCable','کابل فشار قوی',NULL,NULL,0);
+INSERT INTO e01_200_01_tb VALUES(357,'EVManufacturer','سازنده خودروی برقی',NULL,188,1);
+INSERT INTO e01_200_01_tb VALUES(358,'TeslaModel3','تسلا مدل ۳',NULL,340,0);
+INSERT INTO e01_200_01_tb VALUES(359,'TeslaModelY','تسلا مدل Y',NULL,340,0);
+INSERT INTO e01_200_01_tb VALUES(360,'TeslaModelS','تسلا مدل S',NULL,340,0);
+INSERT INTO e01_200_01_tb VALUES(361,'TeslaModelX','تسلا مدل X',NULL,340,0);
+INSERT INTO e01_200_01_tb VALUES(362,'NissanLeaf','نیسان لیف',NULL,340,0);
+INSERT INTO e01_200_01_tb VALUES(363,'ChevroletBolt','شورولت بولت',NULL,340,0);
+INSERT INTO e01_200_01_tb VALUES(364,'HyundaiIoniq5','هیوندای آیونیک ۵',NULL,340,0);
+INSERT INTO e01_200_01_tb VALUES(365,'KiaEV6','کیا EV6',NULL,340,0);
+INSERT INTO e01_200_01_tb VALUES(366,'BYDHan','BYD هان',NULL,340,0);
+INSERT INTO e01_200_01_tb VALUES(367,'NIOSUV','نیو SUV',NULL,340,0);
+INSERT INTO e01_200_01_tb VALUES(368,'XpengP7','XPeng P7',NULL,340,0);
+INSERT INTO e01_200_01_tb VALUES(369,'Peugeot208','پژو ۲۰۸',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(370,'Peugeot301','پژو ۳۰۱',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(371,'Peugeot2008','پژو ۲۰۰۸',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(372,'Peugeot3008','پژو ۳۰۰۸',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(373,'Peugeot508','پژو ۵۰۸',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(374,'CitroenC3','سیتروئن C3',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(375,'CitroenC4','سیتروئن C4',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(376,'CitroenC5','سیتروئن C5',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(377,'CitroenBerlingo','سیتروئن برلینگو',NULL,318,0);
+INSERT INTO e01_200_01_tb VALUES(378,'RenaultClio','رنو کلیو',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(379,'RenaultMegane','رنو مگان',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(380,'RenaultDuster','رنو داستر',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(381,'RenaultTalisman','رنو تالیسمان',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(382,'RenaultCaptur','رنو کپچر',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(383,'RenaultSandero','رنو ساندرو',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(384,'RenaultKoleos','رنو کولیوس',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(385,'IKCORana','رانا',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(386,'IKCORunna','رانا پلاس',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(387,'SAIPATondar','تندر ۹۰',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(388,'SAIPASaina','ساینا',NULL,151,0);
+INSERT INTO e01_200_01_tb VALUES(389,'ParsKhodroTondar','پارس تندر',NULL,151,0);
+CREATE TABLE e01_120_01_tb(
+    desc_id INTEGER NOT NULL, anc_id INTEGER NOT NULL, depth INTEGER NOT NULL CHECK(depth >= 0),
+    PRIMARY KEY (desc_id, anc_id),
+    CONSTRAINT fk_clos_desc FOREIGN KEY (desc_id) REFERENCES e01_200_01_tb(type_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_clos_anc FOREIGN KEY (anc_id) REFERENCES e01_200_01_tb(type_id) ON DELETE RESTRICT) WITHOUT ROWID;
+INSERT INTO e01_120_01_tb VALUES(1,1,0);
+INSERT INTO e01_120_01_tb VALUES(2,2,0);
+INSERT INTO e01_120_01_tb VALUES(3,3,0);
+INSERT INTO e01_120_01_tb VALUES(4,4,0);
+INSERT INTO e01_120_01_tb VALUES(5,5,0);
+INSERT INTO e01_120_01_tb VALUES(5,49,3);
+INSERT INTO e01_120_01_tb VALUES(5,54,2);
+INSERT INTO e01_120_01_tb VALUES(5,65,1);
+INSERT INTO e01_120_01_tb VALUES(6,6,0);
+INSERT INTO e01_120_01_tb VALUES(6,49,3);
+INSERT INTO e01_120_01_tb VALUES(6,54,2);
+INSERT INTO e01_120_01_tb VALUES(6,66,1);
+INSERT INTO e01_120_01_tb VALUES(7,7,0);
+INSERT INTO e01_120_01_tb VALUES(7,49,3);
+INSERT INTO e01_120_01_tb VALUES(7,54,2);
+INSERT INTO e01_120_01_tb VALUES(7,67,1);
+INSERT INTO e01_120_01_tb VALUES(8,8,0);
+INSERT INTO e01_120_01_tb VALUES(9,8,1);
+INSERT INTO e01_120_01_tb VALUES(9,9,0);
+INSERT INTO e01_120_01_tb VALUES(10,10,0);
+INSERT INTO e01_120_01_tb VALUES(11,1,1);
+INSERT INTO e01_120_01_tb VALUES(11,11,0);
+INSERT INTO e01_120_01_tb VALUES(12,1,2);
+INSERT INTO e01_120_01_tb VALUES(12,11,1);
+INSERT INTO e01_120_01_tb VALUES(12,12,0);
+INSERT INTO e01_120_01_tb VALUES(13,13,0);
+INSERT INTO e01_120_01_tb VALUES(14,14,0);
+INSERT INTO e01_120_01_tb VALUES(15,14,1);
+INSERT INTO e01_120_01_tb VALUES(15,15,0);
+INSERT INTO e01_120_01_tb VALUES(16,16,0);
+INSERT INTO e01_120_01_tb VALUES(17,17,0);
+INSERT INTO e01_120_01_tb VALUES(18,18,0);
+INSERT INTO e01_120_01_tb VALUES(19,19,0);
+INSERT INTO e01_120_01_tb VALUES(20,20,0);
+INSERT INTO e01_120_01_tb VALUES(21,21,0);
+INSERT INTO e01_120_01_tb VALUES(22,22,0);
+INSERT INTO e01_120_01_tb VALUES(23,23,0);
+INSERT INTO e01_120_01_tb VALUES(24,24,0);
+INSERT INTO e01_120_01_tb VALUES(25,25,0);
+INSERT INTO e01_120_01_tb VALUES(26,26,0);
+INSERT INTO e01_120_01_tb VALUES(27,27,0);
+INSERT INTO e01_120_01_tb VALUES(28,28,0);
+INSERT INTO e01_120_01_tb VALUES(29,29,0);
+INSERT INTO e01_120_01_tb VALUES(30,6,1);
+INSERT INTO e01_120_01_tb VALUES(30,30,0);
+INSERT INTO e01_120_01_tb VALUES(30,49,4);
+INSERT INTO e01_120_01_tb VALUES(30,54,3);
+INSERT INTO e01_120_01_tb VALUES(30,66,2);
+INSERT INTO e01_120_01_tb VALUES(31,6,1);
+INSERT INTO e01_120_01_tb VALUES(31,31,0);
+INSERT INTO e01_120_01_tb VALUES(31,49,4);
+INSERT INTO e01_120_01_tb VALUES(31,54,3);
+INSERT INTO e01_120_01_tb VALUES(31,66,2);
+INSERT INTO e01_120_01_tb VALUES(32,6,1);
+INSERT INTO e01_120_01_tb VALUES(32,32,0);
+INSERT INTO e01_120_01_tb VALUES(32,49,4);
+INSERT INTO e01_120_01_tb VALUES(32,54,3);
+INSERT INTO e01_120_01_tb VALUES(32,66,2);
+INSERT INTO e01_120_01_tb VALUES(33,6,1);
+INSERT INTO e01_120_01_tb VALUES(33,33,0);
+INSERT INTO e01_120_01_tb VALUES(33,49,4);
+INSERT INTO e01_120_01_tb VALUES(33,54,3);
+INSERT INTO e01_120_01_tb VALUES(33,66,2);
+INSERT INTO e01_120_01_tb VALUES(34,6,1);
+INSERT INTO e01_120_01_tb VALUES(34,34,0);
+INSERT INTO e01_120_01_tb VALUES(34,49,4);
+INSERT INTO e01_120_01_tb VALUES(34,54,3);
+INSERT INTO e01_120_01_tb VALUES(34,66,2);
+INSERT INTO e01_120_01_tb VALUES(35,35,0);
+INSERT INTO e01_120_01_tb VALUES(35,49,3);
+INSERT INTO e01_120_01_tb VALUES(35,52,2);
+INSERT INTO e01_120_01_tb VALUES(35,62,1);
+INSERT INTO e01_120_01_tb VALUES(36,7,1);
+INSERT INTO e01_120_01_tb VALUES(36,36,0);
+INSERT INTO e01_120_01_tb VALUES(36,49,4);
+INSERT INTO e01_120_01_tb VALUES(36,54,3);
+INSERT INTO e01_120_01_tb VALUES(36,67,2);
+INSERT INTO e01_120_01_tb VALUES(37,7,1);
+INSERT INTO e01_120_01_tb VALUES(37,37,0);
+INSERT INTO e01_120_01_tb VALUES(37,49,4);
+INSERT INTO e01_120_01_tb VALUES(37,54,3);
+INSERT INTO e01_120_01_tb VALUES(37,67,2);
+INSERT INTO e01_120_01_tb VALUES(38,7,1);
+INSERT INTO e01_120_01_tb VALUES(38,38,0);
+INSERT INTO e01_120_01_tb VALUES(38,49,4);
+INSERT INTO e01_120_01_tb VALUES(38,54,3);
+INSERT INTO e01_120_01_tb VALUES(38,67,2);
+INSERT INTO e01_120_01_tb VALUES(39,39,0);
+INSERT INTO e01_120_01_tb VALUES(39,49,3);
+INSERT INTO e01_120_01_tb VALUES(39,50,2);
+INSERT INTO e01_120_01_tb VALUES(39,55,1);
+INSERT INTO e01_120_01_tb VALUES(40,40,0);
+INSERT INTO e01_120_01_tb VALUES(40,49,3);
+INSERT INTO e01_120_01_tb VALUES(40,50,2);
+INSERT INTO e01_120_01_tb VALUES(40,58,1);
+INSERT INTO e01_120_01_tb VALUES(41,41,0);
+INSERT INTO e01_120_01_tb VALUES(41,49,3);
+INSERT INTO e01_120_01_tb VALUES(41,50,2);
+INSERT INTO e01_120_01_tb VALUES(41,57,1);
+INSERT INTO e01_120_01_tb VALUES(42,42,0);
+INSERT INTO e01_120_01_tb VALUES(42,49,3);
+INSERT INTO e01_120_01_tb VALUES(42,50,2);
+INSERT INTO e01_120_01_tb VALUES(42,59,1);
+INSERT INTO e01_120_01_tb VALUES(43,10,1);
+INSERT INTO e01_120_01_tb VALUES(43,43,0);
+INSERT INTO e01_120_01_tb VALUES(44,10,1);
+INSERT INTO e01_120_01_tb VALUES(44,44,0);
+INSERT INTO e01_120_01_tb VALUES(45,45,0);
+INSERT INTO e01_120_01_tb VALUES(46,21,1);
+INSERT INTO e01_120_01_tb VALUES(46,46,0);
+INSERT INTO e01_120_01_tb VALUES(47,21,1);
+INSERT INTO e01_120_01_tb VALUES(47,47,0);
+INSERT INTO e01_120_01_tb VALUES(48,21,1);
+INSERT INTO e01_120_01_tb VALUES(48,48,0);
+INSERT INTO e01_120_01_tb VALUES(49,49,0);
+INSERT INTO e01_120_01_tb VALUES(50,49,1);
+INSERT INTO e01_120_01_tb VALUES(50,50,0);
+INSERT INTO e01_120_01_tb VALUES(51,49,1);
+INSERT INTO e01_120_01_tb VALUES(51,51,0);
+INSERT INTO e01_120_01_tb VALUES(52,49,1);
+INSERT INTO e01_120_01_tb VALUES(52,52,0);
+INSERT INTO e01_120_01_tb VALUES(53,49,1);
+INSERT INTO e01_120_01_tb VALUES(53,53,0);
+INSERT INTO e01_120_01_tb VALUES(54,49,1);
+INSERT INTO e01_120_01_tb VALUES(54,54,0);
+INSERT INTO e01_120_01_tb VALUES(55,49,2);
+INSERT INTO e01_120_01_tb VALUES(55,50,1);
+INSERT INTO e01_120_01_tb VALUES(55,55,0);
+INSERT INTO e01_120_01_tb VALUES(56,49,2);
+INSERT INTO e01_120_01_tb VALUES(56,50,1);
+INSERT INTO e01_120_01_tb VALUES(56,56,0);
+INSERT INTO e01_120_01_tb VALUES(57,49,2);
+INSERT INTO e01_120_01_tb VALUES(57,50,1);
+INSERT INTO e01_120_01_tb VALUES(57,57,0);
+INSERT INTO e01_120_01_tb VALUES(58,49,2);
+INSERT INTO e01_120_01_tb VALUES(58,50,1);
+INSERT INTO e01_120_01_tb VALUES(58,58,0);
+INSERT INTO e01_120_01_tb VALUES(59,49,2);
+INSERT INTO e01_120_01_tb VALUES(59,50,1);
+INSERT INTO e01_120_01_tb VALUES(59,59,0);
+INSERT INTO e01_120_01_tb VALUES(60,49,2);
+INSERT INTO e01_120_01_tb VALUES(60,51,1);
+INSERT INTO e01_120_01_tb VALUES(60,60,0);
+INSERT INTO e01_120_01_tb VALUES(61,49,2);
+INSERT INTO e01_120_01_tb VALUES(61,51,1);
+INSERT INTO e01_120_01_tb VALUES(61,61,0);
+INSERT INTO e01_120_01_tb VALUES(62,49,2);
+INSERT INTO e01_120_01_tb VALUES(62,52,1);
+INSERT INTO e01_120_01_tb VALUES(62,62,0);
+INSERT INTO e01_120_01_tb VALUES(63,49,2);
+INSERT INTO e01_120_01_tb VALUES(63,52,1);
+INSERT INTO e01_120_01_tb VALUES(63,63,0);
+INSERT INTO e01_120_01_tb VALUES(64,49,2);
+INSERT INTO e01_120_01_tb VALUES(64,53,1);
+INSERT INTO e01_120_01_tb VALUES(64,64,0);
+INSERT INTO e01_120_01_tb VALUES(65,49,2);
+INSERT INTO e01_120_01_tb VALUES(65,54,1);
+INSERT INTO e01_120_01_tb VALUES(65,65,0);
+INSERT INTO e01_120_01_tb VALUES(66,49,2);
+INSERT INTO e01_120_01_tb VALUES(66,54,1);
+INSERT INTO e01_120_01_tb VALUES(66,66,0);
+INSERT INTO e01_120_01_tb VALUES(67,49,2);
+INSERT INTO e01_120_01_tb VALUES(67,54,1);
+INSERT INTO e01_120_01_tb VALUES(67,67,0);
+INSERT INTO e01_120_01_tb VALUES(68,49,2);
+INSERT INTO e01_120_01_tb VALUES(68,54,1);
+INSERT INTO e01_120_01_tb VALUES(68,68,0);
+INSERT INTO e01_120_01_tb VALUES(69,49,3);
+INSERT INTO e01_120_01_tb VALUES(69,51,2);
+INSERT INTO e01_120_01_tb VALUES(69,60,1);
+INSERT INTO e01_120_01_tb VALUES(69,69,0);
+INSERT INTO e01_120_01_tb VALUES(70,49,3);
+INSERT INTO e01_120_01_tb VALUES(70,51,2);
+INSERT INTO e01_120_01_tb VALUES(70,60,1);
+INSERT INTO e01_120_01_tb VALUES(70,70,0);
+INSERT INTO e01_120_01_tb VALUES(71,49,3);
+INSERT INTO e01_120_01_tb VALUES(71,51,2);
+INSERT INTO e01_120_01_tb VALUES(71,61,1);
+INSERT INTO e01_120_01_tb VALUES(71,71,0);
+INSERT INTO e01_120_01_tb VALUES(72,49,3);
+INSERT INTO e01_120_01_tb VALUES(72,52,2);
+INSERT INTO e01_120_01_tb VALUES(72,63,1);
+INSERT INTO e01_120_01_tb VALUES(72,72,0);
+INSERT INTO e01_120_01_tb VALUES(73,49,3);
+INSERT INTO e01_120_01_tb VALUES(73,52,2);
+INSERT INTO e01_120_01_tb VALUES(73,62,1);
+INSERT INTO e01_120_01_tb VALUES(73,73,0);
+INSERT INTO e01_120_01_tb VALUES(74,49,3);
+INSERT INTO e01_120_01_tb VALUES(74,50,2);
+INSERT INTO e01_120_01_tb VALUES(74,56,1);
+INSERT INTO e01_120_01_tb VALUES(74,74,0);
+INSERT INTO e01_120_01_tb VALUES(75,49,3);
+INSERT INTO e01_120_01_tb VALUES(75,53,2);
+INSERT INTO e01_120_01_tb VALUES(75,64,1);
+INSERT INTO e01_120_01_tb VALUES(75,75,0);
+INSERT INTO e01_120_01_tb VALUES(76,49,3);
+INSERT INTO e01_120_01_tb VALUES(76,53,2);
+INSERT INTO e01_120_01_tb VALUES(76,64,1);
+INSERT INTO e01_120_01_tb VALUES(76,76,0);
+INSERT INTO e01_120_01_tb VALUES(77,49,3);
+INSERT INTO e01_120_01_tb VALUES(77,50,2);
+INSERT INTO e01_120_01_tb VALUES(77,55,1);
+INSERT INTO e01_120_01_tb VALUES(77,77,0);
+INSERT INTO e01_120_01_tb VALUES(78,49,3);
+INSERT INTO e01_120_01_tb VALUES(78,50,2);
+INSERT INTO e01_120_01_tb VALUES(78,55,1);
+INSERT INTO e01_120_01_tb VALUES(78,78,0);
+INSERT INTO e01_120_01_tb VALUES(79,49,3);
+INSERT INTO e01_120_01_tb VALUES(79,54,2);
+INSERT INTO e01_120_01_tb VALUES(79,65,1);
+INSERT INTO e01_120_01_tb VALUES(79,79,0);
+INSERT INTO e01_120_01_tb VALUES(80,49,3);
+INSERT INTO e01_120_01_tb VALUES(80,54,2);
+INSERT INTO e01_120_01_tb VALUES(80,65,1);
+INSERT INTO e01_120_01_tb VALUES(80,80,0);
+INSERT INTO e01_120_01_tb VALUES(81,49,3);
+INSERT INTO e01_120_01_tb VALUES(81,54,2);
+INSERT INTO e01_120_01_tb VALUES(81,65,1);
+INSERT INTO e01_120_01_tb VALUES(81,81,0);
+INSERT INTO e01_120_01_tb VALUES(82,49,3);
+INSERT INTO e01_120_01_tb VALUES(82,54,2);
+INSERT INTO e01_120_01_tb VALUES(82,65,1);
+INSERT INTO e01_120_01_tb VALUES(82,82,0);
+INSERT INTO e01_120_01_tb VALUES(83,49,3);
+INSERT INTO e01_120_01_tb VALUES(83,54,2);
+INSERT INTO e01_120_01_tb VALUES(83,66,1);
+INSERT INTO e01_120_01_tb VALUES(83,83,0);
+INSERT INTO e01_120_01_tb VALUES(84,49,3);
+INSERT INTO e01_120_01_tb VALUES(84,54,2);
+INSERT INTO e01_120_01_tb VALUES(84,66,1);
+INSERT INTO e01_120_01_tb VALUES(84,84,0);
+INSERT INTO e01_120_01_tb VALUES(85,49,3);
+INSERT INTO e01_120_01_tb VALUES(85,54,2);
+INSERT INTO e01_120_01_tb VALUES(85,66,1);
+INSERT INTO e01_120_01_tb VALUES(85,85,0);
+INSERT INTO e01_120_01_tb VALUES(86,7,1);
+INSERT INTO e01_120_01_tb VALUES(86,49,4);
+INSERT INTO e01_120_01_tb VALUES(86,54,3);
+INSERT INTO e01_120_01_tb VALUES(86,67,2);
+INSERT INTO e01_120_01_tb VALUES(86,86,0);
+INSERT INTO e01_120_01_tb VALUES(87,49,3);
+INSERT INTO e01_120_01_tb VALUES(87,54,2);
+INSERT INTO e01_120_01_tb VALUES(87,68,1);
+INSERT INTO e01_120_01_tb VALUES(87,87,0);
+INSERT INTO e01_120_01_tb VALUES(88,49,3);
+INSERT INTO e01_120_01_tb VALUES(88,54,2);
+INSERT INTO e01_120_01_tb VALUES(88,68,1);
+INSERT INTO e01_120_01_tb VALUES(88,88,0);
+INSERT INTO e01_120_01_tb VALUES(89,49,3);
+INSERT INTO e01_120_01_tb VALUES(89,54,2);
+INSERT INTO e01_120_01_tb VALUES(89,68,1);
+INSERT INTO e01_120_01_tb VALUES(89,89,0);
+INSERT INTO e01_120_01_tb VALUES(90,49,3);
+INSERT INTO e01_120_01_tb VALUES(90,54,2);
+INSERT INTO e01_120_01_tb VALUES(90,68,1);
+INSERT INTO e01_120_01_tb VALUES(90,90,0);
+INSERT INTO e01_120_01_tb VALUES(91,49,1);
+INSERT INTO e01_120_01_tb VALUES(91,91,0);
+INSERT INTO e01_120_01_tb VALUES(92,49,2);
+INSERT INTO e01_120_01_tb VALUES(92,91,1);
+INSERT INTO e01_120_01_tb VALUES(92,92,0);
+INSERT INTO e01_120_01_tb VALUES(93,49,2);
+INSERT INTO e01_120_01_tb VALUES(93,91,1);
+INSERT INTO e01_120_01_tb VALUES(93,93,0);
+INSERT INTO e01_120_01_tb VALUES(94,49,3);
+INSERT INTO e01_120_01_tb VALUES(94,91,2);
+INSERT INTO e01_120_01_tb VALUES(94,92,1);
+INSERT INTO e01_120_01_tb VALUES(94,94,0);
+INSERT INTO e01_120_01_tb VALUES(95,49,3);
+INSERT INTO e01_120_01_tb VALUES(95,91,2);
+INSERT INTO e01_120_01_tb VALUES(95,92,1);
+INSERT INTO e01_120_01_tb VALUES(95,95,0);
+INSERT INTO e01_120_01_tb VALUES(96,49,3);
+INSERT INTO e01_120_01_tb VALUES(96,91,2);
+INSERT INTO e01_120_01_tb VALUES(96,92,1);
+INSERT INTO e01_120_01_tb VALUES(96,96,0);
+INSERT INTO e01_120_01_tb VALUES(97,49,3);
+INSERT INTO e01_120_01_tb VALUES(97,91,2);
+INSERT INTO e01_120_01_tb VALUES(97,92,1);
+INSERT INTO e01_120_01_tb VALUES(97,97,0);
+INSERT INTO e01_120_01_tb VALUES(98,49,3);
+INSERT INTO e01_120_01_tb VALUES(98,91,2);
+INSERT INTO e01_120_01_tb VALUES(98,92,1);
+INSERT INTO e01_120_01_tb VALUES(98,98,0);
+INSERT INTO e01_120_01_tb VALUES(99,49,3);
+INSERT INTO e01_120_01_tb VALUES(99,91,2);
+INSERT INTO e01_120_01_tb VALUES(99,92,1);
+INSERT INTO e01_120_01_tb VALUES(99,99,0);
+INSERT INTO e01_120_01_tb VALUES(100,49,3);
+INSERT INTO e01_120_01_tb VALUES(100,91,2);
+INSERT INTO e01_120_01_tb VALUES(100,92,1);
+INSERT INTO e01_120_01_tb VALUES(100,100,0);
+INSERT INTO e01_120_01_tb VALUES(101,49,3);
+INSERT INTO e01_120_01_tb VALUES(101,91,2);
+INSERT INTO e01_120_01_tb VALUES(101,92,1);
+INSERT INTO e01_120_01_tb VALUES(101,101,0);
+INSERT INTO e01_120_01_tb VALUES(102,49,3);
+INSERT INTO e01_120_01_tb VALUES(102,91,2);
+INSERT INTO e01_120_01_tb VALUES(102,93,1);
+INSERT INTO e01_120_01_tb VALUES(102,102,0);
+INSERT INTO e01_120_01_tb VALUES(103,49,3);
+INSERT INTO e01_120_01_tb VALUES(103,91,2);
+INSERT INTO e01_120_01_tb VALUES(103,93,1);
+INSERT INTO e01_120_01_tb VALUES(103,103,0);
+INSERT INTO e01_120_01_tb VALUES(104,49,3);
+INSERT INTO e01_120_01_tb VALUES(104,91,2);
+INSERT INTO e01_120_01_tb VALUES(104,92,1);
+INSERT INTO e01_120_01_tb VALUES(104,104,0);
+INSERT INTO e01_120_01_tb VALUES(105,49,3);
+INSERT INTO e01_120_01_tb VALUES(105,91,2);
+INSERT INTO e01_120_01_tb VALUES(105,92,1);
+INSERT INTO e01_120_01_tb VALUES(105,105,0);
+INSERT INTO e01_120_01_tb VALUES(121,6,1);
+INSERT INTO e01_120_01_tb VALUES(121,49,4);
+INSERT INTO e01_120_01_tb VALUES(121,54,3);
+INSERT INTO e01_120_01_tb VALUES(121,66,2);
+INSERT INTO e01_120_01_tb VALUES(121,121,0);
+INSERT INTO e01_120_01_tb VALUES(122,6,1);
+INSERT INTO e01_120_01_tb VALUES(122,49,4);
+INSERT INTO e01_120_01_tb VALUES(122,54,3);
+INSERT INTO e01_120_01_tb VALUES(122,66,2);
+INSERT INTO e01_120_01_tb VALUES(122,122,0);
+INSERT INTO e01_120_01_tb VALUES(123,6,1);
+INSERT INTO e01_120_01_tb VALUES(123,49,4);
+INSERT INTO e01_120_01_tb VALUES(123,54,3);
+INSERT INTO e01_120_01_tb VALUES(123,66,2);
+INSERT INTO e01_120_01_tb VALUES(123,123,0);
+INSERT INTO e01_120_01_tb VALUES(124,6,1);
+INSERT INTO e01_120_01_tb VALUES(124,49,4);
+INSERT INTO e01_120_01_tb VALUES(124,54,3);
+INSERT INTO e01_120_01_tb VALUES(124,66,2);
+INSERT INTO e01_120_01_tb VALUES(124,124,0);
+INSERT INTO e01_120_01_tb VALUES(125,6,1);
+INSERT INTO e01_120_01_tb VALUES(125,49,4);
+INSERT INTO e01_120_01_tb VALUES(125,54,3);
+INSERT INTO e01_120_01_tb VALUES(125,66,2);
+INSERT INTO e01_120_01_tb VALUES(125,125,0);
+INSERT INTO e01_120_01_tb VALUES(126,6,1);
+INSERT INTO e01_120_01_tb VALUES(126,49,4);
+INSERT INTO e01_120_01_tb VALUES(126,54,3);
+INSERT INTO e01_120_01_tb VALUES(126,66,2);
+INSERT INTO e01_120_01_tb VALUES(126,126,0);
+INSERT INTO e01_120_01_tb VALUES(127,6,1);
+INSERT INTO e01_120_01_tb VALUES(127,49,4);
+INSERT INTO e01_120_01_tb VALUES(127,54,3);
+INSERT INTO e01_120_01_tb VALUES(127,66,2);
+INSERT INTO e01_120_01_tb VALUES(127,127,0);
+INSERT INTO e01_120_01_tb VALUES(128,6,1);
+INSERT INTO e01_120_01_tb VALUES(128,49,4);
+INSERT INTO e01_120_01_tb VALUES(128,54,3);
+INSERT INTO e01_120_01_tb VALUES(128,66,2);
+INSERT INTO e01_120_01_tb VALUES(128,128,0);
+INSERT INTO e01_120_01_tb VALUES(129,6,1);
+INSERT INTO e01_120_01_tb VALUES(129,49,4);
+INSERT INTO e01_120_01_tb VALUES(129,54,3);
+INSERT INTO e01_120_01_tb VALUES(129,66,2);
+INSERT INTO e01_120_01_tb VALUES(129,129,0);
+INSERT INTO e01_120_01_tb VALUES(130,6,1);
+INSERT INTO e01_120_01_tb VALUES(130,49,4);
+INSERT INTO e01_120_01_tb VALUES(130,54,3);
+INSERT INTO e01_120_01_tb VALUES(130,66,2);
+INSERT INTO e01_120_01_tb VALUES(130,130,0);
+INSERT INTO e01_120_01_tb VALUES(131,6,1);
+INSERT INTO e01_120_01_tb VALUES(131,49,4);
+INSERT INTO e01_120_01_tb VALUES(131,54,3);
+INSERT INTO e01_120_01_tb VALUES(131,66,2);
+INSERT INTO e01_120_01_tb VALUES(131,131,0);
+INSERT INTO e01_120_01_tb VALUES(132,6,1);
+INSERT INTO e01_120_01_tb VALUES(132,49,4);
+INSERT INTO e01_120_01_tb VALUES(132,54,3);
+INSERT INTO e01_120_01_tb VALUES(132,66,2);
+INSERT INTO e01_120_01_tb VALUES(132,132,0);
+INSERT INTO e01_120_01_tb VALUES(133,6,1);
+INSERT INTO e01_120_01_tb VALUES(133,49,4);
+INSERT INTO e01_120_01_tb VALUES(133,54,3);
+INSERT INTO e01_120_01_tb VALUES(133,66,2);
+INSERT INTO e01_120_01_tb VALUES(133,133,0);
+INSERT INTO e01_120_01_tb VALUES(134,7,1);
+INSERT INTO e01_120_01_tb VALUES(134,49,4);
+INSERT INTO e01_120_01_tb VALUES(134,54,3);
+INSERT INTO e01_120_01_tb VALUES(134,67,2);
+INSERT INTO e01_120_01_tb VALUES(134,134,0);
+INSERT INTO e01_120_01_tb VALUES(138,7,1);
+INSERT INTO e01_120_01_tb VALUES(138,49,4);
+INSERT INTO e01_120_01_tb VALUES(138,54,3);
+INSERT INTO e01_120_01_tb VALUES(138,67,2);
+INSERT INTO e01_120_01_tb VALUES(138,138,0);
+INSERT INTO e01_120_01_tb VALUES(139,7,1);
+INSERT INTO e01_120_01_tb VALUES(139,49,4);
+INSERT INTO e01_120_01_tb VALUES(139,54,3);
+INSERT INTO e01_120_01_tb VALUES(139,67,2);
+INSERT INTO e01_120_01_tb VALUES(139,139,0);
+INSERT INTO e01_120_01_tb VALUES(140,7,1);
+INSERT INTO e01_120_01_tb VALUES(140,49,4);
+INSERT INTO e01_120_01_tb VALUES(140,54,3);
+INSERT INTO e01_120_01_tb VALUES(140,67,2);
+INSERT INTO e01_120_01_tb VALUES(140,140,0);
+INSERT INTO e01_120_01_tb VALUES(141,7,1);
+INSERT INTO e01_120_01_tb VALUES(141,49,4);
+INSERT INTO e01_120_01_tb VALUES(141,54,3);
+INSERT INTO e01_120_01_tb VALUES(141,67,2);
+INSERT INTO e01_120_01_tb VALUES(141,141,0);
+INSERT INTO e01_120_01_tb VALUES(142,7,1);
+INSERT INTO e01_120_01_tb VALUES(142,49,4);
+INSERT INTO e01_120_01_tb VALUES(142,54,3);
+INSERT INTO e01_120_01_tb VALUES(142,67,2);
+INSERT INTO e01_120_01_tb VALUES(142,142,0);
+INSERT INTO e01_120_01_tb VALUES(143,7,1);
+INSERT INTO e01_120_01_tb VALUES(143,49,4);
+INSERT INTO e01_120_01_tb VALUES(143,54,3);
+INSERT INTO e01_120_01_tb VALUES(143,67,2);
+INSERT INTO e01_120_01_tb VALUES(143,143,0);
+INSERT INTO e01_120_01_tb VALUES(144,7,1);
+INSERT INTO e01_120_01_tb VALUES(144,49,4);
+INSERT INTO e01_120_01_tb VALUES(144,54,3);
+INSERT INTO e01_120_01_tb VALUES(144,67,2);
+INSERT INTO e01_120_01_tb VALUES(144,144,0);
+INSERT INTO e01_120_01_tb VALUES(145,7,1);
+INSERT INTO e01_120_01_tb VALUES(145,49,4);
+INSERT INTO e01_120_01_tb VALUES(145,54,3);
+INSERT INTO e01_120_01_tb VALUES(145,67,2);
+INSERT INTO e01_120_01_tb VALUES(145,145,0);
+INSERT INTO e01_120_01_tb VALUES(146,7,1);
+INSERT INTO e01_120_01_tb VALUES(146,49,4);
+INSERT INTO e01_120_01_tb VALUES(146,54,3);
+INSERT INTO e01_120_01_tb VALUES(146,67,2);
+INSERT INTO e01_120_01_tb VALUES(146,146,0);
+INSERT INTO e01_120_01_tb VALUES(147,7,1);
+INSERT INTO e01_120_01_tb VALUES(147,49,4);
+INSERT INTO e01_120_01_tb VALUES(147,54,3);
+INSERT INTO e01_120_01_tb VALUES(147,67,2);
+INSERT INTO e01_120_01_tb VALUES(147,147,0);
+INSERT INTO e01_120_01_tb VALUES(148,40,1);
+INSERT INTO e01_120_01_tb VALUES(148,49,4);
+INSERT INTO e01_120_01_tb VALUES(148,50,3);
+INSERT INTO e01_120_01_tb VALUES(148,58,2);
+INSERT INTO e01_120_01_tb VALUES(148,148,0);
+INSERT INTO e01_120_01_tb VALUES(149,40,1);
+INSERT INTO e01_120_01_tb VALUES(149,49,4);
+INSERT INTO e01_120_01_tb VALUES(149,50,3);
+INSERT INTO e01_120_01_tb VALUES(149,58,2);
+INSERT INTO e01_120_01_tb VALUES(149,149,0);
+INSERT INTO e01_120_01_tb VALUES(150,49,2);
+INSERT INTO e01_120_01_tb VALUES(150,150,0);
+INSERT INTO e01_120_01_tb VALUES(150,158,1);
+INSERT INTO e01_120_01_tb VALUES(151,1,1);
+INSERT INTO e01_120_01_tb VALUES(151,151,0);
+INSERT INTO e01_120_01_tb VALUES(152,1,2);
+INSERT INTO e01_120_01_tb VALUES(152,151,1);
+INSERT INTO e01_120_01_tb VALUES(152,152,0);
+INSERT INTO e01_120_01_tb VALUES(153,1,2);
+INSERT INTO e01_120_01_tb VALUES(153,151,1);
+INSERT INTO e01_120_01_tb VALUES(153,153,0);
+INSERT INTO e01_120_01_tb VALUES(154,1,2);
+INSERT INTO e01_120_01_tb VALUES(154,151,1);
+INSERT INTO e01_120_01_tb VALUES(154,154,0);
+INSERT INTO e01_120_01_tb VALUES(155,49,1);
+INSERT INTO e01_120_01_tb VALUES(155,155,0);
+INSERT INTO e01_120_01_tb VALUES(156,49,1);
+INSERT INTO e01_120_01_tb VALUES(156,156,0);
+INSERT INTO e01_120_01_tb VALUES(157,49,1);
+INSERT INTO e01_120_01_tb VALUES(157,157,0);
+INSERT INTO e01_120_01_tb VALUES(158,49,1);
+INSERT INTO e01_120_01_tb VALUES(158,158,0);
+INSERT INTO e01_120_01_tb VALUES(159,49,2);
+INSERT INTO e01_120_01_tb VALUES(159,155,1);
+INSERT INTO e01_120_01_tb VALUES(159,159,0);
+INSERT INTO e01_120_01_tb VALUES(160,49,2);
+INSERT INTO e01_120_01_tb VALUES(160,155,1);
+INSERT INTO e01_120_01_tb VALUES(160,160,0);
+INSERT INTO e01_120_01_tb VALUES(161,49,2);
+INSERT INTO e01_120_01_tb VALUES(161,155,1);
+INSERT INTO e01_120_01_tb VALUES(161,161,0);
+INSERT INTO e01_120_01_tb VALUES(162,49,2);
+INSERT INTO e01_120_01_tb VALUES(162,155,1);
+INSERT INTO e01_120_01_tb VALUES(162,162,0);
+INSERT INTO e01_120_01_tb VALUES(163,49,2);
+INSERT INTO e01_120_01_tb VALUES(163,155,1);
+INSERT INTO e01_120_01_tb VALUES(163,163,0);
+INSERT INTO e01_120_01_tb VALUES(164,49,2);
+INSERT INTO e01_120_01_tb VALUES(164,155,1);
+INSERT INTO e01_120_01_tb VALUES(164,164,0);
+INSERT INTO e01_120_01_tb VALUES(165,49,2);
+INSERT INTO e01_120_01_tb VALUES(165,155,1);
+INSERT INTO e01_120_01_tb VALUES(165,165,0);
+INSERT INTO e01_120_01_tb VALUES(166,49,2);
+INSERT INTO e01_120_01_tb VALUES(166,156,1);
+INSERT INTO e01_120_01_tb VALUES(166,166,0);
+INSERT INTO e01_120_01_tb VALUES(167,49,2);
+INSERT INTO e01_120_01_tb VALUES(167,156,1);
+INSERT INTO e01_120_01_tb VALUES(167,167,0);
+INSERT INTO e01_120_01_tb VALUES(168,49,2);
+INSERT INTO e01_120_01_tb VALUES(168,156,1);
+INSERT INTO e01_120_01_tb VALUES(168,168,0);
+INSERT INTO e01_120_01_tb VALUES(169,49,2);
+INSERT INTO e01_120_01_tb VALUES(169,156,1);
+INSERT INTO e01_120_01_tb VALUES(169,169,0);
+INSERT INTO e01_120_01_tb VALUES(170,49,2);
+INSERT INTO e01_120_01_tb VALUES(170,156,1);
+INSERT INTO e01_120_01_tb VALUES(170,170,0);
+INSERT INTO e01_120_01_tb VALUES(171,49,2);
+INSERT INTO e01_120_01_tb VALUES(171,157,1);
+INSERT INTO e01_120_01_tb VALUES(171,171,0);
+INSERT INTO e01_120_01_tb VALUES(172,49,2);
+INSERT INTO e01_120_01_tb VALUES(172,157,1);
+INSERT INTO e01_120_01_tb VALUES(172,172,0);
+INSERT INTO e01_120_01_tb VALUES(173,49,2);
+INSERT INTO e01_120_01_tb VALUES(173,157,1);
+INSERT INTO e01_120_01_tb VALUES(173,173,0);
+INSERT INTO e01_120_01_tb VALUES(174,49,2);
+INSERT INTO e01_120_01_tb VALUES(174,157,1);
+INSERT INTO e01_120_01_tb VALUES(174,174,0);
+INSERT INTO e01_120_01_tb VALUES(175,49,2);
+INSERT INTO e01_120_01_tb VALUES(175,157,1);
+INSERT INTO e01_120_01_tb VALUES(175,175,0);
+INSERT INTO e01_120_01_tb VALUES(176,49,2);
+INSERT INTO e01_120_01_tb VALUES(176,158,1);
+INSERT INTO e01_120_01_tb VALUES(176,176,0);
+INSERT INTO e01_120_01_tb VALUES(177,49,2);
+INSERT INTO e01_120_01_tb VALUES(177,158,1);
+INSERT INTO e01_120_01_tb VALUES(177,177,0);
+INSERT INTO e01_120_01_tb VALUES(178,49,2);
+INSERT INTO e01_120_01_tb VALUES(178,158,1);
+INSERT INTO e01_120_01_tb VALUES(178,178,0);
+INSERT INTO e01_120_01_tb VALUES(179,49,2);
+INSERT INTO e01_120_01_tb VALUES(179,158,1);
+INSERT INTO e01_120_01_tb VALUES(179,179,0);
+INSERT INTO e01_120_01_tb VALUES(180,49,2);
+INSERT INTO e01_120_01_tb VALUES(180,158,1);
+INSERT INTO e01_120_01_tb VALUES(180,180,0);
+INSERT INTO e01_120_01_tb VALUES(181,49,2);
+INSERT INTO e01_120_01_tb VALUES(181,158,1);
+INSERT INTO e01_120_01_tb VALUES(181,181,0);
+INSERT INTO e01_120_01_tb VALUES(182,49,2);
+INSERT INTO e01_120_01_tb VALUES(182,158,1);
+INSERT INTO e01_120_01_tb VALUES(182,182,0);
+INSERT INTO e01_120_01_tb VALUES(183,1,2);
+INSERT INTO e01_120_01_tb VALUES(183,151,1);
+INSERT INTO e01_120_01_tb VALUES(183,183,0);
+INSERT INTO e01_120_01_tb VALUES(184,1,2);
+INSERT INTO e01_120_01_tb VALUES(184,151,1);
+INSERT INTO e01_120_01_tb VALUES(184,184,0);
+INSERT INTO e01_120_01_tb VALUES(185,1,2);
+INSERT INTO e01_120_01_tb VALUES(185,151,1);
+INSERT INTO e01_120_01_tb VALUES(185,185,0);
+INSERT INTO e01_120_01_tb VALUES(186,1,2);
+INSERT INTO e01_120_01_tb VALUES(186,151,1);
+INSERT INTO e01_120_01_tb VALUES(186,186,0);
+INSERT INTO e01_120_01_tb VALUES(187,1,2);
+INSERT INTO e01_120_01_tb VALUES(187,151,1);
+INSERT INTO e01_120_01_tb VALUES(187,187,0);
+INSERT INTO e01_120_01_tb VALUES(188,188,0);
+INSERT INTO e01_120_01_tb VALUES(189,188,1);
+INSERT INTO e01_120_01_tb VALUES(189,189,0);
+INSERT INTO e01_120_01_tb VALUES(190,188,1);
+INSERT INTO e01_120_01_tb VALUES(190,190,0);
+INSERT INTO e01_120_01_tb VALUES(191,188,1);
+INSERT INTO e01_120_01_tb VALUES(191,191,0);
+INSERT INTO e01_120_01_tb VALUES(192,188,1);
+INSERT INTO e01_120_01_tb VALUES(192,192,0);
+INSERT INTO e01_120_01_tb VALUES(193,188,1);
+INSERT INTO e01_120_01_tb VALUES(193,193,0);
+INSERT INTO e01_120_01_tb VALUES(194,188,1);
+INSERT INTO e01_120_01_tb VALUES(194,194,0);
+INSERT INTO e01_120_01_tb VALUES(195,188,1);
+INSERT INTO e01_120_01_tb VALUES(195,195,0);
+INSERT INTO e01_120_01_tb VALUES(196,1,2);
+INSERT INTO e01_120_01_tb VALUES(196,151,1);
+INSERT INTO e01_120_01_tb VALUES(196,196,0);
+INSERT INTO e01_120_01_tb VALUES(197,1,2);
+INSERT INTO e01_120_01_tb VALUES(197,151,1);
+INSERT INTO e01_120_01_tb VALUES(197,197,0);
+INSERT INTO e01_120_01_tb VALUES(198,1,2);
+INSERT INTO e01_120_01_tb VALUES(198,151,1);
+INSERT INTO e01_120_01_tb VALUES(198,198,0);
+INSERT INTO e01_120_01_tb VALUES(199,1,2);
+INSERT INTO e01_120_01_tb VALUES(199,151,1);
+INSERT INTO e01_120_01_tb VALUES(199,199,0);
+INSERT INTO e01_120_01_tb VALUES(200,1,2);
+INSERT INTO e01_120_01_tb VALUES(200,151,1);
+INSERT INTO e01_120_01_tb VALUES(200,200,0);
+INSERT INTO e01_120_01_tb VALUES(201,1,2);
+INSERT INTO e01_120_01_tb VALUES(201,151,1);
+INSERT INTO e01_120_01_tb VALUES(201,201,0);
+INSERT INTO e01_120_01_tb VALUES(202,1,2);
+INSERT INTO e01_120_01_tb VALUES(202,151,1);
+INSERT INTO e01_120_01_tb VALUES(202,202,0);
+INSERT INTO e01_120_01_tb VALUES(203,1,2);
+INSERT INTO e01_120_01_tb VALUES(203,151,1);
+INSERT INTO e01_120_01_tb VALUES(203,203,0);
+INSERT INTO e01_120_01_tb VALUES(204,1,2);
+INSERT INTO e01_120_01_tb VALUES(204,151,1);
+INSERT INTO e01_120_01_tb VALUES(204,204,0);
+INSERT INTO e01_120_01_tb VALUES(205,1,2);
+INSERT INTO e01_120_01_tb VALUES(205,151,1);
+INSERT INTO e01_120_01_tb VALUES(205,205,0);
+INSERT INTO e01_120_01_tb VALUES(206,1,2);
+INSERT INTO e01_120_01_tb VALUES(206,151,1);
+INSERT INTO e01_120_01_tb VALUES(206,206,0);
+INSERT INTO e01_120_01_tb VALUES(207,1,2);
+INSERT INTO e01_120_01_tb VALUES(207,151,1);
+INSERT INTO e01_120_01_tb VALUES(207,207,0);
+INSERT INTO e01_120_01_tb VALUES(208,1,2);
+INSERT INTO e01_120_01_tb VALUES(208,151,1);
+INSERT INTO e01_120_01_tb VALUES(208,208,0);
+INSERT INTO e01_120_01_tb VALUES(209,1,2);
+INSERT INTO e01_120_01_tb VALUES(209,151,1);
+INSERT INTO e01_120_01_tb VALUES(209,209,0);
+INSERT INTO e01_120_01_tb VALUES(210,1,2);
+INSERT INTO e01_120_01_tb VALUES(210,151,1);
+INSERT INTO e01_120_01_tb VALUES(210,210,0);
+INSERT INTO e01_120_01_tb VALUES(211,1,2);
+INSERT INTO e01_120_01_tb VALUES(211,151,1);
+INSERT INTO e01_120_01_tb VALUES(211,211,0);
+INSERT INTO e01_120_01_tb VALUES(212,1,2);
+INSERT INTO e01_120_01_tb VALUES(212,151,1);
+INSERT INTO e01_120_01_tb VALUES(212,212,0);
+INSERT INTO e01_120_01_tb VALUES(213,1,2);
+INSERT INTO e01_120_01_tb VALUES(213,151,1);
+INSERT INTO e01_120_01_tb VALUES(213,213,0);
+INSERT INTO e01_120_01_tb VALUES(214,1,2);
+INSERT INTO e01_120_01_tb VALUES(214,151,1);
+INSERT INTO e01_120_01_tb VALUES(214,214,0);
+INSERT INTO e01_120_01_tb VALUES(215,1,2);
+INSERT INTO e01_120_01_tb VALUES(215,151,1);
+INSERT INTO e01_120_01_tb VALUES(215,215,0);
+INSERT INTO e01_120_01_tb VALUES(216,1,2);
+INSERT INTO e01_120_01_tb VALUES(216,151,1);
+INSERT INTO e01_120_01_tb VALUES(216,216,0);
+INSERT INTO e01_120_01_tb VALUES(217,1,2);
+INSERT INTO e01_120_01_tb VALUES(217,151,1);
+INSERT INTO e01_120_01_tb VALUES(217,217,0);
+INSERT INTO e01_120_01_tb VALUES(218,1,2);
+INSERT INTO e01_120_01_tb VALUES(218,151,1);
+INSERT INTO e01_120_01_tb VALUES(218,218,0);
+INSERT INTO e01_120_01_tb VALUES(219,1,2);
+INSERT INTO e01_120_01_tb VALUES(219,151,1);
+INSERT INTO e01_120_01_tb VALUES(219,219,0);
+INSERT INTO e01_120_01_tb VALUES(220,1,2);
+INSERT INTO e01_120_01_tb VALUES(220,151,1);
+INSERT INTO e01_120_01_tb VALUES(220,220,0);
+INSERT INTO e01_120_01_tb VALUES(221,1,2);
+INSERT INTO e01_120_01_tb VALUES(221,151,1);
+INSERT INTO e01_120_01_tb VALUES(221,221,0);
+INSERT INTO e01_120_01_tb VALUES(222,1,2);
+INSERT INTO e01_120_01_tb VALUES(222,151,1);
+INSERT INTO e01_120_01_tb VALUES(222,222,0);
+INSERT INTO e01_120_01_tb VALUES(223,1,2);
+INSERT INTO e01_120_01_tb VALUES(223,151,1);
+INSERT INTO e01_120_01_tb VALUES(223,223,0);
+INSERT INTO e01_120_01_tb VALUES(224,1,2);
+INSERT INTO e01_120_01_tb VALUES(224,151,1);
+INSERT INTO e01_120_01_tb VALUES(224,224,0);
+INSERT INTO e01_120_01_tb VALUES(225,1,2);
+INSERT INTO e01_120_01_tb VALUES(225,151,1);
+INSERT INTO e01_120_01_tb VALUES(225,225,0);
+INSERT INTO e01_120_01_tb VALUES(226,1,2);
+INSERT INTO e01_120_01_tb VALUES(226,151,1);
+INSERT INTO e01_120_01_tb VALUES(226,226,0);
+INSERT INTO e01_120_01_tb VALUES(227,1,2);
+INSERT INTO e01_120_01_tb VALUES(227,151,1);
+INSERT INTO e01_120_01_tb VALUES(227,227,0);
+INSERT INTO e01_120_01_tb VALUES(228,1,2);
+INSERT INTO e01_120_01_tb VALUES(228,151,1);
+INSERT INTO e01_120_01_tb VALUES(228,228,0);
+INSERT INTO e01_120_01_tb VALUES(229,1,2);
+INSERT INTO e01_120_01_tb VALUES(229,151,1);
+INSERT INTO e01_120_01_tb VALUES(229,229,0);
+INSERT INTO e01_120_01_tb VALUES(230,1,2);
+INSERT INTO e01_120_01_tb VALUES(230,151,1);
+INSERT INTO e01_120_01_tb VALUES(230,230,0);
+INSERT INTO e01_120_01_tb VALUES(231,1,2);
+INSERT INTO e01_120_01_tb VALUES(231,151,1);
+INSERT INTO e01_120_01_tb VALUES(231,231,0);
+INSERT INTO e01_120_01_tb VALUES(232,1,2);
+INSERT INTO e01_120_01_tb VALUES(232,151,1);
+INSERT INTO e01_120_01_tb VALUES(232,232,0);
+INSERT INTO e01_120_01_tb VALUES(233,1,2);
+INSERT INTO e01_120_01_tb VALUES(233,151,1);
+INSERT INTO e01_120_01_tb VALUES(233,233,0);
+INSERT INTO e01_120_01_tb VALUES(234,1,2);
+INSERT INTO e01_120_01_tb VALUES(234,151,1);
+INSERT INTO e01_120_01_tb VALUES(234,234,0);
+INSERT INTO e01_120_01_tb VALUES(235,1,2);
+INSERT INTO e01_120_01_tb VALUES(235,151,1);
+INSERT INTO e01_120_01_tb VALUES(235,235,0);
+INSERT INTO e01_120_01_tb VALUES(236,1,2);
+INSERT INTO e01_120_01_tb VALUES(236,151,1);
+INSERT INTO e01_120_01_tb VALUES(236,236,0);
+INSERT INTO e01_120_01_tb VALUES(237,1,2);
+INSERT INTO e01_120_01_tb VALUES(237,151,1);
+INSERT INTO e01_120_01_tb VALUES(237,237,0);
+INSERT INTO e01_120_01_tb VALUES(238,1,2);
+INSERT INTO e01_120_01_tb VALUES(238,151,1);
+INSERT INTO e01_120_01_tb VALUES(238,238,0);
+INSERT INTO e01_120_01_tb VALUES(239,1,2);
+INSERT INTO e01_120_01_tb VALUES(239,151,1);
+INSERT INTO e01_120_01_tb VALUES(239,239,0);
+INSERT INTO e01_120_01_tb VALUES(240,1,2);
+INSERT INTO e01_120_01_tb VALUES(240,151,1);
+INSERT INTO e01_120_01_tb VALUES(240,240,0);
+INSERT INTO e01_120_01_tb VALUES(241,1,2);
+INSERT INTO e01_120_01_tb VALUES(241,151,1);
+INSERT INTO e01_120_01_tb VALUES(241,241,0);
+INSERT INTO e01_120_01_tb VALUES(242,1,2);
+INSERT INTO e01_120_01_tb VALUES(242,151,1);
+INSERT INTO e01_120_01_tb VALUES(242,242,0);
+INSERT INTO e01_120_01_tb VALUES(243,1,2);
+INSERT INTO e01_120_01_tb VALUES(243,151,1);
+INSERT INTO e01_120_01_tb VALUES(243,243,0);
+INSERT INTO e01_120_01_tb VALUES(244,1,2);
+INSERT INTO e01_120_01_tb VALUES(244,151,1);
+INSERT INTO e01_120_01_tb VALUES(244,244,0);
+INSERT INTO e01_120_01_tb VALUES(245,1,2);
+INSERT INTO e01_120_01_tb VALUES(245,151,1);
+INSERT INTO e01_120_01_tb VALUES(245,245,0);
+INSERT INTO e01_120_01_tb VALUES(246,1,2);
+INSERT INTO e01_120_01_tb VALUES(246,151,1);
+INSERT INTO e01_120_01_tb VALUES(246,246,0);
+INSERT INTO e01_120_01_tb VALUES(247,1,2);
+INSERT INTO e01_120_01_tb VALUES(247,151,1);
+INSERT INTO e01_120_01_tb VALUES(247,247,0);
+INSERT INTO e01_120_01_tb VALUES(248,1,2);
+INSERT INTO e01_120_01_tb VALUES(248,151,1);
+INSERT INTO e01_120_01_tb VALUES(248,248,0);
+INSERT INTO e01_120_01_tb VALUES(249,1,1);
+INSERT INTO e01_120_01_tb VALUES(249,249,0);
+INSERT INTO e01_120_01_tb VALUES(250,1,2);
+INSERT INTO e01_120_01_tb VALUES(250,249,1);
+INSERT INTO e01_120_01_tb VALUES(250,250,0);
+INSERT INTO e01_120_01_tb VALUES(251,1,2);
+INSERT INTO e01_120_01_tb VALUES(251,249,1);
+INSERT INTO e01_120_01_tb VALUES(251,251,0);
+INSERT INTO e01_120_01_tb VALUES(252,1,2);
+INSERT INTO e01_120_01_tb VALUES(252,249,1);
+INSERT INTO e01_120_01_tb VALUES(252,252,0);
+INSERT INTO e01_120_01_tb VALUES(253,1,2);
+INSERT INTO e01_120_01_tb VALUES(253,249,1);
+INSERT INTO e01_120_01_tb VALUES(253,253,0);
+INSERT INTO e01_120_01_tb VALUES(254,1,2);
+INSERT INTO e01_120_01_tb VALUES(254,249,1);
+INSERT INTO e01_120_01_tb VALUES(254,254,0);
+INSERT INTO e01_120_01_tb VALUES(255,1,2);
+INSERT INTO e01_120_01_tb VALUES(255,249,1);
+INSERT INTO e01_120_01_tb VALUES(255,255,0);
+INSERT INTO e01_120_01_tb VALUES(256,188,1);
+INSERT INTO e01_120_01_tb VALUES(256,256,0);
+INSERT INTO e01_120_01_tb VALUES(257,1,1);
+INSERT INTO e01_120_01_tb VALUES(257,257,0);
+INSERT INTO e01_120_01_tb VALUES(258,1,2);
+INSERT INTO e01_120_01_tb VALUES(258,257,1);
+INSERT INTO e01_120_01_tb VALUES(258,258,0);
+INSERT INTO e01_120_01_tb VALUES(259,1,2);
+INSERT INTO e01_120_01_tb VALUES(259,257,1);
+INSERT INTO e01_120_01_tb VALUES(259,259,0);
+INSERT INTO e01_120_01_tb VALUES(260,1,2);
+INSERT INTO e01_120_01_tb VALUES(260,257,1);
+INSERT INTO e01_120_01_tb VALUES(260,260,0);
+INSERT INTO e01_120_01_tb VALUES(261,188,1);
+INSERT INTO e01_120_01_tb VALUES(261,261,0);
+INSERT INTO e01_120_01_tb VALUES(262,1,3);
+INSERT INTO e01_120_01_tb VALUES(262,257,2);
+INSERT INTO e01_120_01_tb VALUES(262,260,1);
+INSERT INTO e01_120_01_tb VALUES(262,262,0);
+INSERT INTO e01_120_01_tb VALUES(263,1,3);
+INSERT INTO e01_120_01_tb VALUES(263,257,2);
+INSERT INTO e01_120_01_tb VALUES(263,260,1);
+INSERT INTO e01_120_01_tb VALUES(263,263,0);
+INSERT INTO e01_120_01_tb VALUES(264,1,3);
+INSERT INTO e01_120_01_tb VALUES(264,257,2);
+INSERT INTO e01_120_01_tb VALUES(264,260,1);
+INSERT INTO e01_120_01_tb VALUES(264,264,0);
+INSERT INTO e01_120_01_tb VALUES(265,1,3);
+INSERT INTO e01_120_01_tb VALUES(265,257,2);
+INSERT INTO e01_120_01_tb VALUES(265,258,1);
+INSERT INTO e01_120_01_tb VALUES(265,265,0);
+INSERT INTO e01_120_01_tb VALUES(266,1,3);
+INSERT INTO e01_120_01_tb VALUES(266,257,2);
+INSERT INTO e01_120_01_tb VALUES(266,258,1);
+INSERT INTO e01_120_01_tb VALUES(266,266,0);
+INSERT INTO e01_120_01_tb VALUES(267,1,3);
+INSERT INTO e01_120_01_tb VALUES(267,257,2);
+INSERT INTO e01_120_01_tb VALUES(267,259,1);
+INSERT INTO e01_120_01_tb VALUES(267,267,0);
+INSERT INTO e01_120_01_tb VALUES(268,1,3);
+INSERT INTO e01_120_01_tb VALUES(268,257,2);
+INSERT INTO e01_120_01_tb VALUES(268,259,1);
+INSERT INTO e01_120_01_tb VALUES(268,268,0);
+INSERT INTO e01_120_01_tb VALUES(269,1,3);
+INSERT INTO e01_120_01_tb VALUES(269,257,2);
+INSERT INTO e01_120_01_tb VALUES(269,259,1);
+INSERT INTO e01_120_01_tb VALUES(269,269,0);
+INSERT INTO e01_120_01_tb VALUES(271,1,2);
+INSERT INTO e01_120_01_tb VALUES(271,11,1);
+INSERT INTO e01_120_01_tb VALUES(271,271,0);
+INSERT INTO e01_120_01_tb VALUES(272,1,2);
+INSERT INTO e01_120_01_tb VALUES(272,11,1);
+INSERT INTO e01_120_01_tb VALUES(272,272,0);
+INSERT INTO e01_120_01_tb VALUES(273,1,2);
+INSERT INTO e01_120_01_tb VALUES(273,11,1);
+INSERT INTO e01_120_01_tb VALUES(273,273,0);
+INSERT INTO e01_120_01_tb VALUES(274,1,2);
+INSERT INTO e01_120_01_tb VALUES(274,11,1);
+INSERT INTO e01_120_01_tb VALUES(274,274,0);
+INSERT INTO e01_120_01_tb VALUES(275,1,2);
+INSERT INTO e01_120_01_tb VALUES(275,11,1);
+INSERT INTO e01_120_01_tb VALUES(275,275,0);
+INSERT INTO e01_120_01_tb VALUES(276,1,2);
+INSERT INTO e01_120_01_tb VALUES(276,11,1);
+INSERT INTO e01_120_01_tb VALUES(276,276,0);
+INSERT INTO e01_120_01_tb VALUES(277,1,2);
+INSERT INTO e01_120_01_tb VALUES(277,11,1);
+INSERT INTO e01_120_01_tb VALUES(277,277,0);
+INSERT INTO e01_120_01_tb VALUES(278,1,2);
+INSERT INTO e01_120_01_tb VALUES(278,278,0);
+INSERT INTO e01_120_01_tb VALUES(278,281,1);
+INSERT INTO e01_120_01_tb VALUES(279,1,2);
+INSERT INTO e01_120_01_tb VALUES(279,279,0);
+INSERT INTO e01_120_01_tb VALUES(279,281,1);
+INSERT INTO e01_120_01_tb VALUES(280,1,2);
+INSERT INTO e01_120_01_tb VALUES(280,280,0);
+INSERT INTO e01_120_01_tb VALUES(280,281,1);
+INSERT INTO e01_120_01_tb VALUES(281,1,1);
+INSERT INTO e01_120_01_tb VALUES(281,281,0);
+INSERT INTO e01_120_01_tb VALUES(282,188,1);
+INSERT INTO e01_120_01_tb VALUES(282,282,0);
+INSERT INTO e01_120_01_tb VALUES(283,1,3);
+INSERT INTO e01_120_01_tb VALUES(283,11,2);
+INSERT INTO e01_120_01_tb VALUES(283,273,1);
+INSERT INTO e01_120_01_tb VALUES(283,283,0);
+INSERT INTO e01_120_01_tb VALUES(284,1,3);
+INSERT INTO e01_120_01_tb VALUES(284,11,2);
+INSERT INTO e01_120_01_tb VALUES(284,273,1);
+INSERT INTO e01_120_01_tb VALUES(284,284,0);
+INSERT INTO e01_120_01_tb VALUES(285,1,3);
+INSERT INTO e01_120_01_tb VALUES(285,11,2);
+INSERT INTO e01_120_01_tb VALUES(285,273,1);
+INSERT INTO e01_120_01_tb VALUES(285,285,0);
+INSERT INTO e01_120_01_tb VALUES(286,1,3);
+INSERT INTO e01_120_01_tb VALUES(286,11,2);
+INSERT INTO e01_120_01_tb VALUES(286,273,1);
+INSERT INTO e01_120_01_tb VALUES(286,286,0);
+INSERT INTO e01_120_01_tb VALUES(287,1,3);
+INSERT INTO e01_120_01_tb VALUES(287,11,2);
+INSERT INTO e01_120_01_tb VALUES(287,273,1);
+INSERT INTO e01_120_01_tb VALUES(287,287,0);
+INSERT INTO e01_120_01_tb VALUES(288,1,3);
+INSERT INTO e01_120_01_tb VALUES(288,11,2);
+INSERT INTO e01_120_01_tb VALUES(288,272,1);
+INSERT INTO e01_120_01_tb VALUES(288,288,0);
+INSERT INTO e01_120_01_tb VALUES(289,1,3);
+INSERT INTO e01_120_01_tb VALUES(289,11,2);
+INSERT INTO e01_120_01_tb VALUES(289,273,1);
+INSERT INTO e01_120_01_tb VALUES(289,289,0);
+INSERT INTO e01_120_01_tb VALUES(290,1,3);
+INSERT INTO e01_120_01_tb VALUES(290,11,2);
+INSERT INTO e01_120_01_tb VALUES(290,272,1);
+INSERT INTO e01_120_01_tb VALUES(290,290,0);
+INSERT INTO e01_120_01_tb VALUES(291,1,3);
+INSERT INTO e01_120_01_tb VALUES(291,11,2);
+INSERT INTO e01_120_01_tb VALUES(291,272,1);
+INSERT INTO e01_120_01_tb VALUES(291,291,0);
+INSERT INTO e01_120_01_tb VALUES(314,1,2);
+INSERT INTO e01_120_01_tb VALUES(314,281,1);
+INSERT INTO e01_120_01_tb VALUES(314,314,0);
+INSERT INTO e01_120_01_tb VALUES(315,1,2);
+INSERT INTO e01_120_01_tb VALUES(315,281,1);
+INSERT INTO e01_120_01_tb VALUES(315,315,0);
+INSERT INTO e01_120_01_tb VALUES(316,1,2);
+INSERT INTO e01_120_01_tb VALUES(316,257,1);
+INSERT INTO e01_120_01_tb VALUES(316,316,0);
+INSERT INTO e01_120_01_tb VALUES(317,1,2);
+INSERT INTO e01_120_01_tb VALUES(317,281,1);
+INSERT INTO e01_120_01_tb VALUES(317,317,0);
+INSERT INTO e01_120_01_tb VALUES(318,1,3);
+INSERT INTO e01_120_01_tb VALUES(318,278,1);
+INSERT INTO e01_120_01_tb VALUES(318,281,2);
+INSERT INTO e01_120_01_tb VALUES(318,318,0);
+INSERT INTO e01_120_01_tb VALUES(319,1,3);
+INSERT INTO e01_120_01_tb VALUES(319,278,1);
+INSERT INTO e01_120_01_tb VALUES(319,281,2);
+INSERT INTO e01_120_01_tb VALUES(319,319,0);
+INSERT INTO e01_120_01_tb VALUES(320,1,2);
+INSERT INTO e01_120_01_tb VALUES(320,257,1);
+INSERT INTO e01_120_01_tb VALUES(320,320,0);
+INSERT INTO e01_120_01_tb VALUES(321,1,2);
+INSERT INTO e01_120_01_tb VALUES(321,257,1);
+INSERT INTO e01_120_01_tb VALUES(321,321,0);
+INSERT INTO e01_120_01_tb VALUES(322,1,3);
+INSERT INTO e01_120_01_tb VALUES(322,280,1);
+INSERT INTO e01_120_01_tb VALUES(322,281,2);
+INSERT INTO e01_120_01_tb VALUES(322,322,0);
+INSERT INTO e01_120_01_tb VALUES(323,1,2);
+INSERT INTO e01_120_01_tb VALUES(323,281,1);
+INSERT INTO e01_120_01_tb VALUES(323,323,0);
+INSERT INTO e01_120_01_tb VALUES(324,324,0);
+INSERT INTO e01_120_01_tb VALUES(325,325,0);
+INSERT INTO e01_120_01_tb VALUES(326,326,0);
+INSERT INTO e01_120_01_tb VALUES(327,327,0);
+INSERT INTO e01_120_01_tb VALUES(328,328,0);
+INSERT INTO e01_120_01_tb VALUES(329,329,0);
+INSERT INTO e01_120_01_tb VALUES(330,330,0);
+INSERT INTO e01_120_01_tb VALUES(331,331,0);
+INSERT INTO e01_120_01_tb VALUES(332,188,1);
+INSERT INTO e01_120_01_tb VALUES(332,332,0);
+INSERT INTO e01_120_01_tb VALUES(333,1,4);
+INSERT INTO e01_120_01_tb VALUES(333,278,2);
+INSERT INTO e01_120_01_tb VALUES(333,281,3);
+INSERT INTO e01_120_01_tb VALUES(333,318,1);
+INSERT INTO e01_120_01_tb VALUES(333,333,0);
+INSERT INTO e01_120_01_tb VALUES(334,1,4);
+INSERT INTO e01_120_01_tb VALUES(334,278,2);
+INSERT INTO e01_120_01_tb VALUES(334,281,3);
+INSERT INTO e01_120_01_tb VALUES(334,318,1);
+INSERT INTO e01_120_01_tb VALUES(334,334,0);
+INSERT INTO e01_120_01_tb VALUES(335,1,3);
+INSERT INTO e01_120_01_tb VALUES(335,257,2);
+INSERT INTO e01_120_01_tb VALUES(335,260,1);
+INSERT INTO e01_120_01_tb VALUES(335,335,0);
+INSERT INTO e01_120_01_tb VALUES(336,1,3);
+INSERT INTO e01_120_01_tb VALUES(336,257,2);
+INSERT INTO e01_120_01_tb VALUES(336,260,1);
+INSERT INTO e01_120_01_tb VALUES(336,336,0);
+INSERT INTO e01_120_01_tb VALUES(337,1,4);
+INSERT INTO e01_120_01_tb VALUES(337,278,2);
+INSERT INTO e01_120_01_tb VALUES(337,281,3);
+INSERT INTO e01_120_01_tb VALUES(337,318,1);
+INSERT INTO e01_120_01_tb VALUES(337,337,0);
+INSERT INTO e01_120_01_tb VALUES(338,1,4);
+INSERT INTO e01_120_01_tb VALUES(338,278,2);
+INSERT INTO e01_120_01_tb VALUES(338,281,3);
+INSERT INTO e01_120_01_tb VALUES(338,318,1);
+INSERT INTO e01_120_01_tb VALUES(338,338,0);
+INSERT INTO e01_120_01_tb VALUES(339,1,1);
+INSERT INTO e01_120_01_tb VALUES(339,339,0);
+INSERT INTO e01_120_01_tb VALUES(340,1,2);
+INSERT INTO e01_120_01_tb VALUES(340,339,1);
+INSERT INTO e01_120_01_tb VALUES(340,340,0);
+INSERT INTO e01_120_01_tb VALUES(341,1,2);
+INSERT INTO e01_120_01_tb VALUES(341,339,1);
+INSERT INTO e01_120_01_tb VALUES(341,341,0);
+INSERT INTO e01_120_01_tb VALUES(342,1,3);
+INSERT INTO e01_120_01_tb VALUES(342,339,2);
+INSERT INTO e01_120_01_tb VALUES(342,341,1);
+INSERT INTO e01_120_01_tb VALUES(342,342,0);
+INSERT INTO e01_120_01_tb VALUES(343,1,3);
+INSERT INTO e01_120_01_tb VALUES(343,339,2);
+INSERT INTO e01_120_01_tb VALUES(343,341,1);
+INSERT INTO e01_120_01_tb VALUES(343,343,0);
+INSERT INTO e01_120_01_tb VALUES(344,1,2);
+INSERT INTO e01_120_01_tb VALUES(344,339,1);
+INSERT INTO e01_120_01_tb VALUES(344,344,0);
+INSERT INTO e01_120_01_tb VALUES(345,345,0);
+INSERT INTO e01_120_01_tb VALUES(346,346,0);
+INSERT INTO e01_120_01_tb VALUES(347,347,0);
+INSERT INTO e01_120_01_tb VALUES(348,348,0);
+INSERT INTO e01_120_01_tb VALUES(349,349,0);
+INSERT INTO e01_120_01_tb VALUES(350,350,0);
+INSERT INTO e01_120_01_tb VALUES(351,351,0);
+INSERT INTO e01_120_01_tb VALUES(352,352,0);
+INSERT INTO e01_120_01_tb VALUES(353,353,0);
+INSERT INTO e01_120_01_tb VALUES(354,354,0);
+INSERT INTO e01_120_01_tb VALUES(355,355,0);
+INSERT INTO e01_120_01_tb VALUES(356,356,0);
+INSERT INTO e01_120_01_tb VALUES(357,188,1);
+INSERT INTO e01_120_01_tb VALUES(357,357,0);
+INSERT INTO e01_120_01_tb VALUES(358,1,3);
+INSERT INTO e01_120_01_tb VALUES(358,339,2);
+INSERT INTO e01_120_01_tb VALUES(358,340,1);
+INSERT INTO e01_120_01_tb VALUES(358,358,0);
+INSERT INTO e01_120_01_tb VALUES(359,1,3);
+INSERT INTO e01_120_01_tb VALUES(359,339,2);
+INSERT INTO e01_120_01_tb VALUES(359,340,1);
+INSERT INTO e01_120_01_tb VALUES(359,359,0);
+INSERT INTO e01_120_01_tb VALUES(360,1,3);
+INSERT INTO e01_120_01_tb VALUES(360,339,2);
+INSERT INTO e01_120_01_tb VALUES(360,340,1);
+INSERT INTO e01_120_01_tb VALUES(360,360,0);
+INSERT INTO e01_120_01_tb VALUES(361,1,3);
+INSERT INTO e01_120_01_tb VALUES(361,339,2);
+INSERT INTO e01_120_01_tb VALUES(361,340,1);
+INSERT INTO e01_120_01_tb VALUES(361,361,0);
+INSERT INTO e01_120_01_tb VALUES(362,1,3);
+INSERT INTO e01_120_01_tb VALUES(362,339,2);
+INSERT INTO e01_120_01_tb VALUES(362,340,1);
+INSERT INTO e01_120_01_tb VALUES(362,362,0);
+INSERT INTO e01_120_01_tb VALUES(363,1,3);
+INSERT INTO e01_120_01_tb VALUES(363,339,2);
+INSERT INTO e01_120_01_tb VALUES(363,340,1);
+INSERT INTO e01_120_01_tb VALUES(363,363,0);
+INSERT INTO e01_120_01_tb VALUES(364,1,3);
+INSERT INTO e01_120_01_tb VALUES(364,339,2);
+INSERT INTO e01_120_01_tb VALUES(364,340,1);
+INSERT INTO e01_120_01_tb VALUES(364,364,0);
+INSERT INTO e01_120_01_tb VALUES(365,1,3);
+INSERT INTO e01_120_01_tb VALUES(365,339,2);
+INSERT INTO e01_120_01_tb VALUES(365,340,1);
+INSERT INTO e01_120_01_tb VALUES(365,365,0);
+INSERT INTO e01_120_01_tb VALUES(366,1,3);
+INSERT INTO e01_120_01_tb VALUES(366,339,2);
+INSERT INTO e01_120_01_tb VALUES(366,340,1);
+INSERT INTO e01_120_01_tb VALUES(366,366,0);
+INSERT INTO e01_120_01_tb VALUES(367,1,3);
+INSERT INTO e01_120_01_tb VALUES(367,339,2);
+INSERT INTO e01_120_01_tb VALUES(367,340,1);
+INSERT INTO e01_120_01_tb VALUES(367,367,0);
+INSERT INTO e01_120_01_tb VALUES(368,1,3);
+INSERT INTO e01_120_01_tb VALUES(368,339,2);
+INSERT INTO e01_120_01_tb VALUES(368,340,1);
+INSERT INTO e01_120_01_tb VALUES(368,368,0);
+INSERT INTO e01_120_01_tb VALUES(369,1,2);
+INSERT INTO e01_120_01_tb VALUES(369,151,1);
+INSERT INTO e01_120_01_tb VALUES(369,369,0);
+INSERT INTO e01_120_01_tb VALUES(370,1,2);
+INSERT INTO e01_120_01_tb VALUES(370,151,1);
+INSERT INTO e01_120_01_tb VALUES(370,370,0);
+INSERT INTO e01_120_01_tb VALUES(371,1,2);
+INSERT INTO e01_120_01_tb VALUES(371,151,1);
+INSERT INTO e01_120_01_tb VALUES(371,371,0);
+INSERT INTO e01_120_01_tb VALUES(372,1,2);
+INSERT INTO e01_120_01_tb VALUES(372,151,1);
+INSERT INTO e01_120_01_tb VALUES(372,372,0);
+INSERT INTO e01_120_01_tb VALUES(373,1,2);
+INSERT INTO e01_120_01_tb VALUES(373,151,1);
+INSERT INTO e01_120_01_tb VALUES(373,373,0);
+INSERT INTO e01_120_01_tb VALUES(374,1,2);
+INSERT INTO e01_120_01_tb VALUES(374,151,1);
+INSERT INTO e01_120_01_tb VALUES(374,374,0);
+INSERT INTO e01_120_01_tb VALUES(375,1,2);
+INSERT INTO e01_120_01_tb VALUES(375,151,1);
+INSERT INTO e01_120_01_tb VALUES(375,375,0);
+INSERT INTO e01_120_01_tb VALUES(376,1,2);
+INSERT INTO e01_120_01_tb VALUES(376,151,1);
+INSERT INTO e01_120_01_tb VALUES(376,376,0);
+INSERT INTO e01_120_01_tb VALUES(377,1,4);
+INSERT INTO e01_120_01_tb VALUES(377,278,2);
+INSERT INTO e01_120_01_tb VALUES(377,281,3);
+INSERT INTO e01_120_01_tb VALUES(377,318,1);
+INSERT INTO e01_120_01_tb VALUES(377,377,0);
+INSERT INTO e01_120_01_tb VALUES(378,1,2);
+INSERT INTO e01_120_01_tb VALUES(378,151,1);
+INSERT INTO e01_120_01_tb VALUES(378,378,0);
+INSERT INTO e01_120_01_tb VALUES(379,1,2);
+INSERT INTO e01_120_01_tb VALUES(379,151,1);
+INSERT INTO e01_120_01_tb VALUES(379,379,0);
+INSERT INTO e01_120_01_tb VALUES(380,1,2);
+INSERT INTO e01_120_01_tb VALUES(380,151,1);
+INSERT INTO e01_120_01_tb VALUES(380,380,0);
+INSERT INTO e01_120_01_tb VALUES(381,1,2);
+INSERT INTO e01_120_01_tb VALUES(381,151,1);
+INSERT INTO e01_120_01_tb VALUES(381,381,0);
+INSERT INTO e01_120_01_tb VALUES(382,1,2);
+INSERT INTO e01_120_01_tb VALUES(382,151,1);
+INSERT INTO e01_120_01_tb VALUES(382,382,0);
+INSERT INTO e01_120_01_tb VALUES(383,1,2);
+INSERT INTO e01_120_01_tb VALUES(383,151,1);
+INSERT INTO e01_120_01_tb VALUES(383,383,0);
+INSERT INTO e01_120_01_tb VALUES(384,1,2);
+INSERT INTO e01_120_01_tb VALUES(384,151,1);
+INSERT INTO e01_120_01_tb VALUES(384,384,0);
+INSERT INTO e01_120_01_tb VALUES(385,1,2);
+INSERT INTO e01_120_01_tb VALUES(385,151,1);
+INSERT INTO e01_120_01_tb VALUES(385,385,0);
+INSERT INTO e01_120_01_tb VALUES(386,1,2);
+INSERT INTO e01_120_01_tb VALUES(386,151,1);
+INSERT INTO e01_120_01_tb VALUES(386,386,0);
+INSERT INTO e01_120_01_tb VALUES(387,1,2);
+INSERT INTO e01_120_01_tb VALUES(387,151,1);
+INSERT INTO e01_120_01_tb VALUES(387,387,0);
+INSERT INTO e01_120_01_tb VALUES(388,1,2);
+INSERT INTO e01_120_01_tb VALUES(388,151,1);
+INSERT INTO e01_120_01_tb VALUES(388,388,0);
+INSERT INTO e01_120_01_tb VALUES(389,1,2);
+INSERT INTO e01_120_01_tb VALUES(389,151,1);
+INSERT INTO e01_120_01_tb VALUES(389,389,0);
+CREATE TABLE e01_202_01_tb(
+    reltype_id INTEGER PRIMARY KEY AUTOINCREMENT, type_uid TEXT NOT NULL UNIQUE, label TEXT NOT NULL, description TEXT,
+    object_kind TEXT NOT NULL DEFAULT 'entity' CHECK(object_kind IN ('entity','value','entity_or_value')),
+    is_symmetric INTEGER NOT NULL DEFAULT 0 CHECK(is_symmetric IN (0,1)),
+    is_transitive INTEGER NOT NULL DEFAULT 0 CHECK(is_transitive IN (0,1)),
+    is_functional INTEGER NOT NULL DEFAULT 0 CHECK(is_functional IN (0,1)),
+    inverse_uid TEXT,
+    CONSTRAINT fk_rty_inv FOREIGN KEY (inverse_uid) REFERENCES e01_202_01_tb(type_uid) ON DELETE SET NULL);
+INSERT INTO e01_202_01_tb VALUES(1,'instance_of','instance_of','i to c','entity',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(2,'is_a','is_a','c to c','entity',0,1,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(3,'plays_role','plays_role','U to R','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(4,'has_failure_mode','has_failure_mode','U to F','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(5,'manifests_as','manifests_as','F to D','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(6,'detectable_by','detectable_by','F to T','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(7,'has_severity','has_severity','F to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(8,'has_occurrence_rate','has_occurrence_rate','F to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(9,'has_detection_rating','has_detection_rating','F to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(10,'failure_caused_by','failure_caused_by','F to F','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(11,'has_expected_lifetime','has_expected_lifetime','c to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(12,'concerns_vehicle','concerns_vehicle','C to V','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(13,'has_voltage','has_voltage','U to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(14,'has_resistance','has_resistance','U to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(15,'has_part_number','has_part_number','a to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(16,'has_manufacturer','has_manufacturer','a to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(17,'has_version','has_version','a to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(18,'has_state','has_state','a to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(19,'has_position','has_position','a to V','value',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(20,'has_quantity','has_quantity','a to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(21,'has_code','has_code','a to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(22,'has_vin','has_vin','V to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(23,'observed_value','observed_value','O to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(24,'carries_signal','carries_signal','P to S','entity',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(25,'mounted_on','mounted_on','a to a','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(26,'connected_to','connected_to','U to U','entity',1,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(27,'supplies','supplies','a to a','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(28,'controls','controls','E to A','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(29,'measures','measures','S to U','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(30,'transmits','transmits','S to E','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(31,'part_of','part_of','a to a','entity',0,1,0,'has_part');
+INSERT INTO e01_202_01_tb VALUES(32,'has_participant','has_participant','a to a','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(33,'produces','produces','a to a','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(34,'supports','supports','a to a','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(35,'contradicts','contradicts','a to a','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(36,'derived_from','derived_from','a to a','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(37,'diagnosed_as','diagnosed_as','C to D','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(38,'repaired_by','repaired_by','a to R','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(39,'verified_by','verified_by','a to a','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(40,'applies_to','applies_to','a to a','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(41,'governed_by','governed_by','a to a','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(42,'represents','represents','a to a','entity',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(43,'has_dtc_code','has_dtc_code','c to V','value',0,0,1,NULL);
+INSERT INTO e01_202_01_tb VALUES(44,'reports_dtc','reports_dtc','E to D','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(45,'installed_on','installed_on','U to V','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(46,'faulty_part_of','faulty_part_of','a to a','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(47,'suspects','suspects','D to U','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(48,'ruled_out','ruled_out','D to U','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(49,'detected_by','detected_by','O to U','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(50,'resolved_by','resolved_by','C to R','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(51,'replaced_with','replaced_with','U to U','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(52,'tested_by','tested_by','a to T','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(53,'communicates_over','communicates_over','E to B','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(54,'grounded_at','grounded_at','U to W','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(55,'powered_by','powered_by','U to B','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(56,'attributed_to','attributed_to','a to T','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(57,'compatible_with','compatible_with','a to a','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(58,'chain_includes_component','chain_includes_component','F to U','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(59,'chain_produces_signal','chain_produces_signal','F to S','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(60,'chain_requires_signal','chain_requires_signal','F to S','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(61,'has_part','شامل','دارد بخشی از خود','entity',0,0,0,'part_of');
+INSERT INTO e01_202_01_tb VALUES(62,'manufactured_by','ساخته شده توسط','محصول → سازنده','entity',0,0,0,'manufacturer_of');
+INSERT INTO e01_202_01_tb VALUES(63,'manufacturer_of','سازنده‌ی','سازنده → محصول','entity',0,0,0,'manufactured_by');
+INSERT INTO e01_202_01_tb VALUES(64,'licensed_from','تحت لیسانس از','خودرو تحت لیسانس سازنده دیگر','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(65,'based_on','مبتنی بر','خودرو مبتنی بر پلتفرم دیگر','entity',0,0,0,NULL);
+INSERT INTO e01_202_01_tb VALUES(66,'platform_of','پلتفرمِ','پلتفرم → خودرو','entity',0,0,0,NULL);
+CREATE TABLE e01_112_01_tb(
+    cons_id INTEGER PRIMARY KEY AUTOINCREMENT, reltype_id INTEGER NOT NULL,
+    cons_kind TEXT NOT NULL CHECK(cons_kind IN ('allowed_subject_type','allowed_object_type','allowed_subject_nature','allowed_object_nature')),
+    target_type_id INTEGER, target_nature TEXT CHECK(target_nature IS NULL OR target_nature IN ('instance','concept')),
+    CHECK ((cons_kind IN ('allowed_subject_type','allowed_object_type') AND target_type_id IS NOT NULL AND target_nature IS NULL) OR (cons_kind IN ('allowed_subject_nature','allowed_object_nature') AND target_type_id IS NULL AND target_nature IS NOT NULL)),
+    CONSTRAINT fk_cons_rel FOREIGN KEY (reltype_id) REFERENCES e01_202_01_tb(reltype_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_cons_type FOREIGN KEY (target_type_id) REFERENCES e01_200_01_tb(type_id) ON DELETE RESTRICT);
+CREATE TABLE e01_200_02_tb(dom_id INTEGER PRIMARY KEY AUTOINCREMENT, dom_uid TEXT NOT NULL UNIQUE, label TEXT NOT NULL, description TEXT);
+INSERT INTO e01_200_02_tb VALUES(1,'state','وضعیت',NULL);
+INSERT INTO e01_200_02_tb VALUES(2,'severity','شدت',NULL);
+INSERT INTO e01_200_02_tb VALUES(3,'confidence','اطمینان',NULL);
+INSERT INTO e01_200_02_tb VALUES(4,'yes_no','بله/خیر',NULL);
+INSERT INTO e01_200_02_tb VALUES(5,'absence_type','نوع غیاب',NULL);
+INSERT INTO e01_200_02_tb VALUES(6,'negation_kind','نوع نفی',NULL);
+INSERT INTO e01_200_02_tb VALUES(7,'detection_rating','رتبه تشخیص',NULL);
+INSERT INTO e01_200_02_tb VALUES(8,'rate_unit','واحد نرخ',NULL);
+CREATE TABLE e01_201_01_tb(
+    val_id INTEGER PRIMARY KEY AUTOINCREMENT, dom_id INTEGER NOT NULL, value_uid TEXT NOT NULL, label TEXT NOT NULL, sort_order INTEGER,
+    UNIQUE(dom_id, value_uid),
+    CONSTRAINT fk_enm_val_dom FOREIGN KEY (dom_id) REFERENCES e01_200_02_tb(dom_id) ON DELETE RESTRICT);
+INSERT INTO e01_201_01_tb VALUES(1,1,'on','روشن',1);
+INSERT INTO e01_201_01_tb VALUES(2,1,'off','خاموش',2);
+INSERT INTO e01_201_01_tb VALUES(3,1,'unknown','نامعلوم',3);
+INSERT INTO e01_201_01_tb VALUES(4,2,'info','اطلاع',1);
+INSERT INTO e01_201_01_tb VALUES(5,2,'warning','هشدار',2);
+INSERT INTO e01_201_01_tb VALUES(6,2,'critical','بحرانی',3);
+INSERT INTO e01_201_01_tb VALUES(7,3,'low','کم',1);
+INSERT INTO e01_201_01_tb VALUES(8,3,'medium','متوسط',2);
+INSERT INTO e01_201_01_tb VALUES(9,3,'high','بالا',3);
+INSERT INTO e01_201_01_tb VALUES(10,4,'yes','بله',1);
+INSERT INTO e01_201_01_tb VALUES(11,4,'no','خیر',2);
+INSERT INTO e01_201_01_tb VALUES(12,5,'not_observed','مشاهده نشد',1);
+INSERT INTO e01_201_01_tb VALUES(13,5,'not_recorded','ثبت نشد',2);
+INSERT INTO e01_201_01_tb VALUES(14,5,'not_applicable','نامرتبط',3);
+INSERT INTO e01_201_01_tb VALUES(15,5,'unknown','نامعلوم',4);
+INSERT INTO e01_201_01_tb VALUES(16,6,'source_denied','منبع رد کرد',1);
+INSERT INTO e01_201_01_tb VALUES(17,6,'author_retracted','نویسنده پس گرفت',2);
+INSERT INTO e01_201_01_tb VALUES(18,6,'counterfactual','فرضی',3);
+INSERT INTO e01_201_01_tb VALUES(19,7,'certain','قطعاً',1);
+INSERT INTO e01_201_01_tb VALUES(20,7,'likely','احتمالاً',2);
+INSERT INTO e01_201_01_tb VALUES(21,7,'uncertain','نامعلوم',3);
+INSERT INTO e01_201_01_tb VALUES(22,7,'rare','به‌ندرت',4);
+INSERT INTO e01_201_01_tb VALUES(23,8,'per_year','در سال',1);
+INSERT INTO e01_201_01_tb VALUES(24,8,'per_100k_km','در ۱۰۰ هزار کیلومتر',2);
+INSERT INTO e01_201_01_tb VALUES(25,8,'mtbf_hours','MTBF ساعتی',3);
+CREATE TABLE e01_303_01_tb(
+    prv_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    source_type TEXT NOT NULL CHECK(source_type IN ('manual','sensor','document','inference','external_system','user','ai','import','unknown')),
+    source_ref TEXT, method TEXT, confidence REAL CHECK(confidence IS NULL OR (confidence >= 0 AND confidence <= 1)),
+    created_at TEXT NOT NULL DEFAULT (datetime('now')), notes TEXT);
+INSERT INTO e01_303_01_tb VALUES(2,'unknown','system:unknown','explicit-fallback',NULL,'2026-09-29 17:59:33','Fallback provenance');
+CREATE TABLE e01_200_03_tb(
+    ent_id INTEGER PRIMARY KEY AUTOINCREMENT, ent_uid TEXT NOT NULL UNIQUE, type_id INTEGER NOT NULL,
+    nature TEXT NOT NULL DEFAULT 'instance' CHECK(nature IN ('instance','concept')),
+    label TEXT NOT NULL, description TEXT,
+    label_norm TEXT CHECK(label_norm IS NULL OR length(label_norm) > 0),
+    desc_norm TEXT NOT NULL DEFAULT '',
+    status TEXT NOT NULL DEFAULT 'active' CHECK(status IN ('active','archived','deprecated','merged')),
+    prv_id INTEGER, created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+    CONSTRAINT fk_ent_type FOREIGN KEY (type_id) REFERENCES e01_200_01_tb(type_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_ent_prv FOREIGN KEY (prv_id) REFERENCES e01_303_01_tb(prv_id) ON DELETE SET NULL);
+INSERT INTO e01_200_03_tb VALUES(1,'role:switch',45,'concept','Switch','role switch','switch','role switch','active',2,'2026-09-29 18:05:06','2026-09-29 18:05:06');
+INSERT INTO e01_200_03_tb VALUES(2,'role:protector',45,'concept','Protector','protect role','protector','protect role','active',2,'2026-09-29 18:05:06','2026-09-29 18:05:06');
+INSERT INTO e01_200_03_tb VALUES(3,'role:isolator',45,'concept','Isolator','isolate role','isolator','isolate role','active',2,'2026-09-29 18:05:06','2026-09-29 18:05:06');
+INSERT INTO e01_200_03_tb VALUES(4,'role:no-switch',45,'concept','NO-switch','normally open','no-switch','normally open','active',2,'2026-09-29 18:05:06','2026-09-29 18:05:06');
+INSERT INTO e01_200_03_tb VALUES(5,'role:nc-switch',45,'concept','NC-switch','normally closed','nc-switch','normally closed','active',2,'2026-09-29 18:05:06','2026-09-29 18:05:06');
+INSERT INTO e01_200_03_tb VALUES(6,'fm:coil-elec',46,'concept','CoilElec','coil electrical','coilelec','coil electrical','active',2,'2026-09-29 18:05:06','2026-09-29 18:05:06');
+INSERT INTO e01_200_03_tb VALUES(7,'fm:coil-open',46,'concept','CoilOpen','primary open','coilopen','primary open','active',2,'2026-09-29 18:05:06','2026-09-29 18:05:06');
+INSERT INTO e01_200_03_tb VALUES(8,'fm:coil-short',46,'concept','CoilShort','coil short','coilshort','coil short','active',2,'2026-09-29 18:05:06','2026-09-29 18:05:06');
+INSERT INTO e01_200_03_tb VALUES(9,'coil:generic',35,'concept','Coil','standard','coil','standard','active',2,'2026-09-29 18:05:06','2026-09-29 18:05:06');
+INSERT INTO e01_200_03_tb VALUES(10,'battery:generic',77,'concept','Battery','12V','battery','12v','active',2,'2026-09-29 18:05:06','2026-09-29 22:34:27');
+INSERT INTO e01_200_03_tb VALUES(11,'dtc:P0301',13,'concept','P0301','misfire','p0301','misfire','active',2,'2026-09-29 18:05:06','2026-09-29 18:05:06');
+INSERT INTO e01_200_03_tb VALUES(12,'cond:cold-start',24,'concept','Cold start','engine cold start condition','cold start','engine cold start condition','active',2,'2026-09-29 20:22:20','2026-09-29 20:22:20');
+INSERT INTO e01_200_03_tb VALUES(13,'env:high-humidity',24,'concept','High humidity','humidity above 80 percent','high humidity','humidity above 80 percent','active',2,'2026-09-29 20:22:20','2026-09-29 22:34:27');
+INSERT INTO e01_200_03_tb VALUES(14,'env:hot-weather',24,'concept','Hot weather','ambient temp above 40C','hot weather','ambient temp above 40c','active',2,'2026-09-29 20:22:20','2026-09-29 22:34:27');
+INSERT INTO e01_200_03_tb VALUES(16,'battery:12v-66ah',77,'instance','باتری ۱۲V ۶۶Ah','باتری سربی-اسیدی معمول','باتری ۱۲v ۶۶ah','','active',2,'2026-09-29 22:41:48','2026-09-29 22:41:48');
+INSERT INTO e01_200_03_tb VALUES(17,'alternator:90a',74,'instance','دینام ۹۰ آمپر','دینام استاندارد','دینام ۹۰ آمپر','','active',2,'2026-09-29 22:41:48','2026-09-29 22:41:48');
+INSERT INTO e01_200_03_tb VALUES(18,'starter:1.2kw',69,'instance','استارت ۱.۲ کیلووات','استارت معمول','استارت ۱.۲ کیلووات','','active',2,'2026-09-29 22:41:48','2026-09-29 22:41:48');
+INSERT INTO e01_200_03_tb VALUES(19,'coil:double',35,'instance','کوئل دوبل','کوئل دوبل انژکتوری','کوئل دوبل','','active',2,'2026-09-29 22:41:48','2026-09-29 22:41:48');
+INSERT INTO e01_200_03_tb VALUES(20,'ecu:engine-generic',79,'instance','ECU موتور','واحد کنترل موتور','ecu موتور','','active',2,'2026-09-29 22:41:48','2026-09-29 22:41:48');
+INSERT INTO e01_200_03_tb VALUES(21,'sensor:crankshaft',30,'instance','سنسور دور موتور','سنسور میل‌لنگ','سنسور دور موتور','','active',2,'2026-09-29 22:41:48','2026-09-29 22:41:48');
+INSERT INTO e01_200_03_tb VALUES(22,'sensor:o2',34,'instance','سنسور اکسیژن','سنسور ترکیب سوخت','سنسور اکسیژن','','active',2,'2026-09-29 22:41:48','2026-09-29 22:41:48');
+INSERT INTO e01_200_03_tb VALUES(23,'sensor:coolant-temp',33,'instance','سنسور دمای آب','سنسور خنک‌کننده','سنسور دمای آب','','active',2,'2026-09-29 22:41:48','2026-09-29 22:41:48');
+INSERT INTO e01_200_03_tb VALUES(24,'injector:generic',36,'instance','انژکتور','انژکتور بنزینی','انژکتور','','active',2,'2026-09-29 22:41:48','2026-09-29 22:41:48');
+INSERT INTO e01_200_03_tb VALUES(25,'relay:main',40,'instance','رله اصلی','رله مدار برق','رله اصلی','','active',2,'2026-09-29 22:41:48','2026-09-29 22:41:48');
+INSERT INTO e01_200_03_tb VALUES(26,'fuse:15a',41,'instance','فیوز ۱۵ آمپر','فیوز ۱۵ آمپری','فیوز ۱۵ آمپر','','active',2,'2026-09-29 22:41:48','2026-09-29 22:41:48');
+INSERT INTO e01_200_03_tb VALUES(27,'bus:can-500k',87,'instance','CAN Bus 500kbps','شبکه CAN','can bus 500kbps','','active',2,'2026-09-29 22:41:48','2026-09-29 22:41:48');
+INSERT INTO e01_200_03_tb VALUES(28,'dtc:P0300',13,'concept','P0300','جرقه تصادفی','p0300','','active',2,'2026-09-29 22:41:48','2026-09-29 22:41:48');
+INSERT INTO e01_200_03_tb VALUES(29,'fm:injector-clogged',46,'concept','گرفتگی انژکتور','گرفتگی نازل','گرفتگی انژکتور','','active',2,'2026-09-29 22:41:48','2026-09-29 22:41:48');
+INSERT INTO e01_200_03_tb VALUES(30,'vehicle:sample-1',151,'instance','خودروی نمونه','خودروی سواری نمونه با موتور بنزینی','خودروی نمونه','','active',2,'2026-09-29 22:48:41','2026-09-29 23:49:38');
+INSERT INTO e01_200_03_tb VALUES(31,'diagnosis:p0301-coil',19,'instance','تشخیص: کوئل سیلندر ۱ معیوب','احتمال معیوب بودن کوئل سیلندر ۱ در این خودرو','تشخیص: کوئل سیلندر ۱ معیوب','','active',2,'2026-09-29 22:53:45','2026-09-29 22:53:45');
+INSERT INTO e01_200_03_tb VALUES(32,'test:coil-resistance',47,'instance','تست مقاومت کوئل','اندازه‌گیری مقاومت سیم‌پیچ اولیه و ثانویه کوئل','تست مقاومت کوئل','','active',2,'2026-09-29 22:53:45','2026-09-29 22:53:45');
+INSERT INTO e01_200_03_tb VALUES(33,'test:coil-spark',47,'instance','تست جرقه کوئل','بررسی وجود جرقه در شمع سیلندر ۱','تست جرقه کوئل','','active',2,'2026-09-29 22:53:45','2026-09-29 22:53:45');
+INSERT INTO e01_200_03_tb VALUES(34,'procedure:replace-coil',48,'instance','رویه: تعویض کوئل','مراحل تعویض کوئل سیلندر ۱','رویه: تعویض کوئل','','active',2,'2026-09-29 22:53:45','2026-09-29 22:53:45');
+INSERT INTO e01_200_03_tb VALUES(35,'repair:coil-replaced',20,'instance','تعمیر: کوئل تعویض شد','رکورد تعمیر انجام‌شده — کوئل سیلندر ۱ تعویض شد','تعمیر: کوئل تعویض شد','','active',2,'2026-09-29 22:53:45','2026-09-29 22:53:45');
+INSERT INTO e01_200_03_tb VALUES(36,'light:head-low-left',94,'instance','چراغ پایین چپ','H4 - 55W','چراغ پایین چپ','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(37,'light:head-low-right',94,'instance','چراغ پایین راست','H4 - 55W','چراغ پایین راست','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(38,'light:tail-left',96,'instance','چراغ عقب چپ','P21/5W','چراغ عقب چپ','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(39,'light:tail-right',96,'instance','چراغ عقب راست','P21/5W','چراغ عقب راست','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(40,'light:turn-front-l',98,'instance','راهنمای جلو چپ','PY21W','راهنمای جلو چپ','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(41,'light:turn-front-r',98,'instance','راهنمای جلو راست','PY21W','راهنمای جلو راست','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(42,'light:brake-left',97,'instance','چراغ ترمز چپ','P21W','چراغ ترمز چپ','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(43,'light:brake-right',97,'instance','چراغ ترمز راست','P21W','چراغ ترمز راست','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(44,'light:plate',101,'instance','چراغ پلاک','W5W','چراغ پلاک','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(45,'light:dome',102,'instance','چراغ سقفی','FESTOON','چراغ سقفی','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(46,'fm:bulb-burnt',46,'concept','سوختن لامپ','فیلامان لامپ قطع شده','سوختن لامپ','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(47,'fm:light-open',46,'concept','قطع مدار چراغ','سیم یا اتصال قطع است','قطع مدار چراغ','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(48,'fm:light-short',46,'concept','اتصال کوتاه چراغ','سیم به بدنه اتصال دارد','اتصال کوتاه چراغ','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(49,'fm:relay-stuck',46,'concept','گیر کردن رله','کنتاکت رله جوش خورده','گیر کردن رله','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(50,'dtc:B1101',13,'concept','B1101','خرابی مدار چراغ جلو','b1101','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(51,'dtc:B1102',13,'concept','B1102','خرابی مدار چراغ عقب','b1102','','active',2,'2026-09-29 22:59:19','2026-09-29 22:59:19');
+INSERT INTO e01_200_03_tb VALUES(68,'sensor:maf',121,'instance','سنسور دبی هوا','MAF - جریان هوای ورودی','سنسور دبی هوا','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(69,'sensor:iat',122,'instance','سنسور دمای هوای ورودی','IAT - داخل منیفولد','سنسور دمای هوای ورودی','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(70,'sensor:baro',123,'instance','سنسور فشار بارومتریک','فشار هوای محیط','سنسور فشار بارومتریک','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(71,'sensor:fuel-level',124,'instance','سنسور سطح سوخت','شناور باک بنزین','سنسور سطح سوخت','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(72,'sensor:fuel-pressure',125,'instance','سنسور فشار سوخت','فشار خط سوخت','سنسور فشار سوخت','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(73,'sensor:oil-pressure',126,'instance','سنسور فشار روغن','فشار روغن موتور','سنسور فشار روغن','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(74,'sensor:oil-temp',127,'instance','سنسور دمای روغن','دمای روغن موتور','سنسور دمای روغن','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(75,'sensor:vss',128,'instance','سنسور سرعت خودرو','VSS - روی گیربکس','سنسور سرعت خودرو','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(76,'sensor:wheel-fl',129,'instance','سنسور سرعت چرخ جلو چپ','ABS front left','سنسور سرعت چرخ جلو چپ','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(77,'sensor:wheel-fr',129,'instance','سنسور سرعت چرخ جلو راست','ABS front right','سنسور سرعت چرخ جلو راست','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(78,'sensor:wheel-rl',129,'instance','سنسور سرعت چرخ عقب چپ','ABS rear left','سنسور سرعت چرخ عقب چپ','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(79,'sensor:wheel-rr',129,'instance','سنسور سرعت چرخ عقب راست','ABS rear right','سنسور سرعت چرخ عقب راست','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(80,'sensor:egr-position',130,'instance','سنسور موقعیت EGR','موقعیت شیر بازچرخانی گاز','سنسور موقعیت egr','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(81,'sensor:o2-upstream',132,'instance','سنسور اکسیژن بالادست','O2 قبل از کاتالیست','سنسور اکسیژن بالادست','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(82,'sensor:o2-downstream',133,'instance','سنسور اکسیژن پایین‌دست','O2 بعد از کاتالیست','سنسور اکسیژن پایین‌دست','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(83,'ecu:transmission',80,'instance','ECU گیربکس','واحد کنترل گیربکس','ecu گیربکس','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(84,'ecu:abs',82,'instance','ECU ترمز ABS','واحد کنترل ترمز ضد قفل','ecu ترمز abs','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(85,'fm:maf-dirty',46,'concept','کثیفی MAF','رسوب روی سیم داغ','کثیفی maf','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(86,'fm:maf-failed',46,'concept','خرابی MAF','قطع مدار MAF','خرابی maf','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(87,'fm:o2-old',46,'concept','فرسودگی سنسور O2','کندی پاسخ سنسور اکسیژن','فرسودگی سنسور o2','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(88,'fm:o2-open',46,'concept','قطع مدار O2','قطع سیم گرم‌کن','قطع مدار o2','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(89,'fm:knock-failed',46,'concept','خرابی سنسور ناک','قطع مدار سنسور ناک','خرابی سنسور ناک','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(90,'fm:coolant-failed',46,'concept','خرابی سنسور دما','خوانش اشتباه دما','خرابی سنسور دما','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(91,'fm:iat-failed',46,'concept','خرابی سنسور IAT','قطع مدار IAT','خرابی سنسور iat','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(92,'fm:wheel-speed-failed',46,'concept','خرابی سنسور چرخ','قطع سیگنال ABS','خرابی سنسور چرخ','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(93,'fm:fuel-pressure-low',46,'concept','افت فشار سوخت','ضعف پمپ بنزین','افت فشار سوخت','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(94,'fm:oil-pressure-low',46,'concept','افت فشار روغن','خرابی پمپ روغن','افت فشار روغن','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(95,'dtc:P0100',13,'concept','P0100','خرابی MAF','p0100','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(96,'dtc:P0110',13,'concept','P0110','خرابی IAT','p0110','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(97,'dtc:P0115',13,'concept','P0115','خرابی سنسور دما','p0115','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(98,'dtc:P0120',13,'concept','P0120','خرابی TPS','p0120','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(99,'dtc:P0130',13,'concept','P0130','خرابی O2 بالادست','p0130','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(100,'dtc:P0135',13,'concept','P0135','خرابی گرم‌کن O2','p0135','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(101,'dtc:P0170',13,'concept','P0170','خطای مخلوط سوخت','p0170','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(102,'dtc:P0230',13,'concept','P0230','خرابی مدار پمپ بنزین','p0230','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(103,'dtc:P0325',13,'concept','P0325','خرابی سنسور ناک','p0325','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(104,'dtc:P0335',13,'concept','P0335','خرابی سنسور دور موتور','p0335','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(105,'dtc:P0340',13,'concept','P0340','خرابی سنسور میل‌سوپاپ','p0340','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(106,'dtc:P0520',13,'concept','P0520','خرابی سنسور فشار روغن','p0520','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(107,'dtc:P0500',13,'concept','P0500','خرابی VSS','p0500','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(108,'dtc:C0035',13,'concept','C0035','خرابی سنسور چرخ جلو چپ','c0035','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(109,'dtc:C0040',13,'concept','C0040','خرابی سنسور چرخ جلو راست','c0040','','active',2,'2026-09-29 23:02:16','2026-09-29 23:02:16');
+INSERT INTO e01_200_03_tb VALUES(110,'sensor:knock',83,'instance','سنسور ناک','سنسور تشخیص ضربه و ناک موتور','سنسور ناک','','active',2,'2026-09-29 23:05:38','2026-09-29 23:05:38');
+INSERT INTO e01_200_03_tb VALUES(111,'actuator:throttle',134,'instance','عملگر دریچه گاز','دریچه گاز برقی','عملگر دریچه گاز','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(112,'actuator:iac',86,'instance','استپر موتور','شیر کنترل دور آرام','استپر موتور','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(113,'actuator:injector-1',36,'instance','انژکتور سیلندر ۱','بنزینی','انژکتور سیلندر ۱','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(114,'actuator:injector-2',36,'instance','انژکتور سیلندر ۲','بنزینی','انژکتور سیلندر ۲','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(115,'actuator:injector-3',36,'instance','انژکتور سیلندر ۳','بنزینی','انژکتور سیلندر ۳','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(116,'actuator:injector-4',36,'instance','انژکتور سیلندر ۴','بنزینی','انژکتور سیلندر ۴','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(117,'actuator:fuel-pump',38,'instance','پمپ بنزین','داخل باک','پمپ بنزین','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(118,'actuator:egr-valve',138,'instance','شیر EGR','بازچرخانی گاز اگزوز','شیر egr','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(119,'actuator:purge-valve',141,'instance','شیر EVAP','بخار بنزین','شیر evap','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(120,'actuator:cooling-fan',142,'instance','فن رادیاتور','فن خنک‌کننده','فن رادیاتور','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(121,'actuator:horn',143,'instance','بوق خودرو','بوق ۱۲ ولت','بوق خودرو','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(122,'actuator:wiper',144,'instance','موتور برف‌پاک‌کن','موتور برف‌پاک‌کن جلو','موتور برف‌پاک‌کن','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(123,'actuator:window-fl',145,'instance','موتور بالابر جلو چپ','شیشه برقی','موتور بالابر جلو چپ','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(124,'actuator:window-fr',145,'instance','موتور بالابر جلو راست','شیشه برقی','موتور بالابر جلو راست','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(125,'actuator:lock-fl',146,'instance','عملگر قفل جلو چپ','قفل مرکزی','عملگر قفل جلو چپ','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(126,'actuator:lock-fr',146,'instance','عملگر قفل جلو راست','قفل مرکزی','عملگر قفل جلو راست','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(127,'actuator:mirror-l',147,'instance','موتور آینه چپ','آینه برقی','موتور آینه چپ','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(128,'actuator:mirror-r',147,'instance','موتور آینه راست','آینه برقی','موتور آینه راست','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(129,'relay:fuel-pump',148,'instance','رله پمپ بنزین','رله','رله پمپ بنزین','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(130,'relay:cooling-fan',149,'instance','رله فن','رله','رله فن','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(131,'actuator:ac-clutch',150,'instance','کلاچ کولر','کلاچ کمپرسور','کلاچ کولر','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(133,'fm:injector-open',46,'concept','قطع انژکتور','قطع سیم‌پیچ','قطع انژکتور','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(134,'fm:injector-short',46,'concept','اتصال کوتاه انژکتور','اتصال کوتاه','اتصال کوتاه انژکتور','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(135,'fm:fuel-pump-weak',46,'concept','ضعف پمپ بنزین','افت فشار سوخت','ضعف پمپ بنزین','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(136,'fm:fuel-pump-dead',46,'concept','خرابی کامل پمپ','پمپ کار نمی‌کند','خرابی کامل پمپ','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(137,'fm:iac-stuck',46,'concept','گیر کردن استپر','استپر گیر کرده','گیر کردن استپر','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(138,'fm:iac-dirty',46,'concept','کثیفی استپر','رسوب گرفته','کثیفی استپر','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(139,'fm:throttle-stuck',46,'concept','گیر کردن دریچه گاز','دریچه گیر کرده','گیر کردن دریچه گاز','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(140,'fm:egr-stuck-open',46,'concept','EGR گیر در حالت باز','باز مانده','egr گیر در حالت باز','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(141,'fm:egr-stuck-closed',46,'concept','EGR گیر در حالت بسته','بسته مانده','egr گیر در حالت بسته','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(142,'fm:fan-dead',46,'concept','خرابی فن','فن کار نمی‌کند','خرابی فن','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(143,'fm:horn-dead',46,'concept','خرابی بوق','بوق صدا نمی‌دهد','خرابی بوق','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(144,'fm:wiper-dead',46,'concept','خرابی برف‌پاک‌کن','موتور کار نمی‌کند','خرابی برف‌پاک‌کن','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(145,'fm:window-motor-dead',46,'concept','خرابی موتور بالابر','شیشه بالا نمی‌رود','خرابی موتور بالابر','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(146,'fm:lock-actuator-dead',46,'concept','خرابی عملگر قفل','قفل کار نمی‌کند','خرابی عملگر قفل','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(147,'dtc:P0201',13,'concept','P0201','خرابی انژکتور سیلندر ۱','p0201','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(148,'dtc:P0202',13,'concept','P0202','خرابی انژکتور سیلندر ۲','p0202','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(149,'dtc:P0203',13,'concept','P0203','خرابی انژکتور سیلندر ۳','p0203','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(150,'dtc:P0204',13,'concept','P0204','خرابی انژکتور سیلندر ۴','p0204','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(152,'dtc:P0231',13,'concept','P0231','ولتاژ پایین پمپ بنزین','p0231','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(153,'dtc:P0400',13,'concept','P0400','خرابی جریان EGR','p0400','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(154,'dtc:P0403',13,'concept','P0403','خرابی شیر EGR','p0403','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(155,'dtc:P0440',13,'concept','P0440','خرابی سیستم EVAP','p0440','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(156,'dtc:P0505',13,'concept','P0505','خرابی سیستم دور آرام','p0505','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(157,'dtc:P0507',13,'concept','P0507','دور آرام بالا','p0507','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(158,'dtc:P0121',13,'concept','P0121','خرابی عملگر دریچه گاز','p0121','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(159,'dtc:P0480',13,'concept','P0480','خرابی مدار فن ۱','p0480','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(160,'dtc:P0481',13,'concept','P0481','خرابی مدار فن ۲','p0481','','active',2,'2026-09-29 23:12:43','2026-09-29 23:12:43');
+INSERT INTO e01_200_03_tb VALUES(161,'diagnosis:p0115-coolant',19,'instance','تشخیص: سنسور دمای آب معیوب','خوانش اشتباه دما','تشخیص: سنسور دمای آب معیوب','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(162,'test:coolant-signal',47,'instance','تست سیگنال دما','بررسی ولتاژ سنسور','تست سیگنال دما','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(163,'test:coolant-wire',47,'instance','تست سیم‌کشی دما','بررسی قطع و اتصال','تست سیم‌کشی دما','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(164,'procedure:replace-coolant-sensor',48,'instance','رویه: تعویض سنسور دما','تعویض سنسور دمای آب','رویه: تعویض سنسور دما','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(165,'repair:coolant-replaced',20,'instance','تعمیر: سنسور دما تعویض شد','تعمیر انجام‌شده','تعمیر: سنسور دما تعویض شد','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(166,'diagnosis:p0130-o2',19,'instance','تشخیص: سنسور اکسیژن معیوب','کندی پاسخ یا قطع گرم‌کن','تشخیص: سنسور اکسیژن معیوب','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(167,'test:o2-voltage',47,'instance','تست ولتاژ O2','بررسی نوسان ولتاژ','تست ولتاژ o2','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(168,'test:o2-heater',47,'instance','تست گرم‌کن O2','اندازه‌گیری مقاومت گرم‌کن','تست گرم‌کن o2','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(169,'procedure:replace-o2',48,'instance','رویه: تعویض سنسور O2','تعویض سنسور اکسیژن','رویه: تعویض سنسور o2','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(170,'repair:o2-replaced',20,'instance','تعمیر: سنسور O2 تعویض شد','تعمیر انجام‌شده','تعمیر: سنسور o2 تعویض شد','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(171,'diagnosis:p0505-iac',19,'instance','تشخیص: استپر موتور معیوب','گیر کردن یا کثیفی','تشخیص: استپر موتور معیوب','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(172,'test:iac-resistance',47,'instance','تست مقاومت استپر','اندازه‌گیری مقاومت سیم‌پیچ','تست مقاومت استپر','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(173,'test:iac-movement',47,'instance','تست حرکت استپر','بررسی حرکت پین','تست حرکت استپر','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(174,'procedure:clean-iac',48,'instance','رویه: تمیزکاری استپر','تمیز کردن استپر','رویه: تمیزکاری استپر','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(175,'procedure:replace-iac',48,'instance','رویه: تعویض استپر','تعویض کامل','رویه: تعویض استپر','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(176,'repair:iac-cleaned',20,'instance','تعمیر: استپر تمیز شد','تعمیر انجام‌شده','تعمیر: استپر تمیز شد','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(177,'repair:iac-replaced',20,'instance','تعمیر: استپر تعویض شد','تعمیر انجام‌شده','تعمیر: استپر تعویض شد','','active',2,'2026-09-29 23:14:43','2026-09-29 23:14:43');
+INSERT INTO e01_200_03_tb VALUES(178,'reif:r:coil-has-fm-open',28,'instance','Reified: r:coil-has-fm-open','Reified relation','reified: r:coil-has-fm-open','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(179,'reif:r:coil-has-fm-short',28,'instance','Reified: r:coil-has-fm-short','Reified relation','reified: r:coil-has-fm-short','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(180,'reif:r:injector-has-fm-clogged',28,'instance','Reified: r:injector-has-fm-clogged','Reified relation','reified: r:injector-has-fm-clogged','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(181,'reif:r:fm-open-manifests-p0301',28,'instance','Reified: r:fm-open-manifests-p0301','Reified relation','reified: r:fm-open-manifests-p0301','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(182,'reif:r:fm-short-manifests-p0301',28,'instance','Reified: r:fm-short-manifests-p0301','Reified relation','reified: r:fm-short-manifests-p0301','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(183,'reif:r:fm-clogged-manifests-p0300',28,'instance','Reified: r:fm-clogged-manifests-p0300','Reified relation','reified: r:fm-clogged-manifests-p0300','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(184,'reif:r:fm-coil-open-diagnosed-as-p0301',28,'instance','Reified: r:fm-coil-open-diagnosed-as-p0301','Reified relation','reified: r:fm-coil-open-diagnosed-as-p0301','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(185,'reif:r:diag-tested-by-resistance',28,'instance','Reified: r:diag-tested-by-resistance','Reified relation','reified: r:diag-tested-by-resistance','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(186,'reif:r:diag-tested-by-spark',28,'instance','Reified: r:diag-tested-by-spark','Reified relation','reified: r:diag-tested-by-spark','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(187,'reif:r:diag-resolved-by-procedure',28,'instance','Reified: r:diag-resolved-by-procedure','Reified relation','reified: r:diag-resolved-by-procedure','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(188,'reif:r:procedure-resolved-by-repair',28,'instance','Reified: r:procedure-resolved-by-repair','Reified relation','reified: r:procedure-resolved-by-repair','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(189,'reif:r:repair-applies-to-vehicle',28,'instance','Reified: r:repair-applies-to-vehicle','Reified relation','reified: r:repair-applies-to-vehicle','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(190,'reif:r:headlight-left-has-burnt',28,'instance','Reified: r:headlight-left-has-burnt','Reified relation','reified: r:headlight-left-has-burnt','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(191,'reif:r:headlight-left-has-open',28,'instance','Reified: r:headlight-left-has-open','Reified relation','reified: r:headlight-left-has-open','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(192,'reif:r:tail-left-has-burnt',28,'instance','Reified: r:tail-left-has-burnt','Reified relation','reified: r:tail-left-has-burnt','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(193,'reif:r:brake-left-has-burnt',28,'instance','Reified: r:brake-left-has-burnt','Reified relation','reified: r:brake-left-has-burnt','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(194,'reif:r:fm-bulb-burnt-manifests-b1101',28,'instance','Reified: r:fm-bulb-burnt-manifests-b1101','Reified relation','reified: r:fm-bulb-burnt-manifests-b1101','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(195,'reif:r:fm-light-open-manifests-b1101',28,'instance','Reified: r:fm-light-open-manifests-b1101','Reified relation','reified: r:fm-light-open-manifests-b1101','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(196,'reif:r:knock-has-failed',28,'instance','Reified: r:knock-has-failed','Reified relation','reified: r:knock-has-failed','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(197,'reif:r:inj1-has-clogged',28,'instance','Reified: r:inj1-has-clogged','Reified relation','reified: r:inj1-has-clogged','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(198,'reif:r:inj1-has-open',28,'instance','Reified: r:inj1-has-open','Reified relation','reified: r:inj1-has-open','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(199,'reif:r:inj2-has-clogged',28,'instance','Reified: r:inj2-has-clogged','Reified relation','reified: r:inj2-has-clogged','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(200,'reif:r:inj3-has-clogged',28,'instance','Reified: r:inj3-has-clogged','Reified relation','reified: r:inj3-has-clogged','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(201,'reif:r:inj4-has-clogged',28,'instance','Reified: r:inj4-has-clogged','Reified relation','reified: r:inj4-has-clogged','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(202,'reif:r:fp-has-weak',28,'instance','Reified: r:fp-has-weak','Reified relation','reified: r:fp-has-weak','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(203,'reif:r:fp-has-dead',28,'instance','Reified: r:fp-has-dead','Reified relation','reified: r:fp-has-dead','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(204,'reif:r:iac-has-stuck',28,'instance','Reified: r:iac-has-stuck','Reified relation','reified: r:iac-has-stuck','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(205,'reif:r:iac-has-dirty',28,'instance','Reified: r:iac-has-dirty','Reified relation','reified: r:iac-has-dirty','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(206,'reif:r:throttle-has-stuck',28,'instance','Reified: r:throttle-has-stuck','Reified relation','reified: r:throttle-has-stuck','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(207,'reif:r:egr-has-open',28,'instance','Reified: r:egr-has-open','Reified relation','reified: r:egr-has-open','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(208,'reif:r:egr-has-closed',28,'instance','Reified: r:egr-has-closed','Reified relation','reified: r:egr-has-closed','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(209,'reif:r:fan-has-dead',28,'instance','Reified: r:fan-has-dead','Reified relation','reified: r:fan-has-dead','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(210,'reif:r:horn-has-dead',28,'instance','Reified: r:horn-has-dead','Reified relation','reified: r:horn-has-dead','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(211,'reif:r:wiper-has-dead',28,'instance','Reified: r:wiper-has-dead','Reified relation','reified: r:wiper-has-dead','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(212,'reif:r:window-fl-has-dead',28,'instance','Reified: r:window-fl-has-dead','Reified relation','reified: r:window-fl-has-dead','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(213,'reif:r:lock-fl-has-dead',28,'instance','Reified: r:lock-fl-has-dead','Reified relation','reified: r:lock-fl-has-dead','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(214,'reif:r:fm-inj-clogged-p0201',28,'instance','Reified: r:fm-inj-clogged-p0201','Reified relation','reified: r:fm-inj-clogged-p0201','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(215,'reif:r:fm-inj-open-p0201',28,'instance','Reified: r:fm-inj-open-p0201','Reified relation','reified: r:fm-inj-open-p0201','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(216,'reif:r:fm-inj-short-p0201',28,'instance','Reified: r:fm-inj-short-p0201','Reified relation','reified: r:fm-inj-short-p0201','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(217,'reif:r:fm-fp-weak-p0230',28,'instance','Reified: r:fm-fp-weak-p0230','Reified relation','reified: r:fm-fp-weak-p0230','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(218,'reif:r:fm-fp-dead-p0231',28,'instance','Reified: r:fm-fp-dead-p0231','Reified relation','reified: r:fm-fp-dead-p0231','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(219,'reif:r:fm-iac-stuck-p0505',28,'instance','Reified: r:fm-iac-stuck-p0505','Reified relation','reified: r:fm-iac-stuck-p0505','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(220,'reif:r:fm-iac-dirty-p0507',28,'instance','Reified: r:fm-iac-dirty-p0507','Reified relation','reified: r:fm-iac-dirty-p0507','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(221,'reif:r:fm-throttle-p0121',28,'instance','Reified: r:fm-throttle-p0121','Reified relation','reified: r:fm-throttle-p0121','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(222,'reif:r:fm-egr-open-p0400',28,'instance','Reified: r:fm-egr-open-p0400','Reified relation','reified: r:fm-egr-open-p0400','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(223,'reif:r:fm-egr-closed-p0403',28,'instance','Reified: r:fm-egr-closed-p0403','Reified relation','reified: r:fm-egr-closed-p0403','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(224,'reif:r:fm-fan-p0480',28,'instance','Reified: r:fm-fan-p0480','Reified relation','reified: r:fm-fan-p0480','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(225,'reif:r:fm-purge-p0440',28,'instance','Reified: r:fm-purge-p0440','Reified relation','reified: r:fm-purge-p0440','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(226,'reif:r:fm-coolant-diag-p0115',28,'instance','Reified: r:fm-coolant-diag-p0115','Reified relation','reified: r:fm-coolant-diag-p0115','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(227,'reif:r:diag-coolant-test-signal',28,'instance','Reified: r:diag-coolant-test-signal','Reified relation','reified: r:diag-coolant-test-signal','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(228,'reif:r:diag-coolant-test-wire',28,'instance','Reified: r:diag-coolant-test-wire','Reified relation','reified: r:diag-coolant-test-wire','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(229,'reif:r:diag-coolant-resolved',28,'instance','Reified: r:diag-coolant-resolved','Reified relation','reified: r:diag-coolant-resolved','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(230,'reif:r:proc-coolant-repair',28,'instance','Reified: r:proc-coolant-repair','Reified relation','reified: r:proc-coolant-repair','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(231,'reif:r:repair-coolant-on-vehicle',28,'instance','Reified: r:repair-coolant-on-vehicle','Reified relation','reified: r:repair-coolant-on-vehicle','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(232,'reif:r:fm-o2-old-diag-p0130',28,'instance','Reified: r:fm-o2-old-diag-p0130','Reified relation','reified: r:fm-o2-old-diag-p0130','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(233,'reif:r:diag-o2-test-voltage',28,'instance','Reified: r:diag-o2-test-voltage','Reified relation','reified: r:diag-o2-test-voltage','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(234,'reif:r:diag-o2-test-heater',28,'instance','Reified: r:diag-o2-test-heater','Reified relation','reified: r:diag-o2-test-heater','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(235,'reif:r:diag-o2-resolved',28,'instance','Reified: r:diag-o2-resolved','Reified relation','reified: r:diag-o2-resolved','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(236,'reif:r:proc-o2-repair',28,'instance','Reified: r:proc-o2-repair','Reified relation','reified: r:proc-o2-repair','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(237,'reif:r:repair-o2-on-vehicle',28,'instance','Reified: r:repair-o2-on-vehicle','Reified relation','reified: r:repair-o2-on-vehicle','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(238,'reif:r:fm-iac-diag-p0505',28,'instance','Reified: r:fm-iac-diag-p0505','Reified relation','reified: r:fm-iac-diag-p0505','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(239,'reif:r:diag-iac-test-resistance',28,'instance','Reified: r:diag-iac-test-resistance','Reified relation','reified: r:diag-iac-test-resistance','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(240,'reif:r:diag-iac-test-movement',28,'instance','Reified: r:diag-iac-test-movement','Reified relation','reified: r:diag-iac-test-movement','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(241,'reif:r:diag-iac-resolved-clean',28,'instance','Reified: r:diag-iac-resolved-clean','Reified relation','reified: r:diag-iac-resolved-clean','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(242,'reif:r:diag-iac-resolved-replace',28,'instance','Reified: r:diag-iac-resolved-replace','Reified relation','reified: r:diag-iac-resolved-replace','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(243,'reif:r:proc-iac-clean-repair',28,'instance','Reified: r:proc-iac-clean-repair','Reified relation','reified: r:proc-iac-clean-repair','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(244,'reif:r:proc-iac-replace-repair',28,'instance','Reified: r:proc-iac-replace-repair','Reified relation','reified: r:proc-iac-replace-repair','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(245,'reif:r:repair-iac-clean-vehicle',28,'instance','Reified: r:repair-iac-clean-vehicle','Reified relation','reified: r:repair-iac-clean-vehicle','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(246,'reif:r:repair-iac-replace-vehicle',28,'instance','Reified: r:repair-iac-replace-vehicle','Reified relation','reified: r:repair-iac-replace-vehicle','','active',2,'2026-09-29 23:27:50','2026-09-29 23:27:50');
+INSERT INTO e01_200_03_tb VALUES(247,'fm:random-misfire',46,'concept','جرقه تصادفی','از دست رفتن جرقه در چند سیلندر','جرقه تصادفی','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(248,'fm:cat-degraded',46,'concept','افت راندمان کاتالیست','کاهش قدرت تصفیه کاتالیست','افت راندمان کاتالیست','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(249,'dtc:P0420',13,'concept','P0420','افت راندمان کاتالیست','p0420','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(250,'diagnosis:p0300-misfire',19,'instance','تشخیص: جرقه تصادفی','از دست رفتن جرقه در چند سیلندر','تشخیص: جرقه تصادفی','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(251,'test:compression',47,'instance','تست کمپرسیون','اندازه‌گیری فشار تراکم سیلندرها','تست کمپرسیون','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(252,'test:spark-all',47,'instance','تست جرقه همه سیلندرها','بررسی جرقه در همه سیلندرها','تست جرقه همه سیلندرها','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(253,'procedure:check-coils',48,'instance','رویه: بررسی کوئل‌ها','بررسی همه کوئل‌ها و شمع‌ها','رویه: بررسی کوئل‌ها','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(254,'repair:coils-checked',20,'instance','تعمیر: کوئل‌ها بررسی شد','بررسی و رفع عیب کوئل‌ها','تعمیر: کوئل‌ها بررسی شد','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(255,'diagnosis:p0420-cat',19,'instance','تشخیص: کاتالیست معیوب','افت راندمان کاتالیست','تشخیص: کاتالیست معیوب','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(256,'test:o2-down-signal',47,'instance','تست سیگنال O2 پایین‌دست','بررسی نوسان سنسور بعد کاتالیست','تست سیگنال o2 پایین‌دست','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(257,'test:cat-temp',47,'instance','تست دمای کاتالیست','اندازه‌گیری دمای ورودی و خروجی','تست دمای کاتالیست','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(258,'procedure:replace-cat',48,'instance','رویه: تعویض کاتالیست','تعویض کامل کاتالیست','رویه: تعویض کاتالیست','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(259,'repair:cat-replaced',20,'instance','تعمیر: کاتالیست تعویض شد','تعویض کاتالیست انجام شد','تعمیر: کاتالیست تعویض شد','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(260,'diagnosis:p0121-throttle',19,'instance','تشخیص: عملگر دریچه گاز معیوب','خرابی عملگر دریچه گاز','تشخیص: عملگر دریچه گاز معیوب','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(261,'test:throttle-signal',47,'instance','تست سیگنال دریچه','بررسی سیگنال موقعیت دریچه','تست سیگنال دریچه','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(262,'test:throttle-movement',47,'instance','تست حرکت دریچه','بررسی حرکت مکانیکی دریچه','تست حرکت دریچه','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(263,'procedure:replace-throttle',48,'instance','رویه: تعویض دریچه گاز','تعویض کامل مجموعه دریچه گاز','رویه: تعویض دریچه گاز','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(264,'repair:throttle-replaced',20,'instance','تعمیر: دریچه گاز تعویض شد','تعویض دریچه انجام شد','تعمیر: دریچه گاز تعویض شد','','active',2,'2026-09-29 23:30:40','2026-09-29 23:30:40');
+INSERT INTO e01_200_03_tb VALUES(265,'reif:r:fm-random-diag',28,'instance','Reified: r:fm-random-diag','Reified relation','reified: r:fm-random-diag','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(266,'reif:r:diag-p0300-test-comp',28,'instance','Reified: r:diag-p0300-test-comp','Reified relation','reified: r:diag-p0300-test-comp','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(267,'reif:r:diag-p0300-test-spark',28,'instance','Reified: r:diag-p0300-test-spark','Reified relation','reified: r:diag-p0300-test-spark','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(268,'reif:r:diag-p0300-proc',28,'instance','Reified: r:diag-p0300-proc','Reified relation','reified: r:diag-p0300-proc','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(269,'reif:r:proc-coils-repair',28,'instance','Reified: r:proc-coils-repair','Reified relation','reified: r:proc-coils-repair','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(270,'reif:r:repair-coils-veh',28,'instance','Reified: r:repair-coils-veh','Reified relation','reified: r:repair-coils-veh','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(271,'reif:r:fm-random-manifests-p0300',28,'instance','Reified: r:fm-random-manifests-p0300','Reified relation','reified: r:fm-random-manifests-p0300','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(272,'reif:r:fm-cat-diag',28,'instance','Reified: r:fm-cat-diag','Reified relation','reified: r:fm-cat-diag','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(273,'reif:r:diag-p0420-test-o2',28,'instance','Reified: r:diag-p0420-test-o2','Reified relation','reified: r:diag-p0420-test-o2','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(274,'reif:r:diag-p0420-test-temp',28,'instance','Reified: r:diag-p0420-test-temp','Reified relation','reified: r:diag-p0420-test-temp','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(275,'reif:r:diag-p0420-proc',28,'instance','Reified: r:diag-p0420-proc','Reified relation','reified: r:diag-p0420-proc','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(276,'reif:r:proc-cat-repair',28,'instance','Reified: r:proc-cat-repair','Reified relation','reified: r:proc-cat-repair','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(277,'reif:r:repair-cat-veh',28,'instance','Reified: r:repair-cat-veh','Reified relation','reified: r:repair-cat-veh','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(278,'reif:r:fm-cat-manifests-p0420',28,'instance','Reified: r:fm-cat-manifests-p0420','Reified relation','reified: r:fm-cat-manifests-p0420','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(279,'reif:r:fm-throttle-diag',28,'instance','Reified: r:fm-throttle-diag','Reified relation','reified: r:fm-throttle-diag','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(280,'reif:r:diag-p0121-test-sig',28,'instance','Reified: r:diag-p0121-test-sig','Reified relation','reified: r:diag-p0121-test-sig','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(281,'reif:r:diag-p0121-test-move',28,'instance','Reified: r:diag-p0121-test-move','Reified relation','reified: r:diag-p0121-test-move','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(282,'reif:r:diag-p0121-proc',28,'instance','Reified: r:diag-p0121-proc','Reified relation','reified: r:diag-p0121-proc','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(283,'reif:r:proc-throttle-repair',28,'instance','Reified: r:proc-throttle-repair','Reified relation','reified: r:proc-throttle-repair','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(284,'reif:r:repair-throttle-veh',28,'instance','Reified: r:repair-throttle-veh','Reified relation','reified: r:repair-throttle-veh','','active',2,'2026-09-29 23:31:27','2026-09-29 23:31:27');
+INSERT INTO e01_200_03_tb VALUES(285,'vehicle:pride-1',152,'instance','پراید','خودروی سواری پراید — موتور ۱.۳ لیتر','پراید','','active',2,'2026-09-29 23:34:20','2026-09-29 23:34:20');
+INSERT INTO e01_200_03_tb VALUES(286,'vehicle:206-1',153,'instance','پژو ۲۰۶','خودروی سواری پژو ۲۰۶ — موتور ۱.۴ لیتر','پژو ۲۰۶','','active',2,'2026-09-29 23:34:20','2026-09-29 23:34:20');
+INSERT INTO e01_200_03_tb VALUES(287,'vehicle:dena-1',154,'instance','دنا','خودروی سواری دنا — موتور ۱.۷ لیتر','دنا','','active',2,'2026-09-29 23:34:20','2026-09-29 23:34:20');
+INSERT INTO e01_200_03_tb VALUES(288,'battery:pride-66ah',77,'instance','باتری پراید','۶۶ آمپر','باتری پراید','','active',2,'2026-09-29 23:34:20','2026-09-29 23:34:20');
+INSERT INTO e01_200_03_tb VALUES(289,'battery:206-60ah',77,'instance','باتری ۲۰۶','۶۰ آمپر','باتری ۲۰۶','','active',2,'2026-09-29 23:34:20','2026-09-29 23:34:20');
+INSERT INTO e01_200_03_tb VALUES(290,'battery:dena-74ah',77,'instance','باتری دنا','۷۴ آمپر','باتری دنا','','active',2,'2026-09-29 23:34:20','2026-09-29 23:34:20');
+INSERT INTO e01_200_03_tb VALUES(291,'ecu:pride-sagem',79,'instance','ECU پراید ساگم','ECU موتور پراید','ecu پراید ساگم','','active',2,'2026-09-29 23:34:20','2026-09-29 23:34:20');
+INSERT INTO e01_200_03_tb VALUES(292,'ecu:206-magneti',79,'instance','ECU ۲۰۶ مگنتی مارلی','ECU موتور ۲۰۶','ecu ۲۰۶ مگنتی مارلی','','active',2,'2026-09-29 23:34:20','2026-09-29 23:34:20');
+INSERT INTO e01_200_03_tb VALUES(293,'ecu:dena-mefi',79,'instance','ECU دنا MEFI','ECU موتور دنا','ecu دنا mefi','','active',2,'2026-09-29 23:34:20','2026-09-29 23:34:20');
+INSERT INTO e01_200_03_tb VALUES(294,'coil:pride-double',35,'instance','کوئل پراید','کوئل دوبل','کوئل پراید','','active',2,'2026-09-29 23:34:20','2026-09-29 23:34:20');
+INSERT INTO e01_200_03_tb VALUES(295,'coil:206-double',35,'instance','کوئل ۲۰۶','کوئل دوبل','کوئل ۲۰۶','','active',2,'2026-09-29 23:34:20','2026-09-29 23:34:20');
+INSERT INTO e01_200_03_tb VALUES(296,'alternator:pride-70a',74,'instance','دینام پراید','۷۰ آمپر','دینام پراید','','active',2,'2026-09-29 23:34:20','2026-09-29 23:34:20');
+INSERT INTO e01_200_03_tb VALUES(297,'alternator:206-90a',74,'instance','دینام ۲۰۶','۹۰ آمپر','دینام ۲۰۶','','active',2,'2026-09-29 23:34:20','2026-09-29 23:34:20');
+INSERT INTO e01_200_03_tb VALUES(298,'starter:pride-1kw',69,'instance','استارت پراید','۱ کیلووات','استارت پراید','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(299,'sensor:pride-crank',30,'instance','سنسور دور موتور پراید','میل‌لنگ','سنسور دور موتور پراید','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(300,'sensor:pride-o2',34,'instance','سنسور اکسیژن پراید','بالادست','سنسور اکسیژن پراید','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(301,'sensor:pride-coolant',33,'instance','سنسور دمای پراید','آب','سنسور دمای پراید','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(302,'sensor:pride-maf',121,'instance','MAF پراید','دبی هوا','maf پراید','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(303,'injector:pride-1',36,'instance','انژکتور پراید ۱','سیلندر ۱','انژکتور پراید ۱','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(304,'relay:pride-main',40,'instance','رله اصلی پراید','رله','رله اصلی پراید','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(305,'fuse:pride-15a',41,'instance','فیوز پراید','۱۵ آمپر','فیوز پراید','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(306,'bus:pride-can',87,'instance','CAN پراید','شبکه','can پراید','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(307,'starter:206-1.4kw',69,'instance','استارت ۲۰۶','۱.۴ کیلووات','استارت ۲۰۶','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(308,'sensor:206-crank',30,'instance','سنسور دور موتور ۲۰۶','میل‌لنگ','سنسور دور موتور ۲۰۶','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(309,'sensor:206-o2',34,'instance','سنسور اکسیژن ۲۰۶','بالادست','سنسور اکسیژن ۲۰۶','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(310,'sensor:206-coolant',33,'instance','سنسور دمای ۲۰۶','آب','سنسور دمای ۲۰۶','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(311,'sensor:206-maf',121,'instance','MAF ۲۰۶','دبی هوا','maf ۲۰۶','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(312,'injector:206-1',36,'instance','انژکتور ۲۰۶ ۱','سیلندر ۱','انژکتور ۲۰۶ ۱','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(313,'relay:206-main',40,'instance','رله اصلی ۲۰۶','رله','رله اصلی ۲۰۶','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(314,'fuse:206-15a',41,'instance','فیوز ۲۰۶','۱۵ آمپر','فیوز ۲۰۶','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(315,'bus:206-can',87,'instance','CAN ۲۰۶','شبکه','can ۲۰۶','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(316,'starter:dena-1.4kw',69,'instance','استارت دنا','۱.۴ کیلووات','استارت دنا','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(317,'sensor:dena-crank',30,'instance','سنسور دور موتور دنا','میل‌لنگ','سنسور دور موتور دنا','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(318,'sensor:dena-o2',34,'instance','سنسور اکسیژن دنا','بالادست','سنسور اکسیژن دنا','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(319,'sensor:dena-coolant',33,'instance','سنسور دمای دنا','آب','سنسور دمای دنا','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(320,'sensor:dena-maf',121,'instance','MAF دنا','دبی هوا','maf دنا','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(321,'injector:dena-1',36,'instance','انژکتور دنا ۱','سیلندر ۱','انژکتور دنا ۱','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(322,'relay:dena-main',40,'instance','رله اصلی دنا','رله','رله اصلی دنا','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(323,'fuse:dena-15a',41,'instance','فیوز دنا','۱۵ آمپر','فیوز دنا','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(324,'bus:dena-can',87,'instance','CAN دنا','شبکه','can دنا','','active',2,'2026-09-29 23:35:46','2026-09-29 23:35:46');
+INSERT INTO e01_200_03_tb VALUES(325,'concept:battery',39,'concept','باتری','هر باتری خودرویی','باتری','','active',2,'2026-09-29 23:45:54','2026-09-29 23:45:54');
+INSERT INTO e01_200_03_tb VALUES(326,'concept:alternator',74,'concept','دینام','هر دینام خودرویی','دینام','','active',2,'2026-09-29 23:45:54','2026-09-29 23:45:54');
+INSERT INTO e01_200_03_tb VALUES(327,'concept:starter',69,'concept','استارت','هر استارت خودرویی','استارت','','active',2,'2026-09-29 23:45:54','2026-09-29 23:45:54');
+INSERT INTO e01_200_03_tb VALUES(328,'concept:engine-ecu',79,'concept','ECU موتور','هر ECU موتور','ecu موتور','','active',2,'2026-09-29 23:45:54','2026-09-29 23:45:54');
+INSERT INTO e01_200_03_tb VALUES(329,'concept:ignition-coil',35,'concept','کوئل','هر کوئل جرقه','کوئل','','active',2,'2026-09-29 23:45:54','2026-09-29 23:45:54');
+INSERT INTO e01_200_03_tb VALUES(330,'concept:injector',36,'concept','انژکتور','هر انژکتور بنزینی','انژکتور','','active',2,'2026-09-29 23:45:54','2026-09-29 23:45:54');
+INSERT INTO e01_200_03_tb VALUES(331,'concept:o2-sensor',34,'concept','سنسور اکسیژن','هر سنسور O2','سنسور اکسیژن','','active',2,'2026-09-29 23:45:54','2026-09-29 23:45:54');
+INSERT INTO e01_200_03_tb VALUES(332,'concept:maf-sensor',121,'concept','سنسور دبی هوا','هر سنسور MAF','سنسور دبی هوا','','active',2,'2026-09-29 23:45:54','2026-09-29 23:45:54');
+INSERT INTO e01_200_03_tb VALUES(333,'concept:crankshaft-sensor',30,'concept','سنسور دور موتور','هر سنسور میل‌لنگ','سنسور دور موتور','','active',2,'2026-09-29 23:45:54','2026-09-29 23:45:54');
+INSERT INTO e01_200_03_tb VALUES(334,'concept:coolant-sensor',33,'concept','سنسور دمای آب','هر سنسور دمای خنک‌کننده','سنسور دمای آب','','active',2,'2026-09-29 23:45:54','2026-09-29 23:45:54');
+INSERT INTO e01_200_03_tb VALUES(335,'concept:relay',40,'concept','رله','هر رله برقی','رله','','active',2,'2026-09-29 23:45:54','2026-09-29 23:45:54');
+INSERT INTO e01_200_03_tb VALUES(336,'concept:fuse',41,'concept','فیوز','هر فیوز برقی','فیوز','','active',2,'2026-09-29 23:45:54','2026-09-29 23:45:54');
+INSERT INTO e01_200_03_tb VALUES(337,'concept:can-bus',87,'concept','شبکه CAN','هر شبکه CAN','شبکه can','','active',2,'2026-09-29 23:45:54','2026-09-29 23:45:54');
+INSERT INTO e01_200_03_tb VALUES(338,'concept:vehicle',1,'concept','وسیله نقلیه','هر وسیله نقلیه','وسیله نقلیه','','active',2,'2026-09-29 23:47:26','2026-09-29 23:47:26');
+INSERT INTO e01_200_03_tb VALUES(339,'concept:passenger-car',151,'concept','خودرو سواری','هر خودرو سواری','خودرو سواری','','active',2,'2026-09-29 23:47:26','2026-09-29 23:47:26');
+INSERT INTO e01_200_03_tb VALUES(340,'concept:pride',152,'concept','پراید','مفهوم پراید','پراید','','active',2,'2026-09-29 23:47:26','2026-09-29 23:47:26');
+INSERT INTO e01_200_03_tb VALUES(341,'concept:206',153,'concept','پژو ۲۰۶','مفهوم پژو ۲۰۶','پژو ۲۰۶','','active',2,'2026-09-29 23:47:26','2026-09-29 23:47:26');
+INSERT INTO e01_200_03_tb VALUES(342,'concept:dena',154,'concept','دنا','مفهوم دنا','دنا','','active',2,'2026-09-29 23:47:26','2026-09-29 23:47:26');
+INSERT INTO e01_200_03_tb VALUES(343,'concept:brake-master',159,'concept','پمپ ترمز','هر پمپ ترمز','پمپ ترمز','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(344,'concept:brake-booster',160,'concept','بوستر ترمز','هر بوستر ترمز','بوستر ترمز','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(345,'concept:brake-disc',161,'concept','دیسک ترمز','هر دیسک ترمز','دیسک ترمز','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(346,'concept:brake-pad',162,'concept','لنت ترمز','هر لنت ترمز','لنت ترمز','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(347,'concept:brake-caliper',163,'concept','کالیپر ترمز','هر کالیپر','کالیپر ترمز','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(348,'concept:brake-fluid',164,'concept','روغن ترمز','هر روغن ترمز','روغن ترمز','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(349,'concept:brake-line',165,'concept','لوله ترمز','هر لوله ترمز','لوله ترمز','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(350,'concept:steering-wheel',166,'concept','فلکه فرمان','هر فلکه فرمان','فلکه فرمان','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(351,'concept:steering-column',167,'concept','ستون فرمان','هر ستون فرمان','ستون فرمان','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(352,'concept:steering-rack',168,'concept','جعبه فرمان','هر جعبه فرمان','جعبه فرمان','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(353,'concept:power-steering',169,'concept','پمپ هیدرولیک فرمان','هر پمپ هیدرولیک','پمپ هیدرولیک فرمان','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(354,'concept:tie-rod',170,'concept','میل موجی فرمان','هر میل موجی','میل موجی فرمان','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(355,'concept:coil-spring',171,'concept','فنر لول','هر فنر لول','فنر لول','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(356,'concept:shock-absorber',172,'concept','کمک فنر','هر کمک فنر','کمک فنر','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(357,'concept:control-arm',173,'concept','طبق','هر طبق','طبق','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(358,'concept:ball-joint',174,'concept','سیبک چرخ','هر سیبک چرخ','سیبک چرخ','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(359,'concept:bushing',175,'concept','بوش','هر بوش','بوش','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(360,'concept:ac-compressor',176,'concept','کمپرسور کولر','هر کمپرسور کولر','کمپرسور کولر','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(361,'concept:ac-condenser',177,'concept','کندانسور کولر','هر کندانسور کولر','کندانسور کولر','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(362,'concept:ac-expansion',178,'concept','شیر انبساط کولر','هر شیر انبساط','شیر انبساط کولر','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(363,'concept:ac-refrigerant',179,'concept','گاز کولر','هر گاز کولر','گاز کولر','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(364,'concept:blower-motor',180,'concept','فن بخاری','هر فن بخاری','فن بخاری','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(365,'concept:cabin-filter',181,'concept','فیلتر کابین','هر فیلتر کابین','فیلتر کابین','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(366,'concept:heater-core',182,'concept','رادیاتور بخاری','هر رادیاتور بخاری','رادیاتور بخاری','','active',2,'2026-09-30 00:01:12','2026-09-30 00:01:12');
+INSERT INTO e01_200_03_tb VALUES(367,'concept:405',183,'concept','پژو ۴۰۵','مفهوم پژو ۴۰۵','پژو ۴۰۵','','active',2,'2026-09-30 00:02:56','2026-09-30 00:02:56');
+INSERT INTO e01_200_03_tb VALUES(368,'concept:samand',184,'concept','سمند','مفهوم سمند','سمند','','active',2,'2026-09-30 00:02:56','2026-09-30 00:02:56');
+INSERT INTO e01_200_03_tb VALUES(369,'concept:tiba',185,'concept','تیبا','مفهوم تیبا','تیبا','','active',2,'2026-09-30 00:02:56','2026-09-30 00:02:56');
+INSERT INTO e01_200_03_tb VALUES(370,'concept:quick',186,'concept','کوییک','مفهوم کوییک','کوییک','','active',2,'2026-09-30 00:02:56','2026-09-30 00:02:56');
+INSERT INTO e01_200_03_tb VALUES(371,'concept:shahin',187,'concept','شاهین','مفهوم شاهین','شاهین','','active',2,'2026-09-30 00:02:56','2026-09-30 00:02:56');
+INSERT INTO e01_200_03_tb VALUES(372,'vehicle:405-1',183,'instance','پژو ۴۰۵ نمونه','پژو ۴۰۵ — موتور ۱.۸ لیتر','پژو ۴۰۵ نمونه','','active',2,'2026-09-30 00:02:56','2026-09-30 00:02:56');
+INSERT INTO e01_200_03_tb VALUES(373,'vehicle:samand-1',184,'instance','سمند نمونه','سمند — موتور ۱.۸ لیتر','سمند نمونه','','active',2,'2026-09-30 00:02:56','2026-09-30 00:02:56');
+INSERT INTO e01_200_03_tb VALUES(374,'vehicle:tiba-1',185,'instance','تیبا نمونه','تیبا — موتور ۱.۵ لیتر','تیبا نمونه','','active',2,'2026-09-30 00:02:56','2026-09-30 00:02:56');
+INSERT INTO e01_200_03_tb VALUES(375,'vehicle:quick-1',186,'instance','کوییک نمونه','کوییک — موتور ۱.۵ لیتر','کوییک نمونه','','active',2,'2026-09-30 00:02:56','2026-09-30 00:02:56');
+INSERT INTO e01_200_03_tb VALUES(376,'vehicle:shahin-1',187,'instance','شاهین نمونه','شاهین — موتور ۱.۵ توربو','شاهین نمونه','','active',2,'2026-09-30 00:02:56','2026-09-30 00:02:56');
+INSERT INTO e01_200_03_tb VALUES(377,'part:pride-brake-pad',162,'instance','لنت جلو پراید','قطعه اختصاصی — پراید','لنت جلو پراید','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(378,'part:pride-shock-absorber',172,'instance','کمک‌فنر جلو پراید','قطعه اختصاصی — پراید','کمک‌فنر جلو پراید','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(379,'part:pride-ac-compressor',176,'instance','کمپرسور کولر پراید','قطعه اختصاصی — پراید','کمپرسور کولر پراید','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(380,'part:206-brake-pad',162,'instance','لنت جلو پژو ۲۰۶','قطعه اختصاصی — پژو ۲۰۶','لنت جلو پژو ۲۰۶','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(381,'part:206-shock-absorber',172,'instance','کمک‌فنر جلو پژو ۲۰۶','قطعه اختصاصی — پژو ۲۰۶','کمک‌فنر جلو پژو ۲۰۶','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(382,'part:206-ac-compressor',176,'instance','کمپرسور کولر پژو ۲۰۶','قطعه اختصاصی — پژو ۲۰۶','کمپرسور کولر پژو ۲۰۶','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(383,'part:405-brake-pad',162,'instance','لنت جلو پژو ۴۰۵','قطعه اختصاصی — پژو ۴۰۵','لنت جلو پژو ۴۰۵','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(384,'part:405-shock-absorber',172,'instance','کمک‌فنر جلو پژو ۴۰۵','قطعه اختصاصی — پژو ۴۰۵','کمک‌فنر جلو پژو ۴۰۵','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(385,'part:405-ac-compressor',176,'instance','کمپرسور کولر پژو ۴۰۵','قطعه اختصاصی — پژو ۴۰۵','کمپرسور کولر پژو ۴۰۵','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(386,'part:dena-brake-pad',162,'instance','لنت جلو دنا','قطعه اختصاصی — دنا','لنت جلو دنا','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(387,'part:dena-shock-absorber',172,'instance','کمک‌فنر جلو دنا','قطعه اختصاصی — دنا','کمک‌فنر جلو دنا','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(388,'part:dena-ac-compressor',176,'instance','کمپرسور کولر دنا','قطعه اختصاصی — دنا','کمپرسور کولر دنا','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(389,'part:tiba-brake-pad',162,'instance','لنت جلو تیبا','قطعه اختصاصی — تیبا','لنت جلو تیبا','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(390,'part:tiba-shock-absorber',172,'instance','کمک‌فنر جلو تیبا','قطعه اختصاصی — تیبا','کمک‌فنر جلو تیبا','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(391,'part:tiba-ac-compressor',176,'instance','کمپرسور کولر تیبا','قطعه اختصاصی — تیبا','کمپرسور کولر تیبا','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(392,'part:quick-brake-pad',162,'instance','لنت جلو کوییک','قطعه اختصاصی — کوییک','لنت جلو کوییک','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(393,'part:quick-shock-absorber',172,'instance','کمک‌فنر جلو کوییک','قطعه اختصاصی — کوییک','کمک‌فنر جلو کوییک','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(394,'part:quick-ac-compressor',176,'instance','کمپرسور کولر کوییک','قطعه اختصاصی — کوییک','کمپرسور کولر کوییک','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(395,'part:samand-brake-pad',162,'instance','لنت جلو سمند','قطعه اختصاصی — سمند','لنت جلو سمند','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(396,'part:samand-shock-absorber',172,'instance','کمک‌فنر جلو سمند','قطعه اختصاصی — سمند','کمک‌فنر جلو سمند','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(397,'part:samand-ac-compressor',176,'instance','کمپرسور کولر سمند','قطعه اختصاصی — سمند','کمپرسور کولر سمند','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(398,'part:shahin-brake-pad',162,'instance','لنت جلو شاهین','قطعه اختصاصی — شاهین','لنت جلو شاهین','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(399,'part:shahin-shock-absorber',172,'instance','کمک‌فنر جلو شاهین','قطعه اختصاصی — شاهین','کمک‌فنر جلو شاهین','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(400,'part:shahin-ac-compressor',176,'instance','کمپرسور کولر شاهین','قطعه اختصاصی — شاهین','کمپرسور کولر شاهین','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(401,'part:sample-brake-pad',162,'instance','لنت جلو نمونه','قطعه اختصاصی — نمونه','لنت جلو نمونه','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(402,'part:sample-shock-absorber',172,'instance','کمک‌فنر جلو نمونه','قطعه اختصاصی — نمونه','کمک‌فنر جلو نمونه','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(403,'part:sample-ac-compressor',176,'instance','کمپرسور کولر نمونه','قطعه اختصاصی — نمونه','کمپرسور کولر نمونه','','active',2,'2026-09-30 00:06:37','2026-09-30 00:06:37');
+INSERT INTO e01_200_03_tb VALUES(404,'fm:brake-pad-worn',46,'concept','سایش لنت ترمز','لنت به حد مجاز رسیده','سایش لنت ترمز','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(405,'fm:brake-fluid-low',46,'concept','کمبود روغن ترمز','سطح روغن پایین','کمبود روغن ترمز','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(406,'fm:brake-disc-warped',46,'concept','تاب برداشتن دیسک','دیسک ترمز خم شده','تاب برداشتن دیسک','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(407,'fm:brake-caliper-stuck',46,'concept','گیر کردن کالیپر','کالیپر آزاد نمی‌شود','گیر کردن کالیپر','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(408,'fm:brake-line-leak',46,'concept','نشت لوله ترمز','نشتی در مدار روغن','نشت لوله ترمز','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(411,'dtc:C0110',13,'concept','C0110','خرابی پمپ ترمز ABS','c0110','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(412,'dtc:C0265',13,'concept','C0265','خرابی رله پمپ ABS','c0265','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(413,'diagnosis:c0035-pad',19,'instance','تشخیص: لنت فرسوده','سایش بیش از حد لنت ترمز','تشخیص: لنت فرسوده','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(414,'diagnosis:c0110-pump',19,'instance','تشخیص: پمپ ABS خراب','پمپ کار نمی‌کند','تشخیص: پمپ abs خراب','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(415,'test:pad-thickness',47,'instance','تست ضخامت لنت','اندازه‌گیری ضخامت لنت','تست ضخامت لنت','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(416,'test:brake-fluid',47,'instance','تست روغن ترمز','بررسی سطح و کیفیت روغن','تست روغن ترمز','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(417,'test:brake-pressure',47,'instance','تست فشار ترمز','اندازه‌گیری فشار مدار','تست فشار ترمز','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(418,'test:abs-light',47,'instance','تست چراغ ABS','بررسی روشن شدن چراغ','تست چراغ abs','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(419,'procedure:replace-pad',48,'instance','رویه: تعویض لنت','تعویض لنت‌های جلو','رویه: تعویض لنت','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(420,'procedure:replace-fluid',48,'instance','رویه: تعویض روغن ترمز','تعویض و هواگیری روغن ترمز','رویه: تعویض روغن ترمز','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(421,'procedure:replace-disc',48,'instance','رویه: تعویض دیسک','تعویض دیسک ترمز','رویه: تعویض دیسک','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(422,'procedure:repair-caliper',48,'instance','رویه: تعمیر کالیپر','تمیز و روغن‌کاری کالیپر','رویه: تعمیر کالیپر','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(423,'procedure:replace-pump',48,'instance','رویه: تعویض پمپ ABS','تعویض پمپ ترمز ABS','رویه: تعویض پمپ abs','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(424,'repair:pad-replaced',20,'instance','تعمیر: لنت تعویض شد','لنت ترمز جلو تعویض شد','تعمیر: لنت تعویض شد','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(425,'repair:fluid-replaced',20,'instance','تعمیر: روغن ترمز تعویض شد','روغن و هواگیری انجام شد','تعمیر: روغن ترمز تعویض شد','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(426,'repair:disc-replaced',20,'instance','تعمیر: دیسک تعویض شد','دیسک ترمز تعویض شد','تعمیر: دیسک تعویض شد','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(427,'repair:caliper-fixed',20,'instance','تعمیر: کالیپر تعمیر شد','کالیپر تمیز و آزاد شد','تعمیر: کالیپر تعمیر شد','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(428,'repair:pump-replaced',20,'instance','تعمیر: پمپ ABS تعویض شد','پمپ ABS تعویض شد','تعمیر: پمپ abs تعویض شد','','active',2,'2026-09-30 00:09:36','2026-09-30 00:09:36');
+INSERT INTO e01_200_03_tb VALUES(429,'fm:ac-no-cold',46,'concept','کولر سرد نمی‌کند','دمای خروجی بالا','کولر سرد نمی‌کند','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(430,'fm:ac-refrigerant-low',46,'concept','کمبود گاز کولر','نشتی یا کمبود شارژ','کمبود گاز کولر','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(431,'fm:ac-compressor-dead',46,'concept','خرابی کمپرسور کولر','کمپرسور کار نمی‌کند','خرابی کمپرسور کولر','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(432,'fm:ac-clutch-fail',46,'concept','خرابی کلاچ کولر','کلاچ درگیر نمی‌شود','خرابی کلاچ کولر','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(433,'fm:blower-dead',46,'concept','خرابی فن کابین','فن کابین کار نمی‌کند','خرابی فن کابین','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(434,'fm:heater-no-hot',46,'concept','بخاری گرم نمی‌کند','رادیاتور بخاری یا شیر گرم','بخاری گرم نمی‌کند','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(435,'fm:cabin-filter-clog',46,'concept','گرفتگی فیلتر کابین','هوای کم یا بوی بد','گرفتگی فیلتر کابین','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(436,'fm:expansion-valve-clog',46,'concept','گرفتگی شیر انبساط','جریان گاز محدود','گرفتگی شیر انبساط','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(437,'dtc:B1421',13,'concept','B1421','خرابی سنسور فشار کولر','b1421','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(438,'dtc:B1422',13,'concept','B1422','خرابی کمپرسور کولر','b1422','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(439,'dtc:B1423',13,'concept','B1423','نشتی گاز کولر','b1423','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(440,'dtc:B1424',13,'concept','B1424','خرابی فن کابین','b1424','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(441,'dtc:B1425',13,'concept','B1425','خرابی رادیاتور بخاری','b1425','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(442,'diagnosis:b1421-pressure',19,'instance','تشخیص: فشار گاز پایین','فشار گاز کولر پایین است','تشخیص: فشار گاز پایین','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(443,'diagnosis:b1422-comp',19,'instance','تشخیص: کمپرسور معیوب','کمپرسور کار نمی‌کند','تشخیص: کمپرسور معیوب','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(444,'diagnosis:b1424-blower',19,'instance','تشخیص: فن کابین معیوب','فن نمی‌چرخد','تشخیص: فن کابین معیوب','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(445,'diagnosis:b1425-heater',19,'instance','تشخیص: بخاری معیوب','رادیاتور بخاری گرفتگی دارد','تشخیص: بخاری معیوب','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(446,'test:ac-pressure-low',47,'instance','تست فشار پایین','فشار سمت کم‌فشار','تست فشار پایین','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(447,'test:ac-pressure-high',47,'instance','تست فشار بالا','فشار سمت پرفشار','تست فشار بالا','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(448,'test:ac-clutch-power',47,'instance','تست برق کلاچ','ولتاژ روی کلاچ کمپرسور','تست برق کلاچ','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(449,'test:ac-temp-output',47,'instance','تست دمای خروجی','اندازه‌گیری دمای دریچه کولر','تست دمای خروجی','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(450,'test:blower-motor',47,'instance','تست موتور فن','چرخش فن در سرعت‌های مختلف','تست موتور فن','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(451,'test:cabin-filter',47,'instance','تست فیلتر کابین','بررسی گرفتگی فیلتر','تست فیلتر کابین','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(452,'test:heater-core',47,'instance','تست رادیاتور بخاری','دمای ورودی و خروجی','تست رادیاتور بخاری','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(453,'test:expansion-valve',47,'instance','تست شیر انبساط','جریان گاز در شیر','تست شیر انبساط','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(454,'procedure:recharge-ac',48,'instance','رویه: شارژ گاز کولر','شارژ مجدد گاز کولر','رویه: شارژ گاز کولر','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(455,'procedure:leak-test',48,'instance','رویه: تست نشتی گاز','پیدا کردن محل نشتی','رویه: تست نشتی گاز','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(456,'procedure:replace-comp',48,'instance','رویه: تعویض کمپرسور','تعویض کامل کمپرسور','رویه: تعویض کمپرسور','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(457,'procedure:replace-clutch',48,'instance','رویه: تعویض کلاچ','تعویض کلاچ کمپرسور','رویه: تعویض کلاچ','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(458,'procedure:replace-blower',48,'instance','رویه: تعویض فن کابین','تعویض موتور فن','رویه: تعویض فن کابین','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(459,'procedure:replace-filter',48,'instance','رویه: تعویض فیلتر کابین','تعویض فیلتر','رویه: تعویض فیلتر کابین','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(460,'procedure:replace-heater',48,'instance','رویه: تعویض رادیاتور بخاری','تعویض رادیاتور بخاری','رویه: تعویض رادیاتور بخاری','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(461,'procedure:clean-expansion',48,'instance','رویه: تمیزکاری شیر انبساط','تمیز کردن شیر','رویه: تمیزکاری شیر انبساط','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(462,'repair:ac-recharged',20,'instance','تعمیر: گاز شارژ شد','شارژ گاز انجام شد','تعمیر: گاز شارژ شد','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(463,'repair:comp-replaced',20,'instance','تعمیر: کمپرسور تعویض شد','کمپرسور جدید نصب شد','تعمیر: کمپرسور تعویض شد','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(464,'repair:clutch-replaced',20,'instance','تعمیر: کلاچ تعویض شد','کلاچ کمپرسور تعویض شد','تعمیر: کلاچ تعویض شد','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(465,'repair:blower-replaced',20,'instance','تعمیر: فن تعویض شد','موتور فن تعویض شد','تعمیر: فن تعویض شد','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(466,'repair:filter-replaced',20,'instance','تعمیر: فیلتر تعویض شد','فیلتر کابین تعویض شد','تعمیر: فیلتر تعویض شد','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(467,'repair:heater-replaced',20,'instance','تعمیر: رادیاتور بخاری تعویض شد','رادیاتور بخاری تعویض شد','تعمیر: رادیاتور بخاری تعویض شد','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(468,'repair:expansion-cleaned',20,'instance','تعمیر: شیر انبساط تمیز شد','شیر تمیز و آزاد شد','تعمیر: شیر انبساط تمیز شد','','active',2,'2026-09-30 00:12:28','2026-09-30 00:12:28');
+INSERT INTO e01_200_03_tb VALUES(469,'fm:steering-hard',46,'concept','سنگینی فرمان','فرمان به سختی می‌چرخد','سنگینی فرمان','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(470,'fm:steering-fluid-low',46,'concept','کمبود روغن هیدرولیک','سطح روغن پایین','کمبود روغن هیدرولیک','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(471,'fm:steering-pump-dead',46,'concept','خرابی پمپ هیدرولیک','پمپ کار نمی‌کند','خرابی پمپ هیدرولیک','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(472,'fm:steering-belt-slip',46,'concept','لغزش تسمه پمپ','تسمه سست یا فرسوده','لغزش تسمه پمپ','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(473,'fm:steering-rack-leak',46,'concept','نشتی جعبه فرمان','نشت روغن از جعبه','نشتی جعبه فرمان','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(474,'fm:steering-loose',46,'concept','لقی فرمان','بازی زیاد در فرمان','لقی فرمان','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(475,'fm:tie-rod-worn',46,'concept','فرسودگی میل موجی','سیبک سر میل شل شده','فرسودگی میل موجی','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(476,'fm:steering-noise',46,'concept','صدای تق تق فرمان','صدا در دست‌انداز','صدای تق تق فرمان','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(477,'dtc:U0100',13,'concept','U0100','از دست رفتن ارتباط ECU','u0100','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(478,'dtc:C1200',13,'concept','C1200','خرابی سنسور زاویه فرمان','c1200','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(479,'dtc:C1201',13,'concept','C1201','خرابی سنسور گشتاور فرمان','c1201','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(480,'dtc:C1202',13,'concept','C1202','خرابی موتور کمکی فرمان','c1202','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(481,'diagnosis:c1200-angle',19,'instance','تشخیص: سنسور زاویه معیوب','سنسور زاویه فرمان خراب','تشخیص: سنسور زاویه معیوب','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(482,'diagnosis:c1201-torque',19,'instance','تشخیص: سنسور گشتاور معیوب','سنسور گشتاور کار نمی‌کند','تشخیص: سنسور گشتاور معیوب','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(483,'diagnosis:hard-pump',19,'instance','تشخیص: پمپ هیدرولیک ضعیف','پمپ فشار کافی تولید نمی‌کند','تشخیص: پمپ هیدرولیک ضعیف','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(484,'diagnosis:loose-rack',19,'instance','تشخیص: لقی جعبه فرمان','بازی در جعبه فرمان','تشخیص: لقی جعبه فرمان','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(485,'test:steering-fluid-level',47,'instance','تست سطح روغن هیدرولیک','بررسی سطح روغن','تست سطح روغن هیدرولیک','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(486,'test:steering-pump-pressure',47,'instance','تست فشار پمپ','اندازه‌گیری فشار پمپ','تست فشار پمپ','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(487,'test:steering-belt',47,'instance','تست تسمه پمپ','بررسی کشش و سلامت تسمه','تست تسمه پمپ','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(488,'test:steering-leak',47,'instance','تست نشتی','پیدا کردن محل نشتی','تست نشتی','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(489,'test:steering-play',47,'instance','تست لقی فرمان','اندازه‌گیری بازی فرمان','تست لقی فرمان','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(490,'test:angle-sensor',47,'instance','تست سنسور زاویه','خوانش زاویه فرمان','تست سنسور زاویه','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(491,'test:torque-sensor',47,'instance','تست سنسور گشتاور','خوانش گشتاور','تست سنسور گشتاور','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(492,'procedure:add-fluid',48,'instance','رویه: افزودن روغن هیدرولیک','شارژ روغن','رویه: افزودن روغن هیدرولیک','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(494,'procedure:replace-belt',48,'instance','رویه: تعویض تسمه پمپ','تعویض تسمه','رویه: تعویض تسمه پمپ','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(495,'procedure:replace-rack',48,'instance','رویه: تعویض جعبه فرمان','تعویض کامل جعبه','رویه: تعویض جعبه فرمان','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(496,'procedure:replace-tierod',48,'instance','رویه: تعویض میل موجی','تعویض سر میل موجی','رویه: تعویض میل موجی','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(497,'procedure:replace-angle',48,'instance','رویه: تعویض سنسور زاویه','تعویض سنسور','رویه: تعویض سنسور زاویه','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(498,'procedure:replace-torque',48,'instance','رویه: تعویض سنسور گشتاور','تعویض سنسور گشتاور','رویه: تعویض سنسور گشتاور','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(499,'repair:fluid-added',20,'instance','تعمیر: روغن اضافه شد','شارژ انجام شد','تعمیر: روغن اضافه شد','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(501,'repair:belt-replaced',20,'instance','تعمیر: تسمه تعویض شد','تسمه جدید نصب شد','تعمیر: تسمه تعویض شد','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(502,'repair:rack-replaced',20,'instance','تعمیر: جعبه فرمان تعویض شد','جعبه جدید نصب شد','تعمیر: جعبه فرمان تعویض شد','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(503,'repair:tierod-replaced',20,'instance','تعمیر: میل موجی تعویض شد','میل جدید نصب شد','تعمیر: میل موجی تعویض شد','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(504,'repair:angle-sensor-repl',20,'instance','تعمیر: سنسور زاویه تعویض شد','سنسور جدید نصب شد','تعمیر: سنسور زاویه تعویض شد','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(505,'repair:torque-sensor-repl',20,'instance','تعمیر: سنسور گشتاور تعویض شد','سنسور جدید نصب شد','تعمیر: سنسور گشتاور تعویض شد','','active',2,'2026-09-30 00:14:43','2026-09-30 00:14:43');
+INSERT INTO e01_200_03_tb VALUES(506,'procedure:replace-steering-pump',48,'instance','رویه: تعویض پمپ هیدرولیک فرمان','تعویض پمپ هیدرولیک فرمان','رویه: تعویض پمپ هیدرولیک فرمان','','active',2,'2026-09-30 00:17:23','2026-09-30 00:17:23');
+INSERT INTO e01_200_03_tb VALUES(507,'repair:steering-pump-replaced',20,'instance','تعمیر: پمپ فرمان تعویض شد','پمپ هیدرولیک فرمان تعویض شد','تعمیر: پمپ فرمان تعویض شد','','active',2,'2026-09-30 00:17:23','2026-09-30 00:17:23');
+INSERT INTO e01_200_03_tb VALUES(508,'fm:shock-leaking',46,'concept','نشت کمک‌فنر','روغن کمک‌فنر نشت کرده','نشت کمک‌فنر','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(509,'fm:shock-worn',46,'concept','فرسودگی کمک‌فنر','کمک‌فنر خاصیت خود را از دست داده','فرسودگی کمک‌فنر','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(510,'fm:shock-dead',46,'concept','خرابی کامل کمک‌فنر','کمک‌فنر کار نمی‌کند','خرابی کامل کمک‌فنر','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(511,'fm:spring-broken',46,'concept','شکستگی فنر','فنر لول شکسته','شکستگی فنر','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(512,'fm:spring-sagging',46,'concept','افتادگی فنر','فنر شل شده و ارتفاع کم شده','افتادگی فنر','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(513,'fm:balljoint-worn',46,'concept','فرسودگی سیبک','سیبک چرخ شل شده','فرسودگی سیبک','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(514,'fm:bushing-cracked',46,'concept','ترکیدگی بوش','بوش لاستیکی ترک خورده','ترکیدگی بوش','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(515,'fm:control-arm-bent',46,'concept','خمیدگی طبق','طبق ضربه خورده و خم شده','خمیدگی طبق','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(516,'fm:noise-over-bump',46,'concept','صدای تق تق روی دست‌انداز','صدا از سیستم تعلیق','صدای تق تق روی دست‌انداز','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(517,'fm:vehicle-pulling',46,'concept','کشیدن به یک طرف','خودرو به یک سمت می‌کشد','کشیدن به یک طرف','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(518,'fm:tire-uneven-wear',46,'concept','سایش نامتقارن لاستیک','لاستیک یک‌طرفه ساییده می‌شود','سایش نامتقارن لاستیک','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(519,'dtc:C0710',13,'concept','C0710','خرابی سنسور موقعیت تعلیق','c0710','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(520,'dtc:C1145',13,'concept','C1145','خرابی سنسور سرعت چرخ جلو راست','c1145','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(521,'dtc:C1234',13,'concept','C1234','خرابی سنسور سرعت چرخ عقب چپ','c1234','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(522,'dtc:C0050',13,'concept','C0050','خرابی سیستم ترمز-تعلیق','c0050','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(523,'diagnosis:shock-failed',19,'instance','تشخیص: کمک‌فنر معیوب','کمک‌فنر خراب یا ضعیف','تشخیص: کمک‌فنر معیوب','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(524,'diagnosis:spring-failed',19,'instance','تشخیص: فنر معیوب','فنر شکسته یا افتاده','تشخیص: فنر معیوب','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(525,'diagnosis:balljoint-failed',19,'instance','تشخیص: سیبک فرسوده','سیبک چرخ شل شده','تشخیص: سیبک فرسوده','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(526,'diagnosis:bushing-failed',19,'instance','تشخیص: بوش فرسوده','بوش لاستیکی خراب','تشخیص: بوش فرسوده','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(527,'diagnosis:align-failed',19,'instance','تشخیص: تنظیم نبودن فرمان','زاویه چرخ‌ها اشتباه','تشخیص: تنظیم نبودن فرمان','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(528,'procedure:replace-shock',48,'instance','رویه: تعویض کمک‌فنر','تعویض کمک‌فنر جلو یا عقب','رویه: تعویض کمک‌فنر','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(529,'procedure:replace-spring',48,'instance','رویه: تعویض فنر','تعویض فنر لول','رویه: تعویض فنر','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(530,'procedure:replace-balljoint',48,'instance','رویه: تعویض سیبک','تعویض سیبک چرخ','رویه: تعویض سیبک','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(531,'procedure:replace-bushing',48,'instance','رویه: تعویض بوش','تعویض بوش لاستیکی','رویه: تعویض بوش','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(532,'procedure:replace-control-arm',48,'instance','رویه: تعویض طبق','تعویض طبق کامل','رویه: تعویض طبق','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(533,'procedure:align-wheels',48,'instance','رویه: تنظیم فرمان','تنظیم زاویه چرخ‌ها','رویه: تنظیم فرمان','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(534,'repair:shock-replaced',20,'instance','تعمیر: کمک‌فنر تعویض شد','کمک‌فنر جدید نصب شد','تعمیر: کمک‌فنر تعویض شد','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(535,'repair:spring-replaced',20,'instance','تعمیر: فنر تعویض شد','فنر جدید نصب شد','تعمیر: فنر تعویض شد','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(536,'repair:balljoint-replaced',20,'instance','تعمیر: سیبک تعویض شد','سیبک جدید نصب شد','تعمیر: سیبک تعویض شد','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(537,'repair:bushing-replaced',20,'instance','تعمیر: بوش تعویض شد','بوش جدید نصب شد','تعمیر: بوش تعویض شد','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(538,'repair:control-arm-replaced',20,'instance','تعمیر: طبق تعویض شد','طبق جدید نصب شد','تعمیر: طبق تعویض شد','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(539,'repair:wheels-aligned',20,'instance','تعمیر: فرمان تنظیم شد','تنظیم زاویه انجام شد','تعمیر: فرمان تنظیم شد','','active',2,'2026-09-30 00:21:18','2026-09-30 00:21:18');
+INSERT INTO e01_200_03_tb VALUES(540,'test:shock-bounce',47,'instance','تست جهش کمک‌فنر','فشار دادن و رها کردن','تست جهش کمک‌فنر','','active',2,'2026-09-30 00:22:15','2026-09-30 00:22:15');
+INSERT INTO e01_200_03_tb VALUES(541,'test:shock-leak-visual',47,'instance','بازرسی چشمی نشت','بررسی چشمی کمک‌فنر','بازرسی چشمی نشت','','active',2,'2026-09-30 00:23:40','2026-09-30 00:23:40');
+INSERT INTO e01_200_03_tb VALUES(542,'test:spring-height',47,'instance','تست ارتفاع فنر','اندازه‌گیری ارتفاع خودرو','تست ارتفاع فنر','','active',2,'2026-09-30 00:23:40','2026-09-30 00:23:40');
+INSERT INTO e01_200_03_tb VALUES(543,'test:balljoint-play',47,'instance','تست لقی سیبک','تکان دادن چرخ در هوا','تست لقی سیبک','','active',2,'2026-09-30 00:23:40','2026-09-30 00:23:40');
+INSERT INTO e01_200_03_tb VALUES(544,'test:bushing-visual',47,'instance','بازرسی چشمی بوش','بررسی ترک و پارگی','بازرسی چشمی بوش','','active',2,'2026-09-30 00:23:40','2026-09-30 00:23:40');
+INSERT INTO e01_200_03_tb VALUES(545,'test:wheel-alignment',47,'instance','تست تنظیم فرمان','اندازه‌گیری زاویه چرخ','تست تنظیم فرمان','','active',2,'2026-09-30 00:23:40','2026-09-30 00:23:40');
+INSERT INTO e01_200_03_tb VALUES(546,'test:road-test',47,'instance','تست جاده','رانندگی و گوش دادن به صدا','تست جاده','','active',2,'2026-09-30 00:23:40','2026-09-30 00:23:40');
+INSERT INTO e01_200_03_tb VALUES(547,'concept:ikco',189,'concept','ایران خودرو','Iran Khodro — بزرگ‌ترین خودروساز ایران','ایران خودرو','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(548,'concept:saipa',189,'concept','سایپا','Saipa — دومین خودروساز ایران','سایپا','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(549,'concept:parskhodro',189,'concept','پارس خودرو','Pars Khodro','پارس خودرو','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(550,'concept:kermanmotor',189,'concept','کرمان موتور','Kerman Motor','کرمان موتور','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(551,'concept:bahman',189,'concept','بهمن','Bahman Group','بهمن','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(552,'concept:hyundai',190,'concept','هیوندای','Hyundai Motor Company','هیوندای','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(553,'concept:kia',190,'concept','کیا','Kia Corporation','کیا','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(554,'concept:genesis',190,'concept','جنسیس','Genesis Motor','جنسیس','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(555,'concept:ssangyong',190,'concept','سانگ‌یونگ','SsangYong / KG Mobility','سانگ‌یونگ','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(556,'concept:daewoo',190,'concept','دوو','Daewoo — تاریخی','دوو','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(557,'concept:peugeot',193,'concept','پژو','Peugeot','پژو','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(558,'concept:citroen',193,'concept','سیتروئن','Citroën','سیتروئن','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(559,'concept:renault',193,'concept','رنو','Renault','رنو','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(560,'concept:toyota',191,'concept','تویوتا','Toyota','تویوتا','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(561,'concept:honda',191,'concept','هوندا','Honda','هوندا','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(562,'concept:nissan',191,'concept','نیسان','Nissan','نیسان','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(563,'concept:mitsubishi',191,'concept','میتسوبیشی','Mitsubishi','میتسوبیشی','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(564,'concept:suzuki',191,'concept','سوزوکی','Suzuki','سوزوکی','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(565,'concept:bmw',192,'concept','بی‌ام‌و','BMW','بی‌ام‌و','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(566,'concept:mercedes',192,'concept','مرسدس بنز','Mercedes-Benz','مرسدس بنز','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(567,'concept:volkswagen',192,'concept','فولکس‌واگن','Volkswagen','فولکس‌واگن','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(568,'concept:audi',192,'concept','آئودی','Audi','آئودی','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(569,'concept:porsche',192,'concept','پورشه','Porsche','پورشه','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(570,'concept:chery',194,'concept','چری','Chery','چری','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(571,'concept:jac',194,'concept','جک','JAC Motors','جک','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(572,'concept:brilliance',194,'concept','برلیانس','Brilliance Auto','برلیانس','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(573,'concept:lifan',194,'concept','لیفان','Lifan','لیفان','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(574,'concept:haval',194,'concept','هاوال','Haval','هاوال','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(575,'concept:geely',194,'concept','جیلی','Geely','جیلی','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(576,'concept:byd',194,'concept','بی‌وای‌دی','BYD','بی‌وای‌دی','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(577,'concept:chevrolet',195,'concept','شورولت','Chevrolet','شورولت','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(578,'concept:ford',195,'concept','فورد','Ford','فورد','','active',2,'2026-09-30 00:26:40','2026-09-30 00:26:40');
+INSERT INTO e01_200_03_tb VALUES(579,'concept:hyundai-accent',196,'concept','هیوندای اکسنت','Hyundai Accent','هیوندای اکسنت','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(580,'concept:hyundai-elantra',197,'concept','هیوندای النترا','Hyundai Elantra','هیوندای النترا','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(581,'concept:hyundai-tucson',198,'concept','هیوندای توسان','Hyundai Tucson SUV','هیوندای توسان','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(582,'concept:hyundai-santafe',199,'concept','هیوندای سانتافه','Hyundai Santa Fe SUV','هیوندای سانتافه','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(583,'concept:hyundai-sonata',200,'concept','هیوندای سوناتا','Hyundai Sonata','هیوندای سوناتا','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(584,'concept:kia-rio',201,'concept','کیا ریو','Kia Rio','کیا ریو','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(585,'concept:kia-cerato',202,'concept','کیا سراتو','Kia Cerato','کیا سراتو','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(586,'concept:kia-sportage',203,'concept','کیا اسپورتیج','Kia Sportage SUV','کیا اسپورتیج','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(587,'concept:kia-sorento',204,'concept','کیا سورنتو','Kia Sorento SUV','کیا سورنتو','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(588,'concept:kia-optima',205,'concept','کیا اپتیما','Kia Optima','کیا اپتیما','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(589,'vehicle:accent-1',196,'instance','اکسنت نمونه','هیوندای اکسنت ۱.۴ لیتر','اکسنت نمونه','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(590,'vehicle:elantra-1',197,'instance','النترا نمونه','هیوندای النترا','النترا نمونه','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(591,'vehicle:tucson-1',198,'instance','توسان نمونه','هیوندای توسان','توسان نمونه','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(592,'vehicle:rio-1',201,'instance','ریو نمونه','کیا ریو','ریو نمونه','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(593,'vehicle:cerato-1',202,'instance','سراتو نمونه','کیا سراتو','سراتو نمونه','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(594,'vehicle:sportage-1',203,'instance','اسپورتیج نمونه','کیا اسپورتیج','اسپورتیج نمونه','','active',2,'2026-09-30 00:27:56','2026-09-30 00:27:56');
+INSERT INTO e01_200_03_tb VALUES(595,'concept:toyota-corolla',206,'concept','تویوتا کرولا','Toyota Corolla','تویوتا کرولا','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(596,'concept:toyota-camry',207,'concept','تویوتا کمری','Toyota Camry','تویوتا کمری','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(597,'concept:toyota-rav4',208,'concept','تویوتا راو۴','Toyota RAV4 SUV','تویوتا راو۴','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(598,'concept:toyota-landcruiser',209,'concept','تویوتا لندکروزر','Toyota Land Cruiser','تویوتا لندکروزر','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(599,'concept:honda-civic',210,'concept','هوندا سیویک','Honda Civic','هوندا سیویک','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(600,'concept:honda-accord',211,'concept','هوندا اکورد','Honda Accord','هوندا اکورد','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(601,'concept:honda-crv',212,'concept','هوندا CR-V','Honda CR-V SUV','هوندا cr-v','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(602,'concept:nissan-sunny',213,'concept','نیسان سانی','Nissan Sunny','نیسان سانی','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(603,'concept:nissan-altima',214,'concept','نیسان آلتیما','Nissan Altima','نیسان آلتیما','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(604,'concept:nissan-xtrail',215,'concept','نیسان ایکس‌تریل','Nissan X-Trail SUV','نیسان ایکس‌تریل','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(605,'vehicle:corolla-1',206,'instance','کرولا نمونه','تویوتا کرولا','کرولا نمونه','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(606,'vehicle:camry-1',207,'instance','کمری نمونه','تویوتا کمری','کمری نمونه','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(607,'vehicle:civic-1',210,'instance','سیویک نمونه','هوندا سیویک','سیویک نمونه','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(608,'vehicle:accord-1',211,'instance','اکورد نمونه','هوندا اکورد','اکورد نمونه','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(609,'vehicle:sunny-1',213,'instance','سانی نمونه','نیسان سانی','سانی نمونه','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(610,'vehicle:altima-1',214,'instance','آلتیما نمونه','نیسان آلتیما','آلتیما نمونه','','active',2,'2026-09-30 00:29:08','2026-09-30 00:29:08');
+INSERT INTO e01_200_03_tb VALUES(611,'concept:bmw-3',216,'concept','BMW سری ۳','BMW 3 Series','bmw سری ۳','','active',2,'2026-09-30 00:30:11','2026-09-30 00:30:11');
+INSERT INTO e01_200_03_tb VALUES(612,'concept:bmw-5',217,'concept','BMW سری ۵','BMW 5 Series','bmw سری ۵','','active',2,'2026-09-30 00:30:11','2026-09-30 00:30:11');
+INSERT INTO e01_200_03_tb VALUES(613,'concept:bmw-x5',218,'concept','BMW X5','BMW X5 SUV','bmw x5','','active',2,'2026-09-30 00:30:11','2026-09-30 00:30:11');
+INSERT INTO e01_200_03_tb VALUES(614,'concept:mercedes-c',219,'concept','مرسدس C','Mercedes C-Class','مرسدس c','','active',2,'2026-09-30 00:30:11','2026-09-30 00:30:11');
+INSERT INTO e01_200_03_tb VALUES(615,'concept:mercedes-e',220,'concept','مرسدس E','Mercedes E-Class','مرسدس e','','active',2,'2026-09-30 00:30:11','2026-09-30 00:30:11');
+INSERT INTO e01_200_03_tb VALUES(616,'concept:mercedes-s',221,'concept','مرسدس S','Mercedes S-Class','مرسدس s','','active',2,'2026-09-30 00:30:11','2026-09-30 00:30:11');
+INSERT INTO e01_200_03_tb VALUES(617,'concept:vw-golf',222,'concept','فولکس گلف','VW Golf','فولکس گلف','','active',2,'2026-09-30 00:30:11','2026-09-30 00:30:11');
+INSERT INTO e01_200_03_tb VALUES(618,'concept:vw-passat',223,'concept','فولکس پاسات','VW Passat','فولکس پاسات','','active',2,'2026-09-30 00:30:11','2026-09-30 00:30:11');
+INSERT INTO e01_200_03_tb VALUES(619,'concept:vw-tiguan',224,'concept','فولکس تیگوان','VW Tiguan SUV','فولکس تیگوان','','active',2,'2026-09-30 00:30:11','2026-09-30 00:30:11');
+INSERT INTO e01_200_03_tb VALUES(620,'concept:audi-a4',225,'concept','آئودی A4','Audi A4','آئودی a4','','active',2,'2026-09-30 00:30:11','2026-09-30 00:30:11');
+INSERT INTO e01_200_03_tb VALUES(621,'concept:audi-a6',226,'concept','آئودی A6','Audi A6','آئودی a6','','active',2,'2026-09-30 00:30:11','2026-09-30 00:30:11');
+INSERT INTO e01_200_03_tb VALUES(622,'concept:porsche-911',227,'concept','پورشه ۹۱۱','Porsche 911','پورشه ۹۱۱','','active',2,'2026-09-30 00:30:11','2026-09-30 00:30:11');
+INSERT INTO e01_200_03_tb VALUES(623,'concept:chery-tiggo',228,'concept','چری تیگو','Chery Tiggo SUV','چری تیگو','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(624,'concept:chery-arrizo',229,'concept','چری آریزو','Chery Arrizo','چری آریزو','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(625,'concept:jac-s3',230,'concept','جک S3','JAC S3 SUV','جک s3','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(626,'concept:jac-s5',231,'concept','جک S5','JAC S5 SUV','جک s5','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(627,'concept:jac-j4',232,'concept','جک J4','JAC J4 Sedan','جک j4','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(628,'concept:brilliance-h230',233,'concept','برلیانس H230','Brilliance H230','برلیانس h230','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(629,'concept:brilliance-h320',234,'concept','برلیانس H320','Brilliance H320','برلیانس h320','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(630,'concept:brilliance-h530',235,'concept','برلیانس H530','Brilliance H530','برلیانس h530','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(631,'concept:lifan-x60',236,'concept','لیفان X60','Lifan X60 SUV','لیفان x60','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(632,'concept:lifan-820',237,'concept','لیفان ۸۲۰','Lifan 820','لیفان ۸۲۰','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(633,'concept:haval-h6',238,'concept','هاوال H6','Haval H6 SUV','هاوال h6','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(634,'concept:haval-h2',239,'concept','هاوال H2','Haval H2 SUV','هاوال h2','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(635,'concept:geely-emgrand',240,'concept','جیلی امگرند','Geely Emgrand','جیلی امگرند','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(636,'concept:geely-coolray',241,'concept','جیلی کولری','Geely Coolray','جیلی کولری','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(637,'concept:byd-song',242,'concept','BYD سانگ','BYD Song SUV','byd سانگ','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(638,'concept:byd-atto3',243,'concept','BYD Atto 3','BYD Atto 3 EV','byd atto 3','','active',2,'2026-09-30 00:31:21','2026-09-30 00:31:21');
+INSERT INTO e01_200_03_tb VALUES(639,'concept:chevrolet-cruze',244,'concept','شورولت کروز','Chevrolet Cruze','شورولت کروز','','active',2,'2026-09-30 00:32:20','2026-09-30 00:32:20');
+INSERT INTO e01_200_03_tb VALUES(640,'concept:chevrolet-malibu',245,'concept','شورولت مالیبو','Chevrolet Malibu','شورولت مالیبو','','active',2,'2026-09-30 00:32:20','2026-09-30 00:32:20');
+INSERT INTO e01_200_03_tb VALUES(641,'concept:ford-focus',246,'concept','فورد فوکوس','Ford Focus','فورد فوکوس','','active',2,'2026-09-30 00:32:20','2026-09-30 00:32:20');
+INSERT INTO e01_200_03_tb VALUES(642,'concept:ford-mustang',247,'concept','فورد موستانگ','Ford Mustang','فورد موستانگ','','active',2,'2026-09-30 00:32:20','2026-09-30 00:32:20');
+INSERT INTO e01_200_03_tb VALUES(643,'concept:ford-f150',248,'concept','فورد F-150','Ford F-150 Truck','فورد f-150','','active',2,'2026-09-30 00:32:20','2026-09-30 00:32:20');
+INSERT INTO e01_200_03_tb VALUES(644,'concept:motorcycle',249,'concept','موتورسیکلت','هر موتورسیکلت','موتورسیکلت','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(645,'concept:honda-moto',256,'concept','هوندا موتور','Honda Motorcycles','هوندا موتور','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(646,'concept:yamaha',256,'concept','یاماها','Yamaha Motor','یاماها','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(647,'concept:suzuki-moto',256,'concept','سوزوکی موتور','Suzuki Motorcycle','سوزوکی موتور','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(648,'concept:kawasaki',256,'concept','کاوازاکی','Kawasaki','کاوازاکی','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(649,'concept:bmw-moto',256,'concept','بی‌ام‌و موتور','BMW Motorrad','بی‌ام‌و موتور','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(650,'concept:harley',256,'concept','هارلی دیویدسون','Harley-Davidson','هارلی دیویدسون','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(651,'concept:ktm',256,'concept','KTM','KTM','ktm','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(652,'concept:ducati',256,'concept','دوکاتی','Ducati','دوکاتی','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(653,'concept:piaggio',256,'concept','پیاجیو','Piaggio / Vespa','پیاجیو','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(654,'concept:honda-cb125',252,'concept','هوندا CB۱۲۵','Honda CB125','هوندا cb۱۲۵','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(655,'concept:yamaha-ybr',252,'concept','یاماها YBR','Yamaha YBR','یاماها ybr','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(656,'concept:vespa-primavera',251,'concept','وسپا پریماورا','Vespa Primavera','وسپا پریماورا','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(657,'concept:harley-sportster',253,'concept','هارلی اسپورتستر','Harley Sportster','هارلی اسپورتستر','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(658,'concept:ktm-duke',252,'concept','KTM Duke','KTM Duke','ktm duke','','active',2,'2026-09-30 00:33:32','2026-09-30 00:33:32');
+INSERT INTO e01_200_03_tb VALUES(659,'concept:truck',257,'concept','کامیون','هر کامیون','کامیون','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(660,'concept:pickup',260,'concept','وانت','هر وانت','وانت','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(661,'concept:hyundai-truck',261,'concept','هیوندای کامیون','Hyundai Trucks','هیوندای کامیون','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(662,'concept:isuzu',261,'concept','ایسوزو','Isuzu','ایسوزو','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(663,'concept:hino',261,'concept','هینو','Hino','هینو','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(664,'concept:mitsubishi-fuso',261,'concept','میتسوبیشی فوسو','Mitsubishi Fuso','میتسوبیشی فوسو','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(665,'concept:man',261,'concept','MAN','MAN Truck & Bus','man','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(666,'concept:mercedes-truck',261,'concept','مرسدس کامیون','Mercedes-Benz Trucks','مرسدس کامیون','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(667,'concept:volvo-truck',261,'concept','ولوو کامیون','Volvo Trucks','ولوو کامیون','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(668,'concept:scania',261,'concept','اسکانیا','Scania','اسکانیا','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(669,'concept:freightliner',261,'concept','فریت‌لاینر','Freightliner','فریت‌لاینر','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(670,'concept:iran-khodro-truck',261,'concept','ایران خودرو دیزل','Iran Khodro Diesel','ایران خودرو دیزل','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(671,'concept:saipa-diesel',261,'concept','سایپا دیزل','Saipa Diesel','سایپا دیزل','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(672,'concept:toyota-hilux',262,'concept','تویوتا هایلوکس','Toyota Hilux','تویوتا هایلوکس','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(673,'concept:mitsubishi-l200',263,'concept','میتسوبیشی L200','Mitsubishi L200','میتسوبیشی l200','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(674,'concept:nissan-navara',264,'concept','نیسان ناوارا','Nissan Navara','نیسان ناوارا','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(675,'concept:isuzu-npr',265,'concept','ایسوزو NPR','Isuzu NPR','ایسوزو npr','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(676,'concept:hyundai-mighty',266,'concept','هیوندای مایتی','Hyundai Mighty','هیوندای مایتی','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(677,'concept:volvo-fh',267,'concept','ولوو FH','Volvo FH','ولوو fh','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(678,'concept:scania-r',268,'concept','اسکانیا R','Scania R','اسکانیا r','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(679,'concept:man-tgx',269,'concept','MAN TGX','MAN TGX','man tgx','','active',2,'2026-09-30 00:34:45','2026-09-30 00:34:45');
+INSERT INTO e01_200_03_tb VALUES(680,'concept:bus',11,'concept','اتوبوس','هر اتوبوس','اتوبوس','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(681,'concept:minibus',271,'concept','مینی‌بوس','هر مینی‌بوس','مینی‌بوس','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(682,'concept:van',278,'concept','ون','هر ون','ون','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(683,'concept:ambulance',279,'concept','آمبولانس','هر آمبولانس','آمبولانس','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(684,'concept:fire-truck',280,'concept','آتش‌نشانی','هر خودروی آتش‌نشانی','آتش‌نشانی','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(685,'concept:volvo-bus',282,'concept','ولوو اتوبوس','Volvo Bus','ولوو اتوبوس','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(686,'concept:scania-bus',282,'concept','اسکانیا اتوبوس','Scania Bus','اسکانیا اتوبوس','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(687,'concept:man-bus',282,'concept','MAN اتوبوس','MAN Bus','man اتوبوس','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(688,'concept:mercedes-bus',282,'concept','مرسدس اتوبوس','Mercedes-Benz Bus','مرسدس اتوبوس','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(689,'concept:iveco-bus',282,'concept','ایوکو اتوبوس','Iveco Bus','ایوکو اتوبوس','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(690,'concept:yutong',282,'concept','یوتانگ','Yutong Bus','یوتانگ','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(691,'concept:king-long',282,'concept','کینگ لانگ','King Long','کینگ لانگ','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(692,'concept:oghah-afshan',282,'concept','عقاب افشان','Oghab Afshan','عقاب افشان','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(693,'concept:iran-khodro-diesel',282,'concept','ایران خودرو دیزل','Iran Khodro Diesel','ایران خودرو دیزل','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(694,'concept:volvo-7900',283,'concept','ولوو ۷۹۰۰','Volvo 7900 Bus','ولوو ۷۹۰۰','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(695,'concept:volvo-b11r',284,'concept','ولوو B11R','Volvo B11R','ولوو b11r','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(696,'concept:scania-touring',285,'concept','اسکانیا تورینگ','Scania Touring','اسکانیا تورینگ','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(697,'concept:man-lions-coach',286,'concept','MAN Lions Coach','MAN Lions Coach','man lions coach','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(698,'concept:mercedes-tourismo',287,'concept','مرسدس توریسمو','Mercedes Tourismo','مرسدس توریسمو','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(699,'concept:yutong-zk',288,'concept','یوتانگ ZK','Yutong ZK','یوتانگ zk','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(700,'concept:iveco-crossway',289,'concept','ایوکو کراس‌وی','Iveco Crossway','ایوکو کراس‌وی','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(701,'concept:ikd-tj',290,'concept','ایران خودرو دیزل TJ','IKD TJ Bus','ایران خودرو دیزل tj','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(702,'concept:oghab-city',291,'concept','عقاب شهری','Oghab City Bus','عقاب شهری','','active',2,'2026-09-30 00:39:32','2026-09-30 00:39:32');
+INSERT INTO e01_200_03_tb VALUES(726,'concept:police',314,'concept','خودروی پلیس','هر خودروی پلیس','خودروی پلیس','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(727,'concept:taxi',315,'concept','تاکسی','هر تاکسی','تاکسی','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(728,'concept:garbage-truck',316,'concept','خودروی زباله','هر کامیون جمع‌آوری زباله','خودروی زباله','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(729,'concept:tow-truck',317,'concept','یدک‌کش','هر خودروی یدک‌کش','یدک‌کش','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(730,'concept:delivery-van',318,'concept','ون تحویل','هر ون باربری','ون تحویل','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(731,'concept:passenger-van',319,'concept','ون مسافربری','هر ون مسافری','ون مسافربری','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(732,'concept:tanker',321,'concept','تانکر','هر کامیون تانکر','تانکر','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(733,'concept:rescue',323,'concept','خودروی امداد','هر خودروی امدادی','خودروی امداد','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(734,'concept:bus-fire-truck',322,'concept','آتش‌نشانی سنگین','آتش‌نشانی با نردبان','آتش‌نشانی سنگین','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(735,'concept:warning-light',324,'concept','چراغ هشدار','چراغ گردان هشدار','چراغ هشدار','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(736,'concept:siren',325,'concept','آژیر','آژیر هشدار','آژیر','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(737,'concept:hydraulic-lift',326,'concept','بالابر هیدرولیک','بالابر یدک‌کش یا زباله','بالابر هیدرولیک','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(738,'concept:wheelchair-ramp',327,'concept','رمپ ویلچر','رمپ آمبولانس','رمپ ویلچر','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(739,'concept:fire-pump',328,'concept','پمپ آتش‌نشانی','پمپ آب آتش‌نشانی','پمپ آتش‌نشانی','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(740,'concept:ladder',329,'concept','نردبان','نردبان آتش‌نشانی','نردبان','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(741,'concept:reefer',330,'concept','یخچال','سیستم تبرید کامیون','یخچال','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(742,'concept:tank',331,'concept','تانک','مخزن تانکر','تانک','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(743,'concept:mercedes-special',332,'concept','مرسدس ویژه','Mercedes-Benz Special Vehicles','مرسدس ویژه','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(744,'concept:iveco-special',332,'concept','ایوکو ویژه','Iveco Special','ایوکو ویژه','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(745,'concept:man-special',332,'concept','MAN ویژه','MAN Special','man ویژه','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(746,'concept:ford-special',332,'concept','فورد ویژه','Ford Special','فورد ویژه','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(747,'concept:khavar',332,'concept','خاور','Khavar','خاور','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(748,'concept:zamyad',332,'concept','زمیاد','Zamyad','زمیاد','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(749,'concept:saipa-diesel-special',332,'concept','سایپا دیزل ویژه','Saipa Diesel Special','سایپا دیزل ویژه','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(750,'concept:sprinter',333,'concept','مرسدس اسپرینتر','Mercedes Sprinter Van','مرسدس اسپرینتر','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(751,'concept:daily',334,'concept','ایوکو دیلی','Iveco Daily Van','ایوکو دیلی','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(752,'concept:zamyad-z24',335,'concept','زمیاد Z24','Zamyad Z24','زمیاد z24','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(753,'concept:khavar-van',336,'concept','خاور','Khavar Truck','خاور','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(754,'concept:boxer',337,'concept','پژو باکسر','Peugeot Boxer Van','پژو باکسر','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(755,'concept:ducato',338,'concept','فیات دوکاتو','Fiat Ducato','فیات دوکاتو','','active',2,'2026-09-30 00:41:31','2026-09-30 00:41:31');
+INSERT INTO e01_200_03_tb VALUES(756,'concept:traction-motor',345,'concept','موتور کششی','موتور برقی خودرو','موتور کششی','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(757,'concept:inverter',346,'concept','اینورتر','تبدیل DC به AC','اینورتر','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(758,'concept:battery-pack',347,'concept','پک باتری','باتری ولتاژ بالا','پک باتری','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(759,'concept:battery-module',348,'concept','ماژول باتری','ماژول داخل پک','ماژول باتری','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(760,'concept:battery-cell',349,'concept','سلول باتری','سلول لیتیوم-یونی','سلول باتری','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(761,'concept:onboard-charger',350,'concept','شارژر داخلی','شارژر AC داخلی','شارژر داخلی','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(762,'concept:charging-port',351,'concept','پورت شارژ','محل اتصال کابل','پورت شارژ','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(763,'concept:bms',352,'concept','BMS','مدیریت باتری','bms','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(764,'concept:dcdc',353,'concept','مبدل DC/DC','کاهش ولتاژ بالا به ۱۲V','مبدل dc/dc','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(765,'concept:regen-brake',354,'concept','ترمز بازیابی','تبدیل ترمز به برق','ترمز بازیابی','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(766,'concept:thermal-mgmt',355,'concept','مدیریت حرارتی','خنک‌کننده باتری','مدیریت حرارتی','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(767,'concept:hv-cable',356,'concept','کابل فشار قوی','سیم ولتاژ بالا','کابل فشار قوی','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(768,'concept:ev',339,'concept','خودروی برقی','هر خودروی برقی','خودروی برقی','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(769,'concept:tesla',357,'concept','تسلا','Tesla','تسلا','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(770,'concept:nio',357,'concept','نیو','NIO','نیو','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(771,'concept:rivian',357,'concept','ریوین','Rivian','ریوین','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(772,'concept:lucid',357,'concept','لوسید','Lucid Motors','لوسید','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(773,'concept:polestar',357,'concept','پولستار','Polestar','پولستار','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(774,'concept:xpeng',357,'concept','XPeng','XPeng','xpeng','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(775,'concept:tesla-model-3',358,'concept','تسلا مدل ۳','Tesla Model 3','تسلا مدل ۳','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(776,'concept:tesla-model-y',359,'concept','تسلا مدل Y','Tesla Model Y','تسلا مدل y','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(777,'concept:tesla-model-s',360,'concept','تسلا مدل S','Tesla Model S','تسلا مدل s','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(778,'concept:tesla-model-x',361,'concept','تسلا مدل X','Tesla Model X','تسلا مدل x','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(779,'concept:nissan-leaf',362,'concept','نیسان لیف','Nissan Leaf','نیسان لیف','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(780,'concept:chevrolet-bolt',363,'concept','شورولت بولت','Chevrolet Bolt','شورولت بولت','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(781,'concept:hyundai-ioniq-5',364,'concept','هیوندای آیونیک ۵','Hyundai Ioniq 5','هیوندای آیونیک ۵','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(782,'concept:kia-ev6',365,'concept','کیا EV6','Kia EV6','کیا ev6','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(783,'concept:byd-han',366,'concept','BYD هان','BYD Han','byd هان','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(784,'concept:nio-suv',367,'concept','نیو SUV','NIO SUV','نیو suv','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(785,'concept:xpeng-p7',368,'concept','XPeng P7','XPeng P7','xpeng p7','','active',2,'2026-09-30 00:42:52','2026-09-30 00:42:52');
+INSERT INTO e01_200_03_tb VALUES(786,'concept:peugeot-208',369,'concept','پژو ۲۰۸','Peugeot 208','پژو ۲۰۸','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(787,'concept:peugeot-301',370,'concept','پژو ۳۰۱','Peugeot 301','پژو ۳۰۱','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(788,'concept:peugeot-2008',371,'concept','پژو ۲۰۰۸','Peugeot 2008 SUV','پژو ۲۰۰۸','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(789,'concept:peugeot-3008',372,'concept','پژو ۳۰۰۸','Peugeot 3008 SUV','پژو ۳۰۰۸','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(790,'concept:peugeot-508',373,'concept','پژو ۵۰۸','Peugeot 508','پژو ۵۰۸','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(791,'concept:citroen-c3',374,'concept','سیتروئن C3','Citroën C3','سیتروئن c3','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(792,'concept:citroen-c4',375,'concept','سیتروئن C4','Citroën C4','سیتروئن c4','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(793,'concept:citroen-c5',376,'concept','سیتروئن C5','Citroën C5','سیتروئن c5','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(794,'concept:citroen-berlingo',377,'concept','سیتروئن برلینگو','Citroën Berlingo Van','سیتروئن برلینگو','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(795,'concept:renault-clio',378,'concept','رنو کلیو','Renault Clio','رنو کلیو','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(796,'concept:renault-megane',379,'concept','رنو مگان','Renault Megane','رنو مگان','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(797,'concept:renault-duster',380,'concept','رنو داستر','Renault Duster SUV','رنو داستر','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(798,'concept:renault-talisman',381,'concept','رنو تالیسمان','Renault Talisman','رنو تالیسمان','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(799,'concept:renault-captur',382,'concept','رنو کپچر','Renault Captur SUV','رنو کپچر','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(800,'concept:renault-sandero',383,'concept','رنو ساندرو','Renault Sandero','رنو ساندرو','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(801,'concept:renault-koleos',384,'concept','رنو کولیوس','Renault Koleos SUV','رنو کولیوس','','active',2,'2026-09-30 00:44:52','2026-09-30 00:44:52');
+INSERT INTO e01_200_03_tb VALUES(802,'concept:rana',385,'concept','رانا','IKCO Rana','رانا','','active',2,'2026-09-30 00:46:51','2026-09-30 00:46:51');
+INSERT INTO e01_200_03_tb VALUES(803,'concept:runna',386,'concept','رانا پلاس','IKCO Runna','رانا پلاس','','active',2,'2026-09-30 00:46:51','2026-09-30 00:46:51');
+INSERT INTO e01_200_03_tb VALUES(804,'concept:tondar-90',387,'concept','تندر ۹۰','Tondar 90 (Renault L90)','تندر ۹۰','','active',2,'2026-09-30 00:46:51','2026-09-30 00:46:51');
+INSERT INTO e01_200_03_tb VALUES(805,'concept:saina',388,'concept','ساینا','SAIPA Saina','ساینا','','active',2,'2026-09-30 00:46:51','2026-09-30 00:46:51');
+INSERT INTO e01_200_03_tb VALUES(806,'concept:pars-tondar',389,'concept','پارس تندر','Pars Khodro Tondar','پارس تندر','','active',2,'2026-09-30 00:46:51','2026-09-30 00:46:51');
+CREATE TABLE e01_201_02_tb(
+    val_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    value_kind TEXT NOT NULL CHECK(value_kind IN ('number','text','boolean','datetime','date','duration','interval','enum','identifier','json','collection','range','unknown','not_observed','not_recorded','not_applicable')),
+    num_val REAL, text_val TEXT, text_norm TEXT, bool_val INTEGER CHECK(bool_val IN (0,1) OR bool_val IS NULL),
+    dt_start TEXT, dt_end TEXT, num_min REAL, num_max REAL, enum_id INTEGER, json_val TEXT,
+    is_collection INTEGER NOT NULL DEFAULT 0 CHECK(is_collection IN (0,1)),
+    unit TEXT, uncertainty REAL, raw_text TEXT, prv_id INTEGER,
+    CHECK (is_collection = 0 OR value_kind = 'collection'),
+    CHECK (value_kind IN ('unknown','not_observed','not_recorded','not_applicable') OR (value_kind = 'number' AND num_val IS NOT NULL) OR (value_kind = 'text' AND text_val IS NOT NULL) OR (value_kind = 'boolean' AND bool_val IS NOT NULL) OR (value_kind = 'datetime' AND dt_start IS NOT NULL) OR (value_kind = 'enum' AND enum_id IS NOT NULL) OR (value_kind = 'json' AND json_val IS NOT NULL) OR (value_kind = 'date' AND dt_start IS NOT NULL) OR (value_kind = 'duration' AND (num_val IS NOT NULL OR text_val IS NOT NULL)) OR (value_kind = 'interval' AND (dt_start IS NOT NULL OR num_val IS NOT NULL)) OR (value_kind = 'range' AND (num_min IS NOT NULL OR num_max IS NOT NULL)) OR (value_kind = 'identifier' AND (text_val IS NOT NULL OR num_val IS NOT NULL)) OR (value_kind = 'collection' AND is_collection = 1)),
+    CHECK (value_kind NOT IN ('unknown','not_observed','not_recorded','not_applicable') OR (num_val IS NULL AND text_val IS NULL AND text_norm IS NULL AND bool_val IS NULL AND dt_start IS NULL AND dt_end IS NULL AND num_min IS NULL AND num_max IS NULL AND enum_id IS NULL AND json_val IS NULL AND is_collection = 0 AND unit IS NULL)),
+    CHECK (num_min IS NULL OR num_max IS NULL OR num_min <= num_max),
+    CHECK (dt_start IS NULL OR dt_end IS NULL OR dt_start <= dt_end),
+    CONSTRAINT fk_val_enum FOREIGN KEY (enum_id) REFERENCES e01_201_01_tb(val_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_val_prv FOREIGN KEY (prv_id) REFERENCES e01_303_01_tb(prv_id) ON DELETE SET NULL);
+INSERT INTO e01_201_02_tb VALUES(1,'number',12.0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'V',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(2,'number',12.0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'V',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(3,'number',12.0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'V',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(4,'number',12.0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'V',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(5,'number',14.5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'V',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(6,'number',14.5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'V',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(7,'number',0.8000000000000000444,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'O',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(8,'number',0.8000000000000000444,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'O',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(9,'number',3.5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'bar',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(10,'number',3.0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'bar',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(11,'number',90.0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'C',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(12,'number',104.99999999999999999,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'C',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(13,'number',0.5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'V',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(14,'number',4.5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'V',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(15,'number',0.10000000000000000555,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'V',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(16,'number',0.9000000000000000222,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'V',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(17,'number',850.0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'kg',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(18,'number',1049.9999999999999999,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'kg',NULL,NULL,2);
+INSERT INTO e01_201_02_tb VALUES(19,'number',1250.0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'kg',NULL,NULL,2);
+CREATE TABLE e01_201_03_tb(
+    memb_id INTEGER PRIMARY KEY AUTOINCREMENT, parent_id INTEGER NOT NULL, member_val_id INTEGER, member_ent_id INTEGER, ordinal INTEGER NOT NULL DEFAULT 0 CHECK(ordinal >= 0),
+    CHECK ((member_val_id IS NOT NULL AND member_ent_id IS NULL) OR (member_val_id IS NULL AND member_ent_id IS NOT NULL)),
+    CHECK (parent_id <> member_val_id),
+    CONSTRAINT fk_memb_parent FOREIGN KEY (parent_id) REFERENCES e01_201_02_tb(val_id) ON DELETE CASCADE,
+    CONSTRAINT fk_memb_val FOREIGN KEY (member_val_id) REFERENCES e01_201_02_tb(val_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_memb_ent FOREIGN KEY (member_ent_id) REFERENCES e01_200_03_tb(ent_id) ON DELETE RESTRICT);
+CREATE TABLE e01_302_01_tb(
+    lin_id INTEGER PRIMARY KEY AUTOINCREMENT, lin_uid TEXT NOT NULL UNIQUE, subj_ent_id INTEGER NOT NULL, reltype_id INTEGER NOT NULL, description TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    CONSTRAINT fk_lin_subj FOREIGN KEY (subj_ent_id) REFERENCES e01_200_03_tb(ent_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_lin_rty FOREIGN KEY (reltype_id) REFERENCES e01_202_01_tb(reltype_id) ON DELETE RESTRICT);
+CREATE TABLE e01_222_01_tb(
+    rel_id INTEGER PRIMARY KEY AUTOINCREMENT, rel_uid TEXT NOT NULL UNIQUE, lin_id INTEGER,
+    ctx_key TEXT NOT NULL DEFAULT 'u:',
+    reif_type TEXT NOT NULL DEFAULT 'none' CHECK(reif_type IN ('none','annotated')),
+    reltype_id INTEGER NOT NULL, subj_ent_id INTEGER NOT NULL, obj_ent_id INTEGER, obj_val_id INTEGER, reif_ent_id INTEGER,
+    status TEXT NOT NULL DEFAULT 'asserted' CHECK(status IN ('asserted','negated','hypothetical','retracted','unknown')),
+    prv_id INTEGER, valid_from TEXT, valid_to TEXT, recorded_at TEXT NOT NULL DEFAULT (datetime('now')), superseded_at TEXT,
+    ordinal INTEGER CHECK(ordinal IS NULL OR ordinal >= 0),
+    CHECK (valid_from IS NULL OR valid_to IS NULL OR valid_from <= valid_to),
+    CHECK (superseded_at IS NULL OR superseded_at >= recorded_at),
+    CHECK ((obj_ent_id IS NOT NULL AND obj_val_id IS NULL) OR (obj_ent_id IS NULL AND obj_val_id IS NOT NULL)),
+    CHECK (ctx_key = 'u:' OR ctx_key = '?:' OR ctx_key = 'n:' OR ctx_key LIKE 's:%'),
+    CHECK ((reif_type = 'none' AND reif_ent_id IS NULL) OR (reif_type = 'annotated' AND reif_ent_id IS NOT NULL)),
+    CONSTRAINT fk_rel_lin FOREIGN KEY (lin_id) REFERENCES e01_302_01_tb(lin_id) ON DELETE SET NULL,
+    CONSTRAINT fk_rel_rty FOREIGN KEY (reltype_id) REFERENCES e01_202_01_tb(reltype_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_rel_subj FOREIGN KEY (subj_ent_id) REFERENCES e01_200_03_tb(ent_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_rel_obj_ent FOREIGN KEY (obj_ent_id) REFERENCES e01_200_03_tb(ent_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_rel_obj_val FOREIGN KEY (obj_val_id) REFERENCES e01_201_02_tb(val_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_rel_reif FOREIGN KEY (reif_ent_id) REFERENCES e01_200_03_tb(ent_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_rel_prv FOREIGN KEY (prv_id) REFERENCES e01_303_01_tb(prv_id) ON DELETE SET NULL);
+INSERT INTO e01_222_01_tb VALUES(9,'r:alternator-supplies-battery',NULL,'u:','none',27,17,16,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(10,'r:battery-supplies-starter',NULL,'u:','none',27,16,18,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(11,'r:battery-supplies-relay-main',NULL,'u:','none',27,16,25,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(12,'r:relay-main-supplies-fuse',NULL,'u:','none',27,25,26,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(13,'r:fuse-supplies-ecu',NULL,'u:','none',27,26,20,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(14,'r:ecu-controls-coil',NULL,'u:','none',28,20,19,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(15,'r:ecu-controls-injector',NULL,'u:','none',28,20,24,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(16,'r:crankshaft-transmits-ecu',NULL,'u:','none',30,21,20,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(17,'r:o2-transmits-ecu',NULL,'u:','none',30,22,20,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(18,'r:coolant-temp-transmits-ecu',NULL,'u:','none',30,23,20,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(19,'r:ecu-communicates-can',NULL,'u:','none',53,20,27,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(20,'r:coil-has-fm-open',NULL,'u:','annotated',4,19,7,NULL,178,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(21,'r:coil-has-fm-short',NULL,'u:','annotated',4,19,8,NULL,179,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(22,'r:injector-has-fm-clogged',NULL,'u:','annotated',4,24,29,NULL,180,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(23,'r:fm-open-manifests-p0301',NULL,'u:','annotated',5,7,11,NULL,181,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(24,'r:fm-short-manifests-p0301',NULL,'u:','annotated',5,8,11,NULL,182,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(25,'r:fm-clogged-manifests-p0300',NULL,'u:','annotated',5,29,28,NULL,183,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(26,'r:ecu-reports-p0301',NULL,'u:','none',44,20,11,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 22:44:34',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(27,'r:vehicle-installed-battery',NULL,'u:','none',45,16,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:48:41','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(28,'r:vehicle-installed-alternator',NULL,'u:','none',45,17,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:48:41','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(29,'r:vehicle-installed-starter',NULL,'u:','none',45,18,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:48:41','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(30,'r:vehicle-installed-ecu',NULL,'u:','none',45,20,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:48:41','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(31,'r:vehicle-installed-coil',NULL,'u:','none',45,19,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:48:41','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(32,'r:vehicle-installed-injector',NULL,'u:','none',45,24,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:48:41','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(33,'r:vehicle-installed-canbus',NULL,'u:','none',45,27,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:48:41','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(34,'r:fm-coil-open-diagnosed-as-p0301',NULL,'u:','annotated',37,7,31,NULL,184,'asserted',2,NULL,NULL,'2026-09-29 22:53:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(35,'r:diag-tested-by-resistance',NULL,'u:','annotated',52,31,32,NULL,185,'asserted',2,NULL,NULL,'2026-09-29 22:53:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(36,'r:diag-tested-by-spark',NULL,'u:','annotated',52,31,33,NULL,186,'asserted',2,NULL,NULL,'2026-09-29 22:53:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(37,'r:diag-resolved-by-procedure',NULL,'u:','annotated',50,31,34,NULL,187,'asserted',2,NULL,NULL,'2026-09-29 22:53:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(38,'r:procedure-resolved-by-repair',NULL,'u:','annotated',50,34,35,NULL,188,'asserted',2,NULL,NULL,'2026-09-29 22:53:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(39,'r:repair-applies-to-vehicle',NULL,'u:','annotated',40,35,30,NULL,189,'asserted',2,NULL,NULL,'2026-09-29 22:53:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(40,'r:headlight-left-installed',NULL,'u:','none',45,36,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:59:19','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(41,'r:headlight-right-installed',NULL,'u:','none',45,37,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:59:19','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(42,'r:tail-left-installed',NULL,'u:','none',45,38,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:59:19','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(43,'r:tail-right-installed',NULL,'u:','none',45,39,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:59:19','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(44,'r:turn-front-left-installed',NULL,'u:','none',45,40,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:59:19','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(45,'r:turn-front-right-installed',NULL,'u:','none',45,41,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:59:19','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(46,'r:brake-left-installed',NULL,'u:','none',45,42,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:59:19','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(47,'r:brake-right-installed',NULL,'u:','none',45,43,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:59:19','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(48,'r:plate-light-installed',NULL,'u:','none',45,44,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:59:19','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(49,'r:dome-light-installed',NULL,'u:','none',45,45,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 22:59:19','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(50,'r:bodyecu-controls-headlight-left',NULL,'u:','none',28,20,36,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 22:59:19',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(51,'r:headlight-left-has-burnt',NULL,'u:','annotated',4,36,46,NULL,190,'asserted',2,NULL,NULL,'2026-09-29 22:59:19',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(52,'r:headlight-left-has-open',NULL,'u:','annotated',4,36,47,NULL,191,'asserted',2,NULL,NULL,'2026-09-29 22:59:19',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(53,'r:tail-left-has-burnt',NULL,'u:','annotated',4,38,46,NULL,192,'asserted',2,NULL,NULL,'2026-09-29 22:59:19',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(54,'r:brake-left-has-burnt',NULL,'u:','annotated',4,42,46,NULL,193,'asserted',2,NULL,NULL,'2026-09-29 22:59:19',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(55,'r:fm-bulb-burnt-manifests-b1101',NULL,'u:','annotated',5,46,50,NULL,194,'asserted',2,NULL,NULL,'2026-09-29 22:59:19',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(56,'r:fm-light-open-manifests-b1101',NULL,'u:','annotated',5,47,50,NULL,195,'asserted',2,NULL,NULL,'2026-09-29 22:59:19',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(67,'r:ecu-controls-headlight-left',NULL,'u:','none',28,20,36,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:00:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(74,'r:knock-installed',NULL,'u:','none',45,110,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:05:38','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(75,'r:knock-transmits',NULL,'u:','none',30,110,20,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:05:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(76,'r:knock-has-failed',NULL,'u:','annotated',4,110,89,NULL,196,'asserted',2,NULL,NULL,'2026-09-29 23:05:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(77,'r:actuator:ac-clutch-installed',NULL,'u:','none',45,131,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(78,'r:actuator:cooling-fan-installed',NULL,'u:','none',45,120,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(79,'r:actuator:egr-valve-installed',NULL,'u:','none',45,118,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(80,'r:actuator:fuel-pump-installed',NULL,'u:','none',45,117,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(81,'r:actuator:horn-installed',NULL,'u:','none',45,121,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(82,'r:actuator:iac-installed',NULL,'u:','none',45,112,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(83,'r:actuator:injector-1-installed',NULL,'u:','none',45,113,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(84,'r:actuator:injector-2-installed',NULL,'u:','none',45,114,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(85,'r:actuator:injector-3-installed',NULL,'u:','none',45,115,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(86,'r:actuator:injector-4-installed',NULL,'u:','none',45,116,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(87,'r:actuator:lock-fl-installed',NULL,'u:','none',45,125,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(88,'r:actuator:lock-fr-installed',NULL,'u:','none',45,126,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(89,'r:actuator:mirror-l-installed',NULL,'u:','none',45,127,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(90,'r:actuator:mirror-r-installed',NULL,'u:','none',45,128,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(91,'r:actuator:purge-valve-installed',NULL,'u:','none',45,119,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(92,'r:actuator:throttle-installed',NULL,'u:','none',45,111,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(93,'r:actuator:window-fl-installed',NULL,'u:','none',45,123,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(94,'r:actuator:window-fr-installed',NULL,'u:','none',45,124,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(95,'r:actuator:wiper-installed',NULL,'u:','none',45,122,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(96,'r:relay:cooling-fan-installed',NULL,'u:','none',45,130,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(97,'r:relay:fuel-pump-installed',NULL,'u:','none',45,129,30,NULL,NULL,'retracted',2,NULL,NULL,'2026-09-29 23:12:43','2026-09-29 23:56:13',NULL);
+INSERT INTO e01_222_01_tb VALUES(98,'r:ecu-controls-actuator:cooling-fan',NULL,'u:','none',28,20,120,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(99,'r:ecu-controls-actuator:egr-valve',NULL,'u:','none',28,20,118,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(100,'r:ecu-controls-actuator:fuel-pump',NULL,'u:','none',28,20,117,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(101,'r:ecu-controls-actuator:iac',NULL,'u:','none',28,20,112,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(102,'r:ecu-controls-actuator:injector-1',NULL,'u:','none',28,20,113,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(103,'r:ecu-controls-actuator:injector-2',NULL,'u:','none',28,20,114,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(104,'r:ecu-controls-actuator:injector-3',NULL,'u:','none',28,20,115,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(105,'r:ecu-controls-actuator:injector-4',NULL,'u:','none',28,20,116,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(106,'r:ecu-controls-actuator:purge-valve',NULL,'u:','none',28,20,119,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(107,'r:ecu-controls-actuator:throttle',NULL,'u:','none',28,20,111,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(108,'r:relay-fp-supplies-pump',NULL,'u:','none',27,129,117,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(109,'r:relay-fan-supplies-fan',NULL,'u:','none',27,130,120,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(110,'r:inj1-has-clogged',NULL,'u:','annotated',4,113,29,NULL,197,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(111,'r:inj1-has-open',NULL,'u:','annotated',4,113,133,NULL,198,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(112,'r:inj2-has-clogged',NULL,'u:','annotated',4,114,29,NULL,199,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(113,'r:inj3-has-clogged',NULL,'u:','annotated',4,115,29,NULL,200,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(114,'r:inj4-has-clogged',NULL,'u:','annotated',4,116,29,NULL,201,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(115,'r:fp-has-weak',NULL,'u:','annotated',4,117,135,NULL,202,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(116,'r:fp-has-dead',NULL,'u:','annotated',4,117,136,NULL,203,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(117,'r:iac-has-stuck',NULL,'u:','annotated',4,112,137,NULL,204,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(118,'r:iac-has-dirty',NULL,'u:','annotated',4,112,138,NULL,205,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(119,'r:throttle-has-stuck',NULL,'u:','annotated',4,111,139,NULL,206,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(120,'r:egr-has-open',NULL,'u:','annotated',4,118,140,NULL,207,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(121,'r:egr-has-closed',NULL,'u:','annotated',4,118,141,NULL,208,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(122,'r:fan-has-dead',NULL,'u:','annotated',4,120,142,NULL,209,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(123,'r:horn-has-dead',NULL,'u:','annotated',4,121,143,NULL,210,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(124,'r:wiper-has-dead',NULL,'u:','annotated',4,122,144,NULL,211,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(125,'r:window-fl-has-dead',NULL,'u:','annotated',4,123,145,NULL,212,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(126,'r:lock-fl-has-dead',NULL,'u:','annotated',4,125,146,NULL,213,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(127,'r:fm-inj-clogged-p0201',NULL,'u:','annotated',5,29,147,NULL,214,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(128,'r:fm-inj-open-p0201',NULL,'u:','annotated',5,133,147,NULL,215,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(129,'r:fm-inj-short-p0201',NULL,'u:','annotated',5,134,147,NULL,216,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(130,'r:fm-fp-weak-p0230',NULL,'u:','annotated',5,135,102,NULL,217,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(131,'r:fm-fp-dead-p0231',NULL,'u:','annotated',5,136,152,NULL,218,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(132,'r:fm-iac-stuck-p0505',NULL,'u:','annotated',5,137,156,NULL,219,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(133,'r:fm-iac-dirty-p0507',NULL,'u:','annotated',5,138,157,NULL,220,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(134,'r:fm-throttle-p0121',NULL,'u:','annotated',5,139,158,NULL,221,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(135,'r:fm-egr-open-p0400',NULL,'u:','annotated',5,140,153,NULL,222,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(136,'r:fm-egr-closed-p0403',NULL,'u:','annotated',5,141,154,NULL,223,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(137,'r:fm-fan-p0480',NULL,'u:','annotated',5,142,159,NULL,224,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(138,'r:fm-purge-p0440',NULL,'u:','annotated',5,139,155,NULL,225,'asserted',2,NULL,NULL,'2026-09-29 23:12:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(139,'r:fm-coolant-diag-p0115',NULL,'u:','annotated',37,90,161,NULL,226,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(140,'r:diag-coolant-test-signal',NULL,'u:','annotated',52,161,162,NULL,227,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(141,'r:diag-coolant-test-wire',NULL,'u:','annotated',52,161,163,NULL,228,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(142,'r:diag-coolant-resolved',NULL,'u:','annotated',50,161,164,NULL,229,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(143,'r:proc-coolant-repair',NULL,'u:','annotated',50,164,165,NULL,230,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(144,'r:repair-coolant-on-vehicle',NULL,'u:','annotated',40,165,30,NULL,231,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(145,'r:fm-o2-old-diag-p0130',NULL,'u:','annotated',37,87,166,NULL,232,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(146,'r:diag-o2-test-voltage',NULL,'u:','annotated',52,166,167,NULL,233,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(147,'r:diag-o2-test-heater',NULL,'u:','annotated',52,166,168,NULL,234,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(148,'r:diag-o2-resolved',NULL,'u:','annotated',50,166,169,NULL,235,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(149,'r:proc-o2-repair',NULL,'u:','annotated',50,169,170,NULL,236,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(150,'r:repair-o2-on-vehicle',NULL,'u:','annotated',40,170,30,NULL,237,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(151,'r:fm-iac-diag-p0505',NULL,'u:','annotated',37,137,171,NULL,238,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(152,'r:diag-iac-test-resistance',NULL,'u:','annotated',52,171,172,NULL,239,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(153,'r:diag-iac-test-movement',NULL,'u:','annotated',52,171,173,NULL,240,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(154,'r:diag-iac-resolved-clean',NULL,'u:','annotated',50,171,174,NULL,241,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(155,'r:diag-iac-resolved-replace',NULL,'u:','annotated',50,171,175,NULL,242,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(156,'r:proc-iac-clean-repair',NULL,'u:','annotated',50,174,176,NULL,243,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(157,'r:proc-iac-replace-repair',NULL,'u:','annotated',50,175,177,NULL,244,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(158,'r:repair-iac-clean-vehicle',NULL,'u:','annotated',40,176,30,NULL,245,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(159,'r:repair-iac-replace-vehicle',NULL,'u:','annotated',40,177,30,NULL,246,'asserted',2,NULL,NULL,'2026-09-29 23:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(160,'r:fm-random-diag',NULL,'u:','annotated',37,247,250,NULL,265,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(161,'r:diag-p0300-test-comp',NULL,'u:','annotated',52,250,251,NULL,266,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(162,'r:diag-p0300-test-spark',NULL,'u:','annotated',52,250,252,NULL,267,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(163,'r:diag-p0300-proc',NULL,'u:','annotated',50,250,253,NULL,268,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(164,'r:proc-coils-repair',NULL,'u:','annotated',50,253,254,NULL,269,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(165,'r:repair-coils-veh',NULL,'u:','annotated',40,254,30,NULL,270,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(166,'r:fm-random-manifests-p0300',NULL,'u:','annotated',5,247,28,NULL,271,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(167,'r:fm-cat-diag',NULL,'u:','annotated',37,248,255,NULL,272,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(168,'r:diag-p0420-test-o2',NULL,'u:','annotated',52,255,256,NULL,273,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(169,'r:diag-p0420-test-temp',NULL,'u:','annotated',52,255,257,NULL,274,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(170,'r:diag-p0420-proc',NULL,'u:','annotated',50,255,258,NULL,275,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(171,'r:proc-cat-repair',NULL,'u:','annotated',50,258,259,NULL,276,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(172,'r:repair-cat-veh',NULL,'u:','annotated',40,259,30,NULL,277,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(173,'r:fm-cat-manifests-p0420',NULL,'u:','annotated',5,248,249,NULL,278,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(174,'r:fm-throttle-diag',NULL,'u:','annotated',37,139,260,NULL,279,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(175,'r:diag-p0121-test-sig',NULL,'u:','annotated',52,260,261,NULL,280,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(176,'r:diag-p0121-test-move',NULL,'u:','annotated',52,260,262,NULL,281,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(177,'r:diag-p0121-proc',NULL,'u:','annotated',50,260,263,NULL,282,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(178,'r:proc-throttle-repair',NULL,'u:','annotated',50,263,264,NULL,283,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(179,'r:repair-throttle-veh',NULL,'u:','annotated',40,264,30,NULL,284,'asserted',2,NULL,NULL,'2026-09-29 23:30:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(180,'r:battery-pride-installed',NULL,'u:','none',45,288,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:34:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(181,'r:battery-206-installed',NULL,'u:','none',45,289,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:34:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(182,'r:battery-dena-installed',NULL,'u:','none',45,290,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:34:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(183,'r:ecu-pride-installed',NULL,'u:','none',45,291,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:34:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(184,'r:ecu-206-installed',NULL,'u:','none',45,292,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:34:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(185,'r:ecu-dena-installed',NULL,'u:','none',45,293,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:34:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(186,'r:coil-pride-installed',NULL,'u:','none',45,294,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:34:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(187,'r:coil-206-installed',NULL,'u:','none',45,295,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:34:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(188,'r:alternator-pride-installed',NULL,'u:','none',45,296,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:34:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(189,'r:alternator-206-installed',NULL,'u:','none',45,297,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:34:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(190,'r:battery-pride-instance-of',NULL,'u:','none',1,288,10,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:34:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(191,'r:battery-206-instance-of',NULL,'u:','none',1,289,10,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:34:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(192,'r:battery-dena-instance-of',NULL,'u:','none',1,290,10,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:34:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(220,'r:bus:pride-can-installed',NULL,'u:','none',45,306,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(221,'r:fuse:pride-15a-installed',NULL,'u:','none',45,305,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(222,'r:injector:pride-1-installed',NULL,'u:','none',45,303,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(223,'r:relay:pride-main-installed',NULL,'u:','none',45,304,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(224,'r:sensor:pride-coolant-installed',NULL,'u:','none',45,301,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(225,'r:sensor:pride-crank-installed',NULL,'u:','none',45,299,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(226,'r:sensor:pride-maf-installed',NULL,'u:','none',45,302,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(227,'r:sensor:pride-o2-installed',NULL,'u:','none',45,300,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(228,'r:starter:pride-1kw-installed',NULL,'u:','none',45,298,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(229,'r:bus:206-can-installed',NULL,'u:','none',45,315,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(230,'r:fuse:206-15a-installed',NULL,'u:','none',45,314,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(231,'r:injector:206-1-installed',NULL,'u:','none',45,312,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(232,'r:relay:206-main-installed',NULL,'u:','none',45,313,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(233,'r:sensor:206-coolant-installed',NULL,'u:','none',45,310,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(234,'r:sensor:206-crank-installed',NULL,'u:','none',45,308,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(235,'r:sensor:206-maf-installed',NULL,'u:','none',45,311,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(236,'r:sensor:206-o2-installed',NULL,'u:','none',45,309,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(237,'r:starter:206-1.4kw-installed',NULL,'u:','none',45,307,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(238,'r:bus:dena-can-installed',NULL,'u:','none',45,324,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(239,'r:fuse:dena-15a-installed',NULL,'u:','none',45,323,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(240,'r:injector:dena-1-installed',NULL,'u:','none',45,321,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(241,'r:relay:dena-main-installed',NULL,'u:','none',45,322,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(242,'r:sensor:dena-coolant-installed',NULL,'u:','none',45,319,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(243,'r:sensor:dena-crank-installed',NULL,'u:','none',45,317,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(244,'r:sensor:dena-maf-installed',NULL,'u:','none',45,320,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(245,'r:sensor:dena-o2-installed',NULL,'u:','none',45,318,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(246,'r:starter:dena-1.4kw-installed',NULL,'u:','none',45,316,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:37:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(247,'r:battery-pride-voltage',NULL,'u:','none',13,288,NULL,1,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:40:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(248,'r:battery-206-voltage',NULL,'u:','none',13,289,NULL,2,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:40:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(249,'r:battery-dena-voltage',NULL,'u:','none',13,290,NULL,3,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:40:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(250,'r:alternator-pride-voltage',NULL,'u:','none',13,296,NULL,5,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:40:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(251,'r:coil-pride-resistance',NULL,'u:','none',14,294,NULL,7,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:40:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(252,'r:coil-206-resistance',NULL,'u:','none',14,295,NULL,8,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:40:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(253,'r:maf-pride-idle',NULL,'u:','none',13,302,NULL,13,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:40:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(254,'r:o2-pride-voltage',NULL,'u:','none',13,300,NULL,16,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:40:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(255,'r:vehicle-pride-weight',NULL,'u:','none',20,285,NULL,17,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:40:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(256,'r:vehicle-206-weight',NULL,'u:','none',20,286,NULL,18,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:40:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(257,'r:vehicle-dena-weight',NULL,'u:','none',20,287,NULL,19,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:40:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(258,'r:vehicle-has-battery',NULL,'u:','none',61,338,325,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:47:26',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(259,'r:vehicle-has-alternator',NULL,'u:','none',61,338,326,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:47:26',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(260,'r:vehicle-has-starter',NULL,'u:','none',61,338,327,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:47:26',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(261,'r:vehicle-has-relay',NULL,'u:','none',61,338,335,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:47:26',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(262,'r:vehicle-has-fuse',NULL,'u:','none',61,338,336,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:47:26',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(263,'r:passengercar-has-engine-ecu',NULL,'u:','none',61,339,328,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:47:26',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(264,'r:passengercar-has-ignition-coil',NULL,'u:','none',61,339,329,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:47:26',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(265,'r:passengercar-has-injector',NULL,'u:','none',61,339,330,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:47:26',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(266,'r:passengercar-has-o2-sensor',NULL,'u:','none',61,339,331,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:47:26',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(267,'r:passengercar-has-maf-sensor',NULL,'u:','none',61,339,332,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:47:26',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(268,'r:passengercar-has-crankshaft-sensor',NULL,'u:','none',61,339,333,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:47:26',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(269,'r:passengercar-has-coolant-sensor',NULL,'u:','none',61,339,334,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:47:26',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(270,'r:passengercar-has-can-bus',NULL,'u:','none',61,339,337,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:47:26',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(271,'r:vehicle-206-1-instance-of',NULL,'u:','none',1,286,341,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:49:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(272,'r:vehicle-dena-1-instance-of',NULL,'u:','none',1,287,342,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:49:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(273,'r:vehicle-pride-1-instance-of',NULL,'u:','none',1,285,340,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:49:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(274,'r:vehicle-sample-1-instance-of',NULL,'u:','none',1,30,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:49:38',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(275,'r:concept-passenger-car-is-a',NULL,'u:','none',2,339,338,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:50:42',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(276,'r:concept-pride-is-a',NULL,'u:','none',2,340,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:50:42',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(277,'r:concept-206-is-a',NULL,'u:','none',2,341,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:50:42',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(278,'r:concept-dena-is-a',NULL,'u:','none',2,342,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-29 23:50:42',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(279,'r:vehicle-has-brake-master',NULL,'u:','none',61,338,343,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(280,'r:vehicle-has-brake-booster',NULL,'u:','none',61,338,344,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(281,'r:vehicle-has-brake-disc',NULL,'u:','none',61,338,345,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(282,'r:vehicle-has-brake-pad',NULL,'u:','none',61,338,346,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(283,'r:vehicle-has-brake-caliper',NULL,'u:','none',61,338,347,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(284,'r:vehicle-has-brake-fluid',NULL,'u:','none',61,338,348,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(285,'r:vehicle-has-brake-line',NULL,'u:','none',61,338,349,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(286,'r:vehicle-has-steering-wheel',NULL,'u:','none',61,338,350,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(287,'r:vehicle-has-steering-column',NULL,'u:','none',61,338,351,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(288,'r:vehicle-has-steering-rack',NULL,'u:','none',61,338,352,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(289,'r:vehicle-has-power-steering',NULL,'u:','none',61,338,353,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(290,'r:vehicle-has-tie-rod',NULL,'u:','none',61,338,354,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(291,'r:vehicle-has-coil-spring',NULL,'u:','none',61,338,355,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(292,'r:vehicle-has-shock-absorber',NULL,'u:','none',61,338,356,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(293,'r:vehicle-has-control-arm',NULL,'u:','none',61,338,357,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(294,'r:vehicle-has-ball-joint',NULL,'u:','none',61,338,358,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(295,'r:vehicle-has-bushing',NULL,'u:','none',61,338,359,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(296,'r:passengercar-has-ac-compressor',NULL,'u:','none',61,339,360,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(297,'r:passengercar-has-ac-condenser',NULL,'u:','none',61,339,361,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(298,'r:passengercar-has-ac-expansion',NULL,'u:','none',61,339,362,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(299,'r:passengercar-has-ac-refrigerant',NULL,'u:','none',61,339,363,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(300,'r:passengercar-has-blower-motor',NULL,'u:','none',61,339,364,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(301,'r:passengercar-has-cabin-filter',NULL,'u:','none',61,339,365,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(302,'r:passengercar-has-heater-core',NULL,'u:','none',61,339,366,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:01:12',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(303,'r:concept-405-is-a',NULL,'u:','none',2,367,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:02:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(304,'r:concept-samand-is-a',NULL,'u:','none',2,368,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:02:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(305,'r:concept-tiba-is-a',NULL,'u:','none',2,369,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:02:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(306,'r:concept-quick-is-a',NULL,'u:','none',2,370,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:02:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(307,'r:concept-shahin-is-a',NULL,'u:','none',2,371,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:02:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(308,'r:vehicle-405-1-instance-of',NULL,'u:','none',1,372,367,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:02:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(309,'r:vehicle-quick-1-instance-of',NULL,'u:','none',1,375,370,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:02:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(310,'r:vehicle-samand-1-instance-of',NULL,'u:','none',1,373,368,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:02:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(311,'r:vehicle-shahin-1-instance-of',NULL,'u:','none',1,376,371,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:02:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(312,'r:vehicle-tiba-1-instance-of',NULL,'u:','none',1,374,369,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:02:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(313,'r:pride-brake-pad-inst',NULL,'u:','none',1,377,346,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(314,'r:pride-shock-absorber-inst',NULL,'u:','none',1,378,356,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(315,'r:pride-ac-compressor-inst',NULL,'u:','none',1,379,360,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(316,'r:206-brake-pad-inst',NULL,'u:','none',1,380,346,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(317,'r:206-shock-absorber-inst',NULL,'u:','none',1,381,356,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(318,'r:206-ac-compressor-inst',NULL,'u:','none',1,382,360,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(319,'r:405-brake-pad-inst',NULL,'u:','none',1,383,346,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(320,'r:405-shock-absorber-inst',NULL,'u:','none',1,384,356,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(321,'r:405-ac-compressor-inst',NULL,'u:','none',1,385,360,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(322,'r:dena-brake-pad-inst',NULL,'u:','none',1,386,346,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(323,'r:dena-shock-absorber-inst',NULL,'u:','none',1,387,356,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(324,'r:dena-ac-compressor-inst',NULL,'u:','none',1,388,360,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(325,'r:tiba-brake-pad-inst',NULL,'u:','none',1,389,346,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(326,'r:tiba-shock-absorber-inst',NULL,'u:','none',1,390,356,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(327,'r:tiba-ac-compressor-inst',NULL,'u:','none',1,391,360,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(328,'r:quick-brake-pad-inst',NULL,'u:','none',1,392,346,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(329,'r:quick-shock-absorber-inst',NULL,'u:','none',1,393,356,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(330,'r:quick-ac-compressor-inst',NULL,'u:','none',1,394,360,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(331,'r:samand-brake-pad-inst',NULL,'u:','none',1,395,346,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(332,'r:samand-shock-absorber-inst',NULL,'u:','none',1,396,356,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(333,'r:samand-ac-compressor-inst',NULL,'u:','none',1,397,360,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(334,'r:shahin-brake-pad-inst',NULL,'u:','none',1,398,346,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(335,'r:shahin-shock-absorber-inst',NULL,'u:','none',1,399,356,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(336,'r:shahin-ac-compressor-inst',NULL,'u:','none',1,400,360,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(337,'r:sample-brake-pad-inst',NULL,'u:','none',1,401,346,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(338,'r:sample-shock-absorber-inst',NULL,'u:','none',1,402,356,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(339,'r:sample-ac-compressor-inst',NULL,'u:','none',1,403,360,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(340,'r:pride-brake-pad-on-vehicle',NULL,'u:','none',45,377,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(341,'r:pride-shock-absorber-on-vehicle',NULL,'u:','none',45,378,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(342,'r:pride-ac-compressor-on-vehicle',NULL,'u:','none',45,379,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(343,'r:206-brake-pad-on-vehicle',NULL,'u:','none',45,380,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(344,'r:206-shock-absorber-on-vehicle',NULL,'u:','none',45,381,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(345,'r:206-ac-compressor-on-vehicle',NULL,'u:','none',45,382,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(346,'r:405-brake-pad-on-vehicle',NULL,'u:','none',45,383,372,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(347,'r:405-shock-absorber-on-vehicle',NULL,'u:','none',45,384,372,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(348,'r:405-ac-compressor-on-vehicle',NULL,'u:','none',45,385,372,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(349,'r:dena-brake-pad-on-vehicle',NULL,'u:','none',45,386,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(350,'r:dena-shock-absorber-on-vehicle',NULL,'u:','none',45,387,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(351,'r:dena-ac-compressor-on-vehicle',NULL,'u:','none',45,388,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(352,'r:tiba-brake-pad-on-vehicle',NULL,'u:','none',45,389,374,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(353,'r:tiba-shock-absorber-on-vehicle',NULL,'u:','none',45,390,374,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(354,'r:tiba-ac-compressor-on-vehicle',NULL,'u:','none',45,391,374,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(355,'r:quick-brake-pad-on-vehicle',NULL,'u:','none',45,392,375,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(356,'r:quick-shock-absorber-on-vehicle',NULL,'u:','none',45,393,375,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(357,'r:quick-ac-compressor-on-vehicle',NULL,'u:','none',45,394,375,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(358,'r:samand-brake-pad-on-vehicle',NULL,'u:','none',45,395,373,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(359,'r:samand-shock-absorber-on-vehicle',NULL,'u:','none',45,396,373,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(360,'r:samand-ac-compressor-on-vehicle',NULL,'u:','none',45,397,373,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(361,'r:shahin-brake-pad-on-vehicle',NULL,'u:','none',45,398,376,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(362,'r:shahin-shock-absorber-on-vehicle',NULL,'u:','none',45,399,376,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(363,'r:shahin-ac-compressor-on-vehicle',NULL,'u:','none',45,400,376,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(364,'r:sample-brake-pad-on-vehicle',NULL,'u:','none',45,401,30,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(365,'r:sample-shock-absorber-on-vehicle',NULL,'u:','none',45,402,30,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(366,'r:sample-ac-compressor-on-vehicle',NULL,'u:','none',45,403,30,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:06:37',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(367,'r:pad-worn-c0035',NULL,'u:','none',5,404,108,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(368,'r:brake-fluid-c0035',NULL,'u:','none',5,405,108,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(369,'r:pump-bad-c0110',NULL,'u:','none',5,407,411,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(370,'r:pad-worn-diag-c0035',NULL,'u:','none',37,404,413,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(371,'r:caliper-diag-c0110',NULL,'u:','none',37,407,414,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(372,'r:c0035-tested-pad',NULL,'u:','none',52,413,415,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(373,'r:c0035-tested-fluid',NULL,'u:','none',52,413,416,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(374,'r:c0035-tested-pressure',NULL,'u:','none',52,413,417,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(375,'r:c0110-tested-abs',NULL,'u:','none',52,414,418,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(376,'r:c0035-resolved-pad',NULL,'u:','none',50,413,419,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(377,'r:c0035-resolved-fluid',NULL,'u:','none',50,413,420,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(378,'r:c0035-resolved-disc',NULL,'u:','none',50,413,421,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(379,'r:c0110-resolved-caliper',NULL,'u:','none',50,414,422,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(380,'r:c0110-resolved-pump',NULL,'u:','none',50,414,423,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(381,'r:proc-pad-repair',NULL,'u:','none',50,419,424,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(382,'r:proc-fluid-repair',NULL,'u:','none',50,420,425,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(383,'r:proc-disc-repair',NULL,'u:','none',50,421,426,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(384,'r:proc-caliper-repair',NULL,'u:','none',50,422,427,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(385,'r:proc-pump-repair',NULL,'u:','none',50,423,428,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(386,'r:repair-pad-veh',NULL,'u:','none',40,424,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(387,'r:repair-fluid-veh',NULL,'u:','none',40,425,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(388,'r:repair-disc-veh',NULL,'u:','none',40,426,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(389,'r:repair-caliper-veh',NULL,'u:','none',40,427,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:09:36',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(390,'r:ac-no-cold-b1423',NULL,'u:','none',5,429,439,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(391,'r:ac-refrig-low-b1423',NULL,'u:','none',5,430,439,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(392,'r:ac-refrig-low-b1421',NULL,'u:','none',5,430,437,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(393,'r:comp-dead-b1422',NULL,'u:','none',5,431,438,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(394,'r:clutch-fail-b1422',NULL,'u:','none',5,432,438,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(395,'r:blower-dead-b1424',NULL,'u:','none',5,433,440,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(396,'r:heater-no-hot-b1425',NULL,'u:','none',5,434,441,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(397,'r:refrig-low-diag',NULL,'u:','none',37,430,442,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(398,'r:ac-no-cold-diag',NULL,'u:','none',37,429,442,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(399,'r:comp-dead-diag',NULL,'u:','none',37,431,443,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(400,'r:clutch-fail-diag',NULL,'u:','none',37,432,443,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(401,'r:blower-dead-diag',NULL,'u:','none',37,433,444,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(402,'r:filter-clog-diag',NULL,'u:','none',37,435,444,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(403,'r:heater-no-hot-diag',NULL,'u:','none',37,434,445,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(404,'r:expansion-clog-diag',NULL,'u:','none',37,436,442,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(405,'r:b1421-test-low',NULL,'u:','none',52,442,446,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(406,'r:b1421-test-high',NULL,'u:','none',52,442,447,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(407,'r:b1421-test-exp',NULL,'u:','none',52,442,453,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(408,'r:b1422-test-clutch',NULL,'u:','none',52,443,448,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(409,'r:b1422-test-temp',NULL,'u:','none',52,443,449,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(410,'r:b1424-test-motor',NULL,'u:','none',52,444,450,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(411,'r:b1424-test-filter',NULL,'u:','none',52,444,451,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(412,'r:b1425-test-core',NULL,'u:','none',52,445,452,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(413,'r:b1421-resolved-recharge',NULL,'u:','none',50,442,454,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(414,'r:b1421-resolved-leak',NULL,'u:','none',50,442,455,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(415,'r:b1421-resolved-clean',NULL,'u:','none',50,442,461,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(416,'r:b1422-resolved-comp',NULL,'u:','none',50,443,456,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(417,'r:b1422-resolved-clutch',NULL,'u:','none',50,443,457,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(418,'r:b1424-resolved-blower',NULL,'u:','none',50,444,458,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(419,'r:b1424-resolved-filter',NULL,'u:','none',50,444,459,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(420,'r:b1425-resolved-heater',NULL,'u:','none',50,445,460,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(421,'r:proc-recharge-repair',NULL,'u:','none',50,454,462,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(422,'r:proc-comp-repair',NULL,'u:','none',50,456,463,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(423,'r:proc-clutch-repair',NULL,'u:','none',50,457,464,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(424,'r:proc-blower-repair',NULL,'u:','none',50,458,465,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(425,'r:proc-filter-repair',NULL,'u:','none',50,459,466,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(426,'r:proc-heater-repair',NULL,'u:','none',50,460,467,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(427,'r:proc-exp-repair',NULL,'u:','none',50,461,468,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(428,'r:recharge-veh',NULL,'u:','none',40,462,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(429,'r:comp-repl-veh',NULL,'u:','none',40,463,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(430,'r:blower-repl-veh',NULL,'u:','none',40,465,373,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(431,'r:filter-repl-veh',NULL,'u:','none',40,466,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:12:28',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(432,'r:steering-hard-c1200',NULL,'u:','none',5,469,478,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(433,'r:steering-hard-c1202',NULL,'u:','none',5,469,480,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(434,'r:fluid-low-c1202',NULL,'u:','none',5,470,480,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(435,'r:pump-dead-c1202',NULL,'u:','none',5,471,480,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(436,'r:rack-leak-c1200',NULL,'u:','none',5,473,478,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(437,'r:loose-c1201',NULL,'u:','none',5,474,479,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(438,'r:tierod-worn-c1201',NULL,'u:','none',5,475,479,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(439,'r:hard-diag-pump',NULL,'u:','none',37,469,483,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(440,'r:fluid-low-diag-pump',NULL,'u:','none',37,470,483,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(441,'r:pump-dead-diag-pump',NULL,'u:','none',37,471,483,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(442,'r:belt-slip-diag-pump',NULL,'u:','none',37,472,483,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(443,'r:loose-diag-rack',NULL,'u:','none',37,474,484,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(444,'r:tierod-worn-diag-rack',NULL,'u:','none',37,475,484,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(445,'r:noise-diag-rack',NULL,'u:','none',37,476,484,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(446,'r:rack-leak-diag-rack',NULL,'u:','none',37,473,484,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(447,'r:hard-tested-level',NULL,'u:','none',52,483,485,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(448,'r:hard-tested-pressure',NULL,'u:','none',52,483,486,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(449,'r:hard-tested-belt',NULL,'u:','none',52,483,487,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(450,'r:loose-tested-play',NULL,'u:','none',52,484,489,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(451,'r:loose-tested-leak',NULL,'u:','none',52,484,488,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(452,'r:angle-tested',NULL,'u:','none',52,481,490,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(453,'r:torque-tested',NULL,'u:','none',52,482,491,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(454,'r:hard-resolved-fluid',NULL,'u:','none',50,483,492,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(455,'r:hard-resolved-pump',NULL,'u:','none',50,483,506,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(456,'r:hard-resolved-belt',NULL,'u:','none',50,483,494,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(457,'r:loose-resolved-rack',NULL,'u:','none',50,484,495,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(458,'r:loose-resolved-tierod',NULL,'u:','none',50,484,496,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(459,'r:angle-resolved',NULL,'u:','none',50,481,497,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(460,'r:torque-resolved',NULL,'u:','none',50,482,498,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(461,'r:steer-fluid-added-veh',NULL,'u:','none',40,499,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(462,'r:steer-pump-repl-veh',NULL,'u:','none',40,428,372,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(463,'r:steer-rack-repl-veh',NULL,'u:','none',40,502,373,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(464,'r:steer-tierod-repl-veh',NULL,'u:','none',40,503,375,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:14:43',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(465,'r:proc-steering-pump-repair',NULL,'u:','none',50,506,507,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:17:23',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(467,'r:shock-leak-c0710',NULL,'u:','none',5,508,519,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(468,'r:shock-worn-c0710',NULL,'u:','none',5,509,519,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(469,'r:shock-dead-c0710',NULL,'u:','none',5,510,519,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(470,'r:spring-broken-c0050',NULL,'u:','none',5,511,522,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(471,'r:spring-sagging-c0050',NULL,'u:','none',5,512,522,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(472,'r:balljoint-worn-c1145',NULL,'u:','none',5,513,520,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(473,'r:bushing-cracked-c1234',NULL,'u:','none',5,514,521,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(474,'r:control-arm-bent-c0050',NULL,'u:','none',5,515,522,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(475,'r:noise-over-bump-c0710',NULL,'u:','none',5,516,519,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(476,'r:pulling-c0050',NULL,'u:','none',5,517,522,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(477,'r:uneven-wear-c0050',NULL,'u:','none',5,518,522,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(478,'r:shock-leak-diag',NULL,'u:','none',37,508,523,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(479,'r:shock-worn-diag',NULL,'u:','none',37,509,523,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(480,'r:shock-dead-diag',NULL,'u:','none',37,510,523,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(481,'r:spring-broken-diag',NULL,'u:','none',37,511,524,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(482,'r:spring-sag-diag',NULL,'u:','none',37,512,524,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(483,'r:balljoint-worn-diag',NULL,'u:','none',37,513,525,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(484,'r:bushing-cracked-diag',NULL,'u:','none',37,514,526,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(485,'r:control-arm-diag',NULL,'u:','none',37,515,527,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(486,'r:pulling-diag',NULL,'u:','none',37,517,527,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(487,'r:uneven-wear-diag',NULL,'u:','none',37,518,527,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(488,'r:shock-resolved',NULL,'u:','none',50,523,528,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(489,'r:spring-resolved',NULL,'u:','none',50,524,529,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(490,'r:balljoint-resolved',NULL,'u:','none',50,525,530,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(491,'r:bushing-resolved',NULL,'u:','none',50,526,531,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(492,'r:align-resolved-arm',NULL,'u:','none',50,527,532,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(493,'r:align-resolved-wheels',NULL,'u:','none',50,527,533,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(494,'r:proc-shock-repair',NULL,'u:','none',50,528,534,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(495,'r:proc-spring-repair',NULL,'u:','none',50,529,535,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(496,'r:proc-balljoint-repair',NULL,'u:','none',50,530,536,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(497,'r:proc-bushing-repair',NULL,'u:','none',50,531,537,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(498,'r:proc-arm-repair',NULL,'u:','none',50,532,538,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(499,'r:proc-align-repair',NULL,'u:','none',50,533,539,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(500,'r:susp-shock-veh',NULL,'u:','none',40,534,285,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(501,'r:susp-spring-veh',NULL,'u:','none',40,535,286,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(502,'r:susp-balljoint-veh',NULL,'u:','none',40,536,373,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(503,'r:susp-align-veh',NULL,'u:','none',40,539,287,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:21:18',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(504,'r:shock-tested-bounce',NULL,'u:','none',52,523,540,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:23:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(505,'r:shock-tested-leak',NULL,'u:','none',52,523,541,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:23:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(506,'r:shock-tested-road',NULL,'u:','none',52,523,546,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:23:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(507,'r:spring-tested-height',NULL,'u:','none',52,524,542,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:23:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(508,'r:balljoint-tested-play',NULL,'u:','none',52,525,543,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:23:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(509,'r:bushing-tested-visual',NULL,'u:','none',52,526,544,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:23:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(510,'r:align-tested-wheel',NULL,'u:','none',52,527,545,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:23:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(511,'r:concept-pride-by-concept-saipa',NULL,'u:','none',62,340,548,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:26:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(512,'r:concept-tiba-by-concept-saipa',NULL,'u:','none',62,369,548,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:26:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(513,'r:concept-quick-by-concept-saipa',NULL,'u:','none',62,370,548,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:26:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(514,'r:concept-shahin-by-concept-saipa',NULL,'u:','none',62,371,548,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:26:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(515,'r:concept-samand-by-concept-ikco',NULL,'u:','none',62,368,547,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:26:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(516,'r:concept-dena-by-concept-ikco',NULL,'u:','none',62,342,547,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:26:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(517,'r:concept-405-by-concept-ikco',NULL,'u:','none',62,367,547,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:26:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(518,'r:concept-206-by-concept-ikco',NULL,'u:','none',62,341,547,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:26:40',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(519,'r:concept-hyundai-accent-is-a',NULL,'u:','none',2,579,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(520,'r:concept-hyundai-elantra-is-a',NULL,'u:','none',2,580,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(521,'r:concept-hyundai-tucson-is-a',NULL,'u:','none',2,581,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(522,'r:concept-hyundai-santafe-is-a',NULL,'u:','none',2,582,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(523,'r:concept-hyundai-sonata-is-a',NULL,'u:','none',2,583,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(524,'r:concept-kia-rio-is-a',NULL,'u:','none',2,584,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(525,'r:concept-kia-cerato-is-a',NULL,'u:','none',2,585,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(526,'r:concept-kia-sportage-is-a',NULL,'u:','none',2,586,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(527,'r:concept-kia-sorento-is-a',NULL,'u:','none',2,587,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(528,'r:concept-kia-optima-is-a',NULL,'u:','none',2,588,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(529,'r:concept-hyundai-accent-by-concept-hyundai',NULL,'u:','none',62,579,552,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(530,'r:concept-hyundai-elantra-by-concept-hyundai',NULL,'u:','none',62,580,552,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(531,'r:concept-hyundai-tucson-by-concept-hyundai',NULL,'u:','none',62,581,552,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(532,'r:concept-hyundai-santafe-by-concept-hyundai',NULL,'u:','none',62,582,552,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(533,'r:concept-hyundai-sonata-by-concept-hyundai',NULL,'u:','none',62,583,552,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(534,'r:concept-kia-rio-by-concept-kia',NULL,'u:','none',62,584,553,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(535,'r:concept-kia-cerato-by-concept-kia',NULL,'u:','none',62,585,553,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(536,'r:concept-kia-sportage-by-concept-kia',NULL,'u:','none',62,586,553,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(537,'r:concept-kia-sorento-by-concept-kia',NULL,'u:','none',62,587,553,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(538,'r:concept-kia-optima-by-concept-kia',NULL,'u:','none',62,588,553,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(539,'r:vehicle-accent-1-instance-of',NULL,'u:','none',1,589,579,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(540,'r:vehicle-cerato-1-instance-of',NULL,'u:','none',1,593,585,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(541,'r:vehicle-elantra-1-instance-of',NULL,'u:','none',1,590,580,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(542,'r:vehicle-rio-1-instance-of',NULL,'u:','none',1,592,584,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(543,'r:vehicle-sportage-1-instance-of',NULL,'u:','none',1,594,586,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(544,'r:vehicle-tucson-1-instance-of',NULL,'u:','none',1,591,581,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:27:56',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(545,'r:concept-toyota-corolla-is-a',NULL,'u:','none',2,595,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(546,'r:concept-toyota-camry-is-a',NULL,'u:','none',2,596,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(547,'r:concept-toyota-rav4-is-a',NULL,'u:','none',2,597,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(548,'r:concept-toyota-landcruiser-is-a',NULL,'u:','none',2,598,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(549,'r:concept-honda-civic-is-a',NULL,'u:','none',2,599,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(550,'r:concept-honda-accord-is-a',NULL,'u:','none',2,600,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(551,'r:concept-honda-crv-is-a',NULL,'u:','none',2,601,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(552,'r:concept-nissan-sunny-is-a',NULL,'u:','none',2,602,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(553,'r:concept-nissan-altima-is-a',NULL,'u:','none',2,603,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(554,'r:concept-nissan-xtrail-is-a',NULL,'u:','none',2,604,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(555,'r:concept-toyota-corolla-by-concept-toyota',NULL,'u:','none',62,595,560,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(556,'r:concept-toyota-camry-by-concept-toyota',NULL,'u:','none',62,596,560,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(557,'r:concept-toyota-rav4-by-concept-toyota',NULL,'u:','none',62,597,560,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(558,'r:concept-toyota-landcruiser-by-concept-toyota',NULL,'u:','none',62,598,560,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(559,'r:concept-honda-civic-by-concept-honda',NULL,'u:','none',62,599,561,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(560,'r:concept-honda-accord-by-concept-honda',NULL,'u:','none',62,600,561,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(561,'r:concept-honda-crv-by-concept-honda',NULL,'u:','none',62,601,561,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(562,'r:concept-nissan-sunny-by-concept-nissan',NULL,'u:','none',62,602,562,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(563,'r:concept-nissan-altima-by-concept-nissan',NULL,'u:','none',62,603,562,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(564,'r:concept-nissan-xtrail-by-concept-nissan',NULL,'u:','none',62,604,562,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(565,'r:vehicle-accord-1-instance-of',NULL,'u:','none',1,608,600,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(566,'r:vehicle-altima-1-instance-of',NULL,'u:','none',1,610,603,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(567,'r:vehicle-camry-1-instance-of',NULL,'u:','none',1,606,596,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(568,'r:vehicle-civic-1-instance-of',NULL,'u:','none',1,607,599,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(569,'r:vehicle-corolla-1-instance-of',NULL,'u:','none',1,605,595,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(570,'r:vehicle-sunny-1-instance-of',NULL,'u:','none',1,609,602,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:29:08',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(571,'r:concept-bmw-3-is-a',NULL,'u:','none',2,611,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(572,'r:concept-bmw-5-is-a',NULL,'u:','none',2,612,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(573,'r:concept-bmw-x5-is-a',NULL,'u:','none',2,613,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(574,'r:concept-mercedes-c-is-a',NULL,'u:','none',2,614,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(575,'r:concept-mercedes-e-is-a',NULL,'u:','none',2,615,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(576,'r:concept-mercedes-s-is-a',NULL,'u:','none',2,616,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(577,'r:concept-vw-golf-is-a',NULL,'u:','none',2,617,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(578,'r:concept-vw-passat-is-a',NULL,'u:','none',2,618,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(579,'r:concept-vw-tiguan-is-a',NULL,'u:','none',2,619,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(580,'r:concept-audi-a4-is-a',NULL,'u:','none',2,620,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(581,'r:concept-audi-a6-is-a',NULL,'u:','none',2,621,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(582,'r:concept-porsche-911-is-a',NULL,'u:','none',2,622,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(583,'r:concept-bmw-3-by-concept-bmw',NULL,'u:','none',62,611,565,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(584,'r:concept-bmw-5-by-concept-bmw',NULL,'u:','none',62,612,565,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(585,'r:concept-bmw-x5-by-concept-bmw',NULL,'u:','none',62,613,565,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(586,'r:concept-mercedes-c-by-concept-mercedes',NULL,'u:','none',62,614,566,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(587,'r:concept-mercedes-e-by-concept-mercedes',NULL,'u:','none',62,615,566,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(588,'r:concept-mercedes-s-by-concept-mercedes',NULL,'u:','none',62,616,566,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(589,'r:concept-vw-golf-by-concept-volkswagen',NULL,'u:','none',62,617,567,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(590,'r:concept-vw-passat-by-concept-volkswagen',NULL,'u:','none',62,618,567,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(591,'r:concept-vw-tiguan-by-concept-volkswagen',NULL,'u:','none',62,619,567,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(592,'r:concept-audi-a4-by-concept-audi',NULL,'u:','none',62,620,568,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(593,'r:concept-audi-a6-by-concept-audi',NULL,'u:','none',62,621,568,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(594,'r:concept-porsche-911-by-concept-porsche',NULL,'u:','none',62,622,569,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:30:11',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(595,'r:concept-chery-tiggo-is-a',NULL,'u:','none',2,623,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(596,'r:concept-chery-arrizo-is-a',NULL,'u:','none',2,624,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(597,'r:concept-jac-s3-is-a',NULL,'u:','none',2,625,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(598,'r:concept-jac-s5-is-a',NULL,'u:','none',2,626,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(599,'r:concept-jac-j4-is-a',NULL,'u:','none',2,627,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(600,'r:concept-brilliance-h230-is-a',NULL,'u:','none',2,628,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(601,'r:concept-brilliance-h320-is-a',NULL,'u:','none',2,629,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(602,'r:concept-brilliance-h530-is-a',NULL,'u:','none',2,630,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(603,'r:concept-lifan-x60-is-a',NULL,'u:','none',2,631,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(604,'r:concept-lifan-820-is-a',NULL,'u:','none',2,632,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(605,'r:concept-haval-h6-is-a',NULL,'u:','none',2,633,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(606,'r:concept-haval-h2-is-a',NULL,'u:','none',2,634,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(607,'r:concept-geely-emgrand-is-a',NULL,'u:','none',2,635,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(608,'r:concept-geely-coolray-is-a',NULL,'u:','none',2,636,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(609,'r:concept-byd-song-is-a',NULL,'u:','none',2,637,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(610,'r:concept-byd-atto3-is-a',NULL,'u:','none',2,638,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(611,'r:concept-chery-tiggo-by-concept-chery',NULL,'u:','none',62,623,570,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(612,'r:concept-chery-arrizo-by-concept-chery',NULL,'u:','none',62,624,570,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(613,'r:concept-jac-s3-by-concept-jac',NULL,'u:','none',62,625,571,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(614,'r:concept-jac-s5-by-concept-jac',NULL,'u:','none',62,626,571,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(615,'r:concept-jac-j4-by-concept-jac',NULL,'u:','none',62,627,571,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(616,'r:concept-brilliance-h230-by-concept-brilliance',NULL,'u:','none',62,628,572,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(617,'r:concept-brilliance-h320-by-concept-brilliance',NULL,'u:','none',62,629,572,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(618,'r:concept-brilliance-h530-by-concept-brilliance',NULL,'u:','none',62,630,572,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(619,'r:concept-lifan-x60-by-concept-lifan',NULL,'u:','none',62,631,573,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(620,'r:concept-lifan-820-by-concept-lifan',NULL,'u:','none',62,632,573,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(621,'r:concept-haval-h6-by-concept-haval',NULL,'u:','none',62,633,574,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(622,'r:concept-haval-h2-by-concept-haval',NULL,'u:','none',62,634,574,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(623,'r:concept-geely-emgrand-by-concept-geely',NULL,'u:','none',62,635,575,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(624,'r:concept-geely-coolray-by-concept-geely',NULL,'u:','none',62,636,575,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(625,'r:concept-byd-song-by-concept-byd',NULL,'u:','none',62,637,576,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(626,'r:concept-byd-atto3-by-concept-byd',NULL,'u:','none',62,638,576,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:31:21',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(627,'r:concept-chevrolet-cruze-is-a',NULL,'u:','none',2,639,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:32:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(628,'r:concept-chevrolet-malibu-is-a',NULL,'u:','none',2,640,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:32:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(629,'r:concept-ford-focus-is-a',NULL,'u:','none',2,641,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:32:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(630,'r:concept-ford-mustang-is-a',NULL,'u:','none',2,642,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:32:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(631,'r:concept-ford-f150-is-a',NULL,'u:','none',2,643,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:32:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(632,'r:concept-chevrolet-cruze-by-concept-chevrolet',NULL,'u:','none',62,639,577,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:32:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(633,'r:concept-chevrolet-malibu-by-concept-chevrolet',NULL,'u:','none',62,640,577,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:32:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(634,'r:concept-ford-focus-by-concept-ford',NULL,'u:','none',62,641,578,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:32:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(635,'r:concept-ford-mustang-by-concept-ford',NULL,'u:','none',62,642,578,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:32:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(636,'r:concept-ford-f150-by-concept-ford',NULL,'u:','none',62,643,578,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:32:20',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(637,'r:motorcycle-is-a-vehicle',NULL,'u:','none',2,644,338,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(638,'r:motorcycle-has-battery',NULL,'u:','none',61,644,325,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(639,'r:motorcycle-has-alternator',NULL,'u:','none',61,644,326,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(640,'r:motorcycle-has-relay',NULL,'u:','none',61,644,335,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(641,'r:motorcycle-has-fuse',NULL,'u:','none',61,644,336,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(642,'r:motorcycle-has-brake-master',NULL,'u:','none',61,644,343,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(643,'r:motorcycle-has-brake-pad',NULL,'u:','none',61,644,346,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(644,'r:motorcycle-has-brake-fluid',NULL,'u:','none',61,644,348,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(645,'r:motorcycle-has-brake-line',NULL,'u:','none',61,644,349,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(646,'r:motorcycle-has-shock-absorber',NULL,'u:','none',61,644,356,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(647,'r:motorcycle-has-coil-spring',NULL,'u:','none',61,644,355,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(648,'r:motorcycle-has-ball-joint',NULL,'u:','none',61,644,358,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(649,'r:motorcycle-has-bushing',NULL,'u:','none',61,644,359,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(650,'r:concept-honda-cb125-is-a',NULL,'u:','none',2,654,644,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(651,'r:concept-yamaha-ybr-is-a',NULL,'u:','none',2,655,644,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(652,'r:concept-vespa-primavera-is-a',NULL,'u:','none',2,656,644,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(653,'r:concept-harley-sportster-is-a',NULL,'u:','none',2,657,644,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(654,'r:concept-ktm-duke-is-a',NULL,'u:','none',2,658,644,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(655,'r:concept-honda-cb125-by-concept-honda-moto',NULL,'u:','none',62,654,645,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(656,'r:concept-yamaha-ybr-by-concept-yamaha',NULL,'u:','none',62,655,646,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(657,'r:concept-vespa-primavera-by-concept-piaggio',NULL,'u:','none',62,656,653,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(658,'r:concept-harley-sportster-by-concept-harley',NULL,'u:','none',62,657,650,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(659,'r:concept-ktm-duke-by-concept-ktm',NULL,'u:','none',62,658,651,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:33:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(660,'r:truck-is-a-vehicle',NULL,'u:','none',2,659,338,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(661,'r:pickup-is-a-truck',NULL,'u:','none',2,660,659,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(662,'r:truck-has-battery',NULL,'u:','none',61,659,325,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(663,'r:truck-has-alternator',NULL,'u:','none',61,659,326,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(664,'r:truck-has-starter',NULL,'u:','none',61,659,327,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(665,'r:truck-has-relay',NULL,'u:','none',61,659,335,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(666,'r:truck-has-fuse',NULL,'u:','none',61,659,336,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(667,'r:truck-has-engine-ecu',NULL,'u:','none',61,659,328,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(668,'r:truck-has-injector',NULL,'u:','none',61,659,330,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(669,'r:truck-has-can-bus',NULL,'u:','none',61,659,337,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(670,'r:truck-has-brake-master',NULL,'u:','none',61,659,343,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(671,'r:truck-has-brake-disc',NULL,'u:','none',61,659,345,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(672,'r:truck-has-brake-caliper',NULL,'u:','none',61,659,347,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(673,'r:truck-has-brake-fluid',NULL,'u:','none',61,659,348,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(674,'r:truck-has-steering-wheel',NULL,'u:','none',61,659,350,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(675,'r:truck-has-steering-column',NULL,'u:','none',61,659,351,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(676,'r:truck-has-steering-rack',NULL,'u:','none',61,659,352,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(677,'r:truck-has-power-steering',NULL,'u:','none',61,659,353,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(678,'r:truck-has-shock-absorber',NULL,'u:','none',61,659,356,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(679,'r:truck-has-coil-spring',NULL,'u:','none',61,659,355,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(680,'r:concept-toyota-hilux-is-a',NULL,'u:','none',2,672,660,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(681,'r:concept-mitsubishi-l200-is-a',NULL,'u:','none',2,673,660,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(682,'r:concept-nissan-navara-is-a',NULL,'u:','none',2,674,660,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(683,'r:concept-isuzu-npr-is-a',NULL,'u:','none',2,675,659,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(684,'r:concept-hyundai-mighty-is-a',NULL,'u:','none',2,676,659,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(685,'r:concept-volvo-fh-is-a',NULL,'u:','none',2,677,659,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(686,'r:concept-scania-r-is-a',NULL,'u:','none',2,678,659,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(687,'r:concept-man-tgx-is-a',NULL,'u:','none',2,679,659,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(688,'r:concept-toyota-hilux-by-concept-toyota',NULL,'u:','none',62,672,560,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(689,'r:concept-mitsubishi-l200-by-concept-mitsubishi',NULL,'u:','none',62,673,563,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(690,'r:concept-nissan-navara-by-concept-nissan',NULL,'u:','none',62,674,562,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(691,'r:concept-isuzu-npr-by-concept-isuzu',NULL,'u:','none',62,675,662,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(692,'r:concept-hyundai-mighty-by-concept-hyundai-truck',NULL,'u:','none',62,676,661,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(693,'r:concept-volvo-fh-by-concept-volvo-truck',NULL,'u:','none',62,677,667,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(694,'r:concept-scania-r-by-concept-scania',NULL,'u:','none',62,678,668,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(695,'r:concept-man-tgx-by-concept-man',NULL,'u:','none',62,679,665,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:34:45',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(696,'r:concept-bus-is-a',NULL,'u:','none',2,680,338,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(697,'r:concept-minibus-is-a',NULL,'u:','none',2,681,680,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(698,'r:concept-van-is-a',NULL,'u:','none',2,682,338,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(699,'r:concept-ambulance-is-a',NULL,'u:','none',2,683,682,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(700,'r:concept-fire-truck-is-a',NULL,'u:','none',2,684,338,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(701,'r:bus-has-battery',NULL,'u:','none',61,680,325,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(702,'r:bus-has-alternator',NULL,'u:','none',61,680,326,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(703,'r:bus-has-starter',NULL,'u:','none',61,680,327,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(704,'r:bus-has-relay',NULL,'u:','none',61,680,335,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(705,'r:bus-has-fuse',NULL,'u:','none',61,680,336,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(706,'r:bus-has-engine-ecu',NULL,'u:','none',61,680,328,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(707,'r:bus-has-can-bus',NULL,'u:','none',61,680,337,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(708,'r:bus-has-brake-master',NULL,'u:','none',61,680,343,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(709,'r:bus-has-brake-disc',NULL,'u:','none',61,680,345,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(710,'r:bus-has-brake-fluid',NULL,'u:','none',61,680,348,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(711,'r:bus-has-steering-wheel',NULL,'u:','none',61,680,350,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(712,'r:bus-has-steering-rack',NULL,'u:','none',61,680,352,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(713,'r:bus-has-power-steering',NULL,'u:','none',61,680,353,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(714,'r:bus-has-shock-absorber',NULL,'u:','none',61,680,356,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(715,'r:bus-has-coil-spring',NULL,'u:','none',61,680,355,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(716,'r:bus-has-ac-compressor',NULL,'u:','none',61,680,360,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(717,'r:bus-has-blower-motor',NULL,'u:','none',61,680,364,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(718,'r:bus-has-cabin-filter',NULL,'u:','none',61,680,365,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(719,'r:concept-volvo-7900-is-a',NULL,'u:','none',2,694,680,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(720,'r:concept-volvo-b11r-is-a',NULL,'u:','none',2,695,680,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(721,'r:concept-scania-touring-is-a',NULL,'u:','none',2,696,680,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(722,'r:concept-man-lions-coach-is-a',NULL,'u:','none',2,697,680,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(723,'r:concept-mercedes-tourismo-is-a',NULL,'u:','none',2,698,680,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(724,'r:concept-yutong-zk-is-a',NULL,'u:','none',2,699,680,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(725,'r:concept-iveco-crossway-is-a',NULL,'u:','none',2,700,680,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(726,'r:concept-ikd-tj-is-a',NULL,'u:','none',2,701,680,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(727,'r:concept-oghab-city-is-a',NULL,'u:','none',2,702,680,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(728,'r:concept-volvo-7900-by-concept-volvo-bus',NULL,'u:','none',62,694,685,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(729,'r:concept-volvo-b11r-by-concept-volvo-bus',NULL,'u:','none',62,695,685,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(730,'r:concept-scania-touring-by-concept-scania-bus',NULL,'u:','none',62,696,686,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(731,'r:concept-man-lions-coach-by-concept-man-bus',NULL,'u:','none',62,697,687,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(732,'r:concept-mercedes-tourismo-by-concept-mercedes-bus',NULL,'u:','none',62,698,688,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(733,'r:concept-yutong-zk-by-concept-yutong',NULL,'u:','none',62,699,690,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(734,'r:concept-iveco-crossway-by-concept-iveco-bus',NULL,'u:','none',62,700,689,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(735,'r:concept-ikd-tj-by-concept-iran-khodro-diesel',NULL,'u:','none',62,701,693,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(736,'r:concept-oghab-city-by-concept-oghah-afshan',NULL,'u:','none',62,702,692,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:39:32',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(737,'r:concept-police-is-a',NULL,'u:','none',2,726,338,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(738,'r:concept-taxi-is-a',NULL,'u:','none',2,727,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(739,'r:concept-garbage-truck-is-a',NULL,'u:','none',2,728,659,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(740,'r:concept-tow-truck-is-a',NULL,'u:','none',2,729,659,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(741,'r:concept-delivery-van-is-a',NULL,'u:','none',2,730,682,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(742,'r:concept-passenger-van-is-a',NULL,'u:','none',2,731,682,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(743,'r:concept-tanker-is-a',NULL,'u:','none',2,732,659,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(744,'r:concept-rescue-is-a',NULL,'u:','none',2,733,338,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(745,'r:concept-bus-fire-truck-is-a',NULL,'u:','none',2,734,684,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(746,'r:concept-ambulance-has-warning-light',NULL,'u:','none',61,683,735,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(747,'r:concept-ambulance-has-siren',NULL,'u:','none',61,683,736,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(748,'r:concept-ambulance-has-wheelchair-ramp',NULL,'u:','none',61,683,738,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(749,'r:concept-fire-truck-has-warning-light',NULL,'u:','none',61,684,735,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(750,'r:concept-fire-truck-has-siren',NULL,'u:','none',61,684,736,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(751,'r:concept-fire-truck-has-fire-pump',NULL,'u:','none',61,684,739,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(752,'r:concept-fire-truck-has-tank',NULL,'u:','none',61,684,742,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(753,'r:concept-bus-fire-truck-has-ladder',NULL,'u:','none',61,734,740,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(754,'r:concept-police-has-warning-light',NULL,'u:','none',61,726,735,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(755,'r:concept-police-has-siren',NULL,'u:','none',61,726,736,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(756,'r:concept-tow-truck-has-hydraulic-lift',NULL,'u:','none',61,729,737,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(757,'r:concept-garbage-truck-has-hydraulic-lift',NULL,'u:','none',61,728,737,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(758,'r:concept-tanker-has-tank',NULL,'u:','none',61,732,742,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(759,'r:concept-bus-has-tank',NULL,'u:','none',61,680,742,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(760,'r:concept-sprinter-is-a',NULL,'u:','none',2,750,730,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(761,'r:concept-daily-is-a',NULL,'u:','none',2,751,730,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(762,'r:concept-boxer-is-a',NULL,'u:','none',2,754,730,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(763,'r:concept-ducato-is-a',NULL,'u:','none',2,755,730,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(764,'r:concept-zamyad-z24-is-a',NULL,'u:','none',2,752,660,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(765,'r:concept-khavar-van-is-a',NULL,'u:','none',2,753,660,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(766,'r:concept-sprinter-by-concept-mercedes-special',NULL,'u:','none',62,750,743,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(767,'r:concept-daily-by-concept-iveco-special',NULL,'u:','none',62,751,744,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(768,'r:concept-zamyad-z24-by-concept-zamyad',NULL,'u:','none',62,752,748,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(769,'r:concept-khavar-van-by-concept-zamyad',NULL,'u:','none',62,753,748,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(770,'r:concept-boxer-by-concept-peugeot',NULL,'u:','none',62,754,557,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(771,'r:concept-ducato-by-concept-iveco-special',NULL,'u:','none',62,755,744,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:41:31',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(772,'r:ev-is-a-vehicle',NULL,'u:','none',2,768,338,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(773,'r:ev-has-traction-motor',NULL,'u:','none',61,768,756,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(774,'r:ev-has-inverter',NULL,'u:','none',61,768,757,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(775,'r:ev-has-battery-pack',NULL,'u:','none',61,768,758,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(776,'r:ev-has-onboard-charger',NULL,'u:','none',61,768,761,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(777,'r:ev-has-charging-port',NULL,'u:','none',61,768,762,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(778,'r:ev-has-bms',NULL,'u:','none',61,768,763,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(779,'r:ev-has-dcdc',NULL,'u:','none',61,768,764,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(780,'r:ev-has-regen-brake',NULL,'u:','none',61,768,765,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(781,'r:ev-has-thermal-mgmt',NULL,'u:','none',61,768,766,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(782,'r:ev-has-hv-cable',NULL,'u:','none',61,768,767,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(783,'r:ev-has-can-bus',NULL,'u:','none',61,768,337,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(784,'r:ev-has-brake-master',NULL,'u:','none',61,768,343,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(785,'r:ev-has-brake-disc',NULL,'u:','none',61,768,345,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(786,'r:ev-has-brake-pad',NULL,'u:','none',61,768,346,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(787,'r:ev-has-steering-wheel',NULL,'u:','none',61,768,350,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(788,'r:ev-has-steering-rack',NULL,'u:','none',61,768,352,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(789,'r:ev-has-power-steering',NULL,'u:','none',61,768,353,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(790,'r:ev-has-shock-absorber',NULL,'u:','none',61,768,356,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(791,'r:ev-has-coil-spring',NULL,'u:','none',61,768,355,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(792,'r:ev-has-ac-compressor',NULL,'u:','none',61,768,360,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(793,'r:ev-has-blower-motor',NULL,'u:','none',61,768,364,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(794,'r:ev-has-cabin-filter',NULL,'u:','none',61,768,365,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(795,'r:concept-tesla-model-3-is-a',NULL,'u:','none',2,775,768,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(796,'r:concept-tesla-model-y-is-a',NULL,'u:','none',2,776,768,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(797,'r:concept-tesla-model-s-is-a',NULL,'u:','none',2,777,768,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(798,'r:concept-tesla-model-x-is-a',NULL,'u:','none',2,778,768,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(799,'r:concept-nissan-leaf-is-a',NULL,'u:','none',2,779,768,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(800,'r:concept-chevrolet-bolt-is-a',NULL,'u:','none',2,780,768,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(801,'r:concept-hyundai-ioniq-5-is-a',NULL,'u:','none',2,781,768,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(802,'r:concept-kia-ev6-is-a',NULL,'u:','none',2,782,768,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(803,'r:concept-byd-han-is-a',NULL,'u:','none',2,783,768,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(804,'r:concept-nio-suv-is-a',NULL,'u:','none',2,784,768,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(805,'r:concept-xpeng-p7-is-a',NULL,'u:','none',2,785,768,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(806,'r:concept-tesla-model-3-by-concept-tesla',NULL,'u:','none',62,775,769,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(807,'r:concept-tesla-model-y-by-concept-tesla',NULL,'u:','none',62,776,769,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(808,'r:concept-tesla-model-s-by-concept-tesla',NULL,'u:','none',62,777,769,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(809,'r:concept-tesla-model-x-by-concept-tesla',NULL,'u:','none',62,778,769,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(810,'r:concept-nissan-leaf-by-concept-nissan',NULL,'u:','none',62,779,562,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(811,'r:concept-chevrolet-bolt-by-concept-chevrolet',NULL,'u:','none',62,780,577,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(812,'r:concept-hyundai-ioniq-5-by-concept-hyundai',NULL,'u:','none',62,781,552,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(813,'r:concept-kia-ev6-by-concept-kia',NULL,'u:','none',62,782,553,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(814,'r:concept-byd-han-by-concept-byd',NULL,'u:','none',62,783,576,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(815,'r:concept-nio-suv-by-concept-nio',NULL,'u:','none',62,784,770,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(816,'r:concept-xpeng-p7-by-concept-xpeng',NULL,'u:','none',62,785,774,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:42:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(817,'r:concept-peugeot-208-is-a',NULL,'u:','none',2,786,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(818,'r:concept-peugeot-301-is-a',NULL,'u:','none',2,787,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(819,'r:concept-peugeot-2008-is-a',NULL,'u:','none',2,788,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(820,'r:concept-peugeot-3008-is-a',NULL,'u:','none',2,789,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(821,'r:concept-peugeot-508-is-a',NULL,'u:','none',2,790,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(822,'r:concept-citroen-c3-is-a',NULL,'u:','none',2,791,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(823,'r:concept-citroen-c4-is-a',NULL,'u:','none',2,792,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(824,'r:concept-citroen-c5-is-a',NULL,'u:','none',2,793,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(825,'r:concept-citroen-berlingo-is-a',NULL,'u:','none',2,794,730,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(826,'r:concept-renault-clio-is-a',NULL,'u:','none',2,795,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(827,'r:concept-renault-megane-is-a',NULL,'u:','none',2,796,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(828,'r:concept-renault-duster-is-a',NULL,'u:','none',2,797,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(829,'r:concept-renault-talisman-is-a',NULL,'u:','none',2,798,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(830,'r:concept-renault-captur-is-a',NULL,'u:','none',2,799,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(831,'r:concept-renault-sandero-is-a',NULL,'u:','none',2,800,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(832,'r:concept-renault-koleos-is-a',NULL,'u:','none',2,801,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(833,'r:concept-peugeot-208-by-concept-peugeot',NULL,'u:','none',62,786,557,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(834,'r:concept-peugeot-301-by-concept-peugeot',NULL,'u:','none',62,787,557,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(835,'r:concept-peugeot-2008-by-concept-peugeot',NULL,'u:','none',62,788,557,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(836,'r:concept-peugeot-3008-by-concept-peugeot',NULL,'u:','none',62,789,557,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(837,'r:concept-peugeot-508-by-concept-peugeot',NULL,'u:','none',62,790,557,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(838,'r:concept-citroen-c3-by-concept-citroen',NULL,'u:','none',62,791,558,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(839,'r:concept-citroen-c4-by-concept-citroen',NULL,'u:','none',62,792,558,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(840,'r:concept-citroen-c5-by-concept-citroen',NULL,'u:','none',62,793,558,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(841,'r:concept-citroen-berlingo-by-concept-citroen',NULL,'u:','none',62,794,558,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(842,'r:concept-renault-clio-by-concept-renault',NULL,'u:','none',62,795,559,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(843,'r:concept-renault-megane-by-concept-renault',NULL,'u:','none',62,796,559,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(844,'r:concept-renault-duster-by-concept-renault',NULL,'u:','none',62,797,559,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(845,'r:concept-renault-talisman-by-concept-renault',NULL,'u:','none',62,798,559,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(846,'r:concept-renault-captur-by-concept-renault',NULL,'u:','none',62,799,559,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(847,'r:concept-renault-sandero-by-concept-renault',NULL,'u:','none',62,800,559,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(848,'r:concept-renault-koleos-by-concept-renault',NULL,'u:','none',62,801,559,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:44:52',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(849,'r:concept-rana-is-a',NULL,'u:','none',2,802,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(850,'r:concept-runna-is-a',NULL,'u:','none',2,803,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(851,'r:concept-tondar-90-is-a',NULL,'u:','none',2,804,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(852,'r:concept-saina-is-a',NULL,'u:','none',2,805,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(853,'r:concept-pars-tondar-is-a',NULL,'u:','none',2,806,339,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(854,'r:concept-rana-by-concept-ikco',NULL,'u:','none',62,802,547,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(855,'r:concept-runna-by-concept-ikco',NULL,'u:','none',62,803,547,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(856,'r:concept-tondar-90-by-concept-saipa',NULL,'u:','none',62,804,548,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(857,'r:concept-saina-by-concept-saipa',NULL,'u:','none',62,805,548,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(858,'r:concept-pars-tondar-by-concept-parskhodro',NULL,'u:','none',62,806,549,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(859,'r:concept-206-licensed-from-concept-peugeot',NULL,'u:','none',64,341,557,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(860,'r:concept-405-licensed-from-concept-peugeot',NULL,'u:','none',64,367,557,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(861,'r:concept-tondar-90-licensed-from-concept-renault',NULL,'u:','none',64,804,559,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(862,'r:concept-pars-tondar-licensed-from-concept-renault',NULL,'u:','none',64,806,559,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(863,'r:concept-samand-based-on-concept-405',NULL,'u:','none',65,368,367,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(864,'r:concept-dena-based-on-concept-samand',NULL,'u:','none',65,342,368,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(865,'r:concept-rana-based-on-concept-206',NULL,'u:','none',65,802,341,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(866,'r:concept-runna-based-on-concept-rana',NULL,'u:','none',65,803,802,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(867,'r:concept-pride-based-on-concept-kia-rio',NULL,'u:','none',65,340,584,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(868,'r:concept-tiba-based-on-concept-pride',NULL,'u:','none',65,369,340,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(869,'r:concept-saina-based-on-concept-tiba',NULL,'u:','none',65,805,369,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+INSERT INTO e01_222_01_tb VALUES(870,'r:concept-quick-based-on-concept-tiba',NULL,'u:','none',65,370,369,NULL,NULL,'asserted',2,NULL,NULL,'2026-09-30 00:46:51',NULL,NULL);
+CREATE TABLE e01_305_01_tb(
+    ctx_id INTEGER PRIMARY KEY AUTOINCREMENT, ent_id INTEGER NOT NULL, ctx_ent_id INTEGER, ctx_val_id INTEGER,
+    role TEXT NOT NULL DEFAULT 'condition' CHECK(role IN ('condition','scope','applicability','variant','environment','mode')),
+    valid_from TEXT, valid_to TEXT, prv_id INTEGER,
+    CHECK ((ctx_ent_id IS NOT NULL AND ctx_val_id IS NULL) OR (ctx_ent_id IS NULL AND ctx_val_id IS NOT NULL)),
+    CHECK (ctx_ent_id IS NULL OR ent_id <> ctx_ent_id),
+    CHECK (valid_from IS NULL OR valid_to IS NULL OR valid_from <= valid_to),
+    CONSTRAINT fk_ectx_ent FOREIGN KEY (ent_id) REFERENCES e01_200_03_tb(ent_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_ectx_cen FOREIGN KEY (ctx_ent_id) REFERENCES e01_200_03_tb(ent_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_ectx_cvl FOREIGN KEY (ctx_val_id) REFERENCES e01_201_02_tb(val_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_ectx_prv FOREIGN KEY (prv_id) REFERENCES e01_303_01_tb(prv_id) ON DELETE SET NULL);
+CREATE TABLE e01_305_02_tb(
+    ctx_id INTEGER PRIMARY KEY AUTOINCREMENT, val_id INTEGER NOT NULL, ctx_ent_id INTEGER, ctx_val_id INTEGER,
+    role TEXT NOT NULL DEFAULT 'condition' CHECK(role IN ('condition','scope','applicability','variant','environment','mode')),
+    valid_from TEXT, valid_to TEXT, prv_id INTEGER,
+    CHECK ((ctx_ent_id IS NOT NULL AND ctx_val_id IS NULL) OR (ctx_ent_id IS NULL AND ctx_val_id IS NOT NULL)),
+    CHECK (valid_from IS NULL OR valid_to IS NULL OR valid_from <= valid_to),
+    CHECK (ctx_val_id IS NULL OR val_id <> ctx_val_id),
+    CONSTRAINT fk_vctx_val FOREIGN KEY (val_id) REFERENCES e01_201_02_tb(val_id) ON DELETE CASCADE,
+    CONSTRAINT fk_vctx_cen FOREIGN KEY (ctx_ent_id) REFERENCES e01_200_03_tb(ent_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_vctx_cvl FOREIGN KEY (ctx_val_id) REFERENCES e01_201_02_tb(val_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_vctx_prv FOREIGN KEY (prv_id) REFERENCES e01_303_01_tb(prv_id) ON DELETE SET NULL);
+CREATE TABLE e01_305_03_tb(
+    ctx_id INTEGER PRIMARY KEY AUTOINCREMENT, rel_id INTEGER NOT NULL, ctx_ent_id INTEGER, ctx_val_id INTEGER,
+    role TEXT NOT NULL DEFAULT 'condition' CHECK(role IN ('condition','scope','applicability','variant','environment','mode')),
+    valid_from TEXT, valid_to TEXT, prv_id INTEGER,
+    CHECK ((ctx_ent_id IS NOT NULL AND ctx_val_id IS NULL) OR (ctx_ent_id IS NULL AND ctx_val_id IS NOT NULL)),
+    CHECK (valid_from IS NULL OR valid_to IS NULL OR valid_from <= valid_to),
+    CONSTRAINT fk_rctx_rel FOREIGN KEY (rel_id) REFERENCES e01_222_01_tb(rel_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_rctx_cen FOREIGN KEY (ctx_ent_id) REFERENCES e01_200_03_tb(ent_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_rctx_cvl FOREIGN KEY (ctx_val_id) REFERENCES e01_201_02_tb(val_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_rctx_prv FOREIGN KEY (prv_id) REFERENCES e01_303_01_tb(prv_id) ON DELETE SET NULL);
+CREATE TABLE e01_300_01_tb(
+    clm_id INTEGER PRIMARY KEY AUTOINCREMENT, ent_a_id INTEGER NOT NULL, ent_b_id INTEGER NOT NULL,
+    clm_type TEXT NOT NULL CHECK(clm_type IN ('same_as','distinct_from','merged_into','split_from')),
+    purpose TEXT, valid_from TEXT, valid_to TEXT, prv_id INTEGER,
+    status TEXT NOT NULL DEFAULT 'asserted' CHECK(status IN ('asserted','disputed','retracted')),
+    recorded_at TEXT NOT NULL DEFAULT (datetime('now')),
+    CHECK (valid_from IS NULL OR valid_to IS NULL OR valid_from <= valid_to),
+    CHECK (ent_a_id <> ent_b_id),
+    CHECK ((clm_type IN ('same_as','distinct_from') AND ent_a_id < ent_b_id) OR (clm_type IN ('merged_into','split_from'))),
+    CONSTRAINT fk_idn_a FOREIGN KEY (ent_a_id) REFERENCES e01_200_03_tb(ent_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_idn_b FOREIGN KEY (ent_b_id) REFERENCES e01_200_03_tb(ent_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_idn_prv FOREIGN KEY (prv_id) REFERENCES e01_303_01_tb(prv_id) ON DELETE SET NULL);
+CREATE TABLE e01_330_01_tb(
+    vers_id INTEGER PRIMARY KEY AUTOINCREMENT, ent_id INTEGER NOT NULL, vers_label TEXT NOT NULL,
+    valid_from TEXT, valid_to TEXT,
+    status TEXT NOT NULL DEFAULT 'draft' CHECK(status IN ('draft','under_review','approved','deprecated','retracted')),
+    supersedes_id INTEGER, approved_by_id INTEGER, approved_at TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    CHECK (valid_from IS NULL OR valid_to IS NULL OR valid_from <= valid_to),
+    UNIQUE(ent_id, vers_label),
+    CONSTRAINT fk_vers_ent FOREIGN KEY (ent_id) REFERENCES e01_200_03_tb(ent_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_vers_sup FOREIGN KEY (supersedes_id) REFERENCES e01_330_01_tb(vers_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_vers_app FOREIGN KEY (approved_by_id) REFERENCES e01_200_03_tb(ent_id) ON DELETE RESTRICT);
+INSERT INTO e01_330_01_tb VALUES(1,9,'v1.0','2024-01-01',NULL,'approved',NULL,NULL,NULL,'2026-09-29 20:28:56');
+INSERT INTO e01_330_01_tb VALUES(2,9,'v2.0','2024-06-01',NULL,'approved',1,NULL,NULL,'2026-09-29 20:28:56');
+CREATE TABLE e01_330_02_tb(
+    snap_id INTEGER PRIMARY KEY AUTOINCREMENT, ent_id INTEGER NOT NULL, snap_at TEXT NOT NULL, vers_id INTEGER,
+    schema_ver TEXT NOT NULL DEFAULT 'v26.0', snap_data TEXT NOT NULL, reason TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    CONSTRAINT fk_snap_ent FOREIGN KEY (ent_id) REFERENCES e01_200_03_tb(ent_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_snap_ver FOREIGN KEY (vers_id) REFERENCES e01_330_01_tb(vers_id) ON DELETE RESTRICT);
+CREATE TABLE e01_778_05_tb(
+    policy_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    element_name TEXT NOT NULL,
+    need_uid TEXT NOT NULL,
+    policy_kind TEXT NOT NULL CHECK(policy_kind IN ('fk','guard','sync','audit','immutability','index')),
+    fk_ref_id INTEGER,
+    exec_name TEXT,
+    rationale TEXT NOT NULL CHECK(length(rationale) >= 10),
+    is_mandatory INTEGER NOT NULL DEFAULT 1 CHECK(is_mandatory IN (0,1)),
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    CHECK ((policy_kind = 'fk' AND fk_ref_id IS NOT NULL AND exec_name IS NULL) OR (policy_kind IN ('guard','sync','audit','immutability','index') AND fk_ref_id IS NULL AND exec_name IS NOT NULL)),
+    CONSTRAINT fk_pol_elem FOREIGN KEY (element_name) REFERENCES e01_506_03_tb(element_name) ON DELETE RESTRICT,
+    CONSTRAINT fk_pol_need FOREIGN KEY (need_uid) REFERENCES e01_506_01_tb(need_uid) ON DELETE RESTRICT,
+    CONSTRAINT fk_pol_fk FOREIGN KEY (fk_ref_id) REFERENCES e01_378_01_tb(ref_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_pol_exec FOREIGN KEY (exec_name) REFERENCES e01_506_03_tb(element_name) ON DELETE RESTRICT
+);
+INSERT INTO e01_778_05_tb VALUES(1,'e03_778_11_tr','N70','guard',NULL,'e03_778_11_tr','Validate policy insert',1,'2026-09-29 18:10:05');
+INSERT INTO e01_778_05_tb VALUES(2,'e03_778_13_tr','N70','guard',NULL,'e03_778_13_tr','Protect mandatory policy',1,'2026-09-29 18:10:05');
+INSERT INTO e01_778_05_tb VALUES(3,'e03_778_14_tr','N70','guard',NULL,'e03_778_14_tr','Protect matrix rows',1,'2026-09-29 18:10:05');
+INSERT INTO e01_778_05_tb VALUES(4,'e01_516_01_tb','N30','fk',1,NULL,'FK e01_516_01_tb.need_uid to e01_506_01_tb.need_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(5,'e01_516_01_tb','N30','fk',2,NULL,'FK e01_516_01_tb.atom_uid to e01_506_02_tb.atom_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(6,'e01_506_03_tb','N30','fk',3,NULL,'FK e01_506_03_tb.need_uid to e01_506_01_tb.need_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(7,'e01_506_04_tb','N30','fk',4,NULL,'FK e01_506_04_tb.atom_uid to e01_506_02_tb.atom_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(8,'e01_506_04_tb','N70','fk',5,NULL,'FK e01_506_04_tb.element_name to e01_506_03_tb.element_name',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(9,'e01_506_05_tb','N30','fk',6,NULL,'FK e01_506_05_tb.parent_uid to e01_506_05_tb.question_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(10,'e01_506_06_tb','N30','fk',7,NULL,'FK e01_506_06_tb.need_uid to e01_506_01_tb.need_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(11,'e01_506_06_tb','N30','fk',8,NULL,'FK e01_506_06_tb.parent_id to e01_506_06_tb.node_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(12,'e01_506_06_tb','N30','fk',9,NULL,'FK e01_506_06_tb.question_uid to e01_506_05_tb.question_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(13,'e01_506_08_tb','N30','fk',10,NULL,'FK e01_506_08_tb.dim_uid to e01_506_07_tb.dim_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(14,'e01_200_01_tb','N30','fk',11,NULL,'FK e01_200_01_tb.parent_id to e01_200_01_tb.type_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(15,'e01_120_01_tb','N30','fk',12,NULL,'FK e01_120_01_tb.desc_id to e01_200_01_tb.type_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(16,'e01_120_01_tb','N30','fk',13,NULL,'FK e01_120_01_tb.anc_id to e01_200_01_tb.type_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(17,'e01_202_01_tb','N12','fk',14,NULL,'FK e01_202_01_tb.inverse_uid to e01_202_01_tb.type_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(18,'e01_112_01_tb','N12','fk',15,NULL,'FK e01_112_01_tb.reltype_id to e01_202_01_tb.reltype_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(19,'e01_112_01_tb','N30','fk',16,NULL,'FK e01_112_01_tb.target_type_id to e01_200_01_tb.type_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(20,'e01_201_01_tb','N30','fk',17,NULL,'FK e01_201_01_tb.dom_id to e01_200_02_tb.dom_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(21,'e01_201_03_tb','N30','fk',18,NULL,'FK e01_201_03_tb.parent_id to e01_201_02_tb.val_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(22,'e01_201_03_tb','N30','fk',19,NULL,'FK e01_201_03_tb.member_val_id to e01_201_02_tb.val_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(23,'e01_201_03_tb','N30','fk',20,NULL,'FK e01_201_03_tb.member_ent_id to e01_200_03_tb.ent_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(24,'e01_200_03_tb','N30','fk',21,NULL,'FK e01_200_03_tb.type_id to e01_200_01_tb.type_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(25,'e01_201_02_tb','N30','fk',23,NULL,'FK e01_201_02_tb.enum_id to e01_201_01_tb.val_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(26,'e01_302_01_tb','N30','fk',25,NULL,'FK e01_302_01_tb.subj_ent_id to e01_200_03_tb.ent_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(27,'e01_302_01_tb','N12','fk',26,NULL,'FK e01_302_01_tb.reltype_id to e01_202_01_tb.reltype_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(28,'e01_222_01_tb','N30','fk',27,NULL,'FK e01_222_01_tb.lin_id to e01_302_01_tb.lin_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(29,'e01_222_01_tb','N12','fk',28,NULL,'FK e01_222_01_tb.reltype_id to e01_202_01_tb.reltype_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(30,'e01_222_01_tb','N30','fk',29,NULL,'FK e01_222_01_tb.subj_ent_id to e01_200_03_tb.ent_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(31,'e01_222_01_tb','N30','fk',30,NULL,'FK e01_222_01_tb.obj_ent_id to e01_200_03_tb.ent_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(32,'e01_222_01_tb','N30','fk',31,NULL,'FK e01_222_01_tb.obj_val_id to e01_201_02_tb.val_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(33,'e01_222_01_tb','N30','fk',32,NULL,'FK e01_222_01_tb.reif_ent_id to e01_200_03_tb.ent_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(34,'e01_300_01_tb','N23','fk',46,NULL,'FK e01_300_01_tb.ent_a_id to e01_200_03_tb.ent_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(35,'e01_300_01_tb','N23','fk',47,NULL,'FK e01_300_01_tb.ent_b_id to e01_200_03_tb.ent_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(36,'e01_330_01_tb','N33','fk',49,NULL,'FK e01_330_01_tb.ent_id to e01_200_03_tb.ent_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(37,'e01_330_01_tb','N33','fk',50,NULL,'FK e01_330_01_tb.supersedes_id to e01_330_01_tb.vers_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(38,'e01_330_01_tb','N33','fk',51,NULL,'FK e01_330_01_tb.approved_by_id to e01_200_03_tb.ent_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(39,'e01_330_02_tb','N33','fk',52,NULL,'FK e01_330_02_tb.ent_id to e01_200_03_tb.ent_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(40,'e01_330_02_tb','N33','fk',53,NULL,'FK e01_330_02_tb.vers_id to e01_330_01_tb.vers_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(41,'e01_778_01_tb','N71','fk',54,NULL,'FK e01_778_01_tb.need_uid to e01_506_01_tb.need_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(42,'e01_778_01_tb','N71','fk',55,NULL,'FK e01_778_01_tb.parent_code to e01_778_01_tb.code',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(43,'e01_778_03_tb','N71','fk',59,NULL,'FK e01_778_03_tb.root_need_uid to e01_506_01_tb.need_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(44,'e01_778_04_tb','N71','fk',60,NULL,'FK e01_778_04_tb.chain_uid to e01_778_03_tb.chain_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(45,'e01_778_04_tb','N70','fk',61,NULL,'FK e01_778_04_tb.element_name to e01_506_03_tb.element_name',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(46,'e01_778_04_tb','N71','fk',62,NULL,'FK e01_778_04_tb.need_uid to e01_506_01_tb.need_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(47,'e01_506_02_tb','N30','fk',63,NULL,'FK e01_506_02_tb.verb_code to e01_506_09_tb.verb_code',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(48,'e01_506_02_tb','N30','fk',64,NULL,'FK e01_506_02_tb.entity_code to e01_506_10_tb.entity_code',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(49,'e01_506_02_tb','N30','fk',65,NULL,'FK e01_506_02_tb.constraint_code to e01_506_11_tb.constraint_code',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(50,'e01_200_03_tb','N31','fk',22,NULL,'Provenance FK e01_200_03_tb.prv_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(51,'e01_201_02_tb','N31','fk',24,NULL,'Provenance FK e01_201_02_tb.prv_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(52,'e01_222_01_tb','N31','fk',33,NULL,'Provenance FK e01_222_01_tb.prv_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(53,'e01_300_01_tb','N31','fk',48,NULL,'Provenance FK e01_300_01_tb.prv_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(54,'e01_305_01_tb','N31','fk',37,NULL,'Provenance FK e01_305_01_tb.prv_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(55,'e01_305_02_tb','N31','fk',41,NULL,'Provenance FK e01_305_02_tb.prv_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(56,'e01_305_03_tb','N31','fk',45,NULL,'Provenance FK e01_305_03_tb.prv_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(57,'e01_305_01_tb','N32','fk',35,NULL,'Context FK e01_305_01_tb.ctx_ent_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(58,'e01_305_01_tb','N32','fk',36,NULL,'Context FK e01_305_01_tb.ctx_val_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(59,'e01_305_01_tb','N32','fk',34,NULL,'Context FK e01_305_01_tb.ent_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(60,'e01_305_02_tb','N32','fk',39,NULL,'Context FK e01_305_02_tb.ctx_ent_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(61,'e01_305_02_tb','N32','fk',40,NULL,'Context FK e01_305_02_tb.ctx_val_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(62,'e01_305_02_tb','N32','fk',38,NULL,'Context FK e01_305_02_tb.val_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(63,'e01_305_03_tb','N32','fk',43,NULL,'Context FK e01_305_03_tb.ctx_ent_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(64,'e01_305_03_tb','N32','fk',44,NULL,'Context FK e01_305_03_tb.ctx_val_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(65,'e01_305_03_tb','N32','fk',42,NULL,'Context FK e01_305_03_tb.rel_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(66,'e01_778_02_tb','N70','fk',58,NULL,'Matrix FK e01_778_02_tb.code',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(67,'e01_778_02_tb','N70','fk',56,NULL,'Matrix FK e01_778_02_tb.element_name',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(68,'e01_778_02_tb','N70','fk',57,NULL,'Matrix FK e01_778_02_tb.need_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(69,'e01_778_05_tb','N50','fk',66,NULL,'Bridge FK element_name',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(70,'e01_778_05_tb','N50','fk',69,NULL,'Bridge FK exec_name',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(71,'e01_778_05_tb','N50','fk',68,NULL,'Bridge FK fk_ref_id',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(72,'e01_778_05_tb','N50','fk',67,NULL,'Bridge FK need_uid',1,'2026-09-29 18:13:43');
+INSERT INTO e01_778_05_tb VALUES(73,'e03_312_01_tr','N12','guard',NULL,'e03_312_01_tr','Relation guard e03_312_01_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(74,'e03_312_02_tr','N12','guard',NULL,'e03_312_02_tr','Relation guard e03_312_02_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(75,'e03_112_01_tr','N12','guard',NULL,'e03_112_01_tr','Relation guard e03_112_01_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(76,'e03_343_01_tr','N31','guard',NULL,'e03_343_01_tr','Provenance guard e03_343_01_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(77,'e03_343_02_tr','N31','guard',NULL,'e03_343_02_tr','Provenance guard e03_343_02_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(78,'e03_343_03_tr','N31','guard',NULL,'e03_343_03_tr','Provenance guard e03_343_03_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(79,'e03_343_04_tr','N31','guard',NULL,'e03_343_04_tr','Provenance guard e03_343_04_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(80,'e03_343_05_tr','N31','guard',NULL,'e03_343_05_tr','Provenance guard e03_343_05_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(81,'e03_343_06_tr','N31','guard',NULL,'e03_343_06_tr','Provenance guard e03_343_06_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(82,'e03_343_07_tr','N31','guard',NULL,'e03_343_07_tr','Provenance guard e03_343_07_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(83,'e03_343_08_tr','N31','guard',NULL,'e03_343_08_tr','Provenance guard e03_343_08_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(84,'e03_343_09_tr','N31','guard',NULL,'e03_343_09_tr','Provenance guard e03_343_09_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(85,'e03_135_01_tr','N15','sync',NULL,'e03_135_01_tr','Context sync e03_135_01_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(86,'e03_135_02_tr','N15','sync',NULL,'e03_135_02_tr','Context sync e03_135_02_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(87,'e03_135_03_tr','N15','sync',NULL,'e03_135_03_tr','Context sync e03_135_03_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(88,'e03_311_01_tr','N11','guard',NULL,'e03_311_01_tr','Value guard e03_311_01_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(89,'e03_311_02_tr','N11','guard',NULL,'e03_311_02_tr','Value guard e03_311_02_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(90,'e03_311_03_tr','N11','guard',NULL,'e03_311_03_tr','Value guard e03_311_03_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(91,'e03_311_04_tr','N11','guard',NULL,'e03_311_04_tr','Value guard e03_311_04_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(92,'e03_516_01_tr','N11','guard',NULL,'e03_516_01_tr','Node guard e03_516_01_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(93,'e03_516_02_tr','N11','guard',NULL,'e03_516_02_tr','Node guard e03_516_02_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(94,'e03_126_01_tr','N11','guard',NULL,'e03_126_01_tr','Question guard e03_126_01_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(95,'e03_126_02_tr','N11','guard',NULL,'e03_126_02_tr','Question guard e03_126_02_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(96,'e03_126_03_tr','N11','guard',NULL,'e03_126_03_tr','Question guard e03_126_03_tr',1,'2026-09-29 18:14:55');
+INSERT INTO e01_778_05_tb VALUES(97,'e03_320_01_tr','N70','guard',NULL,'e03_320_01_tr','Delete guard e03_320_01_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(98,'e03_320_02_tr','N70','guard',NULL,'e03_320_02_tr','Delete guard e03_320_02_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(99,'e03_320_03_tr','N70','guard',NULL,'e03_320_03_tr','Delete guard e03_320_03_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(100,'e03_320_04_tr','N70','guard',NULL,'e03_320_04_tr','Delete guard e03_320_04_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(101,'e03_320_05_tr','N70','guard',NULL,'e03_320_05_tr','Delete guard e03_320_05_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(102,'e03_320_06_tr','N70','guard',NULL,'e03_320_06_tr','Delete guard e03_320_06_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(103,'e03_320_07_tr','N70','guard',NULL,'e03_320_07_tr','Delete guard e03_320_07_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(104,'e03_320_08_tr','N70','guard',NULL,'e03_320_08_tr','Delete guard e03_320_08_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(105,'e03_320_09_tr','N70','guard',NULL,'e03_320_09_tr','Delete guard e03_320_09_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(106,'e03_310_03_tr','N12','guard',NULL,'e03_310_03_tr','Value guard e03_310_03_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(107,'e03_310_04_tr','N12','guard',NULL,'e03_310_04_tr','Value guard e03_310_04_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(108,'e03_310_05_tr','N12','guard',NULL,'e03_310_05_tr','Value guard e03_310_05_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(109,'e03_310_06_tr','N12','guard',NULL,'e03_310_06_tr','Value guard e03_310_06_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(110,'e03_328_01_tr','N30','immutability',NULL,'e03_328_01_tr','Immutability e03_328_01_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(111,'e03_328_02_tr','N30','immutability',NULL,'e03_328_02_tr','Immutability e03_328_02_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(112,'e03_328_03_tr','N30','immutability',NULL,'e03_328_03_tr','Immutability e03_328_03_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(113,'e03_328_04_tr','N30','immutability',NULL,'e03_328_04_tr','Immutability e03_328_04_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(114,'e03_328_05_tr','N30','immutability',NULL,'e03_328_05_tr','Immutability e03_328_05_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(115,'e03_328_06_tr','N30','immutability',NULL,'e03_328_06_tr','Immutability e03_328_06_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(116,'e03_328_07_tr','N30','immutability',NULL,'e03_328_07_tr','Immutability e03_328_07_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(117,'e03_328_08_tr','N30','immutability',NULL,'e03_328_08_tr','Immutability e03_328_08_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(118,'e03_328_09_tr','N30','immutability',NULL,'e03_328_09_tr','Immutability e03_328_09_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(119,'e03_328_10_tr','N30','immutability',NULL,'e03_328_10_tr','Immutability e03_328_10_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(120,'e03_328_11_tr','N30','immutability',NULL,'e03_328_11_tr','Immutability e03_328_11_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(121,'e03_328_12_tr','N30','immutability',NULL,'e03_328_12_tr','Immutability e03_328_12_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(122,'e03_328_13_tr','N30','immutability',NULL,'e03_328_13_tr','Immutability e03_328_13_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(123,'e03_328_14_tr','N30','immutability',NULL,'e03_328_14_tr','Immutability e03_328_14_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(124,'e03_328_15_tr','N30','immutability',NULL,'e03_328_15_tr','Immutability e03_328_15_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(125,'e03_328_16_tr','N30','immutability',NULL,'e03_328_16_tr','Immutability e03_328_16_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(126,'e03_328_17_tr','N30','immutability',NULL,'e03_328_17_tr','Immutability e03_328_17_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(127,'e03_328_18_tr','N30','immutability',NULL,'e03_328_18_tr','Immutability e03_328_18_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(128,'e03_328_19_tr','N30','immutability',NULL,'e03_328_19_tr','Immutability e03_328_19_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(129,'e03_328_20_tr','N30','immutability',NULL,'e03_328_20_tr','Immutability e03_328_20_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(130,'e03_328_21_tr','N30','immutability',NULL,'e03_328_21_tr','Immutability e03_328_21_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(131,'e03_328_22_tr','N30','immutability',NULL,'e03_328_22_tr','Immutability e03_328_22_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(132,'e03_328_23_tr','N30','immutability',NULL,'e03_328_23_tr','Immutability e03_328_23_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(133,'e03_328_24_tr','N30','immutability',NULL,'e03_328_24_tr','Immutability e03_328_24_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(134,'e03_328_25_tr','N30','immutability',NULL,'e03_328_25_tr','Immutability e03_328_25_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(135,'e03_328_26_tr','N30','immutability',NULL,'e03_328_26_tr','Immutability e03_328_26_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(136,'e03_328_27_tr','N30','immutability',NULL,'e03_328_27_tr','Immutability e03_328_27_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(137,'e03_328_28_tr','N30','immutability',NULL,'e03_328_28_tr','Immutability e03_328_28_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(138,'e03_328_29_tr','N30','immutability',NULL,'e03_328_29_tr','Immutability e03_328_29_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(139,'e03_328_30_tr','N30','immutability',NULL,'e03_328_30_tr','Immutability e03_328_30_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(140,'e03_328_31_tr','N30','immutability',NULL,'e03_328_31_tr','Immutability e03_328_31_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(141,'e03_328_32_tr','N30','immutability',NULL,'e03_328_32_tr','Immutability e03_328_32_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(142,'e03_328_33_tr','N30','immutability',NULL,'e03_328_33_tr','Immutability e03_328_33_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(143,'e03_328_34_tr','N30','immutability',NULL,'e03_328_34_tr','Immutability e03_328_34_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(144,'e03_328_35_tr','N30','immutability',NULL,'e03_328_35_tr','Immutability e03_328_35_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(145,'e03_328_36_tr','N30','immutability',NULL,'e03_328_36_tr','Immutability e03_328_36_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(146,'e03_328_37_tr','N30','immutability',NULL,'e03_328_37_tr','Immutability e03_328_37_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(147,'e03_370_30_tr','N70','guard',NULL,'e03_370_30_tr','Semantic guard e03_370_30_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(148,'e03_370_32_tr','N70','guard',NULL,'e03_370_32_tr','Semantic guard e03_370_32_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(149,'e03_370_33_tr','N70','guard',NULL,'e03_370_33_tr','Semantic guard e03_370_33_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(150,'e03_370_34_tr','N70','guard',NULL,'e03_370_34_tr','Semantic guard e03_370_34_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(151,'e03_370_01_tr','N70','guard',NULL,'e03_370_01_tr','Semantic guard e03_370_01_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(152,'e03_370_02_tr','N70','guard',NULL,'e03_370_02_tr','Semantic guard e03_370_02_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(153,'e03_370_03_tr','N70','guard',NULL,'e03_370_03_tr','Semantic guard e03_370_03_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(154,'e03_370_04_tr','N70','guard',NULL,'e03_370_04_tr','Semantic guard e03_370_04_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(155,'e03_370_05_tr','N70','guard',NULL,'e03_370_05_tr','Semantic guard e03_370_05_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(156,'e03_370_06_tr','N70','guard',NULL,'e03_370_06_tr','Semantic guard e03_370_06_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(157,'e03_370_07_tr','N70','guard',NULL,'e03_370_07_tr','Semantic guard e03_370_07_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(158,'e03_370_08_tr','N70','guard',NULL,'e03_370_08_tr','Semantic guard e03_370_08_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(159,'e03_370_11_tr','N70','guard',NULL,'e03_370_11_tr','Semantic guard e03_370_11_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(160,'e03_370_12_tr','N70','guard',NULL,'e03_370_12_tr','Semantic guard e03_370_12_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(161,'e03_370_13_tr','N70','guard',NULL,'e03_370_13_tr','Semantic guard e03_370_13_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(162,'e03_370_14_tr','N70','guard',NULL,'e03_370_14_tr','Semantic guard e03_370_14_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(163,'e03_370_15_tr','N70','guard',NULL,'e03_370_15_tr','Semantic guard e03_370_15_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(164,'e03_370_16_tr','N70','guard',NULL,'e03_370_16_tr','Semantic guard e03_370_16_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(165,'e03_370_17_tr','N70','guard',NULL,'e03_370_17_tr','Semantic guard e03_370_17_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(166,'e03_370_18_tr','N70','guard',NULL,'e03_370_18_tr','Semantic guard e03_370_18_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(167,'e03_370_21_tr','N70','guard',NULL,'e03_370_21_tr','Semantic guard e03_370_21_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(168,'e03_370_22_tr','N70','guard',NULL,'e03_370_22_tr','Semantic guard e03_370_22_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(169,'e03_370_23_tr','N70','guard',NULL,'e03_370_23_tr','Semantic guard e03_370_23_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(170,'e03_370_24_tr','N70','guard',NULL,'e03_370_24_tr','Semantic guard e03_370_24_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(171,'e03_370_25_tr','N70','guard',NULL,'e03_370_25_tr','Semantic guard e03_370_25_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(172,'e03_370_26_tr','N70','guard',NULL,'e03_370_26_tr','Semantic guard e03_370_26_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(173,'e03_360_01_tr','N22','sync',NULL,'e03_360_01_tr','Reification archive e03_360_01_tr',1,'2026-09-29 18:14:56');
+INSERT INTO e01_778_05_tb VALUES(174,'e03_778_10_tr','N50','immutability',NULL,'e03_778_10_tr','Bridge immutability e03_778_10_tr',1,'2026-09-29 18:18:09');
+INSERT INTO e01_778_05_tb VALUES(175,'e03_778_10b_tr','N50','immutability',NULL,'e03_778_10b_tr','Bridge immutability e03_778_10b_tr',1,'2026-09-29 18:18:09');
+INSERT INTO e01_778_05_tb VALUES(180,'e03_112_01_tr','N13','guard',NULL,'e03_112_01_tr','Auto-anchor primary element e03_112_01_tr',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(181,'e03_120_04_tr','N10','guard',NULL,'e03_120_04_tr','Auto-anchor primary element e03_120_04_tr',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(182,'e03_120_05_tr','N10','guard',NULL,'e03_120_05_tr','Auto-anchor primary element e03_120_05_tr',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(183,'e03_120_01_tr','N11','guard',NULL,'e03_120_01_tr','Auto-anchor primary element e03_120_01_tr',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(184,'e03_122_01_tr','N11','guard',NULL,'e03_122_01_tr','Auto-anchor primary element e03_122_01_tr',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(185,'e03_122_02_tr','N11','guard',NULL,'e03_122_02_tr','Auto-anchor primary element e03_122_02_tr',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(186,'e03_434_01_tr','N41','guard',NULL,'e03_434_01_tr','Auto-anchor primary element e03_434_01_tr',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(187,'e04_310_02_vw','N30','audit',NULL,'e04_310_02_vw','Auto-anchor primary element e04_310_02_vw',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(188,'e04_110_01_vw','N11','audit',NULL,'e04_110_01_vw','Auto-anchor primary element e04_110_01_vw',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(189,'e04_200_01_vw','N20','audit',NULL,'e04_200_01_vw','Auto-anchor primary element e04_200_01_vw',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(190,'e04_267_01_vw','N20','audit',NULL,'e04_267_01_vw','Auto-anchor primary element e04_267_01_vw',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(191,'e04_978_01_vw','N99','audit',NULL,'e04_978_01_vw','Auto-anchor primary element e04_978_01_vw',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(192,'e01_506_09_tb','N50','guard',NULL,'e01_506_09_tb','Auto-anchor primary element e01_506_09_tb',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(193,'e01_506_10_tb','N50','guard',NULL,'e01_506_10_tb','Auto-anchor primary element e01_506_10_tb',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(194,'e01_506_11_tb','N50','guard',NULL,'e01_506_11_tb','Auto-anchor primary element e01_506_11_tb',1,'2026-09-29 18:33:12');
+INSERT INTO e01_778_05_tb VALUES(195,'POLICY:N00','N00','audit',NULL,'POLICY:N00','Audit placeholder for Project scope (fulfilled via view)',1,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(196,'POLICY:N01','N01','audit',NULL,'POLICY:N01','Audit placeholder for Find vehicle by VIN (fulfilled via view)',1,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(197,'POLICY:N02','N02','audit',NULL,'POLICY:N02','Audit placeholder for Register case (fulfilled via view)',1,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(198,'POLICY:N03','N03','audit',NULL,'POLICY:N03','Audit placeholder for Text search (fulfilled via view)',1,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(199,'POLICY:N14','N14','audit',NULL,'POLICY:N14','Audit placeholder for instance_of uniqueness (fulfilled via view)',1,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(200,'POLICY:N21','N21','audit',NULL,'POLICY:N21','Audit placeholder for Model DTC (fulfilled via view)',1,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(201,'POLICY:N34','N34','audit',NULL,'POLICY:N34','Audit placeholder for Assertion history (fulfilled via view)',1,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(202,'POLICY:N40','N40','audit',NULL,'POLICY:N40','Audit placeholder for Fast lookup (fulfilled via view)',1,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(203,'POLICY:N42','N42','audit',NULL,'POLICY:N42','Audit placeholder for Current state (fulfilled via view)',1,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(204,'POLICY:N51','N51','audit',NULL,'POLICY:N51','Audit placeholder for Overlap analysis (fulfilled via view)',1,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(205,'POLICY:N52','N52','audit',NULL,'POLICY:N52','Audit placeholder for Dead element detection (fulfilled via view)',1,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(206,'POLICY:N60','N60','audit',NULL,'POLICY:N60','Audit placeholder for Closure materialized (deferred)',0,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(207,'POLICY:N61','N61','audit',NULL,'POLICY:N61','Audit placeholder for Diagnostic procedures (deferred)',0,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(208,'POLICY:N62','N62','audit',NULL,'POLICY:N62','Audit placeholder for Change log (deferred)',0,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(209,'POLICY:N63','N63','audit',NULL,'POLICY:N63','Audit placeholder for Idempotent migration (deferred)',0,'2026-09-29 20:41:03');
+INSERT INTO e01_778_05_tb VALUES(210,'e03_120_02_tr','N11','guard',NULL,'e03_120_02_tr','Type closure insert guard',1,'2026-09-29 20:46:37');
+INSERT INTO e01_778_05_tb VALUES(211,'e03_120_03_tr','N11','guard',NULL,'e03_120_03_tr','Type closure update guard',1,'2026-09-29 20:46:37');
+INSERT INTO e01_778_05_tb VALUES(212,'e03_434_02_tr','N41','sync',NULL,'e03_434_02_tr','FTS delete sync',1,'2026-09-29 20:46:37');
+INSERT INTO e01_778_05_tb VALUES(213,'e03_434_03_tr','N41','sync',NULL,'e03_434_03_tr','FTS update sync',1,'2026-09-29 20:46:37');
+INSERT INTO e01_778_05_tb VALUES(214,'e03_434_04_tr','N41','sync',NULL,'e03_434_04_tr','label_norm insert sync',1,'2026-09-29 20:46:37');
+INSERT INTO e01_778_05_tb VALUES(215,'e03_434_05_tr','N41','sync',NULL,'e03_434_05_tr','label_norm update sync',1,'2026-09-29 20:46:37');
+INSERT INTO e01_778_05_tb VALUES(216,'e03_778_02_ins_tr','N70','guard',NULL,'e03_778_02_ins_tr','Matrix insert guard for element and need validation',1,'2026-09-29 20:59:55');
+CREATE TABLE _baseline_v26 (kind TEXT NOT NULL, id INTEGER, label TEXT, details TEXT, captured_at TEXT NOT NULL DEFAULT (datetime('now')));
+INSERT INTO _baseline_v26 VALUES('fk',1,'e01_516_01_tb.need_uid to e01_506_01_tb.need_uid','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',2,'e01_516_01_tb.atom_uid to e01_506_02_tb.atom_uid','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',3,'e01_506_03_tb.need_uid to e01_506_01_tb.need_uid','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',4,'e01_506_04_tb.atom_uid to e01_506_02_tb.atom_uid','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',5,'e01_506_04_tb.element_name to e01_506_03_tb.element_name','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',6,'e01_506_05_tb.parent_uid to e01_506_05_tb.question_uid','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',7,'e01_506_06_tb.need_uid to e01_506_01_tb.need_uid','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',8,'e01_506_06_tb.parent_id to e01_506_06_tb.node_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',9,'e01_506_06_tb.question_uid to e01_506_05_tb.question_uid','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',10,'e01_506_08_tb.dim_uid to e01_506_07_tb.dim_uid','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',11,'e01_200_01_tb.parent_id to e01_200_01_tb.type_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',12,'e01_120_01_tb.desc_id to e01_200_01_tb.type_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',13,'e01_120_01_tb.anc_id to e01_200_01_tb.type_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',14,'e01_202_01_tb.inverse_uid to e01_202_01_tb.type_uid','set_null','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',15,'e01_112_01_tb.reltype_id to e01_202_01_tb.reltype_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',16,'e01_112_01_tb.target_type_id to e01_200_01_tb.type_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',17,'e01_201_01_tb.dom_id to e01_200_02_tb.dom_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',18,'e01_201_03_tb.parent_id to e01_201_02_tb.val_id','cascade','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',19,'e01_201_03_tb.member_val_id to e01_201_02_tb.val_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',20,'e01_201_03_tb.member_ent_id to e01_200_03_tb.ent_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',21,'e01_200_03_tb.type_id to e01_200_01_tb.type_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',22,'e01_200_03_tb.prv_id to e01_303_01_tb.prv_id','set_null','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',23,'e01_201_02_tb.enum_id to e01_201_01_tb.val_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',24,'e01_201_02_tb.prv_id to e01_303_01_tb.prv_id','set_null','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',25,'e01_302_01_tb.subj_ent_id to e01_200_03_tb.ent_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',26,'e01_302_01_tb.reltype_id to e01_202_01_tb.reltype_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',27,'e01_222_01_tb.lin_id to e01_302_01_tb.lin_id','set_null','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',28,'e01_222_01_tb.reltype_id to e01_202_01_tb.reltype_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',29,'e01_222_01_tb.subj_ent_id to e01_200_03_tb.ent_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',30,'e01_222_01_tb.obj_ent_id to e01_200_03_tb.ent_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',31,'e01_222_01_tb.obj_val_id to e01_201_02_tb.val_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',32,'e01_222_01_tb.reif_ent_id to e01_200_03_tb.ent_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',33,'e01_222_01_tb.prv_id to e01_303_01_tb.prv_id','set_null','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',34,'e01_305_01_tb.ent_id to e01_200_03_tb.ent_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',35,'e01_305_01_tb.ctx_ent_id to e01_200_03_tb.ent_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',36,'e01_305_01_tb.ctx_val_id to e01_201_02_tb.val_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',37,'e01_305_01_tb.prv_id to e01_303_01_tb.prv_id','set_null','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',38,'e01_305_02_tb.val_id to e01_201_02_tb.val_id','cascade','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',39,'e01_305_02_tb.ctx_ent_id to e01_200_03_tb.ent_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',40,'e01_305_02_tb.ctx_val_id to e01_201_02_tb.val_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',41,'e01_305_02_tb.prv_id to e01_303_01_tb.prv_id','set_null','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',42,'e01_305_03_tb.rel_id to e01_222_01_tb.rel_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',43,'e01_305_03_tb.ctx_ent_id to e01_200_03_tb.ent_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',44,'e01_305_03_tb.ctx_val_id to e01_201_02_tb.val_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',45,'e01_305_03_tb.prv_id to e01_303_01_tb.prv_id','set_null','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',46,'e01_300_01_tb.ent_a_id to e01_200_03_tb.ent_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',47,'e01_300_01_tb.ent_b_id to e01_200_03_tb.ent_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',48,'e01_300_01_tb.prv_id to e01_303_01_tb.prv_id','set_null','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',49,'e01_330_01_tb.ent_id to e01_200_03_tb.ent_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',50,'e01_330_01_tb.supersedes_id to e01_330_01_tb.vers_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',51,'e01_330_01_tb.approved_by_id to e01_200_03_tb.ent_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',52,'e01_330_02_tb.ent_id to e01_200_03_tb.ent_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',53,'e01_330_02_tb.vers_id to e01_330_01_tb.vers_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',54,'e01_778_01_tb.need_uid to e01_506_01_tb.need_uid','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',55,'e01_778_01_tb.parent_code to e01_778_01_tb.code','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',56,'e01_778_02_tb.element_name to e01_506_03_tb.element_name','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',57,'e01_778_02_tb.need_uid to e01_506_01_tb.need_uid','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',58,'e01_778_02_tb.code to e01_778_01_tb.code','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',59,'e01_778_03_tb.root_need_uid to e01_506_01_tb.need_uid','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',60,'e01_778_04_tb.chain_uid to e01_778_03_tb.chain_uid','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',61,'e01_778_04_tb.element_name to e01_506_03_tb.element_name','set_null','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',62,'e01_778_04_tb.need_uid to e01_506_01_tb.need_uid','set_null','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',63,'e01_506_02_tb.verb_code to e01_506_09_tb.verb_code','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',64,'e01_506_02_tb.entity_code to e01_506_10_tb.entity_code','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',65,'e01_506_02_tb.constraint_code to e01_506_11_tb.constraint_code','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',66,'e01_778_05_tb.element_name to e01_506_03_tb.element_name','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',67,'e01_778_05_tb.need_uid to e01_506_01_tb.need_uid','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',68,'e01_778_05_tb.fk_ref_id to e01_378_01_tb.ref_id','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('fk',69,'e01_778_05_tb.exec_name to e01_506_03_tb.element_name','restrict','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_312_01_tr','e01_222_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_312_02_tr','e01_222_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_112_01_tr','e01_222_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_135_01_tr','e01_305_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_135_02_tr','e01_305_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_135_03_tr','e01_305_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_343_01_tr','e01_200_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_343_02_tr','e01_201_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_343_03_tr','e01_222_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_343_04_tr','e01_305_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_343_05_tr','e01_305_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_343_06_tr','e01_305_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_343_07_tr','e01_300_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_343_08_tr','e01_303_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_343_09_tr','e01_303_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_311_01_tr','e01_201_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_311_02_tr','e01_201_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_311_03_tr','e01_201_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_311_04_tr','e01_201_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_516_01_tr','e01_506_06_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_516_02_tr','e01_506_06_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_126_01_tr','e01_506_06_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_126_02_tr','e01_506_05_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_126_03_tr','e01_506_05_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_320_01_tr','e01_200_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_320_02_tr','e01_201_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_320_03_tr','e01_200_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_320_04_tr','e01_202_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_320_05_tr','e01_303_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_320_06_tr','e01_302_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_320_07_tr','e01_200_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_320_08_tr','e01_201_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_320_09_tr','e01_200_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_30_tr','e01_778_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_32_tr','e01_778_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_33_tr','e01_778_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_34_tr','e01_778_04_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_360_01_tr','e01_222_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_01_tr','e01_516_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_02_tr','e01_506_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_03_tr','e01_506_04_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_04_tr','e01_506_08_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_05_tr','e01_506_06_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_06_tr','e01_506_05_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_07_tr','e01_330_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_08_tr','e01_330_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_11_tr','e01_516_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_12_tr','e01_506_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_13_tr','e01_506_04_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_14_tr','e01_506_08_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_15_tr','e01_506_06_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_16_tr','e01_506_05_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_17_tr','e01_330_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_18_tr','e01_330_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_21_tr','e01_506_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_22_tr','e01_506_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_23_tr','e01_506_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_24_tr','e01_506_07_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_25_tr','e01_506_05_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_370_26_tr','e01_330_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_310_03_tr','e01_201_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_310_04_tr','e01_201_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_310_05_tr','e01_201_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_310_06_tr','e01_201_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_01_tr','e01_506_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_02_tr','e01_506_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_03_tr','e01_516_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_04_tr','e01_506_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_05_tr','e01_506_04_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_06_tr','e01_506_05_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_07_tr','e01_506_06_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_08_tr','e01_676_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_09_tr','e01_676_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_10_tr','e01_378_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_11_tr','e01_506_07_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_12_tr','e01_506_08_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_13_tr','e01_200_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_14_tr','e01_120_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_15_tr','e01_202_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_16_tr','e01_112_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_17_tr','e01_200_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_18_tr','e01_201_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_19_tr','e01_303_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_20_tr','e01_200_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_21_tr','e01_201_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_22_tr','e01_201_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_23_tr','e01_302_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_24_tr','e01_222_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_25_tr','e01_305_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_26_tr','e01_305_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_27_tr','e01_305_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_28_tr','e01_300_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_29_tr','e01_330_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_30_tr','e01_330_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_31_tr','e01_303_01_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_32_tr','e01_676_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_33_tr','e01_506_09_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_34_tr','e01_506_10_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_35_tr','e01_506_11_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_36_tr','e01_676_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_328_37_tr','e01_676_03_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_778_10_tr','e01_778_05_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_778_10b_tr','e01_778_05_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_778_11_tr','e01_778_05_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_778_13_tr','e01_778_05_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('trigger',NULL,'e03_778_14_tr','e01_778_02_tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_200_01_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_230_01_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_230_02_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_340_01_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_340_02_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_340_04_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_325_01_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_310_01_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_311_01_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_122_01_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_267_01_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_267_02_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_260_01_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_260_02_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_260_03_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_110_01_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_110_02_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_310_02_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('view',NULL,'e04_978_01_vw',NULL,'2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e01_506_09_tb to N50','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e01_506_10_tb to N50','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e01_506_11_tb to N50','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_112_01_tr to N13','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_120_01_tr to N11','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_120_04_tr to N10','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_120_05_tr to N10','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_122_01_tr to N11','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_122_02_tr to N11','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_126_01_tr to N11','serves','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_126_03_tr to N11','serves','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_135_01_tr to N15','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_312_01_tr to N12','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_312_01_tr to N13','serves','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_312_01_tr to N14','serves','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_312_02_tr to N12','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_320_01_tr to N30','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_343_01_tr to N31','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e03_434_01_tr to N41','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e04_110_01_vw to N11','verifies','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e04_200_01_vw to N20','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e04_267_01_vw to N20','defines','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e04_310_02_vw to N30','verifies','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('matrix',NULL,'e04_978_01_vw to N99','verifies','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_506_01_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_506_09_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_506_10_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_506_11_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_506_02_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_11_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_12_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_13_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_14_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_516_01_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_516_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_516_11_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_506_03_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_15_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_16_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_17_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_506_04_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_18_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_19_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_506_05_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_20_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_506_06_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_21_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_22_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_23_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_24_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_676_01_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_676_02_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_676_03_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_378_01_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_378_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_378_11_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_506_07_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_506_08_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_506_25_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_778_01_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_11_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_12_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_778_02_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_20_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_21_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_22_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_23_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_778_03_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_30_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_31_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_778_04_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_40_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_41_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_42_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_200_01_tb','T|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_200_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_120_01_tb','T|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_120_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_202_01_tb','T|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_202_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_202_11_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_112_01_tb','T|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_112_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_112_11_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_112_12_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_112_13_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_200_02_tb','T|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_201_01_tb','T|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_201_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_303_01_tb','C|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_303_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_303_11_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_303_12_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_200_03_tb','C|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_200_20_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_200_21_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_200_22_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_200_23_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_200_24_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_201_02_tb','C|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_201_20_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_201_21_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_201_22_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_201_23_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_201_24_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_201_25_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_201_03_tb','C|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_201_30_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_201_31_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_201_32_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_302_01_tb','C|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_302_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_302_11_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_222_01_tb','C|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_222_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_222_11_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_222_12_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_222_13_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_222_14_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_222_15_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_222_16_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_222_17_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_222_18_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_222_19_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_222_20_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_305_01_tb','X|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_305_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_305_11_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_305_12_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_305_02_tb','X|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_305_20_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_305_21_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_305_22_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_305_03_tb','X|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_305_30_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_305_31_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_305_32_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_300_01_tb','I|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_300_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_300_11_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_300_12_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_300_13_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_330_01_tb','V|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_330_10_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_330_02_tb','V|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_330_20_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_330_21_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_312_01_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_312_02_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_112_01_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_135_01_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_135_02_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_135_03_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_343_01_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_343_02_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_343_03_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_343_04_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_343_05_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_343_06_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_343_07_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_343_08_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_343_09_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_311_01_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_311_02_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_311_03_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_311_04_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_516_01_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_516_02_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_126_01_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_126_02_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_126_03_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_320_01_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_320_02_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_320_03_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_320_04_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_320_05_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_320_06_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_320_07_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_320_08_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_320_09_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_30_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_32_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_33_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_34_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_360_01_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_01_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_02_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_03_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_04_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_05_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_06_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_07_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_08_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_11_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_12_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_13_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_14_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_15_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_16_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_17_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_18_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_21_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_22_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_23_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_24_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_25_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_370_26_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_310_03_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_310_04_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_310_05_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_310_06_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_01_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_02_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_03_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_04_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_05_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_06_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_07_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_08_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_09_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_10_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_11_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_12_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_13_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_14_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_15_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_16_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_17_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_18_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_19_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_20_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_21_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_22_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_23_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_24_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_25_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_26_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_27_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_28_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_29_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_30_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_31_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_32_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_33_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_34_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_35_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_36_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_328_37_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_200_01_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_230_01_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_230_02_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_340_01_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_340_02_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_340_04_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_325_01_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_310_01_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_311_01_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_122_01_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_267_01_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_267_02_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_260_01_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_260_02_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_260_03_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_110_01_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_110_02_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_310_02_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e04_978_01_vw','M|vw','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_404_01_ft','A|ft','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e01_778_05_tb','M|tb','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_50_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_51_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_52_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_53_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e02_778_54_ix','M|ix','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_778_10_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_778_11_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_778_13_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('element',NULL,'e03_778_14_tr','M|tr','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N00','domain|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N01','user|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N02','user|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N03','user|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N10','system|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N11','system|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N12','system|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N13','system|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N14','system|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N15','system|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N20','domain|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N21','domain|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N22','domain|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N23','domain|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N30','quality|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N31','quality|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N32','quality|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N33','quality|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N34','quality|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N40','performance|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N41','performance|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N42','performance|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N50','quality|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N51','quality|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N52','quality|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N60','performance|deferred','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N61','domain|deferred','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N62','quality|deferred','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N63','quality|deferred','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N70','quality|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N71','quality|active','2026-09-29 18:10:55');
+INSERT INTO _baseline_v26 VALUES('need',NULL,'N99','quality|active','2026-09-29 18:10:55');
+CREATE TABLE IF NOT EXISTS 'e02_404_01_ft_data'(id INTEGER PRIMARY KEY, block BLOB);
+INSERT INTO e02_404_01_ft_data VALUES(1,X'8578c8168124');
+INSERT INTO e02_404_01_ft_data VALUES(10,X'00000000030a864600070701010401010501010601010801010901010a010100000003010105020104030103');
+INSERT INTO e02_404_01_ft_data VALUES(137438953473,X'00000ed404302034300e06010114020235301b0309020238300d06010110020261620d0601010a010601010e46030a020262751b03050202636c050601010a03016f0c080101080d0202656750030e26030503016c0606010106030176770305020268750d0206020269615b030d02026d6155030701030702026f3257030f01030a4f030b01030c01031301030e56030c030170040601010a0306010109020270650d060101130202723a8132030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a03016f020601010901060101090202736808060101060301740c080601010d0301770106010106020274650e06010109020277650e02050204d8a2d8a817030c810a03130402d98511030a0903090402db8c7f03070103070303a7d8b38109030a01030721030801030c01030a01031001030d0103080103080501b51903050402d9861d030868030501030d0402daa91603073b030701030754030e0303a8d8a746030c0b030e2a030701030710031105030d0501b17a03071603076d03070103100501b3810d03110402d9867503050c0309060309050188810f03070303aad8b12a03060103062903050501b58177030603030d0501b922030701030d8101030701031204030701031105030702030e5103070103110403070103120402d985812e030702030e0303acd8b1210305815903080203050402d9842803090103092303100103102e030e01030e01030b01030b0303add8a7810c030c01030c0501b1812d03055903050303aed9884b030c2e03050303afd8a84403070501b16f03071c030a01030901030977030e01030c01030a01030d0103080402d9851703072e030705030710030d47030e01030c01030d01031301030e5c03050501881303060203070303b1d8a725030c02030a02030d02030b22031402031429030404031202030f02030c7803050402d98431030a05018849030c01030c14030a0303b3d8b14b03070103070103070103070103070501b74703070402d9822d030605018657030902030701030701030701030745030803030d01030801030803030d01030805018847030b01030c15030a0402db8c1f030d5203090103090103090103092e030501030559030e0403050503050303b4d8af230313810203180503170603130103144d03160503170503180303b9d982260306010306270310010310050185811203077203080204d981d8b44603070203070103071403050103050402d986810203050c0307030382d9817d030701030714030d030384d8a72e0307030385d8af2f03052903050501b91f0316810203160503150503145403110503180402d982200305810c030505018814030501030b3b03072003072103071a030e030386d8a759030d1503070402d9851e0308030387d985817c030a05018844030b01030c030388d8b14503110402d984812703050303bed8a72403060103062d030e812e030f0402d9842c03060501858101030506030501030c0204da86d8b12f030a01030d1c030c01030c01030c01030c0d030d0402d9be24030c02030a02030d02030b2203140203142d031202030f02030c0303a9d8a78108030770030d07030802030a01030d0103080501b13103055803050203050402d985817b03050501881f030801030c01030a01030d0103080d030753030603030777030d0103080402db8c12030c0303afd8a76f030d1c031079031403031301030e0501b1812803050402db8c5303053903050103050203dbb1201f031404012e1203080402dbb21003070501b51a03060303b6dbb610030b0303b9dbb011030701032d6170813d0313030173813803230202623181420324010324030175813e031f02031a01031b01050f070301798139031801031801031a01031f0202636c8134031c03030f0e031502031501031501031507031406031309031312031e02031502031703016f8138030f2a030f01031101031101031101031101031302026465814b031306031401031501031601031a010318050312030169813803191503140f031306031706031606031302026567815e030f01030f02026661814403161c030f03016c8154031301031103016d813203150103150103190301708159030f01030f02026861813203110103110103150a031b01031b01031601031703031201031101031101031101031101031101030f01030f010310010310010315010310010310010310010311010312010316010314030165816a031902026961815b030f01030f12030f01031101031101031101031101031101031101031301031303016e8156030f01030f01030f02026c65813e03160103160103110103120301698143030f02026d61813503140103150103170b031a01031a03016f8170031a02026f328168030f01031101031101031101031101031303016c8168031203016e8167031b0603160301708132031803030f03031407031f040315030315090314080313070313020270308135031e01031f0103210103261e031b01031801031901031701031701031901031901031801031801031a01031301031501031c06031b060318030172813b031d0301758161030f020272658139031b0203110105160e29031901031905031401031403031a0203150105150b01031b0105150a020317020273688133031803030f2203130301698163031e030170813a031b030174814c03140203190d03130301770402040102040202746581390311010311290319010319050314010314050315010315030168815d030f03016f813d031b02027665813d031e2a031e06031908031d01031f03016f8169031902027765814a03130f03120301698164031e01042edbb22012030a01033020700d06010112020230336c03030301346d030303016b1b030b020231305f03030301316003030103038101031e0301326203033c03033f031a0301336303030103038104031d030137650303020232308113030301030301030301030340031d01031a01031b030133660303320303410319010319020233300b0203110303811903200103210103230103280301326703030301336803030301346903030301356c0304020234306d03042c030301030344031a01031c03013281790303030134811b0303460317030138811f0303010303400315020235306b03033103030103033e031b01031b12031a0301326a030302026b621b030c0103312d6881450310010310020230305f030403013132030481100327010327030132330304020231303203030103032d03046203260103260301356103048101031f02023230620304030131811e03043f031b0301760a06010102020233306303048105031e0301356403040202373065030401043220d8aa812a03100302d9be8200030e02022d688147031003016f81680311050315030172816b031301031303017481690313010313020230318113030443031e01031b01031c0301328114030403013381150304030134811603040202333066030473031a0301318118030442031a0103332d6881480310020230301c0304811b03240301310b0204812a03210103220203290202323567030402023335680304020234306903040103342d6881490310020230308119030445031b030133811a030445031d0301630e06010115020232308179030402023430811b030446031802023830811f03044103160301318120030401033530301b030a500304030135811c03043f031c13031b030137811d03043f031c020232306a030401033830200d0601011101033a2072813203090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090302d8a7812b03070503070103070401a8817d03060401aa220306810203060503060503060103065303060503060401ac817a03070401af820803070401b3812103070403070103070403070401b9820403070302daa91f0307040307815b0307010307040307020262728141030c0202636f8132030c01030c020264698139030c01030c01030c28030c01030c01030c04030c01030c01030c04030c01030c01030c01030c02026567814f030c01030c020266618151030c03016d8135030c01030c01030c01030c0a030c01030c13030c01030c01030c01030c01030c01030c01030c01030c01030c01030c01030c01030c01030c06030c06030c030170814a030c01030c02026865813e030c01030c03016f8152030c02026961814c030c01030c03016e8134030c11030c01030c01030c01030c01030c02026b6e8144030c02026c6f8155030c02027072813c030c2a030c06030c07030c01030c02027265813d030c2a030c06030c08030c01030c020274618140030c030168814e030c020277698153030c01030c010361626f0d0601010b010601010f03017354030b0202632d814c030e01030e0e03110103111203110103130103130103130103130103130103130103150103150301658172032302031a02031c0202642d815a031503016c813e030f01030f0202672d8139030f01030f01030f27031a01030f01030f01030f03031901030f01030f01030f03031601030f01030f01030f01030f0301658169031e03016e8138031c0202696c8140030e040318030172813c032601031029031d01031005031801031006031f01032101031001031002026b2d815903150301658141030f02026c6c0406010106010601010602026d620e0601010202026e201b030303012d8151030e0f031113031902031b040a0709110709090a080607070a190d0981540d09090809070d0a0a21060d10170f070d070e0a280b0f1c0c0a0b081e220926070c140607240c221e110a150b0e080b160b150b070909080812070d1b1f180c08210714070d08060706080809070b111029191a160b0b0a0d0a5007260d1107140717070a1f3e07072f0e07070d091d070714070b07090a070606070d0c0d061a0f170606060613070a0d1606070c070d06130a070a080b06070a08080a0a0a110707070a0a090b10070707090b0a08080b0b070b0d0a070a81550e07190707100714080b2c0b08430a0b070b160808141408070b0f062c0d080a3507070b2208070e0907');
+INSERT INTO e02_404_01_ft_data VALUES(137438953474,X'00000f060430616e63813903223603210301640906010104030169813503160103170103190b031c01031c0301748162031401031601031601031601031601031802027070813d031402027264090601010703016b813a031e0301740c080901011003017907060101060202732d8132031301031301031704032406031d01031d0103180103190303140103130103130103130103130103130103110103110103120103120103170103120103120103120103130103140103180103160202746503060101068167031c0301680e020803016f0302060301740a02030103622d628142031302023131320302010302810f0325010325020261740a0202020269650e0601010402026f760d0601010c0106010110020270731b030e020272618141030d0202756c81420310030172813e032002031b01031c0103150301731b03060202792d8139031901031901031b0103200103632d63816603100d0314020316030164815c0312120312030168814c030f01030f0301698173031001031003016f816c03100301728171031401031402031402031603017305020381560312030174816f0314010314020230306c03020103020202616c060601010e03016e1b03020202652d8174031b02031d030164813b032101031003016e0d0601011702026b2d8144031011030f06031702026c65813d03232a032306031e04031f0203160205180c01032403016f050601010b812f031d0303100e031602031601031601031607031506031409031402026f690608020101020102020108020101020102028129030d01030d05031003016c0c080201010903016e0c0601011403016f8162031001031201031201031201031201031402027420020601010703016f02020781320311030172060601010a020275201403033f030301030301036420730c080501010c02022d61813803220301628139031701031701031901031e0301638171031d0301648168031503016d813703160301708156031a0403160503190301728172031d02023a208132030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030801030802026172090601010602026561814b031406031501031601031701031b010319050313020269618138031a01030d01030d01030d27031801030d01030d01030d03031701030d01030d01030d03031401030d01030d01030d01030d030172814d03150f03140301740c0601011701080b01010602026c69813e031001031002026f778154031002027572813b032301031201036520340e060101130301380d0601010f0301630c060101070301720306010108030173010601010502022d68814e031403016c81410311030170815d0317040314030172813c031538031c0301768176031e02026164813e030e01030e0c031506031601031701031801031c01031a05031403016b814a03150f031403016e8171032102031802031a0301740e0207815c031b020263740208060101060406010109812e03100301751403023f03020103020202642d8137031501032101031601031601031801031d1a031909031812031c01031c03013a81320307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307030175813b032201031102026674813e03180103180103130103140202677250030f26030616030201030242030d01030d0e031001031002026869813d03202a032006031b08031f010321020269668132030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030302026c6506080601010702026d658170031e0301700e0601010b02026e2d813503120303170b03181403160703160301670c060101020301740d0601011801060101068162032002027061813c032401030e29031b01030e05031601030e06031d01031f01030e01030e03016c817203200203170203190202722d815303100301630d060101150301790a02060202732d813d03190301698139031d36031c03016f813b031301031829031b0603160603170103170301748135031a01031b01031d02031301031308032001032020031b01031b0503160103160503170103170202766177030601036661698144031703016e8151030d0f0310020265738135031901031a01031c0b031f01031f02026965813203050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050103050301720b0601010502026c2d8154031401031202026d2d8132031601031601031a01030d01030d01030d01030d0a030d01030d13030d01030d01030d01030d01030d01030d01030d01030d01030d01030d01030d01030d01030d06030d06030d0202702d814a030d01030d0e03100103100202742d813e03190103190103140103150103672d6381630310010310010310030169816f031001031001031001031003016f816903100103100103100301708162031b06031a060317030172813b0310030174813903100103100202652d81610313030164813403210303140e031a02031a01031a01031a0d031802026765813403200303130e03190203190103190103190d0317020268200d0204030174813e03130103130403120202696e0c0601010402026e618163032103016f8138031d02027220810c030301030303012d814f030e01030e0e031101031101036820680d020502026173813203120103120103160a031c01031c01031701031803031301031201031201031201031201031201031001031001031101031101031601031101031101031101031201031301031701031502026561813e030d01030d2b031a0301720e020a02026963813d03212a032106031c0803200103220301670d020202026f72080807010108812b031a0303111c030d0603150301740e02020202726f814e030e0f03110202742d813e03140103140403130202756d0d08070101020103696163814c030d01030d0e03100103101203100103120103120103120103120103120103120103140103140301678138031b01030e01030e01030e27031901030e01030e01030e03031801030e01030e01030e03031501030e01030e01030e01030e0301745b030e02026361060601010d03016c813d03222a032206031d080321010323020264690d080a010105020265648132030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030603016e0e06010105030173813d0318020266658135031801031901031b0b031e01031e03016981320304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304010304020267680d02038131031201031204031103016e8163032002026c200606010104020601010403012d8132030f01030f05031208030f030165060204813e031903016f07020403017308020402026d61070601010402026e648154030e0301650c0601010503016a8134030d11030d01030d01030d01030d01030d0d031001031001031002026f6e0c0601011a020270658153030e0202722d813d03112a03110603110803110103110301650b0601010681590320030174814d03160f0315020273660b0601010303016f0308020101020301748139031f36031e020274630108040101090302070102070301690c060101180301790d080c01010701036a2d638156031203016f81570312030173815803120202312d8145030f01030f0202322d8147030f0202332d8148030f0202342d8149030f020265638134030f01036b2d66815503100301688144031103017081590316020318020262701b030d0202652d8141031002026e6f8144030d01036c20650606010105030173080601010502022d688132031001031021031501031303016c8140031003016f81380313040c0813160809070908530d060606091107090e0708081006110f0a0a0a07100a0a0a09060b0a080e1b2420090816090a080d0b08100707070d078154091a380a0e0b080b0a0808080808070a0a07200a0d0a130c2381530a111c1481540a0808140811230d080806080a162b07090a148154080b4d11110f100d0d070a08191a070d0908070b1008500e06140617060b0e0a2d370609130a8154080714815311070e100a06060908081f0908140c0a09090a1008090907070b0808080809070a0708080a081107');
+INSERT INTO e02_404_01_ft_data VALUES(137438953475,X'00000ec104306c61638172032202031902031b03016e816203130103150103150103150103150103170301740308050101050202622d81420312020264200c080401010b03012d8168031402026520010601010403012d814e03130f0316030161817103200203170203190301630608070101080301648144031a030166813e031701031701031201031303016c06020502026965813d0317030167813e031101031104031002026c790406010107010601010702026f638155030d0301678134031e0303110e03170203170103170103170d0315030170070205030173050601010c814b03160f031502027368080205020274618169031c02027665813b031601031b29031e06031906031a01031a020279200406010108010601010801036d2d628142030e0301638134031b03030e01030e2a030e030165815e030e01030e0301668159030e01030e06030e0301698156030e01030e01030e03030e01030e12030e03016c8143030e03016f8132031703030e33030e0301708161030e0301738133031703030e030174815d030e0202616655030801030803016c0406010105010601010503016e813503150103160103180b031b01031b0301720706010105020262690e060101030202656e8170031f020269640d08090101040301730b0601010202026f768170031b020270200e0601010c01036e20621b030402022d64813803180301688151030f01031003016d813503130e0319030170815703170703170203120301728173031a0301768167031d06031808031c0202616c816303220202632d050202030165813903233603220202646109060101050301690c0601011603016f8154030f020265200c06010106020267690c06010103020269668135031701031801031a0b031d01031d02026a2d815603110103110103110301318145030e01030e0301328147030e0301338148030e0301348149030e0301658134030e02026f2d0402020301638144030e030172040601010201060101020301738138031e020274200e0601010703012d8142031820031501031701031701031701031701031901036f2d73040203030176813d031d02023220812a030f56030d03012d816803100103120103120103120103120103140202632d8166030f06030f07030f01030f030165813b032001030f03016b8144030f11030e020267678134031f0303120e03180203180103180103180d03160202696c0608030101030102030108030101030102038129030e01030e05031102026c61030804010104815f03120103140103140103140103140103160301640c080301010a815c03130301650106010103010601010b010601010b0301748169031b030176813b031501031a29031d06031806031901031902026e2d8167031c0603170301640c0601011502026f6c8162031101031301031301031301031301031502027065040601010b03080601010a812b03190303100303150703200403160303160903150803140703140202722d8134031303016d0406010103010601010303016e8152030e030174080808010109812b031b03031222031602027365050601010d8133031f1803170f0316020274200e0203030165020804010104030174814e03100f0313020276650d0601010d01060101118162031c0202772d8154031101037020610e0601010d02022d64815a0311030168814a030e01030e03017781590311020230315f03020103020103020103020103020103020103023903023f031905031d06031c0301326603022d03020103020103020103020203023e031c01031901031a0103180103180301330b02021103024b03020103020103024c031f010320010322010327030134811903020103020103020403020103023e031901031b0103140103161803020301356a03020103023103020103023e031a01031a12031902026169813c032501030f29031c01030f05031701030f06031e01032001030f01030f030172813a031d0202656e040601010c03080701010b812b031a0303110303160703210403170303170903160803150703150301720d060101148146030f02026c618172032102031802031a030169813d03160202706c813d031502027269070601010203016f0208020101028139031e01030d2a030d06030d07030d01030d020275728161031001047220daaf810c030401030402022d61813d0312030163815f0312080312030168813403141b030f01030f0303110301698175031201031203016f815e03120f031202023a628141030b0301638132030b01030b0301648139030b01030b01030b28030b01030b01030b04030b01030b01030b04030b01030b01030b01030b030165814f030b01030b0301668135030b01030b01030b01030b0a030b01030b07030b01030b06030b05030b01030b01030b01030b01030b01030b01030b01030b01030b01030b01030b01030b01030b06030b06030b030168813e030b01030b13030b0301698134030b11030b01030b01030b01030b01030b03030b01030b03016b8144030b03016c8155030b030170813c030b2a030b06030b07030b01030b030172813d030b2a030b06030b08030b01030b0301748140030b0e030b0301778153030b01030b0202616b8141030e020263650d060101160202652d813c031403016981320302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302030170813c032301030d29031a01030d05031501030d05031f01031c0105160a01030d01050d0d0301738139031c02031201031729031a06031504031b020316010316020267658161031202026963060601010c03016d070601010302026d610406010104010601010402026e2d8152030f030174813e032202031d01031e01031702026f63813b031f01030e2a030e06030e07030e01030e03016c0106010102010601010a010601010a030174020803010103814c030f0f0312020274200c0601011103012d81360313220317030179814d03170f031602027920070601010701037320351b030802022d62813e031e02031901031a01032301032303016381450314020314010314010314070313030164814b03120203130403130103140103150103190103170301668132031401031401031810031503016f813f031e0703140903130301708135031d01031e010320010325030173814c0313020318030174813d031a030177814a031202026564050601010e813303201803180f0317020266690b060101040202686f080806010107812b0319030310220314020269678163031f0301738139031e36031d02026f6c0308030101038138031401031929031c06031706031801031802027061813a031c0202742d8163031c01031c050317010317050318010318030161090601010203080701010e812d032036031f030165813903140103140301738135031b01031c01031e0b0321010321030175814c031502031a0d03140202776901080201010703020501020501037420630c0601011203017202060101080301740e060101080301770e020402022d6481620316030168813e031a01031a01031501031629031803016c813e031501031503016d813603140c03192e031903016f8143031424031a03017081580318030172816503180103180903190301738163031d03017481630318010318030176816903180301778164031d020261678169031d0301698140030d03016e0906010103813003213603200301720c080801010f0202636801080501010a0302080102080202652003060101070301630208050101050301648139031501031503016d0e0601010a0301720a02058160031d0301738139031201031229031a01031a050315010315050316010316020268650e0209030172814e030d0f03100202696f0c0601011902026c65814e03120f031502026f2d813d031c0301720202080102078131031202027269060601010b0202732d8135031c01031d01031f0b0322010322020274650a020403016c814e03110f031402027563814c031602031b0d0315020279200d0601010803012d815c031701047520d8aa5403040302d9851403040302daaf5303040202636b814c031702031c0d031602026c628142031102026d690d080801010302027265813b03240103130301678161031103016e813e032102031c01031d010316020273201b030701047620dbb610030a02026170770307020265200d0601010e0106010112030164813b031701031c29031f06031a06031b01031b030168813d031f2a031f06031a08031e01032003016d8170031d02026f6c8169031a0103772d6681540312020265610e0206813c03140f03130202696e8154030d0301708153030d0301728164031f03017401080301010803020601020601037920610d06010109030163050601010903016f0406010109030601010802022d70813b031c2103180301728139031a030321030173813a031a0105d8a2d8a820812103140304d985d9be11030b09030a0304db8cd9867f03080103080204a6d984201303040c030b04030b0503e2808c817d031001030b0204a720d8a8817e030f0501aa812503110304d8a8d8b17b030b01030b1503110502db8c5603040303040103040103040103042c03040603040103040103040103040103040403aad8a78178030f07030a02030c01030f01030a0601b11003030601b53003025603020502d9887803090403afd8b35103120502d981817703090303100502db8c7803060402b1202f030817030a02030a01030a0f03080503080103080502d8aa1203050502d98846030e0502db8c812e030d0402b220820403160403100403b3d8aa12030213030e02030c02030f02030d2203160203162103020c031402031102030e09030b01030821030901030d01030b01031101030e0103090103090403b5d9841903060402ba20240304010304010304010304030304010304010304040f1609080a07090a0d09071006080d0e0819060f0708170e09100a0d16070d070a070a0d130809080a08080908080a0a0d070d08070a0908070909140e0a0707070707070d07091908070b16110a0a1a201d0d1207160b08172b080d07131307090a12080a080a0725241e221823072b0c0e0708091c080d080a100a0a080a2b0a4c0d1c070713130a0a0809088153271c0809080e0810171210090a0a0908141319100d100a0707130914080a1d0817150a130d100a08080608130a0d0a070d070a070708070f091009090a080a1c070a090b080d0914070a0e09070907070e080a0b07100709070e16130708090e0807070f0a080d0b0a070b0c0c0f0c0a070f2515060907080b07190707080b4108');
+INSERT INTO e02_404_01_ft_data VALUES(137438953476,X'00040ece2d03040730d8a7d981d8aa5d0302010302811a0302040284203003055603051c030a5e030a05030a0502d8a75103102a030901030915030f0601aa810c030e01030e0502db8c8178031107030c02030e01031101030c040285201103050502d984810803090601be2e0309040286208178030b0502d8af817803070502da9818030205030954030201030201030201030211030601030e0402872030030b56030b0502d986280303010303040388d985200308810c03080303da86208103030404029820812703090403a9d8b31603083b030801030854030f0503e2808c7a030d16030d0303db8c2017030a1103070103071c050a0705030a5703116003080502db8c2403080103082d0310812e03110204a820d8b12703092803130402d985812103150402da862603092803130304d8a7d8aa1003020601b146030d0601b2810c03120502d98451030f2a030801030815030e0402b1207b030c01030c0502d8b1817d03080103110502d9817a03081603080403b3d8aa810d03120304d986d8b27503060c030a06030a040388d9827903021603080304daa9d8b35303090303db8c204403091203050303050103050103050103052c03050603050103050103050103050103050203aa206550030d0402d8a7812c030b0103090501a8810c03100103100501aa820303100501ac210304815b03040501ad812d03045903040501ae4b030b0501af820103040503090501b1817803040501b3812203040103045d03040503040402d9815d0304010304050185200304810c0304530310050188812703040402da864c030b01030b01030b01030b0501a920030b815b03040501af812803040402dbb11203070304d8a7d8b11203040502d9848178031007030b02030d01031001030b06018730030a56030a0502da98812703080403b1d9852a03070103072903060502db8c1003043603120403b3d8aa200302010302810103020103020403020103020403020103024e03020103020403020103020403020103020403b4d8ae1f0302810203020503020503024f03020503020503020403b5d8a730030356030371030703030e0403b9d985230302810203020503020603020103024d030205030205030206018822030801030e8101030801031304030801031205030802030f5103080103120403080103130304d985db8c812e030802030f040286202e0305040388d8b114030801030e03030605030d53030a01030601030601030601030604030a02030401030401030403030401030405030a0103120b030a1a03110403bed8b170030419030d01030a21030b01030f01030d01031301031001030b01030b0304daafdb8c1d03050205abdb8cd9815503033503030205acd8b1d982210306815603020303090203060304d984d98828030a01030a2303110103112e030f01030f01030c01030c0204ad20d8b347030a0304d8a7d984810c030d01030d0403b1daa9812d03065903060204ae20d8ac4c030f01030f0501b94e030f01030f0304d8aad9862e03040403b1d8a75603020303020103020103020103022c03020603020103020103020103020103020304d988d8af1e03022d030d2e03060304db8cd8b51f0304810203040503040503044f03040503040503040205afd8a7d8b12f03072903070403a8db8c4403080402b1201f031252030e01030e01030e01030e18030a01030a0502d987817c03130601881e03042d030f2e03080502db8c6f03081c030b79030f01030d01030b01030e0103090403b3d8aa510313010315812e03160304d981db8c8177030a030311040385d8a71703082e030805030810030e47030f01030d01030e01031401030f53030909030604028620310308580308020308040388d8a81303070601b11503080304daafdb8c5703060304db8cd8a77803070502d9861103020203b120657603040103040401695b030c04016f57030e01030951031201030d0402d8a27f03060103060501a71603063b030601030654030d0501a846030b34030601030601030615030c0501aa8130030d01030d0501ac7b030d01030d0501ad810c030b01030b0501af1503060203062d030601030605030610030c1503061d030801030814030d03031201030d5f030d0501b149030b1503090501b347030601030b0303060103060103060103060103060e03091403080103080103080103080402d9814603060203060103060501827d030601030614030c05018515030a3b03062003063b050d0805018659030c1503060402da862f03092d030c0501a93103045803040203040402dbb11f031352030f0501b272030f0501b373030f0501b474030f03023a20230306810203060503060603060103064d03060503060503060304d8a7d8a85603030303030103030103030103032c03030603030103030103030103030103030601af7803050601b325030d02030b02030e02030c2203150203152d031302031002030d0601ba24030301030301030301030303030301030301030301030302030c01030f0502d986817803060601872803020103020403a8daa95303080402aa201203060402ae204c030e01030e01030e01030e0403afd9863103075803070203070403b1d8b3817d03090103120403b3d9885703030502db8c817b030902030a0103130403b9d8aa4b03090103090103090103090103090304d981d8aa1d03030503e2808c7a0309160309040382d9872103078156030303030a020307040384d98719030218030b500302010302040385d8b22a03080103082903070503e2808c81280307040387d8a7817c0314040388d8af4503130601ba49030d01030d14030b0502d98546030f0502db8c1e0305040302810203020503020503020103024e03020503020503020304daa9d8aa812d03075903070303db8c20100305811e030e0502da866f03091c030c79031001030e01030c01030f01030a0601a94603130203b220615403090402d8aa820803110501b12b030a0501b4813003120402d985820403170402da862a030a0402dbb11a03050304daa9d8a7812e030b0304db8cd9867503080c030c06030c0204b3d8aa20200303010303810103030103030403030103030403030103034e030301030303030f01030301030302030f0203030103030502d8a71203030502d987810d03130601be70030319030c01030921030a01030e01030c01031201030f01030a01030a0403b1d8b94b03080103080103080103080103080403b7d8ad4703080304d982d9812d0307040386d8b31503020103020103022d030201030201030201030201030201030201030201030201030201030201030201030201030201030201030205030a02030801030801030801030812030233030903030e01030901030903030e010309040388d8ae2e030219030c01030d15030b0601af5703040601b11503040103040103042d030401030401030401030401030401030401030401030401030401030401030401030401030401030401030405030c02030a01030a01030a01030a12030433030b03031001030b01030b03031001030b0303db8c20817d030b0103140502d9841f030e52030a01030a01030a01030a8108030f06018581230306060188817b030a0502da9816030a3b030a01030a5403110601af812203065e03060503060205b4d8a7d8b14603090203090103091403070103070403aedb8c1f0303810203030503030503034f03030503030503030303db8c208123030b0502d8b17603020103020203b53a201f0306810203060503060503064f03060503060503060304d8a7d8af8177030803030f0502d9843003045603040304d984db8c1903070204b620d8a7812f030c0501af8207030c0501b38124030c05030c0501b4230312810203170503160703135203160503170402daa922030c8160030c0304d8b9d981810703020204b7d8ad204703090402b9202f03032903032d03030204b920d8a7810503040402d9852f03042903040303d8aa204b030a01030a01030a01030a01030a0303d9812081070303040382d8a8260307010307270311010311040385d9846f03020e03020103021403087203090502db8c230303810203030503030603030103034d0303050303050303040388db8c22030901030f810103090103140403090103130503090203105103090103130403090103140304db8cd8aa50030b0502d9881f03188102031805031705031654031305031a0204ba20d8aa2a03050103050501b32d03050501b92603050103050402d9be2403050103050703050105d98120d9be810703040303d8aa205d0303010303811a03030502daaf1d03040403b1d8b35703020403b4d8a74603080203080103081403060103060303d984207d0309010309040286207803020303db8c205503053503050502d9881a03020305e2808cd9be7a030a16030a02048220d8ae7903040304d8a7d988200307810c03070402a8202603080103082703120103120403b7d8b92f03022903022d03020403b9db8c50030a0304d981d9847d030801030814030e0502db8c2d0308040287202103088156030403030b020308020384206f8200030b0402d8aa23030c0501ac7d030a01030a0501af130305810f030b63030b0501b31f030c0402d9be8108030b0402daa93003065603060304d8a7d8a87b030a01030a1503100601af5103110502d9852e03080502da86810303030601a92c03080402aa20810c030f01030f0502d8a7812703070304d986d8af1f031052030c01030c01030c01030c81080311040287201903036803030103030402882028030b01030b2303120103122e031001031001030d01030d0502d98812030f0304daafd8b16f03040e030401030414030a72030b0304db8cd8b38178031207030d02030f01031201030d0305e2808cd987817d031101030c02048520dbb91103060303d8a720812503100502d9868178030a0502db8c1703091103060103061c03090503095703106003070402aa2020030a810c030a0502d8b14603110403afd8a72f03062903060402b2202a03090103092903080403b9db8c1f0317810203170503160503155403120503190304d982d8a7200306810c0306040284208108030a0502daaf6f03030e030301030314030972030a04028720817c030c040388d8aa14030601030c5b03080a03020103020103020303020103021103081a030f0502d9825003080601861e030a0402be207503030c0307060307071213100a1407080608081c0a0a0c0908110b1b110c080a090607100a0b0a090f0b0929080b0a070a0a060a07100a0d07100a0707091409080e0a301b111e280d073e23090d141e090d0c0c0909260f1c0d0819080c190f0d260d08060909070b060f0a0f120a090a2a09270d0c10090a0c0a0606061d27061e2108090807100e0c080e14090b12110e0909080c07200d0c1906080806070807070a0f370708211408095f11065d0c170707100d161b090a1b0d0a090a070a160b0a090d0a0a140911141d2a09170c06090d0b0f0708140b070b070d090d100e080f07110907090d06080a0f060708060b08190d1c0715160e090908190b070b0d180d081308230706');
+INSERT INTO e02_404_01_ft_data VALUES(137438953477,X'000009100730d985d9bed8b111030c09030b816103070304db8cd8b1230304810203040503040603040103044d03040503040503040601b2812e03090203100305e2808cdaa981230308050308020386206f8128030b0402d8a7810903090501a851030d0501af810b03090501b125030b0c03094703030402d9842e0306050185812603140501be52030d0402da8624030b0501a98178030c0304d8a7d984812203095e03090503090601851103040502daa959030e1503080403afd8b11f031152030d01030d01030d01030d810803120502d985817803080403b2db8c7503070c030b06030b0403b3d9881503030103030103032d030301030301030301030301030301030301030301030301030301030301030301030301030301030301030305030b02030901030901030901030912030333030a03030f01030a01030a03030f01030a0304d985d8a72803050103050502d9881e0309040287207f030a01030a0304da98daa918030305030a54030301030301030301030311030701030f0305e2808cd8af520313812e031402048720d8a71903046d030c0501aa8177030503030c0501b18100030b0501b3817c030d0402d98181020304050187817c03090501be810103040402da8630030c4f030b0501a92103090501af6f030c1c030f79031303031201030d03023a20220305810203050503050503050103054e03050503050503050303d8a720817e030e0304d985d987817c030b040386d985280304010304040388d8a744030c01030d02048820d8b129030c2403132f031102030e0402da8628030c2403132f031102030e0304d8a6d9841303030c030a01030e01030c01030f01030a815a030f01030a0403a7d8aa1203110502db8c45030e0403a8d9841303080403aad8a73003095603090502d98814030701030d5b03090a03030103030103030303030103031103091a03100403aed8aa2e030319030d01030e15030c0403afd8b11e03032d030e2e03070502daaf5703050502db8c4503140402b120150505060103050103052d030501030501030501030501030501030501030501030501030501030501030501030501030501030501030505030d02030b01030b01030b01030b12030503030701030701030701030706030501030501030503030501030511030b10030c03031101030c01030c03031101030c0103120502d9884503120402b2201a03040403bad98649030e01030e14030c0303d982207903030502d8b9500309040384d8aa812703060601b181030308040385d8aa200309260310660309040386d9871e030b040388d8a71203100303db8c201e03060502d8b622030a0103108101030a01031504030a01031405030a02031151030a01031404030a0103150502d987220303810203030503030503030103034e03030503030503030204be20d8a87503040c03080603080304d8a7daa97a030c16030c0502db8c2403070103072d030f812e03100402b1207003053b030c05030c01030c0502d8b3817b03080304d984d8a72c0307040385d9be7503020c030606030601030d0105da8620daa9810303050304d8b1d8a724030201030201030201030203030201030201030201030202030b01030e0601ae4c030d01030d01030d01030d0d030e0303d987206f030b1c030e79031203031101030c020398206f8127030a0303d9862051030c01030c5403130304daa9d8aa18030405030b5403040103040103040103041103080103100205a9d8a7d8aa8178030e07030902030b01030e0103090601b1812e030c0502d985810803080402aa20812d03085903080502d98818030505030c5403050103050103050103051103090103110403abdb8c5503023503020403b1d8af3103065803060203060403b3db8c1603093b03090103095403100403b4db8c8123030a0304d984d8a781030302040385d9be817b0306040286208128030a040388d8a61303020c030901030d01030b01030e010309815a030e0103090601aa3003085603080502d984810303070304db8cd98412030d0305e2808cdaa97a030e16030e0205afd8a7d8b26f030e1c031179031503031401030f0402b1206f03050e030501030514030b72030c0502d9811d0302060185812803060304d986d8a7812203085e03080503080303db8c201d03063a03070502d8b13103022203063603020203020103060103060104db8c206d5503060103060402d8a217030b810a03120501a71d03076d030624030f0501a8810f03060103060501ac2803080103080501af8123030c0501b14a030b0501b35703080203060103060103060103060501b4817e03150501b9811203060402d981810e0306050185811103060501861e030705018744030a01030b0501884503100402daa98108030675030c0403090402dbb11003060304d8a7d8aa7803080402aa2050030c0402b12031030345030301030312030302030301030701030705013a230305810203050503050603050103054d03050503050503050502d8a85303070402b220813003110502daa9812e030a0403b3d8aa8178031307030e02031001031301030e0402b53a1f0305810203050503050503054f03050503050503050402b62022030b0103118101030b01031604030b01031505030b02031251030b01031504030b0103160304d981db8c550304350304040384d9861f030f52030b01030b01030b01030b8108031006018812030e040485e2808c812303070402862024030a01030a0502d8a71103030502d9877f03090103090503e2808c520312812e03130402873a220304810203040503040503040103044e0304050304050304040388d8a81f03198102031905031805031754031405031b0601b21a03030502d986817b030b0304da86d9876f030a1c030d79031101030f01030d01031001030b040398d98616030b3b030b01030b5403120403afd986812203075e03070503070304db8cd9862403090103092d0311812e03120204b020d8a21103090204b120d9851f031503032edbb21203090303dbb2761003080402b5201a03070204b220daa912030b030276201003090204b520d8a21a03080203b6616810030d0303dbb66110030c0204b9dbb0201103080107e2808cd8afd8b3520314812e03150404d987d8a7817d031201030d0503bed8a77a030b16030b0404daa9d8b4812303090602d9867a030f16030f18030904121f0a0e090806070c070706070710060a18080e5f0c070a1e0e0c0a07070807070a06121d090a0b0b12101f0807080b22110e0707810007070e080709070e080808291d0f0c11100809110b241214090e1e1707080b1c0b0e11090a09081e0908090d16130707100b160c0b0c0a09070612070708070609060e070907191c070808151a290c18060a0a070a0c1d1806081b110f130909080807090709080809100d0b0a');
+INSERT INTO e02_404_01_ft_data VALUES(274877906945,X'00000ef90430206162831e030c04030a05031105030c020263618251030602026d65822503090202723a8209030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a01030a0204d8a2d8a8824e030c0303a7d8b5823003050903050903050402d981836c0307050186826a03054a030c11030908031407030c0402daa9822c03070903070903070d03070303a8d8a7833f030a0501ae826c030402030a4f030807030e0803160703110501b1831603052a03050303aad8b18257030501030701030601030501030801030601030637030a01030c03030a08030a01030a03031205030d0501b3834703071103060f03050501b982080212811b030701030701030701030701030701030c01031201030d01030f0103101c030701030701030701030701030703031001030d01030b01030e0103170402d982835c050605050185834d03070703130402db8c8305030901030d01030e0303acd8b9835903060b030c0402d984827903050103090203050103090203050103090203050103090203050103090203050103090203050103090203050103090203050103090303aed8b1831e031023030a0303afd8a8824c03070501b1820802080402d985822d03070903070903070f03077303050501868222030703030517030801031101030e01030c01030501030901030a0103060103053e030901030d01030e050188822b03070903070903071003070402db8c8316030d0f030d0503080303b1d8a78344030508030d0703080402d988831503070b030504030d0503082d03070f030907030e0303b2d8a78361030e09030b0303b3d8a78223030b0501b1832d03060501b7836503050402d985830b030901030d01030e05018683610308010308080305010305050188825303070303b4d8a7830e030901030d01030e36030708030c0501af820802188120031201031801031301031501031622031101031601031301031101031401031d0103180402db8c833403081103050803100703080303b6d8ae831f03050501b9836303150204d981d8b1825e030601030601030601030e01030a3b030c38030804030b01030502030c0803110503090501b4832103051903080403050103052703050402d986826403054d03070b030806030b08030d0703080402db8c8333030810030508030d070308030384d982836403080503050501868314030609030802030b04030d05030805018882630305350305030385d8a78224030f0501b9833b031001031101030e2403140103150402d988822b030b09030b09030b0b030505030b15030560030519030d0402daaf822403090402db8c835b0309030386d8b48347030b2103050402d982825203070501858274030901030601030601030701030719030901030d01030e1a030a05030b030387d988824c030b0402db8c8261030575030c01030b0c030c02030e0703130303bed8a7833a031104030a0501b18220030703030503030602030702030801031101030e01030c01030501030901030a01030601030547030901030d01030e0402d985831e030809030d0503082b030701030b0b030803030a01030a0402da98827c030901030d01030e01030901030d01030e0204da86d8b1826603063c03050303a9d8a7826d03072a030a0f030d05030806030a02030e09030b07030b0703100103130501b1831703050402d9848330030710030909030d070308050185832f03070c03080d030d0703080501888268030901030a01030c01030510030903030903030903030903030901030901030d010509070303090303090303091b030b01030f01030c1603100303afd8a78208020e812603070c030d0c030c0103100703080501b1833203070501b48362030e09030b0204dbb2dbb0821e03050303070303050303060203070a030801031101030e01030c01030501030901030a0103060103051a030527030d0103110103120303b4dbb0826f03050503050b030d01031101031201032d63618210030f04031101031301030f03016f820a031c030311010313020264698209031607031307031802026d61820f031607031303016f8219031c02026f328211031c02027030820a031101031101031103032002031101031101031103031d020311010311010311030172820c0317070317070317020272618209030f06030f030165820d031707031507031a020273698218031c030170820b031c02027465820a0317010317060317010517070603170103170301688217030f04031101031302027665820e031907031707031c0103302d70820c0316070316030174820a03160103160603160103160202302d820a031501031501031502023130835d0303030131831b03030301328218031301031301031302023236831c030302023330820a0313010313010313030322020234328211031301031301031303031f0103312d70821a03160301748218031601031602023030835d030402023130831b030402023230835e0303010303010303030131821803140103140103140202343283350303010303010303010303010303010332302d82110315010315010315030130835e0304030131835f0304030132836003040202312d8218031501031501031502023635831c03040103333030820a0314010314010314030323010334323082110314010314010314030320030131833503040301328336030403013383370304030134833803040301358339030401033a2072820903090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090103090302d8a7836c03060401a8833d03070401aa832303060103060103060103060103062003060103060103060103060103060103060103060401af82080207812203070401b1832903072a03070401b3836103070103070401b4834603060e03070302d981833a0307020307150307010307040184831d03070b03073c03070401be831e03070e03073703070302daa9832b03071003071403070103070401af834e030702026469820a030c01030c01030c05030c01030c01030c05030c01030c01030c0202666d8209030c06030c01030c06030c01030c02027072820d030c07030c07030c02027265820e030c07030c07030c0103616273831e030d04030b05031205030d02026620822e03030903030903030202672d820a030f01030f01030f05030f01030f01030f05030f01030f01030f02026972820d031b01031006031901031006031e01031002026e208232030309030309030303016482090311060311030169820f03180703150202726b820b031f0202742d8210031104031301031501031101036231348335030201030201030201030201030202027320831e030e0e030e0103632d63820d0310070310030174821b031002023031831b0302030132831c030202023132835e03020103020103020202616e823203020903020903020d03070301748210031004031201031401031002026f69820d031201031403016d820a031d02027520822303030103030103032303030103643a2082090308010308010308010308010308010308010308010308010308010308010308010308010308010308010308010308010308010308010308010308020269618209031701030d01030d01030d04031401030d01030d01030d04031901030d01030d01030d02026f6d820903130603130103652d6482170317030172821b0319030176821c031b02026375822303020103020103022303020202643a82090307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307010307020266698225030b020269668209030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030301030302026d708212031e02027061820d031901030e06031701030e06031c01030e02027374820a031901031904031c02031901031904031902031901031901046620d8af824003040302d9be822e03040302dbb28237030402026573820f031b070318020269658209030501030501030501030501030501030501030501030501030501030501030501030501030501030501030501030501030501030501030501030502026d2d8209030d06030d01030d06030d01030d0103672d70820a0310010310010310050310010310010310050310010310010310010368726f8217031104031301031501036961678209031801030e01030e01030e04031501030e01030e01030e04031a01030e01030e01030e020265648209030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030601030602026665820f031a0703170301698209030401030401030401030401030401030401030401030401030401030401030401030401030401030401030401030401030401030401030401030402026c73820d03140103160202722d820e031107031107031101036c652d8217031604031801031a0202732d820d031501031701036d2d638210030e06030e0301648209031503016d820f03150301728209030e06030e0301748217030e02026166822e030209030209030203016e820f0317070314020265668225030a02026f768219031d01046e20d8af824403040302d9be823203040302dbb2823b03040202646f8209031206031202026966820f031907031601036f632d820d030f07030f07030f0202696c820d031301031502026d2d82090314060314030170820a031e0202747482170313040315010317020276658219031e010370303182180312010312010312030133820a03120103120103120303210301348211031201031201031203031e02026169820d031a01030f06031801030f06031d01030f030172820b031e0202726f820c031801030d06031801030d06031801030d0103722d63820e0312070312030174821c031202023a64820a030b01030b01030b05030b01030b01030b05030b01030b01030b0301668209030b06030b01030b06030b01030b030170820d030b07030b07030b030172820e030b07030b07030b0202616e820903100603100202656982090302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010302010304120808410a0f08131109160a300d44090a0e0c3b0c0907142e100e0f1a0c0907070e1007152c1109072b1317110c130a09131d08080c082209170c341d170d240711103e19070a3d15120d0e0b0708260d0b0d0807180d0e0c100e08070d081111090a08080e0d140f0707070e0812120707070707420807280b0a0a0a110d0d110720140e0e120e20170e0a0a0811150b0c0708070e11100b071142290b0907071141084108171d0a08080b4114210f2a410b400b0e0f0b0c07070a070e0a08080a08080b0b0f0b0b070e080f10101707170c0720130d0d0b');
+INSERT INTO e02_404_01_ft_data VALUES(274877906946,X'00050eed02821b03020103020430726570820d031801030d06031601030d06031b01030d02026f63820c031901030e06031901030e06031901030e0301748217031204031401031601047320d8aa832c030f0401ae831e030f02022d70820f031f07031c030172820d0316030176820e0318020269678218031d02027061820b031d0202742d820a031a01031a06031a01031a06031a01031a030173820f031d07031a0103742d63820a031b0301648210031203016d8216031203031b03016f8211031b03017282140314030173820b031b0d031b0301748212031b030176821503160202656d8212031d030173820a0318010318060318010318060318010318020268728217031004031201031402026c65821703150403170103190202732d820f031e07031b0202746c8217031404031601031801047520d8af822503040302d985824803040401be822303040302dbb28224030402023031835d03020103766568820e031a07031807031d0105d8a6d98420822603040103040203a7206d822503080402d986827603050402dbb18241030c0303d8a820831603030502db8c826d03094203040103040105040a02031009030d07030d0703120103150c03040403aad8b1822003030103030103032303030502d988826e030656030a08031207030d0403afdb8c826e030356030708030f07030a0402b1208321030819030b0403080103082703080502d8aa822a03050903050903050b03050502d984822403110502da988346030908030e0502db8c8253030a19030702030d4403040b030b07031108031901030d0603140402b220820802106303034303090c030f0c030e08030a0403b3d8aa822a03020903020903020b03020403b4d8aa831603090403b5d984823003060903060903060402b720826a030a6a03110402ba20832203080304d981d8b2836c0308040384d8a7833f030c0502db8c825b03033c030c0f030f05030a04028520822803050103050502d8aa831f0308040386d8a8826a03064a030d11030a08031507030d0601b3826903050502da98822f0302090302090302090302040387db8c8273030305030316030b01030f010310040388d8b18362031209030f0502db8c8361031009030d0303da86208330030a20030b0403a9d8b3822c03080903080903080d03080403afd9858223030d0303db8c20822d030a09030a09030a0f030a7303081b03040502d8af821d030403030a03030803030902030a02030b01031401031101030f01030801030c01030d01030901030822030425030c0103100103110601b4831403030502db8c833a031304030c0204a820d8a8831603040303d8a720827603040502d8aa822003020103020103022303020502d984833f030b0403aed8a7826c030502030b4403020b030907030f0803170703120403b1d8af831603060502d982834003060403b3d8a7826a03084a030f11030c08031707030f0303d98720826003047903090b030f040388d8af831503041903042803040601b3825803020601b4826703020303daa920826603040502d987825103030303db8c20824c03096303050103050103052603050502d986826d030a44030d02031109030e07030e0703130103160204aa20d8a8834003040501aa825a03043a030914030b3f03040501ac827903040303040303040303040303040303040303040303040303040501af823c0307810503040501b1832003042403040501b3836503040503040103040501b4834503040501b6831f03040402d981831d030b0403041d03040103040403042303040501848318030407030a4a0304050185834203040501868347030a2103040501be822a03070402da86832203040402dbb2823303070304d8a7d8a8831603020601b1822a03040903040903040b03040502d9888362031109030e0402b1208258030515030546030c10030908031107030c0502d9858257030601030801030701030601030901030701030737030b01030d03030b08030b01030b03031305030e0502db8c822003040103040103042303040403b3d8aa831f03020103020103020103021c03020103020103020103020103020103020103020103020203081e03020103020103020103020103020103020103020502d985835803070f03060403b4d8ae831d03020103021c03020103020103020103022403020103020103020103020403b9d98582080202811e03080203020103020103020105021001030222030201030201030201030201030201030201030206018882080213811b030801030801030802030801030d01031301030e0203111c030801030801030801030801030803031101030e01030c01030f0103180303d98220835c050705040385db8c834d0308070314040286208316030b040388d8b1822b030e04030605030e04030605030e04030607030802030603030e21030754030802030b08031307030e0502d986825f03030304daafdb8c833303050103050303db8c208224030d8123030e1203040502d8a8827103020503020f030a01030e01030f0205acd8b9d8a8826003027903070b030d0304d984d9888279030601030a02030601030a02030601030a02030601030a02030601030a02030601030a02030601030a02030601030a02030601030a0303db8c20826203080204ad20d8b1836503080205aed8a7d8b1826c030602030c4403030b030a0703100803180703130502d985831f03070403b1d8a7831e03111103020103020103022603020502d9888341030b0304d988d8af825303020304db8cd8b5831d03040103041c03040103040103040103042403040103040103040103040204af20d8b1831503064103060501b38223030a0402d986827503053803090402daaf832e03060402dbb1822f030e0304d8a7d8b4831603080502d986826903040502db8c835c03030403a8db8c824c03080403b1d988825303040e030875030f01030e0c030f0203110703160502db8c820802090304d985d8a7822d03080903080903080f0308730306040286208317030855030c0502d8a7821f030203030803030617030901031201030f01030d01030601030a01030b0103070103061203022c030a01030e01030f040388d8b1822b03080903080903081003080304daafdb8c835b03060304db8cd8a7826e030456030808031007030b0601b3825903023d030e0f030e0503090502d986822803020103021d03020204b120d8a7822c03060903060903060d03061f03044a030b11030808031307030b0501a8826e030951030905030d0803150703100501aa825803060303072c030d1a03090a030e24030f03030d0501ac827a03080303080303080303080303080303080303080303080303080501af822b03060203060703060203060705060c0203060203080b030601030601030636030d0501b28361030d09030a0501b3830d030d2003050501b48310030d1b03140402d9818342030a05018482630304050185822b030a09030a09030a10030a6e030f2703140501868313030d0501be822b03100403084c030d03030d03030d3d03092803090402daa9826803080103090403060e0308030308030308030308030308030508070303080303080303080403040f030c09030e04030d10030a0803120501af833a030c28030d09030a0402dbb28234031004030803023a2082080206812003060103060103060103060103062203060103060103060103060103060103060103060304d8a7d8a8831e03121103030103030103032603030601af826e030256030608030e0703090601ba832203070502db8c821d030303030903030703030802030902030a01031301031001030e01030701030b01030c01030801030722030325030b01030f0103100402aa20822a03060903060903060402af20832d03080502d8a7831603070502d986831703070403b3d988826803051303050303050303050303050303050303050303050303050303050a030e12030b0c030c0d031107030c0c03030304d981d8aa833303030103030402822083400307040384d987823003020903020903020d03020502db8c8224031204028520833203090502d8a7825e030801030801030801031001030c73030a04030d01030702030e08031305030b0601b28257030701030901030801030701030a01030801030837030c01030e03030c08030c01030c03031405030f04028820825303050502d8ac8341030c0601ba825c03023903080b030604030e0503092d03080f030a07030f0502d9848261030975031001030f0c03100203120703170502db8c832303020103020103020103020103021f03020103020103020103020103020103020103020103021f03020303da98208346030a08030f0303db8c2082200305010305010305811003050b030c10030e0603150502da868208020a0204b220d8aa82080211812103110501af824303050501b4834e030b0603170402d9be82310305810903100402daa9826b030443030a18030f0402dbb2823a03050304d8a7d9888361030f09030c0402b420835803040304d988d8af836c030a0304daa9d8a7834d030b0205b3d8a7d8b7826a03094a031011030d0803180703100502daaf8223030c0502db8c831403020402aa20831f03030103030103030103031c03030103030103030103030103030103030103030103030203091e03030103030103030103030103030103030103030502d8a7822a03030903030903030b03030601b1825803040502d988825f03020403b1d8af832d03070403b7d8ad836503060304d985d9868270030205030216030a01030e01030f060187835803080f0307040386d8b3822b03020103020103020703020103020103020703020103020103020c0302010302010302010302811303090103090803060103060502daaf83550302040388d8a7825303080601af831d030f3e03040601b1822b03040103040103040703040103040103040703040103040103040c03040103040103040103041a03060103071203060303060303060303060303060303060303060303060303061c030c0c030d0d031207030d12030b01030b0803080103080303daa9208259030451030b0304db8cd8a8826603020502d984825203030502da98822c030a09030a09030a0d030a0204b420d8aa835803050402d984831403050304d8a7d8b18321030719030a04030701030707030808030d1803070502d9878273030205030216030a01030e01030f0403a8daa9825103020402aa20831803030502d8a78362031009030d0c18170d0a070b07070808170a09070a07070a070708160e0e0b0e0a080708080f0e09080809241211121411080b201712090f0b080a09110b08150711150c0b0c1209183b070b0a0911081b0908150f0f07070908151a0a101f0b0a0d0707170d070a0708080a100b172f11420b24323e0a0c0830080d1014113d090a1d0815080a250d070b08080a0808091b08160b35120a13100e2213191f260a0a0a08071607193c0d0b2d1610073b0e080808360d08120808262e08081c172f0c1c080e070a0c0e080d080a0a170808411107080909160a3a08090a640c0a08110a081c140908');
+INSERT INTO e02_404_01_ft_data VALUES(274877906947,X'00000f000730d8b4d8aad9868316030a0502db8c8347030d1203030f03070403aedb8c831d03030103031c03030103030103030103032403030103030103030103030304db8cd8b1826a03024a03091103060803110703090203b53a20831d03060103061c03060103060103060103062403060103060103060103060304d8afd8a7835c03020304d984db8c823003070903070903070204b620d8af8325030c0501b18324030c28030c0501b4820802178120031101031701031202031523031501031201031001031301031c0402d981834a030c01030c0501848323030c0501be8327030c0402daa98348030c01030c0304d8aed8a7831f03060403b9db8c836303160204b720d8aa835403120402daa9826a030b0304d8a8d982826503020402ad20836503070205b9d8a8d987826003037903080b030e0304d985db8c82080203811e030902030301030301030301050310010303220303010303010303010303010303010303010303040388db8c82080214811b030901030901030902030901030e01031401030f0203121c030901030901030901030901030903031201030f01030d0103100103190304db8cd98183630317060188833b03120103130103102403160103170203ba2061832203090304d8b2d8b4835803030303d98620825c030439030a0b030804031005030b2d030a0f030c0703110106d981d8aadaaf833303040103040403b1d8b3831d030d3e03020502d985825e030701030701030701030f01030b73030904030c01030602030d08031205030a0403b2d988836c03090403b4d8a7832103061903090403060103062703060304d984daa9825e030204028620826c03024503080b03090e030e0703090502d8b1826303020103061603060303060303060303060303060303060303060303060303060304db8cd984826d030246030910030608030e070309060188823103020903020903020d030202048220d8aa835c03080402d981835c030b0402daa9834003080304d984db8c825203090303db8c20835a03030a030a05030702048420d9858262030479030c0501be822603050402dbb2822703050304d8a7da868330030910030b09030f07030a0403aad8b1826d030446030b10030808031007030b0402b120827b030c03030c03030c03030c03030c03030c03030c03030c03030c1a03040403bad8b2835803020304d982db8c835a03020a0309050306040386d8aa825a03021f030203030203030203030203030203030203030203030203030203030709030902030c04030e05030904028720823003030903030903031003050b03043b0308040288208279030701030b02030701030b02030701030b02030701030b02030701030b02030701030b02030701030b02030701030b02030701030b0502d984825d03020603063503060304daa9d987825e03030303db8c20823003080903080903080502d9878252030a0601be825b03043c030d0f031005030b0502daa98261030b7503120103110c031202031407031902048520d9868332030a0501be822803060402dbb2822903060304d8a7d8b1822403100502d986825e030901030901030901031101030d73030b04030e01030802030f08031405030c0502db8c822d03090903090903090f03097303070403a8d988831503031903032803030402aa20831f03090402b220832903100403b9db8c833b031101031201030f2403150103160304d986d8af8270030305030316030b01030f01031004028720835803090f0308040388d8aa822b030c09030c09030c0b030605030c7503060601ac8262030679030e0502d9868274030b01030801030801030901030919030b01030f0103100402be20825703030a03033d030a09030f05030a2b03090c030a0502d8b1826803031303030303030303030303030303030303030303030303030303031c03090c030a0d030f07030a0303daa920826403030503e2808c827a03030303030303030303030303030303030303030303030303030403afd9868224030a0304db8cd8b182080204811e030a020304010304010304010504100103042203040103040103040103040103040103040103040601b2834d03090703150502d9848262030279030a0503e2808c832d030c05030d02048620d8a8826c03030501aa825c030539030b0b030904031105030c28030a0501af823e030d58030c0501b1836c030d0402d981825f0305050185833c0310050186827803060501878356030b0f030d0703120501be822c030d0402daa9831703091a03090b030a0e030f0402dbb28235030d0303d8a720822503071c030b0502d985822803040103041d03040403a8d8b3826a03074a030e11030b08031607030e0402aa20825a03031f030303030303030303030303030303030303030303030303030303030809030a0b030a0502db8c8224030c0402af20827503040502d8a7826903030402b120826303031703070303070303070303070303070303070303070303070303070403b3d988822b03030103030103030703030103030103030703030103030103030c03030103030103030103031b030678030a01030a0803070103070403b4d8aa831803022f030c1203020f03060304d982d98482520308040385d9888274030a01030701030701030801030819030a01030e01030f0502db8c832d030b05030c0304da98daa9822f03030903030903030903030403afdb8c835503030303db8c20835503060203872063825103050402d8a7823003040903040903040501aa825d03053b03090402d981825e030502030579030a0b031005018583610313050186825203060501be8358030a0f03090402daaf8208020d03023a20832303050103050103050103050103051f03050103050103050103050103050103050103050103051f03050304d988d8a7824c030c0304db8cd8af8261030675030d01030c0c030d02030f0703140502d9868273030405030416030c01031001031102048820d8aa8305030801030c0501af8302030801030c0501b38253030638030801030c0501b4830e030801030c0402d9868311030801030c0501be8279030801030c02030801030c02030801030c0402daa98308030801030c0402dbb2821e030437030427030c0103100103110501b4826f03040503040b030c0103100103110304d8a6d984822603030103032203030403a7d8b1825303090403aad988822b030d09030d09030d0b030705030d7503070403acdb8c826203075f030d1a030f0402af20831503051903052803050502d8b1825303030502d986836c030b060187831d03100502daaf835b03050402b120822b07050608010305010305020307050705060801030501030502030705070506080103050103050203070a0305010305010505060103051a03070103080503080d03070303070303070303070303070303070303070303070303071c030d0c030e07030902030c08031403030e04030f0e030c01050c090803090103090402b220823103040903040903040403b3d8aa825803030502db8c825203020403bad986825c03033903090b030704030f05030a2d03090f030b0703100304d984d8b18268030b01030c01030e01030710030b03030b03030b03030b03030b03030b03030b03030b03030b1a030301030d01031101030e1603120502d987825d03033b03070502db8c8261030a7503110103100c031102031307031804028620825f03040502d9878274030c01030901030901030a01030a19030c0103100103110304db8cd8b682080215811b030a01030a01030a02030a01030f0103150103100203131c030a01030a01030a01030a01030a03031301031001030e01031101031a0502d987832303030103030103030103030103031f030301030301030301030301030301030301030301030314031109030e0203030502db8c8272030305030311030b01030f0103100203be2061831e030b09031005030b0402d8aa825703040402d9878261030476030a0c030b0304d8a7db8c833a031204030b0402b120825b030650030d0502d8a7821d030203030803030603030702030802030901031201030f01030d01030601030a01030b01030701030622030225030a01030e01030f0601b3826803041303040303040303040303040303040303040303040303040303041c030a0c030b0d031007030b0304d985d9be825703020a03023d030909030e0503092b030801030c0b030903030b01030b0304da98d988821e03023703021a030205030208030a01030e01030f01030a01030e01030f0105da8620d8aa8350030c0402daa98330030b0304d8b1d8a7832203060601ae826603070303d987208208020c02049820d8b4834e03100402daaf8346030b0303d98620822c030c09030c09030c04028820821e03033703031a030305030308030b01030f01031001030b01030f0103100304daa9d8aa822f03040903040903040903040204a920d8aa8259030551030c0501b6836303140402d9818261030d030304050186827703060402da86826603050304d8a7d8a8826d030844030b02030f09030c07030c0703110103140601b1834d030c0502d984825b03023c030b0f030e0503090403aad988822f03050903050903050903050403b1d8af831703060403b3db8c822c03090903090903090d03090304d984d8a78330030810030a09030e070309040385d8a8831503021903022803020502d9be826803021303020303020303020303020303020303020303020303020303021c03080c03090d030e0703090502daa982640302160302030302030302030302030302030302030302030302030302040386d8af8269030244030f05031004028720825103040d0304040388d8a6822603020103022203020502d9848268030a01030b01030d01030610030a03030a03030a03030a03030a03030a03030a03030a03030a1a030201030c01031001030d1603110502db8c8272030205030211030a01030e01030f0305e2808cd981827a03040303040303040303040303040303040303040303040303040205afd8a7d8b28208020f6303024303080c030e0c030d0103110703090403b1d98183330302010302060185833203080403b4d8aa8362030f09030c0304d986d8aa8224030b0303db8c20833303060103062703070502d8b1831703020502d986835503040105db8c20d8a2824e030b0501aa835303160903050501ac835903050b030b0501ae834103090501af822203061d030b0303090501b48334030719030f0402d981826203094f03060203072203070503040f0308040c0e2416240a100a0a230b07070b0a090a080a081133400a13090a1e0f0c2609150a142616100a08080a0f0d0708131523091033173b0e0a0f0810170a07080a26140f080815160b180a1d1a2f092109330a0b0c0a160a070807070d0711080c0e152c080808233c120a1e0b130909090e0a1107070a082f0a19140d0a0d0a0b160b14131009180f0e0808070881020e09081e3d0b17081d4135140f080e0d0b3b2e25250b080a07090a080f23130d070b07081c0711120912130f2f230f0b0f3b14231d0c070c0a0f08080b0a0a070d0a');
+INSERT INTO e02_404_01_ft_data VALUES(274877906948,X'0000033f0630db8c20d9858224030e8119030d1e0308050187824c030a0501be822003060d030b030309812703060402daa9832f03060103060501af8332030615030f0402dbb28221030615030b0303090304d8a7d8aa826e030556030908031107030c0403a8d8a7827103030503030f030b01030f0103100502daa9826603030402af20822303090c030d0502d8b18261030775030e01030d0c030e0203100703150402b120826a03032d03030f030b05031309030a11030708031207030a05013a82080205812003050103050103050103050103052203050103050103050103050103050103050103050402b220835403160502daa9834d030a0403b3daa9825903033d030f0f030f05030a0402b420831403040402b53a831d03050103051c03050103050103050103052403050103050103050103050402b62082080216811b030b01030b01030b02030b0103100103160103110203141c030b01030b01030b01030b01030b03031401031101030f01031201031b0303d984208262030379030b0502d8aa826d030346030a10030708030f07030a0502d98782520304040286208278030544030f0502d8a7822803030103031d03030502db8c83550305040287208361031205013a832303040103040103040103040103041f03040103040103040103040103040103040103040103041f0304040388d8a8833b03130103140103112403170103180601b2823103030903030903030d03030403bed8b1825b03053c030e0f031105030c0304da86d9878208020b040398d986822c030b09030b09030b0d030b0402a9208261030c1603056c03130304db8cd986833a031404030d0502daa98272030405030411030c0103100103110305e2808cdaa9832d030d05030e0204b0dbb520827403070402b6208224030714030b0205b2dbb0dbb6821e03060303080303060303070203080a030901031201030f01030d01030601030a01030b0103070103061a030627030e0103120103130205b4dbb0dbb5826f03060503060b030e0103120103130204b520d986827403080204b620d985822403080402dbb18238030c0107e2808cd981d986827a03050303050303050303050303050303050303050303050303050404daa9d986832d030e05030f041207110b0a0e1315080b171d2c08081208233f0c14080b0e08082e1510120a120e0d140e0a0b3e170a0a0825');
+INSERT INTO e02_404_01_ft_data VALUES(412316860417,X'00000e8b0430206134846c0307030136846d0307030174847e0305020262318537030602026362850e030703016f8539030b0301728459030702026475851203050202662d8503030603016885250306020268328474030906030703013384750309030135847603090301368479030702026a348473030402026c328521030b0301698539030502026e7085230308020273338471030403013584720304020274678527030503016a853d031202027835846503050301368477030702027962850f030802027a6b853b03080204d8a2d8aa856303050501b1847003050402d984845b03070303a7d8aa852d03060103090103050103070103070501b1841e03050501b3844a03054703070501b68373030d0402d981836c02078148030605018484440309050185847b03066203080501be844c03050402daa9844303091503070402db8c845c03070303a8d9868436030705018784050307050188840203090c030805030d06030807030d0303aad8ad855a03040501b3836e030d0703080501b9836e030701030701030701030701030703030d01031301031101031401031501030701031215030701030701030701030701030702031001030c01030d01030c01030c0402d9828404050605050186840f030806030706030e060305050188844503097303090203070402db8c846b03070403050303acd8a7842203050501b9836f030d0703080402d987841c03050303aed988842303070203067903071703070803070303afd8b3840403100402db8c850a030714030d01030716030d08030d0303b1d8a7845503080402d988836c020e07030811030c0402db8c844803050303b2d8a78371031307030e0501a8855803080303b3d8a7844603091403072303050501b1844903051a03050103050402d9868371030d01030d0603080103088165030b050188844703090403050402db8c840103090c030805030d0603080703093803070303b4d8af8373031302031301031901031701031a01031b0203181b03160103120103130103120103120103140402d987853e03060303b7d8a88403030811030d0603080501b18405030d0204d981d8b1836f031207030d04031a01030c12030d01030c01031406030d06030806030b0402d986837f03080103090c030805030d06030807030c0501888501030617030b030384d8a78406030f812d03060402d982841f030505018684560308030385d8a7850003082403090501b3855b03040501b9840b031001030c0402d9888370031107030c2f03075c03060303070203080203090402db8c8370030d070308030386d8a784060306811c03070501a8840f030e0501b4841d030d0402d985844d030701030801030701030501030701030a0b0307010306010307010307010306010308030387d8a7852003080501b4855f03060402db8c836c02130e031181670308030388db8c856203050503070103070303bed8a7846a03070501b1851003060402d98485560308050185836e03120c030d0103080204da86d8b4841d03080303080303a9d8a7837e0307811703090503070103060501b1845303082c03083d03070402d985837c030501030901030c0d030805030d060308060309380308050188847c03060303afd8b48372031307030e0402d984846903070204db8cdaa98405030a0303b7dbb9853603060303b8dbb2847803070303b9dbb1846e030701032d3135850303080103303035840a030302023530840a030402023731840703030103313134840803030301728537030802023233840903030202343584080304020235308503030901033230308521030d020233308474030b0301348409030401033332308475030b01033533308476030b01033731308407030401043a20d8a7836c02060401a8840e03070b03070401aa836e03060103060103060103060103060303070503061503070103060103060103060103060103060103060401ac837603070401b1837303070401b3837803070103071403070b03070401b7841a03070302d981840c03070b0307040307040185837703070401be837b03070302daa9840b03070b030701036163688539030e02026e20852703030803030a030302027474847e030601036231318537030702026d778463030201030201030202027964847d03020103020204dbb1dbb2850e03090103633030840a030203013784070302020231318408030203013284090302020362dbb1850e030802026f618539030c0202722d845903080103642061847e03040302d8b3847d03040202756b851203060103662d318503030701036832338474030a020233328475030a020235338476030a0103696f6e8539030701036b746d850b030207030201036c32308521030c0202696f8539030601036d2064851203040202616e851903020e03020803020a0302020277208463030301030301030301036e206c85390304030174852703040302d8a7852f03040202707285230309020273208539030901036f2033847e0309020261638539030d02026e73853903080103722d768459030901037320638539030a01037467788527030602026d208512030302026f20847e03080202746f847e03070103756b65851203070103772078846503040302d8b3846303040103040103783630847703080103796272850f030902026420847d03030103030106d8a2d8a6d988843803023403020103020403aad8b4852c03023203020503060403b1db8c847003060304d984d8aa845b0308070302040385d8a8852b03020304da98db8c856003020205a6d988d8af843803033403030103030203a720638459030635030604017285260308040179850f03070402d8a7844a03040203040c03065603080501aa853803080501af851f03060501b1844803040d03070501b3844903040203040c03060402d9848456030705018585050306050186844e03070f0306050307050187852003070501be851003050402daa9845303070103070303d8a820853403040a03040502d8b1856103050502db8c837e03040403aad8a78447030d0502d9888449030808030457030205030701030a0103060103080103080502db8c850c03050403acdb8c850d03040403afd987842203070502daaf840003050403b1d8a78522030b0601aa841e03060601b3842503030502d984850a03030703030601868406030c0403b2d8a7850803050601b1841d03030303030403b3d8a7846a03090601aa840603110502d9be844a03060803023f03080502daa9851c03020a03020803020a03020503e2808c853c030a0403b6d8a78373030e0402b920841e030a0402ba20855f03040304d981d8aa840003020601b1855b03070601b2836c02080601b4853403070502d9878373031053030e04028420847903050103050502d8a7856103030502d9868444030a0a03020601878558030b0502db8c8500030a040385d8a7850603030903030601aa840603080601af855d03090502d984837e03090502daaf847b03070502db8c8513030302030b0503090103080503e2808c84350305540305040286208376031105031020030c0803050303052903050b03050103050103051b03050103052603050403051303050803050502d8aa8446030b4e03030601af840403150601b3843c03063803060103060103063503070502daa9855c03030a03030601af842b030352030705030b3003050103080803050502db8c845a03090703033b03050a03050603080203050a030526030805030c040387d8a785060305090305040388d8a7843e03033b03030103030e03031a03090601b1837203170703128117030b0502db8c837103150703100601b48455030a0403bed8aa844c03060304daa9d8b38443030a0a0302810a03030502d988845803080803020502db8c850803070403afd986843703090303db8c20840403043f03070103070103070103070103074e03070f03070502d8aa8524030b0601b1842303027b03021703020803020601b3851603020d03020601b4840603030502d9848520030a060186851d0308060188853103020b03022c03020601be842403037b03030502daa9845c03080503e2808c844003060204a820d8a7853403050501b4853e03050304d8a7d8b2841d03020303020502d9848558030a090302060186856403050402b120856103060502d984843c03023803020103020103020502db8c855b030a0303d98220841a030a040386d8b28436030804028720836f031007030b0f03080502d98584270302040388d8af840f03100601b38528030501030704030a01030d01030901030b01030b0601b48402030a0c030905030e06030907030e0502d984852b03040303daa920840d030b0b030b0303db8c20837e03050502d8b4843303076503070903070503e2808c843503020b03024903020204aa20d8a7841e03040501aa842103040501ac841c03040603040402d984841f030405018585000307050186844d03060402daa9837c0304810303070303d8a720845303060103060103060103064a03060502d8af840003040502d9818446030d0601868502030a3003040903042103020a0302060188837203160703110502daa9855703020403add988855a03050403b1d8a78444030d0a03050502d988842e03040502daa9840203020502db8c845c030d0403b3d8aa841c03020203020103020203020103026f030d0502d985836e030e070309060188843303046503040903040403b4d8ae840b03020103020103020103020103020503e2808c852c03033203030503070403b9d985837303020203020103020103020103020103020203021b0302010302010302010302010302010302060188836e030801030801030801030801030803030e01031401031201031501031601030801031315030801030801030801030801030802031101030d01030e01030d01030d0304d981d8a7841e03080402822084040507050502d8a78406030a040386d8b8840f030906030806030f06030604028820845103050502d8a88528030305030801030b0103070103090103090601b18426030a5e030401030a02030b02030c2f030a0203080601b38445030a0a03020502db8c843003022303020103020103020103024a03020304daafdb8c837f030504090707080807070808070b0707070808070808070807080708080a070815070a070c070a070b08090713090a4609100d0b090a08150914090e080c070f0d150a172d080f0725170a0d08070c070a1a0b0d07072909070f0f0907080d0d130d1d070c080a0909090909080809070808080908070909090a0a2e070710070e07070b090e08090e0b0a0907080709080809080809090808090c090809110e090708080809080809090908080809090b09090b120f090d090a110c07071107070a0d08070d07070b0c0808091d080909080907070b07090a09070e11090908080a0707070b0b080b07080c07070808110c320b07130b16200c150e0b0709110b08091e08100a0708070d0a08090a070d0b0708110809090e08091913080c090e0f0a070a0807070c150808130a08090c080808180b0d150f2d460a0908120817190a17');
+INSERT INTO e02_404_01_ft_data VALUES(412316860418,X'00000eab0730d8aadb8cd8ac844a030b0803070502d985844c03080f030a0703040502daa9840603130601af846b03080403060305e2808cd8a7840403130602d984851d03050204ac20d986845203090304d8a7d8af842203060403b9d8a8836f030e0703090304d986d8b3842a0302040387d8b4841c03060303daa920847103020103020103020303db8c208377030f0502d984843f03023c0302010302060188850d03050205add988db8c855a03060205aed8b1d8a7837e03020304d985db8c84030302040388d8af842303080203077903081703080803081903020203020503020304da86d8a7856503030304db8cd8b5840b03040103040103040103040103040203af2066850303050402d9818501030505018585020305050186846003060303d8a720845703050103050103052c03050903050502d8af855d030b0601b1855f03090601b2840403170502db8c840403032403061b03060103060103060103060103064e03060f03060403a8d8a7856403040403b1d988836c02160e031429030a02030979030a17030a08030a19030402030405030404030b0402b320843603053003050103050103053203051603050a03052d03050502d8aa840403110502d988850a030c0303d98620836c020c1903050a0312040388d988842c03020502daa9850c03020304daa9d8b18456030b0503e2808c855903030403afdb8c837d03060303060103060103060103050303db8c20846c03050103050502d8b2851e030e01030816030e08030e0502d988850a03080204b120d8aa837903141d030f01030b0501b28371031207030d0402d985840b030f01030b050187856103070402daaf8372031207030d03023a20837303060203060103060103060103060103060203061b03060103060103060103060103060103060303d8a720844e03060502d8a8837e03030601aa844903070803030601b3853c03090601ba855f03030502d986842303047b0304170304080304060188845503090403a8d8b1855b03090403aad8b38511030c0502d981841e03070502db8c844a030a0803060402af20846003052103040103040103040502d8a8856403030402b320842503040502d8af843603033003030103030103033203031603030a03032d03030502d988837d03030403030c030f01030e0502db8c841d03050303056403060403b4d987843903043503040304d984db8c843c0303380303010303010303140304070304040385d8a7836f031407030f04031c01030e14031606030f06030a06030d0503030502d9be85620302040286208406030d0502d8aa844b03080601af847b030a0502d988842f030204028820851e030b17030b08030b0502d8a6842e03050601b28456030d29030a0601ba836c020f0703090502d984836c02170e031547030412030a0a030322030401030461030c0502db8c836c02020203020103020103020103020103020803020a030d0c0302010302010302010302010302010302814103050203050503050304daa9db8c840203030303db8c20845e03040503070103070b03030103030502d8aa851d03030601b2847003070601b3853a030a0502d984845c030e060185851003080601868538030c060188844803060803020205b2d8a7d9888371031407030f0502daa9850803060403a8d8a7855803090403b1d8b3841d03040303040303d98420853d031004028820852303060502d8af836c020a0502daa9843403045303040203b32063846603060401658467030604016884740308010308010308040173846803060402d8a7853003060501a8843603060501aa846b03064f03060501ae842503050402d988856703060501be846a03060402daa9851a03060501af846903060304d8a7d8aa846a030a0502d981855b0306060186842b030207030413030c01030a0903040b0504060103040103040503021c03062503040502db8c840603021e03027b03020402aa20841c03030203030103030203030103030502d8a7850203090601b18511030e0502daaf837f03040502db8c840603120503e2808c840403120403afd8b3843603043003040103040103043203041603040a03042d03040403b1d8a7844903060803020502db8c846303060103060304d985d987836e030f07030a060188853a030c040386d8aa8443030c0a03040601b38371030e01030e0603090103090502daaf855e030c040388d8a8843303056503050903050601af837d03040403040c031001030f0601b18371031001031006030b01030b5203060601b2843403025303020f03040d03040502d9868447030a43030d0403bed8a7851003030502d988844a03070803033f03090304daa9d8a7851c03030a03030803030a03030303db8c20841d03060303060502d8a88401030a0c030905030e06030907030a0601aa842e03020601b3842a03040502d988845703080803020502daa9850403070305e2808cd8aa845c030b0602d988843703068105030b0204b420d8aa8419030b0402d981840e030b050186840603050402daa9841c03080304d8a7d986852c03070803092a030705030b0402aa20837c03030502d8a7837203150703100403aedb8c840b03030103030103030103030103030403afd8a7855f03080304d985db8c841d030a03030a04028720846e03050502d8b1853e0307040388d8b1844103023e03020103020304daa9d8b3837f03020303db8c20851803090903090502d8af840503030305e2808cd986852c03043203040503080203b53a20840b03060103060103060103060103060304d8afd8a7840403020204b620d8a88413030c0501aa836e030c0501ac836f030c0501b38371030c01030c20030c0501b48375031201031801031601031901031a0203171b03150103110103120103110103110501b78414030c0402d9818411030c0501858370030c0501be837a030c0402daa98410030c0304d8a7d9818373030f0205b7d8a8d9828403030911030e0603090403b1d9818405030e0205b8db8cd985840f030b06030a0603110603080204b920d981841e030b0304d8a8d987836f030f07030a0304d982d8a7853403020a0302040385db8c837303030203030103030103030103030103030203031b0303010303010303010303010303010303040388db8c836e030901030901030901030901030903030f01031501031301031601031701030901031415030901030901030901030901030902031201030e01030f01030e01030e0304db8cd988840b031201030e0204ba20d987855f03050303d98620836c021107030b0106d981d8a7d8b9841e03090502d986843d03043a03040103040403aad8a7840003030403b1d8a8855b03080601b3837d03020403020c030e01030d0502d985836f031307030e04031b01030d14031506030e06030906030c0502db8c851d03020403b2d988836c02090403b4d8a7853403080304d986d8b1837c030a01030e01031101030901030a0b030d01030904031201030e05030d01030905030e02030d0402872083730311040388d8b1844203023f03020103020103020601b38518030c0502d984843703023203020103020103020502daa98501030702048220d8aa8404030816030b0501b18404030b0304d8a7d8a8853403030a03030601b18406030b0303db8c20841f0307020384206884790306010306040174853d03110402d9858370031007030b0402daa9837e030b0303d8a720845d03050502d8a8856103040601b3840603100502d986852b03060803070502db8c851d03070402aa20847f03060103060502db8c845b03090703030403b1db8c847c03090304d982db8c841f0306040386d8aa8444030b0a03030601af84560309040388d988851b03030a03030803030903030103030502daa98520030c0304da86d8b1856203080403a9d8b3843703043203040103040103040303db8c20847b03040103040e03050703050502d8a7843c03043803040103040103040601a88500030b0601b38556030a0502d981843d03023a03020103020502daa9836c02190e03178167030e02048520d8b4841b03130402d9818415030c0c030a050186840f030d0303d8a720846203060502d98485000309060186836f031507031004031d01030f14031706031006030b06030e050304060187850603040903040601888510030a0502db8c8524030a0403a8d988852b03030403aad982840603090403afd8a7855d030a0403b1d8b3843603023003020103020103023203021603020a03022d03020502db8c8454030a0a03030403b3d8a7855b03050403b9db8c840b031101030d0303d98420837e030a04028720836e031007030b040388d8aa842603085e030201030802030902030a0601ac8370031207030d0601b3850203070502d986844d030901030a01030901030701030901030c0b030901030801030901030901030801030a0402be20837a030f01030a816703030103030305daa9e2808c837c030701030b01030e0d030a05030f06030a06030b0403afd8b1847b03080303db8c20841d030b03030b0502d8aa843303026503020903020601af840303030601b1837303040203040103040103040103040103040203041b03040103040103040103040103040103040502d9848370030e070309060186852903020601888513030402030c05030a0103090305e2808cd988843503065403060203862078847703060402d8a2845b03060501a78373030c6903060501a8840503060501aa8376031205031120030d813f03030501ae842303067b03061703060803060501b1836c020d0501b3845a03060402d981840f03130501848406030e0501858426030681350303050186844f0306530306050187836c02120402dbb8847803060304d8a7d8aa8447030c0502d98584060307060188852203080403a8d988840f030f0402aa20844d03050502d8a78446030c0601b18444030c0a03040502d988844b03090403afd8a7840403162403050903041203050103050103050103050103051003040103040103042c03040903040703050f03050502daa98456030a0402b120840b030e01030a0a030e01030a0502d8af856403020402b320847403070103070103070502d9888371030f01030f06030a01030a0502db8c842a03030403b4d8a7852c030632030605030a0601aa837c030221030e0403b8db8c840f030a040f0e080a0b080a0a0c0a090f090e070b0b0a1e0a1609080707150807072009271d08080f09080a09150c1108100a0b070b2c09080a070711070909080b1108081d110e0c192108080807080e080a0a1d390a150807070807070a0e08090c0908080b09070d0708070a07080708070a08260e1408070808091e0c0b0d070c10080f1013100b090e130c1407070b080b0c0a08070813080b15090d08080f0a0c0811150a0a07070d2507080707080a1109140a0d0d2d480d0a0c0c0e0909101d0809092e08120711080d070d07090c070b080908070b080b0b090a0c0715080a12121107070e0f0a0b0709081f0a07080909091e0b090c090b150a0729121d090c0e072b0b07100e09080a071110070708070b0a07080a08070908080a08330811080e11080f0a');
+INSERT INTO e02_404_01_ft_data VALUES(412316860419,X'00040cf5841503090603100603070730d986d985d988844d030801030901030801030601030801030b0b03080103070103080103080103070103090304daa9d8b1855c03040402af20853303040803060502db8c855e030d0503e2808c842b03040303db8c20846103047d03090502d8a7851c03060a03060803060a03060601b3843203022803020103020103024603020503e2808c8529030402048720d8aa8375030c0303130501b4837303120402d981836f031107030c0501be836e03110402db8c840503090501b9846e030603023a20836c02050203050103050103050103050103050803051603050103050103050103050103050103050303d8a720850f03060502d8b1850a03020703020502d988843e03023b03020103020502db8c852003090403b1db8c853e03080402b420841c03070502d8af855f03070304d985d98684270303040388d986843103022603020103020103022c03020903020304db8cd8af836c02140e0312816703090502d98685170302060188842803021b03020103020103020103020103024e03020f03020203882062853703050401668525030504016e852303070402d8a7852d03050403060501af851e030c17030c08030c0402d9858509030805018684500304010306050188856803060402daa9851b03052103060402dbb7853603050304d8a6d986842e03060403a7d8b18522030a0601b2850803040502d984843e03043b0304010304060186846b030b2903020502daaf843703080502db8c844003050403a8d9888528030405030901030c01030801030a01030a0502db8c843303066503060903060403aad8a7843003052303050103050103050103054a03051203030903030502d988842603095e030301030902030a02030b0403acdb8c8370031307030e0403afd8b1842303090203087903091703090803091903030203030503030502d986836c020b230311060187840d03110103100502daaf837d03050403050502db8c843803043403040103040402b1208371031101031106030c01050c090502d8a78510030c0601aa844a03090803053f030b0601af8442030316030a0803042103030103030103030601b3850403050601b4843903033503030502d986844b0307060188844103033e03030103030502db8c8538030b0203090403b2d8b18456030e0502d988843403035303030f03050d03050403b3d8a78445030b0a03030601aa850203080502d9888518030d0601be851003020402b420840e030a0b030a0403bad986836c021007030a0304d984d8a78453030b0a03044e03050601aa844103053e03050103050601b1847c03080502d988851b03020a03020803020903020103020502daa9843703033203030103030103030502db8c836c02180e03168167030d04028620855a03020103020502d8a78447030b0601af842803040903031203040103040103040103040103041003030103030103032c03030903030703040f03040502d987844d030a01030b01030a01030801030a01030d0b030a01030901030a01030a01030901030b0502daaf842b030804028820851b03040a03040803040903040103040304daa9d8a7850c03030601b38520030d0502d988850103083003040b03042c03040502db8c843403055303050303db8c208404030e815203060203060503060502d8af850a030a0601b6836e030a01030a01030a01030a01030a03031001031601031401031701031801030a01031515030a01030a01030a01030a01030a02031301030f01031001030f01030f0502d984855a0307080306060187836c020302030301030301030301050315010303060311020303160303010303010303010303010303010303060188843003032303030103030103030103034a03030502da98856703080103080601a98457030a0803040204be20d8a2856303040402d981837b030b050187837a0310050188856203040303d8a720851003040f03050502d8b1842503020601b3846a03080403aadb8c844c03070403b1db8c851003070304d984db8c85560309040385d9be836e03130c030e01030981680302040388d8b1843903021103080803041c030223030a0304da98d988842d03020304db8cd8a7850d03020106da86d8a7d984856503040403b1d8a7855f03020502db8c843a03023503020103020403b4d985841d0309030309020598db8cd8b1856003030203a9206a84730303040173847103030103030402d8aa8418030c0501b78405030c0402d981837a031913030c050186845f03060304d8a7d8aa850c03040502d985837e03088115030202030a050308010307060186851c03040a03040803040a0304060188850803020403b1d8a7853c03080502d985842603020601888453030903030c0703022203090402b320846903050103050103050502d8aa837f03030502d9868443030b0a03030502db8c855703040503e2808c8437030525030a0403b4db8c840503020304d984d8aa85040309040385d8b1845403090a03020502daa9837c030601030a01030d0d030905030e06030906030a04028820853103050b03052c03050502d8b1845803090803030601b3850103090502d984847c03070303db8c20850703060502d8a7842903021f03020103020103020103020103020601af840203040502d986853303020305e2808cd981837c030801030c01030f0d030b05031006030b06030c0602daa9855903040203af207a853b03070402d984853303050304d8b1d986847b03090403b4d8aa8372031407030f0304d984d98184690308040388d8a7846b030a0303db8c20837d03070203060103070103070103070103060502d986855e030e0305e2808cdb8c842b03050104db8c2061846c030601030604016c8521030a0402d8a2847003040501a7844303080103083703051603064c03070501a8840203081e030c0501aa837703100d03054103082a03040501af8404030f810603060501b2855803070501b3840103081e03082703080103088117030a0501b7840303070402d981837f03070103088118030a050185850703071d0308050186841d030c4103050303050501be855603070402da86841d03070303070501a9837d03080103067e03051903080402dbb3846303080501b5846403080303d8a720844803030103030103030103030103035a03070803070a03070502d8ac850d03030502d98585060302090302060186843c03053803050103050103050403a8d9888500030c0502daa98401030b0c030a05030f06030a07030b0403aad8b1842e03030601b3843303036503030903030502db8c8524030c0503e2808c851d03040402ac20845203080403aeda86856503020403afd8b1836c02150e03138167030a0601b3850a030b0502d986840503040502daa9855903020601af840203050103040402b13a837303050203050103050103050103050103050203051b03050103050103050103050103050103050502d8a7842303037b03031703030803030403b2d984851e030f01030916030f08030f060188847003080403b3d8a7843203032803030103030103034603030502d985853a030b060188851603030d03030402b420840603040502db8c843303086503080903080402b53a840b03050103050103050103050103050402b620836e030b01030b01030b01030b01030b03031101031701031501031801031901030b01031615030b01030b01030b01030b01030b0203140103100103110103100103100304d981d8a7843d03033a0303010303040284208370030f07030a0502d9888520030b0502da86856203070502db8c843f03033c030301030304028520840f030c06030b0603120603090502d8a7844c03090f030b0703052e0309040386d8b1851d03090502d988851703030502daaf8533030305030d0502db8c85290303040287208378031205013a836c020402030401030401030401030401030408030416030401030401030401030401030401030404028820845003030502d8a8840b031301030f0601aa843003042303040103040103040103044a03041203020903020502d986842803030303071803030103030103030103030103034c03050205030c05030b01030a0903030502daa9853103030b03032c03030502db8c845703090803032b03090403bed8a7842403047b03040304da98d987856703090103090402a920837a03180b030b5a03050502d8b3845c03090502d984850403080403afd988846b03090403070305e2808cd8a7843503035403030701a8852903050701af844003070602d988844003030205b1dbb2dbb5850e030a0205b7dbb9dbb0853603070205b8dbb2dbb0847803080205b9dbb0dbb0853603080403b1dbb1846e03080107e2808cd8a7d98584350304540304070186840403140503a8d988852903060503aad8b1845c030c0503afdb8c844003080404d981d986837c030901030d0103100d030c05031106030c06030d050384d8a7851d0306050386d8b4852c030532030505030905028820850903070602d8a7843703070903040602db8c853c030c0404daa9d8b4855903050404db8cd988842b03060e2d0a0b08090c1113090d070b0708072c090b0e080908080a1811081c0907070b0d080a070b080a09070e0a0808180e1e140c1e0b0a0b0e12080d16070a080d0b09110c0708070b0c100d0714110f0b082e2908140a07110b1308460b2f160b0a0a0807070c080709090a13150a0a0c090e0c0b090a08070b070a1510070908100e080b080c090a0c1a0e0b0708091707081d0809080a0c0a0918080b0d0708130a100b0714070f0a0d070b1008071e080b100914090d08090809100708080a2c11120715080a080e1447100b08080e111109080b08082b080b1c2a0e0e0c0d0e08080c0e0707080b0b0b0b0910070909091c090f080b080a');
+INSERT INTO e02_404_01_ft_data VALUES(549755813889,X'0000001b0730d8a7d986d8a7862203030205b1d8a7d98686220302040c');
+INSERT INTO e02_404_01_ft_data VALUES(687194767361,X'00000056063020d9bed984862303060105d8a720d9be862303050304d986d8a7862202030103030205b1d8a7d986862202020103020106d984d8a7d8b386230308020486d8a720862303040205bed984d8a786230307040b0b0d0e0c0a');
+INSERT INTO e02_404_01_ft_data VALUES(824633720833,X'00000081063020d9bed984862302060204dbb9dbb0862403060105d8a720d9be862302050304d986d8a7862302030205aad986d8af862403020204afd8b120862403040204b120dbb9862403050304d8a7d986862302020106d984d8a7d8b386230208020486d8a720862302040403afd8b1862403030205bed984d8a786230207040b0a0b0a0b0a0a0a0c0a09');
+INSERT INTO e02_404_01_ft_data VALUES(962072674305,X'00000af4043020633386170309030134861803090301358619030902026463857c030602026576860e03050202703786110307020273758610030502027a32857003070204d8a2db8c860d03090303a7d8b3856e03070303a8d8a7857203050403040103070103060503060501b1860003081a03090402d988860c03080303aad8a7861e03050303add8b1857e03080303afd8a7857903072403050402d988857303060402db8c856d03070203070303b3d8a7862003050303b4d8a7857a03060204d981d8b4857f0306030382d988857f030b030384db8c860b0307030385d8af860703060103060103060103060402daaf861c0305030387d8a7860f0305030388db8c8568020701030501030603030c0204daa9d8b4857403070402d984861b0305050188862103050501be861f03050204dbb2dbb0861203050203050303b3dbb0861303050203050303b5dbb08616030501032f6463857c03090103616e20856903030103626d73857b030202027964860f03020103632f64857c030801046420d987860f03040202632f857c03070103656e67860603040b030402027636860e030601036720708611030601036d616e8569030201046e20d988856903040202672086110305010370656e860603030b03030103737576861003060103787065860603020b03020103796420860f030301037a3234857003080106d8a2db8cd988860d030a0204a6d98620861703070103070103070103070203a72065860e03040402d8af856d03060402d985860703050103050103050103050304d8a8d984857f03030502db8c857d030b0402aa20857303040502d8b1857603060103090103080502d9888573030a0403aed984857903090402af20857003050402b120857f03090502d8aa857e030b0502da98857903030103080403b2db8c857d03080403b3d8aa861d03070502d9be856e03080304d984db8c861e030704028620860b03050502d8af86200307040388d8b1856b03030603030304da98d988857703030403a9d8b3857203070303db8c20860d03070502d98685750302060188856802020703020601be856d03030205a8d8a7d8aa857603050103080103070601b2857d03070502daa9857203060403afd984857c03030403b1d98286000309060184861a030a0303d98420857f0304040388d984860c03090204aa20d8a8860c03070501ad857e03070501af857303050501b4857a03050304d8a7d8b1860503060502d984861e03060403b1d985857d0302060188861703040103040103040103040502db8c8576030701030a0103090403b3d984860103020603020103020103020103020304d988d8b1857403040205add8b1d8a7857e03090205aed8a7d988856b03020603020304d984db8c8579030a040388d8af860003020203af207a857003060402d988856a03050304d8a7d8ae857903080601b3861d03060502db8c860d03060403b1d988860003042003090402b320856e03050303d98420857c03040b0308010308010308010308040388daa9857303070304db8cd8b1857e03030601b2856d03080502d984856f03080204b120d8af857903060402d982857f030a0402daa9857403060304d8a7d8b1857e030a0402aa20857a03040502d8b1857503060502db8c857e030c0402af20856a03040403b3d8af856e03030304d982db8c8600030a040384db8c861a030b040385d8b2857d0303040386d988861b0302010302010302010302010302010302010302040388d8a6861703050103050103050103050502d984860c03040502db8c860003050304da98d8b1857903040304db8cd8aa857e03050502d986856e030b060188860303020204b220d8a8857d03050303d98420856d030a040385db8c856c03020403020304db8cd8a7857d03090204b320d8a7856e03060304d8a7d986860b03041503060502db8c856d03020403aad8a7860503050601b1861d03080403afd8b3856e03040304d984d8a7860103030603030103030103030103030502d98885780302040385d8a7861e030a0403bed8b1856e03090304db8cd8aa861703020103020103020103020601af860403040205b4d8a7d8b1857903020103070503080403b4db8c857403090304d988d8b1860c03020106d981d8b4d8a7857f03070304d988d8b1856a03020304db8cd8a785730302020582d988db8c857f030c0203842064857c030504017386090309040178860a0309040179860803090402d8a8857703060103050402d981857f0305050188856d030b0402dbb3860703090303d8a720860703040103040103040103040402aa20860c03060403b3d8aa860503040304d988d8b3860403020502d984857803030304db8cd8b3861e03080502d981860b0308060186861a030c060188861b0307060308020585d8a7d986861e030b0502da98857703020403a8d8af857c03020403afd984860703070103070103070103070502db8c857e03020403b1d8b3856e03020402b220857d03040304d988d8aa857403020304daafd8a7861c03060304db8cd8a7856c03030403030203862063861703080103080103080402d8a8861a03080402d984860b03060304d8aad8b1856e030d0403afd8a7860d03050601b1862003080303d98820861b03030103030103030103030103030103030103030502d8b1857503040304daafd988861a030e0304db8cd8b3860b03020502d988860203020e03020502daa9860d030d020587d8a7d986860f03060304db8cd988860d03020203882073861003040402d8a8857203040501aa861e03040501af856f03062e03040501b3862003040402d985861c0304050188856802060402daa9861b03040403040203040402dbb2861203040203040501b3861303040203040501b5861603040304d8a6d986861703060103060103060103060403aad988857403030403afd8b1860003030402b120857403050502d8aa857503050503030601af856a03030502d988860c03030403b3db8c860403030303d98420857703050103040502d8aa860c0505070601b3860503030502db8c86210307040386d8af860d03040502db8c860d030c0304daa9d8a7857303080502d988856802040703040303db8c20860003060502d986860303040502da988568020801030601030703030d0204bed8a720856d03050403b1db8c856e030a0304d988d8b1857a03020502d984860503020304da86d8b1861f0307040398d988857203022003020103020103020103020103020402a920857603020105da98d8b120857903050303d98820857203032003030103030103030103030103030502d984857703040204a920d8a8857603030402dbb5860d030f0304d8a7d8a8857f03020601aa857303090403b3d8b1857203080403b4d8b4857403080304d984db8c861b030604028820856802050703050502d984862103060403beda86861f03060304db8cd8a7860e03020205afd8a7d986861c03070105db8c20d8a2860d03080501a8860003070303d8a720860e03030502d8a8857d030a0601aa857303030601af856c03040403040402aa20857e03060502d8b1861703030103030103030103030403b1db8c857e03040403b2d984856d03090403b3d8a7860b03030502d985861e03090304d984db8c856f0309040386d8aa856e030c0502d988857503030502daaf861a030d04028820861003030502d8b3862103090502d986860d05030a0502daa9856802030703030502db8c860303030403bed8a7856d03040304da98d9878568020901030701030803030e0402a920860d030e0205b0dbb0dbb8861403070103070205b2dbb0dbb0861403060601b8861203060205b3dbb0dbb0861503060601b1861303060205b5dbb0dbb8861603060409070708080808080a09150a0809090c080b09090a0909120809120a0807070d0c0909090908090a080c0809090a080c090c09090c130908110a08080e08090808080b0909080a08080c0a0909080a0711070809090709090a0707070a0809100e150a0b0e0a0909080a07080c0815090a07080a08080a08080808090a09091b1208080a0a08070a090c0a0a0d0809070916080909130711090a0c0a0a0b090707070b0807081208090a080a08070a0b0809120809080a0a0d0f08080a09071b080a0a0b080b0a0908070a0708070e0b0a07130909080b0708090c09070809080a0b0908110a090a080a18080b18080a080a0709090a0b08090a0b0b070908070a0811090909080a0908080808090b080913080e0b070b07');
+INSERT INTO e02_404_01_ft_data VALUES(1099511627777,X'0000005d063020dbb9dbb0862402060106d8a7db8cd986862503030205aad986d8af862402020204afd8b120862402040204b120dbb9862402050205b3d8a7db8c862503020106d986d8afd8b1862402030106db8cd986d8a786250304040b0c0b0a0a0b0c');
+INSERT INTO e02_404_01_ft_data VALUES(1236950581249,X'00000071063020d8aad986862603060106d8a7d8b1d8b3862603030304db8cd986862502030205aad986d8af862603070204b1d8b320862603040204b320d8aa862603050304d8a7db8c862502020106d986d8afd8b1862603080205bed8a7d8b1862603020106db8cd986d8a786250204040b0c0a0b0a0a0a0c0b');
+INSERT INTO e02_404_01_ft_data VALUES(1374389534721,X'00000051063020d8aad986862602060106d8a7d8b1d8b3862602030205aad986d8af862602070204b1d8b320862602040204b320d8aa862602050106d986d8afd8b1862602080205bed8a7d8b186260202040b0c0b0a0a0c');
+CREATE TABLE IF NOT EXISTS 'e02_404_01_ft_idx'(segid, term, pgno, PRIMARY KEY(segid, term)) WITHOUT ROWID;
+INSERT INTO e02_404_01_ft_idx VALUES(1,X'',2);
+INSERT INTO e02_404_01_ft_idx VALUES(1,X'30616e63',4);
+INSERT INTO e02_404_01_ft_idx VALUES(1,X'306c61',6);
+INSERT INTO e02_404_01_ft_idx VALUES(1,X'30d8a7d9',8);
+INSERT INTO e02_404_01_ft_idx VALUES(1,X'30d985d9bed8',10);
+INSERT INTO e02_404_01_ft_idx VALUES(2,X'',2);
+INSERT INTO e02_404_01_ft_idx VALUES(2,X'30726570',4);
+INSERT INTO e02_404_01_ft_idx VALUES(2,X'30d8b4d8aad9',6);
+INSERT INTO e02_404_01_ft_idx VALUES(2,X'30db8c20d985',8);
+INSERT INTO e02_404_01_ft_idx VALUES(3,X'',2);
+INSERT INTO e02_404_01_ft_idx VALUES(3,X'30d8aadb',4);
+INSERT INTO e02_404_01_ft_idx VALUES(3,X'30d986d9',6);
+INSERT INTO e02_404_01_ft_idx VALUES(4,X'',2);
+INSERT INTO e02_404_01_ft_idx VALUES(5,X'',2);
+INSERT INTO e02_404_01_ft_idx VALUES(6,X'',2);
+INSERT INTO e02_404_01_ft_idx VALUES(7,X'',2);
+INSERT INTO e02_404_01_ft_idx VALUES(8,X'',2);
+INSERT INTO e02_404_01_ft_idx VALUES(9,X'',2);
+INSERT INTO e02_404_01_ft_idx VALUES(10,X'',2);
+CREATE TABLE IF NOT EXISTS 'e02_404_01_ft_docsize'(id INTEGER PRIMARY KEY, sz BLOB);
+INSERT INTO e02_404_01_ft_docsize VALUES(1,X'0409');
+INSERT INTO e02_404_01_ft_docsize VALUES(2,X'070a');
+INSERT INTO e02_404_01_ft_docsize VALUES(3,X'060a');
+INSERT INTO e02_404_01_ft_docsize VALUES(4,X'070b');
+INSERT INTO e02_404_01_ft_docsize VALUES(5,X'070d');
+INSERT INTO e02_404_01_ft_docsize VALUES(6,X'060d');
+INSERT INTO e02_404_01_ft_docsize VALUES(7,X'060a');
+INSERT INTO e02_404_01_ft_docsize VALUES(8,X'0708');
+INSERT INTO e02_404_01_ft_docsize VALUES(9,X'0206');
+INSERT INTO e02_404_01_ft_docsize VALUES(10,X'0501');
+INSERT INTO e02_404_01_ft_docsize VALUES(11,X'0305');
+INSERT INTO e02_404_01_ft_docsize VALUES(12,X'0819');
+INSERT INTO e02_404_01_ft_docsize VALUES(13,X'0b17');
+INSERT INTO e02_404_01_ft_docsize VALUES(14,X'0914');
+INSERT INTO e02_404_01_ft_docsize VALUES(16,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(17,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(18,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(19,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(20,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(21,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(22,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(23,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(24,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(25,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(26,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(27,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(28,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(29,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(30,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(31,X'1800');
+INSERT INTO e02_404_01_ft_docsize VALUES(32,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(33,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(34,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(35,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(36,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(37,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(38,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(39,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(40,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(41,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(42,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(43,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(44,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(45,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(46,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(47,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(48,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(49,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(50,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(51,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(68,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(69,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(70,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(71,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(72,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(73,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(74,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(75,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(76,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(77,X'1500');
+INSERT INTO e02_404_01_ft_docsize VALUES(78,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(79,X'1500');
+INSERT INTO e02_404_01_ft_docsize VALUES(80,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(81,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(82,X'1400');
+INSERT INTO e02_404_01_ft_docsize VALUES(83,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(84,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(85,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(86,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(87,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(88,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(89,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(90,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(91,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(92,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(93,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(94,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(95,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(96,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(97,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(98,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(99,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(100,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(101,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(102,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(103,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(104,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(105,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(106,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(107,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(108,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(109,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(110,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(111,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(112,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(113,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(114,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(115,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(116,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(117,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(118,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(119,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(120,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(121,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(122,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(123,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(124,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(125,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(126,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(127,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(128,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(129,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(130,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(131,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(133,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(134,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(135,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(136,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(137,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(138,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(139,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(140,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(141,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(142,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(143,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(144,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(145,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(146,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(147,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(148,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(149,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(150,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(152,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(153,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(154,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(155,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(156,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(157,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(158,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(159,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(160,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(161,X'1800');
+INSERT INTO e02_404_01_ft_docsize VALUES(162,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(163,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(164,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(165,X'1700');
+INSERT INTO e02_404_01_ft_docsize VALUES(166,X'1700');
+INSERT INTO e02_404_01_ft_docsize VALUES(167,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(168,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(169,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(170,X'1600');
+INSERT INTO e02_404_01_ft_docsize VALUES(171,X'1600');
+INSERT INTO e02_404_01_ft_docsize VALUES(172,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(173,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(174,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(175,X'0f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(176,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(177,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(178,X'1900');
+INSERT INTO e02_404_01_ft_docsize VALUES(179,X'1a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(180,X'2000');
+INSERT INTO e02_404_01_ft_docsize VALUES(181,X'2000');
+INSERT INTO e02_404_01_ft_docsize VALUES(182,X'2100');
+INSERT INTO e02_404_01_ft_docsize VALUES(183,X'2300');
+INSERT INTO e02_404_01_ft_docsize VALUES(184,X'2800');
+INSERT INTO e02_404_01_ft_docsize VALUES(185,X'2200');
+INSERT INTO e02_404_01_ft_docsize VALUES(186,X'1d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(187,X'2300');
+INSERT INTO e02_404_01_ft_docsize VALUES(188,X'2500');
+INSERT INTO e02_404_01_ft_docsize VALUES(189,X'2200');
+INSERT INTO e02_404_01_ft_docsize VALUES(190,X'2100');
+INSERT INTO e02_404_01_ft_docsize VALUES(191,X'2000');
+INSERT INTO e02_404_01_ft_docsize VALUES(192,X'1c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(193,X'1d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(194,X'2600');
+INSERT INTO e02_404_01_ft_docsize VALUES(195,X'2600');
+INSERT INTO e02_404_01_ft_docsize VALUES(196,X'1900');
+INSERT INTO e02_404_01_ft_docsize VALUES(197,X'1900');
+INSERT INTO e02_404_01_ft_docsize VALUES(198,X'1600');
+INSERT INTO e02_404_01_ft_docsize VALUES(199,X'1900');
+INSERT INTO e02_404_01_ft_docsize VALUES(200,X'1900');
+INSERT INTO e02_404_01_ft_docsize VALUES(201,X'1900');
+INSERT INTO e02_404_01_ft_docsize VALUES(202,X'1400');
+INSERT INTO e02_404_01_ft_docsize VALUES(203,X'1400');
+INSERT INTO e02_404_01_ft_docsize VALUES(204,X'1600');
+INSERT INTO e02_404_01_ft_docsize VALUES(205,X'1600');
+INSERT INTO e02_404_01_ft_docsize VALUES(206,X'1b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(207,X'1500');
+INSERT INTO e02_404_01_ft_docsize VALUES(208,X'1700');
+INSERT INTO e02_404_01_ft_docsize VALUES(209,X'1500');
+INSERT INTO e02_404_01_ft_docsize VALUES(210,X'1600');
+INSERT INTO e02_404_01_ft_docsize VALUES(211,X'1700');
+INSERT INTO e02_404_01_ft_docsize VALUES(212,X'1b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(213,X'1900');
+INSERT INTO e02_404_01_ft_docsize VALUES(214,X'1d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(215,X'1a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(216,X'1b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(217,X'1900');
+INSERT INTO e02_404_01_ft_docsize VALUES(218,X'1900');
+INSERT INTO e02_404_01_ft_docsize VALUES(219,X'1b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(220,X'1b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(221,X'1a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(222,X'1a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(223,X'1c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(224,X'1500');
+INSERT INTO e02_404_01_ft_docsize VALUES(225,X'1700');
+INSERT INTO e02_404_01_ft_docsize VALUES(226,X'1e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(227,X'2100');
+INSERT INTO e02_404_01_ft_docsize VALUES(228,X'1f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(229,X'1e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(230,X'1c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(231,X'2200');
+INSERT INTO e02_404_01_ft_docsize VALUES(232,X'1d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(233,X'1d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(234,X'1c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(235,X'1900');
+INSERT INTO e02_404_01_ft_docsize VALUES(236,X'1700');
+INSERT INTO e02_404_01_ft_docsize VALUES(237,X'1d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(238,X'1a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(239,X'2100');
+INSERT INTO e02_404_01_ft_docsize VALUES(240,X'1f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(241,X'2000');
+INSERT INTO e02_404_01_ft_docsize VALUES(242,X'2200');
+INSERT INTO e02_404_01_ft_docsize VALUES(243,X'1e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(244,X'2000');
+INSERT INTO e02_404_01_ft_docsize VALUES(245,X'2100');
+INSERT INTO e02_404_01_ft_docsize VALUES(246,X'2300');
+INSERT INTO e02_404_01_ft_docsize VALUES(247,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(248,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(249,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(250,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(251,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(252,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(253,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(254,X'1500');
+INSERT INTO e02_404_01_ft_docsize VALUES(255,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(256,X'1500');
+INSERT INTO e02_404_01_ft_docsize VALUES(257,X'0f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(258,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(259,X'1600');
+INSERT INTO e02_404_01_ft_docsize VALUES(260,X'1a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(261,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(262,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(263,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(264,X'1700');
+INSERT INTO e02_404_01_ft_docsize VALUES(265,X'1700');
+INSERT INTO e02_404_01_ft_docsize VALUES(266,X'1d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(267,X'1e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(268,X'1800');
+INSERT INTO e02_404_01_ft_docsize VALUES(269,X'1a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(270,X'1900');
+INSERT INTO e02_404_01_ft_docsize VALUES(271,X'2200');
+INSERT INTO e02_404_01_ft_docsize VALUES(272,X'1400');
+INSERT INTO e02_404_01_ft_docsize VALUES(273,X'1b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(274,X'1d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(275,X'1800');
+INSERT INTO e02_404_01_ft_docsize VALUES(276,X'1800');
+INSERT INTO e02_404_01_ft_docsize VALUES(277,X'1700');
+INSERT INTO e02_404_01_ft_docsize VALUES(278,X'1f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(279,X'1900');
+INSERT INTO e02_404_01_ft_docsize VALUES(280,X'1c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(281,X'1d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(282,X'1800');
+INSERT INTO e02_404_01_ft_docsize VALUES(283,X'1d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(284,X'1c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(285,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(286,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(287,X'0100');
+INSERT INTO e02_404_01_ft_docsize VALUES(288,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(289,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(290,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(291,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(292,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(293,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(294,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(295,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(296,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(297,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(298,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(299,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(300,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(301,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(302,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(303,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(304,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(305,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(306,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(307,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(308,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(309,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(310,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(311,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(312,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(313,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(314,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(315,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(316,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(317,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(318,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(319,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(320,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(321,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(322,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(323,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(324,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(325,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(326,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(327,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(328,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(329,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(330,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(331,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(332,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(333,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(334,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(335,X'0100');
+INSERT INTO e02_404_01_ft_docsize VALUES(336,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(337,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(338,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(339,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(340,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(341,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(342,X'0100');
+INSERT INTO e02_404_01_ft_docsize VALUES(343,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(344,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(345,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(346,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(347,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(348,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(349,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(350,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(351,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(352,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(353,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(354,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(355,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(356,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(357,X'0100');
+INSERT INTO e02_404_01_ft_docsize VALUES(358,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(359,X'0100');
+INSERT INTO e02_404_01_ft_docsize VALUES(360,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(361,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(362,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(363,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(364,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(365,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(366,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(367,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(368,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(369,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(370,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(371,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(372,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(373,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(374,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(375,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(376,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(377,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(378,X'0f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(379,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(380,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(381,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(382,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(383,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(384,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(385,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(386,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(387,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(388,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(389,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(390,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(391,X'0f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(392,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(393,X'0f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(394,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(395,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(396,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(397,X'0f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(398,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(399,X'0f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(400,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(401,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(402,X'0f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(403,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(404,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(405,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(406,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(407,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(408,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(411,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(412,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(413,X'0f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(414,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(415,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(416,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(417,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(418,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(419,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(420,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(421,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(422,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(423,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(424,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(425,X'1700');
+INSERT INTO e02_404_01_ft_docsize VALUES(426,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(427,X'1400');
+INSERT INTO e02_404_01_ft_docsize VALUES(428,X'1500');
+INSERT INTO e02_404_01_ft_docsize VALUES(429,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(430,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(431,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(432,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(433,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(434,X'0f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(435,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(436,X'0f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(437,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(438,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(439,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(440,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(441,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(442,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(443,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(444,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(445,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(446,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(447,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(448,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(449,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(450,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(451,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(452,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(453,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(454,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(455,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(456,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(457,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(458,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(459,X'1500');
+INSERT INTO e02_404_01_ft_docsize VALUES(460,X'1800');
+INSERT INTO e02_404_01_ft_docsize VALUES(461,X'1700');
+INSERT INTO e02_404_01_ft_docsize VALUES(462,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(463,X'1500');
+INSERT INTO e02_404_01_ft_docsize VALUES(464,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(465,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(466,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(467,X'1c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(468,X'1700');
+INSERT INTO e02_404_01_ft_docsize VALUES(469,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(470,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(471,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(472,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(473,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(474,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(475,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(476,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(477,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(478,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(479,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(480,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(481,X'1600');
+INSERT INTO e02_404_01_ft_docsize VALUES(482,X'1700');
+INSERT INTO e02_404_01_ft_docsize VALUES(483,X'1600');
+INSERT INTO e02_404_01_ft_docsize VALUES(484,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(485,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(486,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(487,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(488,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(489,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(490,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(491,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(492,X'1800');
+INSERT INTO e02_404_01_ft_docsize VALUES(494,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(495,X'1400');
+INSERT INTO e02_404_01_ft_docsize VALUES(496,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(497,X'1500');
+INSERT INTO e02_404_01_ft_docsize VALUES(498,X'1600');
+INSERT INTO e02_404_01_ft_docsize VALUES(499,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(501,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(502,X'1800');
+INSERT INTO e02_404_01_ft_docsize VALUES(503,X'1600');
+INSERT INTO e02_404_01_ft_docsize VALUES(504,X'1900');
+INSERT INTO e02_404_01_ft_docsize VALUES(505,X'1a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(506,X'1c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(507,X'1700');
+INSERT INTO e02_404_01_ft_docsize VALUES(508,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(509,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(510,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(511,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(512,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(513,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(514,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(515,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(516,X'1600');
+INSERT INTO e02_404_01_ft_docsize VALUES(517,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(518,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(519,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(520,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(521,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(522,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(523,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(524,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(525,X'1000');
+INSERT INTO e02_404_01_ft_docsize VALUES(526,X'0f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(527,X'1600');
+INSERT INTO e02_404_01_ft_docsize VALUES(528,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(529,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(530,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(531,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(532,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(533,X'0f00');
+INSERT INTO e02_404_01_ft_docsize VALUES(534,X'1500');
+INSERT INTO e02_404_01_ft_docsize VALUES(535,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(536,X'1200');
+INSERT INTO e02_404_01_ft_docsize VALUES(537,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(538,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(539,X'1300');
+INSERT INTO e02_404_01_ft_docsize VALUES(540,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(541,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(542,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(543,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(544,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(545,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(546,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(547,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(548,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(549,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(550,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(551,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(552,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(553,X'0100');
+INSERT INTO e02_404_01_ft_docsize VALUES(554,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(555,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(556,X'0100');
+INSERT INTO e02_404_01_ft_docsize VALUES(557,X'0100');
+INSERT INTO e02_404_01_ft_docsize VALUES(558,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(559,X'0100');
+INSERT INTO e02_404_01_ft_docsize VALUES(560,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(561,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(562,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(563,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(564,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(565,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(566,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(567,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(568,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(569,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(570,X'0100');
+INSERT INTO e02_404_01_ft_docsize VALUES(571,X'0000');
+INSERT INTO e02_404_01_ft_docsize VALUES(572,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(573,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(574,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(575,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(576,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(577,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(578,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(579,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(580,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(581,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(582,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(583,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(584,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(585,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(586,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(587,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(588,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(589,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(590,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(591,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(592,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(593,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(594,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(595,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(596,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(597,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(598,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(599,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(600,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(601,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(602,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(603,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(604,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(605,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(606,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(607,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(608,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(609,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(610,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(611,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(612,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(613,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(614,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(615,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(616,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(617,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(618,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(619,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(620,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(621,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(622,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(623,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(624,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(625,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(626,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(627,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(628,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(629,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(630,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(631,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(632,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(633,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(634,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(635,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(636,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(637,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(638,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(639,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(640,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(641,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(642,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(643,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(644,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(645,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(646,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(647,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(648,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(649,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(650,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(651,X'0100');
+INSERT INTO e02_404_01_ft_docsize VALUES(652,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(653,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(654,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(655,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(656,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(657,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(658,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(659,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(660,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(661,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(662,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(663,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(664,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(665,X'0100');
+INSERT INTO e02_404_01_ft_docsize VALUES(666,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(667,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(668,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(669,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(670,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(671,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(672,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(673,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(674,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(675,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(676,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(677,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(678,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(679,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(680,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(681,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(682,X'0000');
+INSERT INTO e02_404_01_ft_docsize VALUES(683,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(684,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(685,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(686,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(687,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(688,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(689,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(690,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(691,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(692,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(693,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(694,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(695,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(696,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(697,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(698,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(699,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(700,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(701,X'1100');
+INSERT INTO e02_404_01_ft_docsize VALUES(702,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(726,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(727,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(728,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(729,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(730,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(731,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(732,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(733,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(734,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(735,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(736,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(737,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(738,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(739,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(740,X'0400');
+INSERT INTO e02_404_01_ft_docsize VALUES(741,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(742,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(743,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(744,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(745,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(746,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(747,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(748,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(749,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(750,X'0c00');
+INSERT INTO e02_404_01_ft_docsize VALUES(751,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(752,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(753,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(754,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(755,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(756,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(757,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(758,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(759,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(760,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(761,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(762,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(763,X'0100');
+INSERT INTO e02_404_01_ft_docsize VALUES(764,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(765,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(766,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(767,X'0b00');
+INSERT INTO e02_404_01_ft_docsize VALUES(768,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(769,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(770,X'0100');
+INSERT INTO e02_404_01_ft_docsize VALUES(771,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(772,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(773,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(774,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(775,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(776,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(777,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(778,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(779,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(780,X'0900');
+INSERT INTO e02_404_01_ft_docsize VALUES(781,X'0e00');
+INSERT INTO e02_404_01_ft_docsize VALUES(782,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(783,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(784,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(785,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(786,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(787,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(788,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(789,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(790,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(791,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(792,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(793,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(794,X'0d00');
+INSERT INTO e02_404_01_ft_docsize VALUES(795,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(796,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(797,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(798,X'0a00');
+INSERT INTO e02_404_01_ft_docsize VALUES(799,X'0600');
+INSERT INTO e02_404_01_ft_docsize VALUES(800,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(801,X'0800');
+INSERT INTO e02_404_01_ft_docsize VALUES(802,X'0200');
+INSERT INTO e02_404_01_ft_docsize VALUES(803,X'0700');
+INSERT INTO e02_404_01_ft_docsize VALUES(804,X'0500');
+INSERT INTO e02_404_01_ft_docsize VALUES(805,X'0300');
+INSERT INTO e02_404_01_ft_docsize VALUES(806,X'0700');
+CREATE TABLE IF NOT EXISTS 'e02_404_01_ft_config'(k PRIMARY KEY, v) WITHOUT ROWID;
+INSERT INTO e02_404_01_ft_config VALUES('version',4);
+CREATE TABLE e01_516_01_tb (
+    need_uid  TEXT NOT NULL,
+    atom_uid  TEXT NOT NULL,
+    kind      TEXT NOT NULL DEFAULT 'derived'
+              CHECK(kind IN ('derived','refined','satisfies')),
+    origin    TEXT NOT NULL DEFAULT 'design'
+              CHECK(origin IN ('design','inferred','observed','derived')),
+    PRIMARY KEY (need_uid, atom_uid, kind),
+    CONSTRAINT fk_nea_need FOREIGN KEY (need_uid)
+        REFERENCES e01_506_01_tb(need_uid) ON DELETE RESTRICT,
+    CONSTRAINT fk_nea_atom FOREIGN KEY (atom_uid)
+        REFERENCES e01_506_02_tb(atom_uid) ON DELETE RESTRICT
+) WITHOUT ROWID;
+INSERT INTO e01_516_01_tb VALUES('N00','H05','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N01','G01','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N02','H05','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N03','F03','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N10','B06','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N11','C01','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N11','C02','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N12','B06','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N12','B10','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N13','B06','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N14','B06','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N15','D05','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N20','A01','refined','design');
+INSERT INTO e01_516_01_tb VALUES('N20','A02','refined','design');
+INSERT INTO e01_516_01_tb VALUES('N20','A03','refined','design');
+INSERT INTO e01_516_01_tb VALUES('N20','G01','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N21','G01','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N22','H05','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N23','A01','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R01','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R02','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R03','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R04','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R05','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R06','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R07','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R08','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R09','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R10','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R11','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R12','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R13','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R14','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R15','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R16','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R17','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R18','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R19','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R20','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R21','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R22','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R23','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R24','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R25','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R26','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R27','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R28','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R29','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R30','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R31','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R32','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R33','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R34','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R35','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R36','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R37','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R38','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R39','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R40','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R41','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R42','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R43','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R44','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R45','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R46','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R47','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R48','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R49','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R50','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R51','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R52','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R53','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R54','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R55','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R56','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R57','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R58','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R59','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R60','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R61','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R62','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R63','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R64','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N30','R65','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N31','E01','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N32','D05','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N33','E01','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N41','D02','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N41','F03','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N42','D05','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N50','H05','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N99','H05','satisfies','design');
+INSERT INTO e01_516_01_tb VALUES('N20','I11','satisfies','inferred');
+INSERT INTO e01_516_01_tb VALUES('N30','I01','satisfies','inferred');
+INSERT INTO e01_516_01_tb VALUES('N30','I05','satisfies','inferred');
+INSERT INTO e01_516_01_tb VALUES('N30','I09','satisfies','inferred');
+INSERT INTO e01_516_01_tb VALUES('N34','I10','satisfies','inferred');
+INSERT INTO e01_516_01_tb VALUES('N40','I13','satisfies','inferred');
+INSERT INTO e01_516_01_tb VALUES('N50','I02','satisfies','inferred');
+INSERT INTO e01_516_01_tb VALUES('N50','I06','satisfies','inferred');
+INSERT INTO e01_516_01_tb VALUES('N50','I07','satisfies','inferred');
+INSERT INTO e01_516_01_tb VALUES('N50','I08','satisfies','inferred');
+INSERT INTO e01_516_01_tb VALUES('N51','I03','satisfies','inferred');
+INSERT INTO e01_516_01_tb VALUES('N52','I04','satisfies','inferred');
+INSERT INTO e01_516_01_tb VALUES('N52','I12','satisfies','inferred');
+CREATE TABLE e01_778_02_tb (
+    element_name    TEXT NOT NULL,
+    need_uid        TEXT NOT NULL,
+    code            TEXT,
+    is_primary      INTEGER NOT NULL DEFAULT 0 CHECK(is_primary IN (0,1)),
+    is_driving      INTEGER NOT NULL DEFAULT 0 CHECK(is_driving IN (0,1)),
+    role            TEXT NOT NULL DEFAULT 'serves'
+                    CHECK(role IN
+                       ('defines','serves','verifies','constrains',
+                        'observes','maintains')),
+    note            TEXT,
+    PRIMARY KEY (element_name, need_uid, role),
+    CONSTRAINT fk_er_elem FOREIGN KEY (element_name)
+        REFERENCES e01_506_03_tb(element_name) ON DELETE RESTRICT,
+    CONSTRAINT fk_er_need FOREIGN KEY (need_uid)
+        REFERENCES e01_506_01_tb(need_uid) ON DELETE RESTRICT,
+    CONSTRAINT fk_er_code FOREIGN KEY (code)
+        REFERENCES e01_778_01_tb(code) ON DELETE RESTRICT
+) WITHOUT ROWID;
+INSERT INTO e01_778_02_tb VALUES('e01_112_01_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_120_01_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_200_01_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_200_02_tb','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_200_03_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_200_03_tb','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_201_01_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_201_02_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_201_02_tb','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_201_03_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_202_01_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_222_01_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_222_01_tb','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_300_01_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_300_01_tb','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_302_01_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_303_01_tb','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_305_01_tb','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_305_01_tb','N32',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_305_02_tb','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_305_02_tb','N32',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_305_03_tb','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_305_03_tb','N32',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_330_01_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_330_02_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_378_01_tb','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_506_01_tb','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_506_02_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_506_03_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_506_04_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_506_05_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_506_06_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_506_07_tb','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_506_08_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_506_09_tb','N50',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_506_10_tb','N50',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_506_11_tb','N50',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_516_01_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_676_01_tb','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_676_02_tb','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_676_03_tb','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_778_01_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_778_02_tb','N70',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_778_03_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_778_04_tb','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e01_778_05_tb','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e02_404_01_ft','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_112_01_tr','N12',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_112_01_tr','N13',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_120_01_tr','N11',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_120_02_tr','N11',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_120_03_tr','N11',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_120_04_tr','N10',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_120_05_tr','N10',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_122_01_tr','N11',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_122_02_tr','N11',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_126_01_tr','N11',NULL,1,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_126_02_tr','N11',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_126_03_tr','N11',NULL,1,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_135_01_tr','N15',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_135_02_tr','N15',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_135_03_tr','N15',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_310_03_tr','N12',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_310_04_tr','N12',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_310_05_tr','N12',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_310_06_tr','N12',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_311_01_tr','N11',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_311_02_tr','N11',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_311_03_tr','N11',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_311_04_tr','N11',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_312_01_tr','N12',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_312_01_tr','N13',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_312_01_tr','N14',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_312_02_tr','N12',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_320_01_tr','N30',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_320_02_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_320_03_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_320_04_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_320_05_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_320_06_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_320_07_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_320_08_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_320_09_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_01_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_02_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_03_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_04_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_05_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_06_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_07_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_08_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_09_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_10_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_11_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_12_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_13_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_14_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_15_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_16_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_17_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_18_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_19_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_20_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_21_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_22_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_23_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_24_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_25_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_26_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_27_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_28_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_29_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_30_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_31_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_32_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_33_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_34_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_35_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_36_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_328_37_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_343_01_tr','N31',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_343_02_tr','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_343_03_tr','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_343_04_tr','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_343_05_tr','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_343_06_tr','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_343_07_tr','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_343_08_tr','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_343_09_tr','N31',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_360_01_tr','N22',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_01_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_02_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_03_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_04_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_05_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_06_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_07_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_08_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_11_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_12_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_13_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_14_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_15_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_16_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_17_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_18_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_21_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_22_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_23_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_24_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_25_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_26_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_30_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_32_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_33_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_370_34_tr','N30',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_434_01_tr','N41',NULL,1,1,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_434_02_tr','N41',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_434_03_tr','N41',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_434_04_tr','N41',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_434_05_tr','N41',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_516_01_tr','N11',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_516_02_tr','N11',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_778_02_ins_tr','N70',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_778_10_tr','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_778_10b_tr','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_778_11_tr','N70',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_778_13_tr','N70',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e03_778_14_tr','N70',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_110_01_vw','N11',NULL,1,0,'verifies',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_110_02_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_122_01_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_200_01_vw','N20',NULL,1,0,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_230_01_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_230_02_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_260_01_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_260_02_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_260_03_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_267_01_vw','N20',NULL,1,0,'defines',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_267_02_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_310_01_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_310_02_vw','N30',NULL,1,0,'verifies',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_311_01_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_325_01_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_340_01_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_340_02_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_340_04_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_900_01_vw','N50',NULL,0,0,'serves',NULL);
+INSERT INTO e01_778_02_tb VALUES('e04_978_01_vw','N99',NULL,1,0,'verifies',NULL);
+ANALYZE sqlite_schema;
+INSERT INTO sqlite_stat1 VALUES('e02_404_01_ft_config','e02_404_01_ft_config','1 1');
+INSERT INTO sqlite_stat1 VALUES('e02_404_01_ft_docsize',NULL,'15');
+INSERT INTO sqlite_stat1 VALUES('e02_404_01_ft_idx','e02_404_01_ft_idx','3 1 1');
+INSERT INTO sqlite_stat1 VALUES('e01_506_03_tb','e02_506_16_ix','303 61');
+INSERT INTO sqlite_stat1 VALUES('e01_506_03_tb','e02_506_15_ix','303 44');
+INSERT INTO sqlite_stat1 VALUES('e01_506_03_tb','sqlite_autoindex_e01_506_03_tb_2','303 2');
+INSERT INTO sqlite_stat1 VALUES('e01_506_03_tb','sqlite_autoindex_e01_506_03_tb_1','303 1');
+INSERT INTO sqlite_stat1 VALUES('e01_778_04_tb','e02_778_41_ix','23 2');
+INSERT INTO sqlite_stat1 VALUES('e01_778_04_tb','e02_778_40_ix','23 6');
+INSERT INTO sqlite_stat1 VALUES('e01_778_04_tb','sqlite_autoindex_e01_778_04_tb_1','23 5 1');
+INSERT INTO sqlite_stat1 VALUES('e01_676_03_tb','sqlite_autoindex_e01_676_03_tb_1','9 1');
+INSERT INTO sqlite_stat1 VALUES('_baseline_v26',NULL,'506');
+INSERT INTO sqlite_stat1 VALUES('e01_516_01_tb','e02_516_11_ix','105 53');
+INSERT INTO sqlite_stat1 VALUES('e01_516_01_tb','e02_516_10_ix','105 2');
+INSERT INTO sqlite_stat1 VALUES('e01_516_01_tb','e01_516_01_tb','105 5 1 1');
+INSERT INTO sqlite_stat1 VALUES('e01_506_11_tb','sqlite_autoindex_e01_506_11_tb_1','86 1');
+INSERT INTO sqlite_stat1 VALUES('e01_676_02_tb',NULL,'1');
+INSERT INTO sqlite_stat1 VALUES('e01_778_03_tb','e02_778_31_ix','5 2');
+INSERT INTO sqlite_stat1 VALUES('e01_778_03_tb','e02_778_30_ix','5 2');
+INSERT INTO sqlite_stat1 VALUES('e01_778_03_tb','sqlite_autoindex_e01_778_03_tb_2','5 1');
+INSERT INTO sqlite_stat1 VALUES('e01_778_03_tb','sqlite_autoindex_e01_778_03_tb_1','5 1');
+INSERT INTO sqlite_stat1 VALUES('e01_506_10_tb','sqlite_autoindex_e01_506_10_tb_1','22 1');
+INSERT INTO sqlite_stat1 VALUES('e01_506_01_tb','sqlite_autoindex_e01_506_01_tb_1','32 1');
+INSERT INTO sqlite_stat1 VALUES('e01_506_05_tb','e02_506_20_ix','14 1');
+INSERT INTO sqlite_stat1 VALUES('e01_506_05_tb','sqlite_autoindex_e01_506_05_tb_1','14 1');
+INSERT INTO sqlite_stat1 VALUES('e01_506_09_tb','sqlite_autoindex_e01_506_09_tb_1','8 1');
+INSERT INTO sqlite_stat1 VALUES('e01_200_02_tb','sqlite_autoindex_e01_200_02_tb_1','8 1');
+INSERT INTO sqlite_stat1 VALUES('e01_200_01_tb','e02_200_10_ix','48 6');
+INSERT INTO sqlite_stat1 VALUES('e01_200_01_tb','sqlite_autoindex_e01_200_01_tb_1','48 1');
+INSERT INTO sqlite_stat1 VALUES('e01_378_01_tb','e02_378_11_ix','69 4');
+INSERT INTO sqlite_stat1 VALUES('e01_378_01_tb','e02_378_10_ix','69 3');
+INSERT INTO sqlite_stat1 VALUES('e01_378_01_tb','sqlite_autoindex_e01_378_01_tb_1','69 3 1');
+INSERT INTO sqlite_stat1 VALUES('e01_778_01_tb','e02_778_12_ix','34 17');
+INSERT INTO sqlite_stat1 VALUES('e01_778_01_tb','e02_778_11_ix','34 2');
+INSERT INTO sqlite_stat1 VALUES('e01_778_01_tb','e02_778_10_ix','34 34');
+INSERT INTO sqlite_stat1 VALUES('e01_778_01_tb','sqlite_autoindex_e01_778_01_tb_1','34 1');
+INSERT INTO sqlite_stat1 VALUES('e01_303_01_tb','e02_303_12_ix','1 1 1');
+INSERT INTO sqlite_stat1 VALUES('e01_303_01_tb','e02_303_11_ix','1 1 1');
+INSERT INTO sqlite_stat1 VALUES('e01_303_01_tb','e02_303_10_ix','1 1');
+INSERT INTO sqlite_stat1 VALUES('e01_305_03_tb','e02_305_32_ix','3 3');
+INSERT INTO sqlite_stat1 VALUES('e01_305_03_tb','e02_305_31_ix','3 1');
+INSERT INTO sqlite_stat1 VALUES('e01_305_03_tb','e02_305_30_ix','3 2 1 1 1 1 1');
+INSERT INTO sqlite_stat1 VALUES('e01_778_05_tb','e02_778_54_ix','143 2');
+INSERT INTO sqlite_stat1 VALUES('e01_778_05_tb','e02_778_53_ix','69 1');
+INSERT INTO sqlite_stat1 VALUES('e01_778_05_tb','e02_778_52_ix','212 43');
+INSERT INTO sqlite_stat1 VALUES('e01_778_05_tb','e02_778_51_ix','212 7');
+INSERT INTO sqlite_stat1 VALUES('e01_778_05_tb','e02_778_50_ix','212 2');
+INSERT INTO sqlite_stat1 VALUES('e01_202_01_tb','e02_202_11_ix','18 18');
+INSERT INTO sqlite_stat1 VALUES('e01_202_01_tb','e02_202_10_ix','60 30');
+INSERT INTO sqlite_stat1 VALUES('e01_202_01_tb','sqlite_autoindex_e01_202_01_tb_1','60 1');
+INSERT INTO sqlite_stat1 VALUES('e01_201_01_tb','e02_201_10_ix','25 4');
+INSERT INTO sqlite_stat1 VALUES('e01_201_01_tb','sqlite_autoindex_e01_201_01_tb_1','25 4 1');
+INSERT INTO sqlite_stat1 VALUES('e01_676_01_tb','sqlite_autoindex_e01_676_01_tb_1','35 1');
+INSERT INTO sqlite_stat1 VALUES('e01_300_01_tb','e02_300_13_ix','2 2 1 1 1');
+INSERT INTO sqlite_stat1 VALUES('e01_300_01_tb','e02_300_12_ix','2 2');
+INSERT INTO sqlite_stat1 VALUES('e01_300_01_tb','e02_300_11_ix','2 1');
+INSERT INTO sqlite_stat1 VALUES('e01_300_01_tb','e02_300_10_ix','2 2');
+INSERT INTO sqlite_stat1 VALUES('e01_330_02_tb','e02_330_21_ix','2 1');
+INSERT INTO sqlite_stat1 VALUES('e01_330_02_tb','e02_330_20_ix','2 2');
+INSERT INTO sqlite_stat1 VALUES('e02_404_01_ft_data',NULL,'5');
+INSERT INTO sqlite_stat1 VALUES('e01_330_01_tb','e02_330_10_ix','2 2');
+INSERT INTO sqlite_stat1 VALUES('e01_330_01_tb','sqlite_autoindex_e01_330_01_tb_1','2 2 1');
+INSERT INTO sqlite_stat1 VALUES('e01_506_02_tb','e02_506_14_ix','91 2');
+INSERT INTO sqlite_stat1 VALUES('e01_506_02_tb','e02_506_13_ix','91 5');
+INSERT INTO sqlite_stat1 VALUES('e01_506_02_tb','e02_506_12_ix','91 12');
+INSERT INTO sqlite_stat1 VALUES('e01_506_02_tb','e02_506_11_ix','91 46');
+INSERT INTO sqlite_stat1 VALUES('e01_506_02_tb','e02_506_10_ix','91 11');
+INSERT INTO sqlite_stat1 VALUES('e01_506_02_tb','sqlite_autoindex_e01_506_02_tb_1','91 1');
+INSERT INTO sqlite_stat1 VALUES('e01_506_04_tb','e02_506_19_ix','101 3');
+INSERT INTO sqlite_stat1 VALUES('e01_506_04_tb','e02_506_18_ix','101 2');
+INSERT INTO sqlite_stat1 VALUES('e01_506_04_tb','sqlite_autoindex_e01_506_04_tb_1','101 2 1 1');
+INSERT INTO sqlite_stat1 VALUES('e01_778_02_tb','e02_778_23_ix','15 15');
+INSERT INTO sqlite_stat1 VALUES('e01_778_02_tb','e02_778_22_ix','22 22');
+INSERT INTO sqlite_stat1 VALUES('e01_778_02_tb','e02_778_20_ix','189 13');
+INSERT INTO sqlite_stat1 VALUES('e01_778_02_tb','e01_778_02_tb','189 2 1 1');
+INSERT INTO sqlite_stat1 VALUES('e01_120_01_tb','e02_120_10_ix','81 2');
+INSERT INTO sqlite_stat1 VALUES('e01_120_01_tb','e01_120_01_tb','81 2 1');
+INSERT INTO sqlite_stat1 VALUES('e01_222_01_tb','e02_222_24_ix','7 7 7');
+INSERT INTO sqlite_stat1 VALUES('e01_222_01_tb','e02_222_23_ix','7 3 2');
+INSERT INTO sqlite_stat1 VALUES('e01_222_01_tb','e02_222_22_ix','7 2 2 1 1');
+INSERT INTO sqlite_stat1 VALUES('e01_222_01_tb','e02_222_21_ix','7 2 2 1 1');
+INSERT INTO sqlite_stat1 VALUES('e01_222_01_tb','e02_222_20_ix','7 2 2 1');
+INSERT INTO sqlite_stat1 VALUES('e01_222_01_tb','e02_222_18_ix','7 7');
+INSERT INTO sqlite_stat1 VALUES('e01_222_01_tb','e02_222_16_ix','7 7');
+INSERT INTO sqlite_stat1 VALUES('e01_222_01_tb','e02_222_15_ix','7 2 2 1');
+INSERT INTO sqlite_stat1 VALUES('e01_222_01_tb','e02_222_13_ix','7 2 2 1');
+INSERT INTO sqlite_stat1 VALUES('e01_222_01_tb','e02_222_11_ix','7 2');
+INSERT INTO sqlite_stat1 VALUES('e01_222_01_tb','e02_222_10_ix','7 2');
+INSERT INTO sqlite_stat1 VALUES('e01_222_01_tb','sqlite_autoindex_e01_222_01_tb_1','7 1');
+INSERT INTO sqlite_stat1 VALUES('e01_200_03_tb','e02_200_25_ix','15 3 3');
+INSERT INTO sqlite_stat1 VALUES('e01_200_03_tb','e02_200_24_ix','15 15');
+INSERT INTO sqlite_stat1 VALUES('e01_200_03_tb','e02_200_23_ix','15 1');
+INSERT INTO sqlite_stat1 VALUES('e01_200_03_tb','e02_200_22_ix','15 15');
+INSERT INTO sqlite_stat1 VALUES('e01_200_03_tb','e02_200_21_ix','15 15');
+INSERT INTO sqlite_stat1 VALUES('e01_200_03_tb','e02_200_20_ix','15 3 3');
+INSERT INTO sqlite_stat1 VALUES('e01_200_03_tb','sqlite_autoindex_e01_200_03_tb_1','15 1');
+CREATE TABLE e01_506_12_tb (
+    need_uid     TEXT NOT NULL,
+    node_id      INTEGER NOT NULL,
+    question_uid TEXT NOT NULL,
+    slot         TEXT,
+    answer_text  TEXT,
+    status       TEXT,
+    depth        INTEGER NOT NULL DEFAULT 0,
+    path         TEXT,
+    cached_at    TEXT NOT NULL DEFAULT (datetime('now')),
+    PRIMARY KEY (need_uid, node_id)
+) WITHOUT ROWID;
+PRAGMA writable_schema=ON;
+INSERT INTO sqlite_schema(type,name,tbl_name,rootpage,sql)VALUES('table','e02_404_01_ft','e02_404_01_ft',0,'CREATE VIRTUAL TABLE e02_404_01_ft USING fts5(
+    label_norm, desc_norm,
+    content=''e01_200_03_tb'',
+    content_rowid=''ent_id'',
+    tokenize=''trigram''
+)');
+CREATE TABLE e01_202_02_tb (
+    reltype_id   INTEGER PRIMARY KEY,
+    reify_rule   TEXT NOT NULL CHECK(reify_rule IN ('never','when_data','always')),
+    category     TEXT NOT NULL,
+    reason       TEXT NOT NULL,
+    CONSTRAINT fk_reify_rel FOREIGN KEY (reltype_id) 
+        REFERENCES e01_202_01_tb(reltype_id) ON DELETE CASCADE
+);
+INSERT INTO e01_202_02_tb VALUES(1,'never','structural','تعریف ساختار — بدون داده');
+INSERT INTO e01_202_02_tb VALUES(2,'never','structural','تعریف ساختار — بدون داده');
+INSERT INTO e01_202_02_tb VALUES(3,'never','structural','تعریف ساختار — بدون داده');
+INSERT INTO e01_202_02_tb VALUES(4,'always','diagnostic','دارای احتمال/منبع/زمان');
+INSERT INTO e01_202_02_tb VALUES(5,'always','diagnostic','دارای احتمال/منبع/زمان');
+INSERT INTO e01_202_02_tb VALUES(6,'always','diagnostic','دارای احتمال/منبع/زمان');
+INSERT INTO e01_202_02_tb VALUES(7,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(8,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(9,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(10,'always','diagnostic','دارای احتمال/منبع/زمان');
+INSERT INTO e01_202_02_tb VALUES(11,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(12,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(13,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(14,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(15,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(16,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(17,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(18,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(19,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(20,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(21,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(22,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(23,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(24,'when_data','functional','اگر ولتاژ/جریان/شرایط ثبت شود');
+INSERT INTO e01_202_02_tb VALUES(25,'never','structural','تعریف ساختار — بدون داده');
+INSERT INTO e01_202_02_tb VALUES(26,'never','structural','تعریف ساختار — بدون داده');
+INSERT INTO e01_202_02_tb VALUES(27,'when_data','functional','اگر ولتاژ/جریان/شرایط ثبت شود');
+INSERT INTO e01_202_02_tb VALUES(28,'when_data','functional','اگر ولتاژ/جریان/شرایط ثبت شود');
+INSERT INTO e01_202_02_tb VALUES(29,'when_data','functional','اگر ولتاژ/جریان/شرایط ثبت شود');
+INSERT INTO e01_202_02_tb VALUES(30,'when_data','functional','اگر ولتاژ/جریان/شرایط ثبت شود');
+INSERT INTO e01_202_02_tb VALUES(31,'never','structural','تعریف ساختار — بدون داده');
+INSERT INTO e01_202_02_tb VALUES(32,'never','structural','تعریف ساختار — بدون داده');
+INSERT INTO e01_202_02_tb VALUES(33,'when_data','functional','اگر ولتاژ/جریان/شرایط ثبت شود');
+INSERT INTO e01_202_02_tb VALUES(34,'always','contextual','دارای منبع/زمان/اعتبار');
+INSERT INTO e01_202_02_tb VALUES(35,'always','contextual','دارای منبع/زمان/اعتبار');
+INSERT INTO e01_202_02_tb VALUES(36,'always','contextual','دارای منبع/زمان/اعتبار');
+INSERT INTO e01_202_02_tb VALUES(37,'always','diagnostic','دارای احتمال/منبع/زمان');
+INSERT INTO e01_202_02_tb VALUES(38,'always','diagnostic','دارای احتمال/منبع/زمان');
+INSERT INTO e01_202_02_tb VALUES(39,'always','diagnostic','دارای احتمال/منبع/زمان');
+INSERT INTO e01_202_02_tb VALUES(40,'always','contextual','دارای منبع/زمان/اعتبار');
+INSERT INTO e01_202_02_tb VALUES(41,'never','structural','تعریف ساختار — بدون داده');
+INSERT INTO e01_202_02_tb VALUES(42,'never','structural','تعریف ساختار — بدون داده');
+INSERT INTO e01_202_02_tb VALUES(43,'never','attribute','وصل به مقدار — چیزسازی تکراری');
+INSERT INTO e01_202_02_tb VALUES(44,'when_data','functional','اگر ولتاژ/جریان/شرایط ثبت شود');
+INSERT INTO e01_202_02_tb VALUES(45,'when_data','functional','اگر ولتاژ/جریان/شرایط ثبت شود');
+INSERT INTO e01_202_02_tb VALUES(46,'never','structural','تعریف ساختار — بدون داده');
+INSERT INTO e01_202_02_tb VALUES(47,'always','diagnostic','دارای احتمال/منبع/زمان');
+INSERT INTO e01_202_02_tb VALUES(48,'always','diagnostic','دارای احتمال/منبع/زمان');
+INSERT INTO e01_202_02_tb VALUES(49,'when_data','functional','اگر ولتاژ/جریان/شرایط ثبت شود');
+INSERT INTO e01_202_02_tb VALUES(50,'always','diagnostic','دارای احتمال/منبع/زمان');
+INSERT INTO e01_202_02_tb VALUES(51,'always','contextual','دارای منبع/زمان/اعتبار');
+INSERT INTO e01_202_02_tb VALUES(52,'always','diagnostic','دارای احتمال/منبع/زمان');
+INSERT INTO e01_202_02_tb VALUES(53,'when_data','functional','اگر ولتاژ/جریان/شرایط ثبت شود');
+INSERT INTO e01_202_02_tb VALUES(54,'when_data','functional','اگر ولتاژ/جریان/شرایط ثبت شود');
+INSERT INTO e01_202_02_tb VALUES(55,'when_data','functional','اگر ولتاژ/جریان/شرایط ثبت شود');
+INSERT INTO e01_202_02_tb VALUES(56,'always','contextual','دارای منبع/زمان/اعتبار');
+INSERT INTO e01_202_02_tb VALUES(57,'never','structural','تعریف ساختار — بدون داده');
+INSERT INTO e01_202_02_tb VALUES(58,'always','chain','گام زنجیره — داده و ترتیب دارد');
+INSERT INTO e01_202_02_tb VALUES(59,'always','chain','گام زنجیره — داده و ترتیب دارد');
+INSERT INTO e01_202_02_tb VALUES(60,'always','chain','گام زنجیره — داده و ترتیب دارد');
+INSERT INTO e01_202_02_tb VALUES(61,'never','structural','ساختار کلاس — بدون داده');
+INSERT INTO e01_202_02_tb VALUES(62,'when_data','structural','ساختار سازنده — چیزسازی اگر داده دارد');
+INSERT INTO e01_202_02_tb VALUES(63,'when_data','structural','ساختار سازنده — چیزسازی اگر داده دارد');
+INSERT INTO e01_202_02_tb VALUES(64,'when_data','structural','لیسانس — چیزسازی اگر تاریخ/قرارداد دارد');
+INSERT INTO e01_202_02_tb VALUES(65,'when_data','structural','لیسانس — چیزسازی اگر تاریخ/قرارداد دارد');
+INSERT INTO e01_202_02_tb VALUES(66,'when_data','structural','لیسانس — چیزسازی اگر تاریخ/قرارداد دارد');
+DELETE FROM sqlite_sequence;
+INSERT INTO sqlite_sequence VALUES('e01_303_01_tb',2);
+INSERT INTO sqlite_sequence VALUES('e01_200_01_tb',389);
+INSERT INTO sqlite_sequence VALUES('e01_202_01_tb',66);
+INSERT INTO sqlite_sequence VALUES('e01_378_01_tb',73);
+INSERT INTO sqlite_sequence VALUES('e01_200_03_tb',806);
+INSERT INTO sqlite_sequence VALUES('e01_222_01_tb',870);
+INSERT INTO sqlite_sequence VALUES('e01_778_01_tb',34);
+INSERT INTO sqlite_sequence VALUES('e01_778_05_tb',216);
+INSERT INTO sqlite_sequence VALUES('e01_506_04_tb',166);
+INSERT INTO sqlite_sequence VALUES('e01_200_02_tb',16);
+INSERT INTO sqlite_sequence VALUES('e01_201_01_tb',50);
+INSERT INTO sqlite_sequence VALUES('e01_305_03_tb',3);
+INSERT INTO sqlite_sequence VALUES('e01_300_01_tb',3);
+INSERT INTO sqlite_sequence VALUES('e01_330_01_tb',2);
+INSERT INTO sqlite_sequence VALUES('e01_330_02_tb',2);
+INSERT INTO sqlite_sequence VALUES('e01_112_01_tb',24);
+INSERT INTO sqlite_sequence VALUES('e01_201_02_tb',19);
+CREATE INDEX e02_506_10_ix ON e01_506_02_tb(category);
+CREATE INDEX e02_506_11_ix ON e01_506_02_tb(origin);
+CREATE INDEX e02_506_12_ix ON e01_506_02_tb(verb_code);
+CREATE INDEX e02_506_13_ix ON e01_506_02_tb(entity_code);
+CREATE INDEX e02_506_14_ix ON e01_506_02_tb(constraint_code) WHERE constraint_code IS NOT NULL;
+CREATE INDEX e02_506_15_ix ON e01_506_03_tb(element_layer);
+CREATE INDEX e02_506_16_ix ON e01_506_03_tb(element_kind);
+CREATE INDEX e02_506_17_ix ON e01_506_03_tb(need_uid) WHERE need_uid IS NOT NULL;
+CREATE INDEX e02_506_18_ix ON e01_506_04_tb(atom_uid);
+CREATE INDEX e02_506_19_ix ON e01_506_04_tb(element_name);
+CREATE INDEX e02_506_20_ix ON e01_506_05_tb(parent_uid);
+CREATE INDEX e02_506_21_ix ON e01_506_06_tb(need_uid);
+CREATE INDEX e02_506_22_ix ON e01_506_06_tb(parent_id);
+CREATE INDEX e02_506_23_ix ON e01_506_06_tb(question_uid);
+CREATE UNIQUE INDEX e02_506_24_ix ON e01_506_06_tb(need_uid, question_uid, ordinal) WHERE parent_id IS NULL;
+CREATE INDEX e02_378_10_ix ON e01_378_01_tb(child_table);
+CREATE INDEX e02_378_11_ix ON e01_378_01_tb(parent_table);
+CREATE INDEX e02_506_25_ix ON e01_506_08_tb(dim_uid);
+CREATE INDEX e02_778_10_ix ON e01_778_01_tb(parent_code);
+CREATE INDEX e02_778_11_ix ON e01_778_01_tb(need_uid);
+CREATE INDEX e02_778_12_ix ON e01_778_01_tb(code_kind);
+CREATE INDEX e02_778_30_ix ON e01_778_03_tb(root_need_uid);
+CREATE INDEX e02_778_31_ix ON e01_778_03_tb(chain_kind);
+CREATE INDEX e02_778_40_ix ON e01_778_04_tb(step_kind);
+CREATE INDEX e02_778_41_ix ON e01_778_04_tb(element_name) WHERE element_name IS NOT NULL;
+CREATE INDEX e02_778_42_ix ON e01_778_04_tb(need_uid) WHERE need_uid IS NOT NULL;
+CREATE INDEX e02_200_10_ix ON e01_200_01_tb(parent_id);
+CREATE INDEX e02_120_10_ix ON e01_120_01_tb(anc_id);
+CREATE INDEX e02_202_10_ix ON e01_202_01_tb(object_kind);
+CREATE INDEX e02_202_11_ix ON e01_202_01_tb(is_functional) WHERE is_functional = 1;
+CREATE UNIQUE INDEX e02_112_10_ix ON e01_112_01_tb(reltype_id, cons_kind, target_type_id) WHERE target_type_id IS NOT NULL;
+CREATE UNIQUE INDEX e02_112_11_ix ON e01_112_01_tb(reltype_id, cons_kind, target_nature) WHERE target_nature IS NOT NULL;
+CREATE INDEX e02_112_12_ix ON e01_112_01_tb(reltype_id);
+CREATE INDEX e02_112_13_ix ON e01_112_01_tb(cons_kind);
+CREATE INDEX e02_201_10_ix ON e01_201_01_tb(dom_id);
+CREATE INDEX e02_303_10_ix ON e01_303_01_tb(source_type);
+CREATE INDEX e02_303_11_ix ON e01_303_01_tb(source_type, source_ref);
+CREATE UNIQUE INDEX e02_303_12_ix ON e01_303_01_tb(source_type, source_ref) WHERE source_type='unknown' AND source_ref='system:unknown';
+CREATE INDEX e02_200_20_ix ON e01_200_03_tb(type_id, nature);
+CREATE INDEX e02_200_21_ix ON e01_200_03_tb(nature);
+CREATE INDEX e02_200_22_ix ON e01_200_03_tb(status);
+CREATE INDEX e02_200_23_ix ON e01_200_03_tb(label);
+CREATE INDEX e02_200_24_ix ON e01_200_03_tb(prv_id) WHERE prv_id IS NOT NULL;
+CREATE INDEX e02_201_20_ix ON e01_201_02_tb(value_kind);
+CREATE INDEX e02_201_21_ix ON e01_201_02_tb(num_val) WHERE num_val IS NOT NULL;
+CREATE INDEX e02_201_22_ix ON e01_201_02_tb(text_val) WHERE text_val IS NOT NULL;
+CREATE INDEX e02_201_23_ix ON e01_201_02_tb(text_norm) WHERE text_norm IS NOT NULL;
+CREATE INDEX e02_201_24_ix ON e01_201_02_tb(enum_id) WHERE enum_id IS NOT NULL;
+CREATE INDEX e02_201_25_ix ON e01_201_02_tb(prv_id) WHERE prv_id IS NOT NULL;
+CREATE INDEX e02_201_30_ix ON e01_201_03_tb(parent_id);
+CREATE INDEX e02_201_31_ix ON e01_201_03_tb(member_val_id);
+CREATE INDEX e02_201_32_ix ON e01_201_03_tb(member_ent_id);
+CREATE INDEX e02_302_10_ix ON e01_302_01_tb(subj_ent_id);
+CREATE INDEX e02_302_11_ix ON e01_302_01_tb(reltype_id);
+CREATE INDEX e02_222_10_ix ON e01_222_01_tb(subj_ent_id);
+CREATE INDEX e02_222_11_ix ON e01_222_01_tb(obj_ent_id) WHERE obj_ent_id IS NOT NULL;
+CREATE INDEX e02_222_12_ix ON e01_222_01_tb(obj_val_id) WHERE obj_val_id IS NOT NULL;
+CREATE INDEX e02_222_13_ix ON e01_222_01_tb(subj_ent_id, reltype_id, obj_ent_id) WHERE superseded_at IS NULL;
+CREATE INDEX e02_222_14_ix ON e01_222_01_tb(reif_ent_id) WHERE reif_ent_id IS NOT NULL;
+CREATE INDEX e02_222_15_ix ON e01_222_01_tb(subj_ent_id, reltype_id, ctx_key) WHERE superseded_at IS NULL AND status = 'asserted';
+CREATE INDEX e02_222_16_ix ON e01_222_01_tb(status);
+CREATE INDEX e02_222_17_ix ON e01_222_01_tb(lin_id) WHERE lin_id IS NOT NULL;
+CREATE INDEX e02_222_18_ix ON e01_222_01_tb(prv_id) WHERE prv_id IS NOT NULL;
+CREATE INDEX e02_222_19_ix ON e01_222_01_tb(subj_ent_id, reltype_id, ordinal) WHERE ordinal IS NOT NULL;
+CREATE INDEX e02_222_20_ix ON e01_222_01_tb(subj_ent_id, reltype_id, obj_ent_id) WHERE status = 'asserted' AND superseded_at IS NULL;
+CREATE UNIQUE INDEX e02_305_10_ix ON e01_305_01_tb(ent_id, COALESCE(ctx_ent_id, -1), COALESCE(ctx_val_id, -1), role, COALESCE(valid_from, ''), COALESCE(valid_to, ''));
+CREATE INDEX e02_305_11_ix ON e01_305_01_tb(ctx_ent_id) WHERE ctx_ent_id IS NOT NULL;
+CREATE INDEX e02_305_12_ix ON e01_305_01_tb(prv_id) WHERE prv_id IS NOT NULL;
+CREATE UNIQUE INDEX e02_305_20_ix ON e01_305_02_tb(val_id, COALESCE(ctx_ent_id, -1), COALESCE(ctx_val_id, -1), role, COALESCE(valid_from, ''), COALESCE(valid_to, ''));
+CREATE INDEX e02_305_21_ix ON e01_305_02_tb(ctx_ent_id) WHERE ctx_ent_id IS NOT NULL;
+CREATE INDEX e02_305_22_ix ON e01_305_02_tb(prv_id) WHERE prv_id IS NOT NULL;
+CREATE UNIQUE INDEX e02_305_30_ix ON e01_305_03_tb(rel_id, COALESCE(ctx_ent_id, -1), COALESCE(ctx_val_id, -1), role, COALESCE(valid_from, ''), COALESCE(valid_to, ''));
+CREATE INDEX e02_305_31_ix ON e01_305_03_tb(ctx_ent_id) WHERE ctx_ent_id IS NOT NULL;
+CREATE INDEX e02_305_32_ix ON e01_305_03_tb(prv_id) WHERE prv_id IS NOT NULL;
+CREATE INDEX e02_300_10_ix ON e01_300_01_tb(ent_a_id);
+CREATE INDEX e02_300_11_ix ON e01_300_01_tb(ent_b_id);
+CREATE INDEX e02_300_12_ix ON e01_300_01_tb(prv_id) WHERE prv_id IS NOT NULL;
+CREATE INDEX e02_300_13_ix ON e01_300_01_tb(ent_a_id, ent_b_id, clm_type, status);
+CREATE INDEX e02_330_10_ix ON e01_330_01_tb(ent_id);
+CREATE INDEX e02_330_20_ix ON e01_330_02_tb(ent_id);
+CREATE INDEX e02_330_21_ix ON e01_330_02_tb(vers_id) WHERE vers_id IS NOT NULL;
+CREATE INDEX e02_778_50_ix ON e01_778_05_tb(element_name);
+CREATE INDEX e02_778_51_ix ON e01_778_05_tb(need_uid);
+CREATE INDEX e02_778_52_ix ON e01_778_05_tb(policy_kind);
+CREATE INDEX e02_778_53_ix ON e01_778_05_tb(fk_ref_id) WHERE fk_ref_id IS NOT NULL;
+CREATE INDEX e02_778_54_ix ON e01_778_05_tb(exec_name) WHERE exec_name IS NOT NULL;
+CREATE INDEX e02_516_10_ix ON e01_516_01_tb(atom_uid);
+CREATE INDEX e02_516_11_ix ON e01_516_01_tb(origin);
+CREATE INDEX e02_778_20_ix ON e01_778_02_tb(need_uid);
+CREATE INDEX e02_778_21_ix ON e01_778_02_tb(code) WHERE code IS NOT NULL;
+CREATE INDEX e02_778_22_ix ON e01_778_02_tb(is_primary) WHERE is_primary = 1;
+CREATE INDEX e02_778_23_ix ON e01_778_02_tb(is_driving) WHERE is_driving = 1;
+CREATE INDEX e02_222_21_ix 
+    ON e01_222_01_tb(subj_ent_id, reltype_id, obj_ent_id, status)
+    WHERE superseded_at IS NULL;
+CREATE INDEX e02_222_22_ix 
+    ON e01_222_01_tb(obj_ent_id, reltype_id, subj_ent_id, status)
+    WHERE superseded_at IS NULL AND obj_ent_id IS NOT NULL;
+CREATE INDEX e02_222_23_ix 
+    ON e01_222_01_tb(reltype_id, subj_ent_id)
+    WHERE superseded_at IS NULL AND status = 'asserted';
+CREATE INDEX e02_222_24_ix 
+    ON e01_222_01_tb(valid_from, valid_to)
+    WHERE valid_to IS NULL OR valid_to > datetime('now');
+CREATE INDEX e02_200_25_ix 
+    ON e01_200_03_tb(type_id, status)
+    WHERE status = 'active';
+CREATE TRIGGER e03_312_01_tr BEFORE INSERT ON e01_222_01_tb
+BEGIN
+  SELECT CASE WHEN (SELECT reltype_id FROM e01_202_01_tb WHERE reltype_id = NEW.reltype_id) IS NULL THEN RAISE(ABORT, 'unknown relation type') END;
+  SELECT CASE WHEN (SELECT ent_id FROM e01_200_03_tb WHERE ent_id = NEW.subj_ent_id) IS NULL THEN RAISE(ABORT, 'subject entity does not exist') END;
+  SELECT CASE WHEN NEW.obj_ent_id IS NOT NULL AND (SELECT ent_id FROM e01_200_03_tb WHERE ent_id = NEW.obj_ent_id) IS NULL THEN RAISE(ABORT, 'object entity does not exist') END;
+  SELECT CASE WHEN NEW.obj_val_id IS NOT NULL AND (SELECT val_id FROM e01_201_02_tb WHERE val_id = NEW.obj_val_id) IS NULL THEN RAISE(ABORT, 'object value does not exist') END;
+  SELECT CASE WHEN NEW.lin_id IS NOT NULL AND (SELECT lin_id FROM e01_302_01_tb WHERE lin_id = NEW.lin_id) IS NULL THEN RAISE(ABORT, 'relation lineage does not exist') END;
+  SELECT CASE WHEN NEW.prv_id IS NOT NULL AND (SELECT prv_id FROM e01_303_01_tb WHERE prv_id = NEW.prv_id) IS NULL THEN RAISE(ABORT, 'relation provenance does not exist') END;
+  SELECT CASE WHEN NEW.reif_type <> 'none' AND NOT EXISTS (SELECT 1 FROM e01_200_03_tb e JOIN e01_200_01_tb et ON et.type_id = e.type_id WHERE e.ent_id = NEW.reif_ent_id AND et.type_uid IN ('ReifiedRelation','Evidence','Observation','Measurement','Claim','Hypothesis','Diagnosis')) THEN RAISE(ABORT, 'reification target invalid') END;
+  SELECT CASE WHEN (SELECT object_kind FROM e01_202_01_tb WHERE reltype_id = NEW.reltype_id) = 'entity' AND NEW.obj_val_id IS NOT NULL THEN RAISE(ABORT, 'expects entity; got value') END;
+  SELECT CASE WHEN (SELECT object_kind FROM e01_202_01_tb WHERE reltype_id = NEW.reltype_id) = 'value' AND NEW.obj_ent_id IS NOT NULL THEN RAISE(ABORT, 'expects value; got entity') END;
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_112_01_tb WHERE reltype_id = NEW.reltype_id AND cons_kind = 'allowed_subject_type')
+    AND NOT EXISTS (SELECT 1 FROM e01_112_01_tb tc JOIN e01_120_01_tb cl ON cl.anc_id = tc.target_type_id JOIN e01_200_03_tb e ON e.ent_id = NEW.subj_ent_id AND e.type_id = cl.desc_id WHERE tc.reltype_id = NEW.reltype_id AND tc.cons_kind = 'allowed_subject_type')
+    THEN RAISE(ABORT, 'subject violates domain (type)') END;
+  SELECT CASE WHEN NEW.obj_ent_id IS NOT NULL AND EXISTS (SELECT 1 FROM e01_112_01_tb WHERE reltype_id = NEW.reltype_id AND cons_kind = 'allowed_object_type')
+    AND NOT EXISTS (SELECT 1 FROM e01_112_01_tb tc JOIN e01_120_01_tb cl ON cl.anc_id = tc.target_type_id JOIN e01_200_03_tb e ON e.ent_id = NEW.obj_ent_id AND e.type_id = cl.desc_id WHERE tc.reltype_id = NEW.reltype_id AND tc.cons_kind = 'allowed_object_type')
+    THEN RAISE(ABORT, 'object violates domain (type)') END;
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_112_01_tb WHERE reltype_id = NEW.reltype_id AND cons_kind = 'allowed_subject_nature')
+    AND NOT EXISTS (SELECT 1 FROM e01_112_01_tb tc JOIN e01_200_03_tb e ON e.ent_id = NEW.subj_ent_id WHERE tc.reltype_id = NEW.reltype_id AND tc.cons_kind = 'allowed_subject_nature' AND tc.target_nature = e.nature)
+    THEN RAISE(ABORT, 'subject violates domain (nature)') END;
+  SELECT CASE WHEN NEW.obj_ent_id IS NOT NULL AND EXISTS (SELECT 1 FROM e01_112_01_tb WHERE reltype_id = NEW.reltype_id AND cons_kind = 'allowed_object_nature')
+    AND NOT EXISTS (SELECT 1 FROM e01_112_01_tb tc JOIN e01_200_03_tb e ON e.ent_id = NEW.obj_ent_id WHERE tc.reltype_id = NEW.reltype_id AND tc.cons_kind = 'allowed_object_nature' AND tc.target_nature = e.nature)
+    THEN RAISE(ABORT, 'object violates domain (nature)') END;
+  SELECT CASE WHEN NEW.superseded_at IS NULL AND NEW.status = 'asserted' AND EXISTS (SELECT 1 FROM e01_222_01_tb r JOIN e01_202_01_tb rt ON rt.reltype_id = r.reltype_id WHERE r.subj_ent_id = NEW.subj_ent_id AND r.reltype_id = NEW.reltype_id AND r.ctx_key = NEW.ctx_key AND r.superseded_at IS NULL AND r.status = 'asserted' AND rt.is_functional = 1)
+    THEN RAISE(ABORT, 'functional already asserted in ctx') END;
+  SELECT CASE WHEN NEW.reltype_id = (SELECT reltype_id FROM e01_202_01_tb WHERE type_uid = 'instance_of') AND NEW.superseded_at IS NULL AND NEW.status = 'asserted'
+    AND EXISTS (SELECT 1 FROM e01_222_01_tb r WHERE r.subj_ent_id = NEW.subj_ent_id AND r.reltype_id = NEW.reltype_id AND r.superseded_at IS NULL AND r.status = 'asserted')
+    THEN RAISE(ABORT, 'instance_of: one concept per instance') END;
+  SELECT CASE WHEN NEW.reltype_id = (SELECT reltype_id FROM e01_202_01_tb WHERE type_uid = 'instance_of') AND NEW.obj_ent_id IS NOT NULL AND NEW.superseded_at IS NULL AND NEW.status = 'asserted'
+    AND (SELECT nature FROM e01_200_03_tb WHERE ent_id = NEW.subj_ent_id) = 'instance'
+    AND (SELECT nature FROM e01_200_03_tb WHERE ent_id = NEW.obj_ent_id) = 'concept'
+    AND (SELECT type_id FROM e01_200_03_tb WHERE ent_id = NEW.subj_ent_id) <> (SELECT type_id FROM e01_200_03_tb WHERE ent_id = NEW.obj_ent_id)
+    THEN RAISE(ABORT, 'instance_of: subject type must match concept type') END;
+END;
+CREATE TRIGGER e03_312_02_tr BEFORE UPDATE OF subj_ent_id, reltype_id, obj_ent_id, obj_val_id, reif_type, reif_ent_id, lin_id, prv_id ON e01_222_01_tb
+BEGIN
+  SELECT CASE WHEN (SELECT reltype_id FROM e01_202_01_tb WHERE reltype_id = NEW.reltype_id) IS NULL THEN RAISE(ABORT, 'unknown relation type') END;
+  SELECT CASE WHEN (SELECT ent_id FROM e01_200_03_tb WHERE ent_id = NEW.subj_ent_id) IS NULL THEN RAISE(ABORT, 'subject entity does not exist') END;
+  SELECT CASE WHEN NEW.obj_ent_id IS NOT NULL AND (SELECT ent_id FROM e01_200_03_tb WHERE ent_id = NEW.obj_ent_id) IS NULL THEN RAISE(ABORT, 'object entity does not exist') END;
+  SELECT CASE WHEN NEW.obj_val_id IS NOT NULL AND (SELECT val_id FROM e01_201_02_tb WHERE val_id = NEW.obj_val_id) IS NULL THEN RAISE(ABORT, 'object value does not exist') END;
+  SELECT CASE WHEN NEW.lin_id IS NOT NULL AND (SELECT lin_id FROM e01_302_01_tb WHERE lin_id = NEW.lin_id) IS NULL THEN RAISE(ABORT, 'relation lineage does not exist') END;
+  SELECT CASE WHEN NEW.prv_id IS NOT NULL AND (SELECT prv_id FROM e01_303_01_tb WHERE prv_id = NEW.prv_id) IS NULL THEN RAISE(ABORT, 'relation provenance does not exist') END;
+  SELECT CASE WHEN NEW.reif_type <> 'none' AND NOT EXISTS (SELECT 1 FROM e01_200_03_tb e JOIN e01_200_01_tb et ON et.type_id = e.type_id WHERE e.ent_id = NEW.reif_ent_id AND et.type_uid IN ('ReifiedRelation','Evidence','Observation','Measurement','Claim','Hypothesis','Diagnosis')) THEN RAISE(ABORT, 'reification target invalid') END;
+  SELECT CASE WHEN (SELECT object_kind FROM e01_202_01_tb WHERE reltype_id = NEW.reltype_id) = 'entity' AND NEW.obj_val_id IS NOT NULL THEN RAISE(ABORT, 'expects entity; got value') END;
+  SELECT CASE WHEN (SELECT object_kind FROM e01_202_01_tb WHERE reltype_id = NEW.reltype_id) = 'value' AND NEW.obj_ent_id IS NOT NULL THEN RAISE(ABORT, 'expects value; got entity') END;
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_112_01_tb WHERE reltype_id = NEW.reltype_id AND cons_kind = 'allowed_subject_type')
+    AND NOT EXISTS (SELECT 1 FROM e01_112_01_tb tc JOIN e01_120_01_tb cl ON cl.anc_id = tc.target_type_id JOIN e01_200_03_tb e ON e.ent_id = NEW.subj_ent_id AND e.type_id = cl.desc_id WHERE tc.reltype_id = NEW.reltype_id AND tc.cons_kind = 'allowed_subject_type')
+    THEN RAISE(ABORT, 'subject violates domain (type)') END;
+  SELECT CASE WHEN NEW.obj_ent_id IS NOT NULL AND EXISTS (SELECT 1 FROM e01_112_01_tb WHERE reltype_id = NEW.reltype_id AND cons_kind = 'allowed_object_type')
+    AND NOT EXISTS (SELECT 1 FROM e01_112_01_tb tc JOIN e01_120_01_tb cl ON cl.anc_id = tc.target_type_id JOIN e01_200_03_tb e ON e.ent_id = NEW.obj_ent_id AND e.type_id = cl.desc_id WHERE tc.reltype_id = NEW.reltype_id AND tc.cons_kind = 'allowed_object_type')
+    THEN RAISE(ABORT, 'object violates domain (type)') END;
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_112_01_tb WHERE reltype_id = NEW.reltype_id AND cons_kind = 'allowed_subject_nature')
+    AND NOT EXISTS (SELECT 1 FROM e01_112_01_tb tc JOIN e01_200_03_tb e ON e.ent_id = NEW.subj_ent_id WHERE tc.reltype_id = NEW.reltype_id AND tc.cons_kind = 'allowed_subject_nature' AND tc.target_nature = e.nature)
+    THEN RAISE(ABORT, 'subject violates domain (nature)') END;
+  SELECT CASE WHEN NEW.obj_ent_id IS NOT NULL AND EXISTS (SELECT 1 FROM e01_112_01_tb WHERE reltype_id = NEW.reltype_id AND cons_kind = 'allowed_object_nature')
+    AND NOT EXISTS (SELECT 1 FROM e01_112_01_tb tc JOIN e01_200_03_tb e ON e.ent_id = NEW.obj_ent_id WHERE tc.reltype_id = NEW.reltype_id AND tc.cons_kind = 'allowed_object_nature' AND tc.target_nature = e.nature)
+    THEN RAISE(ABORT, 'object violates domain (nature)') END;
+END;
+CREATE TRIGGER e03_112_01_tr BEFORE UPDATE OF ctx_key, status, superseded_at ON e01_222_01_tb
+BEGIN
+  SELECT CASE WHEN NEW.superseded_at IS NULL AND NEW.status = 'asserted' AND OLD.ctx_key <> NEW.ctx_key
+    AND EXISTS (SELECT 1 FROM e01_222_01_tb r JOIN e01_202_01_tb rt ON rt.reltype_id = r.reltype_id
+      WHERE r.subj_ent_id = NEW.subj_ent_id AND r.reltype_id = NEW.reltype_id AND r.ctx_key = NEW.ctx_key
+        AND r.superseded_at IS NULL AND r.status = 'asserted' AND r.rel_id <> NEW.rel_id AND rt.is_functional = 1)
+    THEN RAISE(ABORT, 'functional already asserted (ctx conflict)') END;
+  SELECT CASE WHEN NEW.reltype_id = (SELECT reltype_id FROM e01_202_01_tb WHERE type_uid = 'instance_of') AND NEW.superseded_at IS NULL AND NEW.status = 'asserted' AND OLD.status <> 'asserted'
+    AND EXISTS (SELECT 1 FROM e01_222_01_tb r WHERE r.subj_ent_id = NEW.subj_ent_id AND r.reltype_id = NEW.reltype_id AND r.superseded_at IS NULL AND r.status = 'asserted' AND r.rel_id <> NEW.rel_id)
+    THEN RAISE(ABORT, 'instance_of: one concept (upd)') END;
+END;
+CREATE TRIGGER e03_135_01_tr AFTER INSERT ON e01_305_03_tb
+BEGIN
+  UPDATE e01_222_01_tb SET ctx_key = COALESCE(
+    (SELECT 's:' || group_concat(x, '|')
+     FROM (SELECT COALESCE('e:' || ctx_ent_id, 'v:' || ctx_val_id) || ':' || role AS x
+           FROM e01_305_03_tb WHERE rel_id = NEW.rel_id
+           ORDER BY role, COALESCE(ctx_ent_id, ctx_val_id))), 'u:')
+  WHERE rel_id = NEW.rel_id;
+END;
+CREATE TRIGGER e03_135_02_tr AFTER UPDATE OF ctx_ent_id, ctx_val_id, role, rel_id ON e01_305_03_tb
+BEGIN
+  UPDATE e01_222_01_tb SET ctx_key = COALESCE(
+    (SELECT 's:' || group_concat(x, '|')
+     FROM (SELECT COALESCE('e:' || ctx_ent_id, 'v:' || ctx_val_id) || ':' || role AS x
+           FROM e01_305_03_tb WHERE rel_id = OLD.rel_id
+           ORDER BY role, COALESCE(ctx_ent_id, ctx_val_id))), 'u:')
+  WHERE rel_id = OLD.rel_id;
+  UPDATE e01_222_01_tb SET ctx_key = COALESCE(
+    (SELECT 's:' || group_concat(x, '|')
+     FROM (SELECT COALESCE('e:' || ctx_ent_id, 'v:' || ctx_val_id) || ':' || role AS x
+           FROM e01_305_03_tb WHERE rel_id = NEW.rel_id
+           ORDER BY role, COALESCE(ctx_ent_id, ctx_val_id))), 'u:')
+  WHERE rel_id = NEW.rel_id;
+END;
+CREATE TRIGGER e03_135_03_tr AFTER DELETE ON e01_305_03_tb
+BEGIN
+  UPDATE e01_222_01_tb SET ctx_key = COALESCE(
+    (SELECT 's:' || group_concat(x, '|')
+     FROM (SELECT COALESCE('e:' || ctx_ent_id, 'v:' || ctx_val_id) || ':' || role AS x
+           FROM e01_305_03_tb WHERE rel_id = OLD.rel_id
+           ORDER BY role, COALESCE(ctx_ent_id, ctx_val_id))), 'u:')
+  WHERE rel_id = OLD.rel_id;
+END;
+CREATE TRIGGER e03_343_01_tr AFTER INSERT ON e01_200_03_tb WHEN NEW.prv_id IS NULL
+BEGIN UPDATE e01_200_03_tb SET prv_id = (SELECT prv_id FROM e01_303_01_tb WHERE source_type='unknown' AND source_ref='system:unknown' ORDER BY prv_id LIMIT 1), updated_at = datetime('now') WHERE ent_id = NEW.ent_id; END;
+CREATE TRIGGER e03_343_02_tr AFTER INSERT ON e01_201_02_tb WHEN NEW.prv_id IS NULL
+BEGIN UPDATE e01_201_02_tb SET prv_id = (SELECT prv_id FROM e01_303_01_tb WHERE source_type='unknown' AND source_ref='system:unknown' ORDER BY prv_id LIMIT 1) WHERE val_id = NEW.val_id; END;
+CREATE TRIGGER e03_343_03_tr AFTER INSERT ON e01_222_01_tb WHEN NEW.prv_id IS NULL
+BEGIN UPDATE e01_222_01_tb SET prv_id = (SELECT prv_id FROM e01_303_01_tb WHERE source_type='unknown' AND source_ref='system:unknown' ORDER BY prv_id LIMIT 1) WHERE rel_id = NEW.rel_id; END;
+CREATE TRIGGER e03_343_04_tr AFTER INSERT ON e01_305_01_tb WHEN NEW.prv_id IS NULL
+BEGIN UPDATE e01_305_01_tb SET prv_id = (SELECT prv_id FROM e01_303_01_tb WHERE source_type='unknown' AND source_ref='system:unknown' ORDER BY prv_id LIMIT 1) WHERE ctx_id = NEW.ctx_id; END;
+CREATE TRIGGER e03_343_05_tr AFTER INSERT ON e01_305_02_tb WHEN NEW.prv_id IS NULL
+BEGIN UPDATE e01_305_02_tb SET prv_id = (SELECT prv_id FROM e01_303_01_tb WHERE source_type='unknown' AND source_ref='system:unknown' ORDER BY prv_id LIMIT 1) WHERE ctx_id = NEW.ctx_id; END;
+CREATE TRIGGER e03_343_06_tr AFTER INSERT ON e01_305_03_tb WHEN NEW.prv_id IS NULL
+BEGIN UPDATE e01_305_03_tb SET prv_id = (SELECT prv_id FROM e01_303_01_tb WHERE source_type='unknown' AND source_ref='system:unknown' ORDER BY prv_id LIMIT 1) WHERE ctx_id = NEW.ctx_id; END;
+CREATE TRIGGER e03_343_07_tr AFTER INSERT ON e01_300_01_tb WHEN NEW.prv_id IS NULL
+BEGIN UPDATE e01_300_01_tb SET prv_id = (SELECT prv_id FROM e01_303_01_tb WHERE source_type='unknown' AND source_ref='system:unknown' ORDER BY prv_id LIMIT 1) WHERE clm_id = NEW.clm_id; END;
+CREATE TRIGGER e03_343_08_tr BEFORE DELETE ON e01_303_01_tb WHEN OLD.source_type = 'unknown' AND OLD.source_ref = 'system:unknown'
+BEGIN SELECT RAISE(ABORT, 'cannot delete fallback provenance'); END;
+CREATE TRIGGER e03_343_09_tr BEFORE UPDATE OF source_type, source_ref ON e01_303_01_tb
+WHEN OLD.source_type = 'unknown' AND OLD.source_ref = 'system:unknown' AND (NEW.source_type <> 'unknown' OR NEW.source_ref <> 'system:unknown')
+BEGIN SELECT RAISE(ABORT, 'cannot change fallback provenance identity'); END;
+CREATE TRIGGER e03_311_01_tr AFTER INSERT ON e01_201_02_tb WHEN NEW.value_kind = 'text' AND NEW.text_val IS NOT NULL AND NEW.text_norm IS NULL
+BEGIN UPDATE e01_201_02_tb SET text_norm = lower(trim(NEW.text_val)) WHERE val_id = NEW.val_id; END;
+CREATE TRIGGER e03_311_02_tr AFTER UPDATE OF text_val ON e01_201_02_tb WHEN NEW.value_kind = 'text' AND NEW.text_val IS NOT NULL AND (NEW.text_norm IS NULL OR NEW.text_norm <> lower(trim(NEW.text_val)))
+BEGIN UPDATE e01_201_02_tb SET text_norm = lower(trim(NEW.text_val)) WHERE val_id = NEW.val_id; END;
+CREATE TRIGGER e03_311_03_tr BEFORE INSERT ON e01_201_03_tb WHEN NEW.member_val_id IS NOT NULL
+BEGIN SELECT CASE WHEN EXISTS (WITH RECURSIVE desc_of_parent(id, depth) AS (
+    SELECT NEW.parent_id, 0
+    UNION ALL
+    SELECT e.member_val_id, desc_of_parent.depth + 1 FROM e01_201_03_tb e
+    JOIN desc_of_parent ON e.parent_id = desc_of_parent.id
+    WHERE e.member_val_id IS NOT NULL
+      AND desc_of_parent.depth < (SELECT int_value FROM e01_676_03_tb WHERE param_uid='max_member_depth'))
+    SELECT 1 FROM desc_of_parent WHERE id = NEW.member_val_id) THEN RAISE(ABORT, 'value member: cycle detected') END; END;
+CREATE TRIGGER e03_311_04_tr BEFORE UPDATE OF parent_id, member_val_id ON e01_201_03_tb WHEN NEW.member_val_id IS NOT NULL
+BEGIN SELECT CASE WHEN EXISTS (WITH RECURSIVE desc_of_parent(id, depth) AS (
+    SELECT NEW.parent_id, 0
+    UNION ALL
+    SELECT e.member_val_id, desc_of_parent.depth + 1 FROM e01_201_03_tb e
+    JOIN desc_of_parent ON e.parent_id = desc_of_parent.id
+    WHERE e.member_val_id IS NOT NULL AND e.memb_id <> NEW.memb_id
+      AND desc_of_parent.depth < (SELECT int_value FROM e01_676_03_tb WHERE param_uid='max_member_depth'))
+    SELECT 1 FROM desc_of_parent WHERE id = NEW.member_val_id) THEN RAISE(ABORT, 'value member: cycle detected (upd)') END; END;
+CREATE TRIGGER e03_516_01_tr BEFORE INSERT ON e01_506_06_tb WHEN NEW.parent_id IS NOT NULL
+BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_506_06_tb p WHERE p.node_id = NEW.parent_id AND p.need_uid = NEW.need_uid) THEN RAISE(ABORT, 'node parent belongs to another need') END; END;
+CREATE TRIGGER e03_516_02_tr BEFORE UPDATE OF need_uid, parent_id ON e01_506_06_tb WHEN NEW.parent_id IS NOT NULL
+BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_506_06_tb p WHERE p.node_id = NEW.parent_id AND p.need_uid = NEW.need_uid) THEN RAISE(ABORT, 'node parent belongs to another need') END; END;
+CREATE TRIGGER e03_126_01_tr BEFORE UPDATE OF parent_id ON e01_506_06_tb WHEN NEW.parent_id IS NOT NULL AND NEW.parent_id <> NEW.node_id
+BEGIN SELECT CASE WHEN EXISTS (WITH RECURSIVE up(id) AS (SELECT NEW.parent_id UNION SELECT parent_id FROM e01_506_06_tb JOIN up ON e01_506_06_tb.node_id = up.id WHERE parent_id IS NOT NULL) SELECT 1 FROM up WHERE id = NEW.node_id) THEN RAISE(ABORT, 'node cycle detected') END; END;
+CREATE TRIGGER e03_126_02_tr BEFORE INSERT ON e01_506_05_tb WHEN NEW.parent_uid = NEW.question_uid
+BEGIN SELECT RAISE(ABORT, 'question self-cycle'); END;
+CREATE TRIGGER e03_126_03_tr BEFORE UPDATE OF parent_uid ON e01_506_05_tb WHEN NEW.parent_uid IS NOT NULL
+BEGIN
+  SELECT CASE WHEN NEW.parent_uid = NEW.question_uid THEN RAISE(ABORT, 'question self-cycle (upd)') END;
+  SELECT CASE WHEN EXISTS (WITH RECURSIVE up(uid) AS (SELECT NEW.parent_uid UNION SELECT parent_uid FROM e01_506_05_tb JOIN up ON e01_506_05_tb.question_uid = up.uid WHERE parent_uid IS NOT NULL) SELECT 1 FROM up WHERE uid = NEW.question_uid) THEN RAISE(ABORT, 'question cycle detected') END;
+END;
+CREATE TRIGGER e03_320_01_tr BEFORE DELETE ON e01_200_03_tb
+BEGIN SELECT CASE WHEN EXISTS (
+  SELECT 1 FROM e01_201_03_tb WHERE member_ent_id = OLD.ent_id
+  UNION ALL SELECT 1 FROM e01_302_01_tb WHERE subj_ent_id = OLD.ent_id
+  UNION ALL SELECT 1 FROM e01_222_01_tb WHERE subj_ent_id = OLD.ent_id
+  UNION ALL SELECT 1 FROM e01_222_01_tb WHERE obj_ent_id = OLD.ent_id
+  UNION ALL SELECT 1 FROM e01_222_01_tb WHERE reif_ent_id = OLD.ent_id
+  UNION ALL SELECT 1 FROM e01_305_01_tb WHERE ent_id = OLD.ent_id OR ctx_ent_id = OLD.ent_id
+  UNION ALL SELECT 1 FROM e01_305_02_tb WHERE ctx_ent_id = OLD.ent_id
+  UNION ALL SELECT 1 FROM e01_305_03_tb WHERE ctx_ent_id = OLD.ent_id
+  UNION ALL SELECT 1 FROM e01_300_01_tb WHERE ent_a_id = OLD.ent_id OR ent_b_id = OLD.ent_id
+  UNION ALL SELECT 1 FROM e01_330_01_tb WHERE ent_id = OLD.ent_id OR approved_by_id = OLD.ent_id
+  UNION ALL SELECT 1 FROM e01_330_02_tb WHERE ent_id = OLD.ent_id)
+  THEN RAISE(ABORT, 'entity referenced; retract or archive first') END; END;
+CREATE TRIGGER e03_320_02_tr BEFORE DELETE ON e01_201_02_tb
+BEGIN SELECT CASE WHEN EXISTS (
+  SELECT 1 FROM e01_222_01_tb WHERE obj_val_id = OLD.val_id
+  UNION ALL SELECT 1 FROM e01_201_03_tb WHERE parent_id = OLD.val_id OR member_val_id = OLD.val_id
+  UNION ALL SELECT 1 FROM e01_305_01_tb WHERE ctx_val_id = OLD.val_id
+  UNION ALL SELECT 1 FROM e01_305_02_tb WHERE val_id = OLD.val_id OR ctx_val_id = OLD.val_id
+  UNION ALL SELECT 1 FROM e01_305_03_tb WHERE ctx_val_id = OLD.val_id)
+  THEN RAISE(ABORT, 'value referenced; retract or cascade first') END; END;
+CREATE TRIGGER e03_320_03_tr BEFORE DELETE ON e01_200_01_tb
+BEGIN SELECT CASE WHEN EXISTS (
+  SELECT 1 FROM e01_200_01_tb WHERE parent_id = OLD.type_id
+  UNION ALL SELECT 1 FROM e01_200_03_tb WHERE type_id = OLD.type_id
+  UNION ALL SELECT 1 FROM e01_112_01_tb WHERE target_type_id = OLD.type_id
+  UNION ALL SELECT 1 FROM e01_120_01_tb WHERE desc_id = OLD.type_id OR anc_id = OLD.type_id)
+  THEN RAISE(ABORT, 'entity type referenced') END; END;
+CREATE TRIGGER e03_320_04_tr BEFORE DELETE ON e01_202_01_tb
+BEGIN SELECT CASE WHEN EXISTS (
+  SELECT 1 FROM e01_222_01_tb WHERE reltype_id = OLD.reltype_id
+  UNION ALL SELECT 1 FROM e01_302_01_tb WHERE reltype_id = OLD.reltype_id
+  UNION ALL SELECT 1 FROM e01_112_01_tb WHERE reltype_id = OLD.reltype_id
+  UNION ALL SELECT 1 FROM e01_202_01_tb WHERE inverse_uid = OLD.type_uid)
+  THEN RAISE(ABORT, 'relation type referenced') END; END;
+CREATE TRIGGER e03_320_05_tr BEFORE DELETE ON e01_303_01_tb WHEN NOT (OLD.source_type = 'unknown' AND OLD.source_ref = 'system:unknown')
+BEGIN SELECT CASE WHEN EXISTS (
+  SELECT 1 FROM e01_200_03_tb WHERE prv_id = OLD.prv_id
+  UNION ALL SELECT 1 FROM e01_201_02_tb WHERE prv_id = OLD.prv_id
+  UNION ALL SELECT 1 FROM e01_222_01_tb WHERE prv_id = OLD.prv_id
+  UNION ALL SELECT 1 FROM e01_305_01_tb WHERE prv_id = OLD.prv_id
+  UNION ALL SELECT 1 FROM e01_305_02_tb WHERE prv_id = OLD.prv_id
+  UNION ALL SELECT 1 FROM e01_305_03_tb WHERE prv_id = OLD.prv_id
+  UNION ALL SELECT 1 FROM e01_300_01_tb WHERE prv_id = OLD.prv_id)
+  THEN RAISE(ABORT, 'provenance referenced') END; END;
+CREATE TRIGGER e03_320_06_tr BEFORE DELETE ON e01_302_01_tb
+BEGIN SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_222_01_tb WHERE lin_id = OLD.lin_id) THEN RAISE(ABORT, 'lineage referenced by relations') END; END;
+CREATE TRIGGER e03_320_07_tr BEFORE DELETE ON e01_200_02_tb
+BEGIN SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_201_01_tb WHERE dom_id = OLD.dom_id) THEN RAISE(ABORT, 'enum domain has values') END; END;
+CREATE TRIGGER e03_320_08_tr BEFORE DELETE ON e01_201_01_tb
+BEGIN SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_201_02_tb WHERE enum_id = OLD.val_id) THEN RAISE(ABORT, 'enum value referenced by values') END; END;
+CREATE TRIGGER e03_320_09_tr BEFORE UPDATE OF type_id ON e01_200_03_tb WHEN OLD.type_id <> NEW.type_id
+BEGIN
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_222_01_tb r WHERE r.subj_ent_id = OLD.ent_id AND r.status = 'asserted' AND r.superseded_at IS NULL AND EXISTS (SELECT 1 FROM e01_112_01_tb c WHERE c.reltype_id = r.reltype_id AND c.cons_kind = 'allowed_subject_type') AND NOT EXISTS (SELECT 1 FROM e01_112_01_tb c JOIN e01_120_01_tb cl ON cl.anc_id = c.target_type_id WHERE c.reltype_id = r.reltype_id AND c.cons_kind = 'allowed_subject_type' AND cl.desc_id = NEW.type_id)) THEN RAISE(ABORT, 'cannot change type: violates active subject domain') END;
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_222_01_tb r WHERE r.obj_ent_id = OLD.ent_id AND r.status = 'asserted' AND r.superseded_at IS NULL AND EXISTS (SELECT 1 FROM e01_112_01_tb c WHERE c.reltype_id = r.reltype_id AND c.cons_kind = 'allowed_object_type') AND NOT EXISTS (SELECT 1 FROM e01_112_01_tb c JOIN e01_120_01_tb cl ON cl.anc_id = c.target_type_id WHERE c.reltype_id = r.reltype_id AND c.cons_kind = 'allowed_object_type' AND cl.desc_id = NEW.type_id)) THEN RAISE(ABORT, 'cannot change type: violates active object domain') END;
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_222_01_tb r WHERE r.reif_ent_id = OLD.ent_id AND r.reif_type <> 'none' AND r.status = 'asserted' AND r.superseded_at IS NULL AND NOT EXISTS (SELECT 1 FROM e01_200_01_tb et WHERE et.type_id = NEW.type_id AND et.type_uid IN ('ReifiedRelation','Evidence','Observation','Measurement','Claim','Hypothesis','Diagnosis'))) THEN RAISE(ABORT, 'cannot change type: invalidates reification') END;
+END;
+CREATE TRIGGER e03_370_30_tr BEFORE DELETE ON e01_778_01_tb
+BEGIN SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_778_01_tb WHERE parent_code = OLD.code UNION ALL SELECT 1 FROM e01_778_02_tb WHERE code = OLD.code) THEN RAISE(ABORT, 'req_code referenced') END; END;
+CREATE TRIGGER e03_370_32_tr BEFORE UPDATE OF need_uid, code, code_kind ON e01_778_01_tb WHEN OLD.need_uid <> NEW.need_uid OR OLD.code <> NEW.code OR OLD.code_kind <> NEW.code_kind
+BEGIN SELECT RAISE(ABORT, 'e01_778_01_tb PK is immutable'); END;
+CREATE TRIGGER e03_370_34_tr BEFORE UPDATE OF chain_uid, ordinal ON e01_778_04_tb WHEN OLD.chain_uid <> NEW.chain_uid OR OLD.ordinal <> NEW.ordinal
+BEGIN SELECT RAISE(ABORT, 'e01_778_04_tb PK is immutable'); END;
+CREATE TRIGGER e03_360_01_tr AFTER UPDATE OF status ON e01_222_01_tb WHEN NEW.status = 'retracted' AND OLD.status <> 'retracted' AND NEW.reif_type = 'annotated' AND NEW.reif_ent_id IS NOT NULL
+BEGIN UPDATE e01_200_03_tb SET status = 'archived' WHERE ent_id = NEW.reif_ent_id AND status = 'active'; END;
+CREATE TRIGGER e03_370_02_tr BEFORE INSERT ON e01_506_03_tb
+BEGIN SELECT CASE WHEN NEW.need_uid IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_506_01_tb WHERE need_uid = NEW.need_uid) THEN RAISE(ABORT, 'ele_stor: need does not exist') END; END;
+CREATE TRIGGER e03_370_03_tr BEFORE INSERT ON e01_506_04_tb
+BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_506_02_tb WHERE atom_uid = NEW.atom_uid) THEN RAISE(ABORT, 'tra_stor: atom does not exist') END; SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_506_03_tb WHERE element_name = NEW.element_name) THEN RAISE(ABORT, 'tra_stor: element does not exist') END; END;
+CREATE TRIGGER e03_370_04_tr BEFORE INSERT ON e01_506_08_tb
+BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_506_07_tb WHERE dim_uid = NEW.dim_uid) THEN RAISE(ABORT, 'dim_val: dim does not exist') END; END;
+CREATE TRIGGER e03_370_05_tr BEFORE INSERT ON e01_506_06_tb
+BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_506_01_tb WHERE need_uid = NEW.need_uid) THEN RAISE(ABORT, 'nod_tree: need does not exist') END; SELECT CASE WHEN NEW.parent_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_506_06_tb WHERE node_id = NEW.parent_id) THEN RAISE(ABORT, 'nod_tree: parent does not exist') END; SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_506_05_tb WHERE question_uid = NEW.question_uid) THEN RAISE(ABORT, 'nod_tree: question does not exist') END; END;
+CREATE TRIGGER e03_370_06_tr BEFORE INSERT ON e01_506_05_tb
+BEGIN SELECT CASE WHEN NEW.parent_uid IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_506_05_tb WHERE question_uid = NEW.parent_uid) THEN RAISE(ABORT, 'que_gram: parent does not exist') END; END;
+CREATE TRIGGER e03_370_07_tr BEFORE INSERT ON e01_330_01_tb
+BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_200_03_tb WHERE ent_id = NEW.ent_id) THEN RAISE(ABORT, 'ent_vers: entity does not exist') END; SELECT CASE WHEN NEW.supersedes_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_330_01_tb WHERE vers_id = NEW.supersedes_id) THEN RAISE(ABORT, 'ent_vers: supersedes does not exist') END; SELECT CASE WHEN NEW.supersedes_id IS NOT NULL AND NEW.supersedes_id = NEW.vers_id THEN RAISE(ABORT, 'ent_vers: cannot supersede self') END; SELECT CASE WHEN NEW.supersedes_id IS NOT NULL AND (SELECT ent_id FROM e01_330_01_tb WHERE vers_id = NEW.supersedes_id) <> NEW.ent_id THEN RAISE(ABORT, 'ent_vers: supersedes cross-entity') END; SELECT CASE WHEN NEW.approved_by_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_200_03_tb WHERE ent_id = NEW.approved_by_id) THEN RAISE(ABORT, 'ent_vers: approver does not exist') END; END;
+CREATE TRIGGER e03_370_08_tr BEFORE INSERT ON e01_330_02_tb
+BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_200_03_tb WHERE ent_id = NEW.ent_id) THEN RAISE(ABORT, 'ent_snap: entity does not exist') END; SELECT CASE WHEN NEW.vers_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_330_01_tb WHERE vers_id = NEW.vers_id) THEN RAISE(ABORT, 'ent_snap: vers does not exist') END; SELECT CASE WHEN NEW.vers_id IS NOT NULL AND (SELECT ent_id FROM e01_330_01_tb WHERE vers_id = NEW.vers_id) <> NEW.ent_id THEN RAISE(ABORT, 'ent_snap: vers cross-entity') END; END;
+CREATE TRIGGER e03_370_12_tr BEFORE UPDATE OF need_uid ON e01_506_03_tb
+BEGIN SELECT CASE WHEN NEW.need_uid IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_506_01_tb WHERE need_uid = NEW.need_uid) THEN RAISE(ABORT, 'ele_stor.upd: need does not exist') END; END;
+CREATE TRIGGER e03_370_13_tr BEFORE UPDATE OF atom_uid, element_name ON e01_506_04_tb
+BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_506_02_tb WHERE atom_uid = NEW.atom_uid) THEN RAISE(ABORT, 'tra_stor.upd: atom does not exist') END; SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_506_03_tb WHERE element_name = NEW.element_name) THEN RAISE(ABORT, 'tra_stor.upd: element does not exist') END; END;
+CREATE TRIGGER e03_370_15_tr BEFORE UPDATE OF need_uid, parent_id, question_uid ON e01_506_06_tb
+BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_506_01_tb WHERE need_uid = NEW.need_uid) THEN RAISE(ABORT, 'nod_tree.upd: need does not exist') END; SELECT CASE WHEN NEW.parent_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_506_06_tb WHERE node_id = NEW.parent_id) THEN RAISE(ABORT, 'nod_tree.upd: parent does not exist') END; SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_506_05_tb WHERE question_uid = NEW.question_uid) THEN RAISE(ABORT, 'nod_tree.upd: question does not exist') END; END;
+CREATE TRIGGER e03_370_16_tr BEFORE UPDATE OF parent_uid ON e01_506_05_tb
+BEGIN SELECT CASE WHEN NEW.parent_uid IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_506_05_tb WHERE question_uid = NEW.parent_uid) THEN RAISE(ABORT, 'que_gram.upd: parent does not exist') END; END;
+CREATE TRIGGER e03_370_17_tr BEFORE UPDATE OF ent_id, supersedes_id, approved_by_id ON e01_330_01_tb
+BEGIN
+  SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_200_03_tb WHERE ent_id = NEW.ent_id) THEN RAISE(ABORT, 'ent_vers.upd: entity does not exist') END;
+  SELECT CASE WHEN NEW.supersedes_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_330_01_tb WHERE vers_id = NEW.supersedes_id) THEN RAISE(ABORT, 'ent_vers.upd: supersedes does not exist') END;
+  SELECT CASE WHEN NEW.supersedes_id IS NOT NULL AND NEW.supersedes_id = NEW.vers_id THEN RAISE(ABORT, 'ent_vers.upd: cannot supersede self') END;
+  SELECT CASE WHEN NEW.supersedes_id IS NOT NULL AND (SELECT ent_id FROM e01_330_01_tb WHERE vers_id = NEW.supersedes_id) <> NEW.ent_id THEN RAISE(ABORT, 'ent_vers.upd: supersedes cross-entity') END;
+  SELECT CASE WHEN NEW.supersedes_id IS NOT NULL AND EXISTS (WITH RECURSIVE chain(vid, depth) AS (SELECT NEW.supersedes_id, 0 UNION ALL SELECT v.supersedes_id, chain.depth + 1 FROM e01_330_01_tb v JOIN chain ON v.vers_id = chain.vid WHERE v.supersedes_id IS NOT NULL AND chain.depth < (SELECT int_value FROM e01_676_03_tb WHERE param_uid='max_version_depth')) SELECT 1 FROM chain WHERE vid = NEW.vers_id) THEN RAISE(ABORT, 'ent_vers.upd: supersedes chain cycle') END;
+  SELECT CASE WHEN NEW.approved_by_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_200_03_tb WHERE ent_id = NEW.approved_by_id) THEN RAISE(ABORT, 'ent_vers.upd: approver does not exist') END;
+END;
+CREATE TRIGGER e03_370_18_tr BEFORE UPDATE OF ent_id, vers_id ON e01_330_02_tb
+BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_200_03_tb WHERE ent_id = NEW.ent_id) THEN RAISE(ABORT, 'ent_snap.upd: entity does not exist') END; SELECT CASE WHEN NEW.vers_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_330_01_tb WHERE vers_id = NEW.vers_id) THEN RAISE(ABORT, 'ent_snap.upd: vers does not exist') END; SELECT CASE WHEN NEW.vers_id IS NOT NULL AND (SELECT ent_id FROM e01_330_01_tb WHERE vers_id = NEW.vers_id) <> NEW.ent_id THEN RAISE(ABORT, 'ent_snap.upd: vers cross-entity') END; END;
+CREATE TRIGGER e03_370_21_tr BEFORE DELETE ON e01_506_01_tb
+BEGIN SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_516_01_tb WHERE need_uid = OLD.need_uid UNION ALL SELECT 1 FROM e01_506_06_tb WHERE need_uid = OLD.need_uid UNION ALL SELECT 1 FROM e01_506_03_tb WHERE need_uid = OLD.need_uid UNION ALL SELECT 1 FROM e01_778_01_tb WHERE need_uid = OLD.need_uid UNION ALL SELECT 1 FROM e01_778_02_tb WHERE need_uid = OLD.need_uid UNION ALL SELECT 1 FROM e01_778_03_tb WHERE root_need_uid = OLD.need_uid UNION ALL SELECT 1 FROM e01_778_04_tb WHERE need_uid = OLD.need_uid) THEN RAISE(ABORT, 'nee_stor referenced; use status=deferred/dropped') END; END;
+CREATE TRIGGER e03_370_22_tr BEFORE DELETE ON e01_506_02_tb
+BEGIN SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_516_01_tb WHERE atom_uid = OLD.atom_uid UNION ALL SELECT 1 FROM e01_506_04_tb WHERE atom_uid = OLD.atom_uid) THEN RAISE(ABORT, 'req_stor referenced; use status=deferred/dropped') END; END;
+CREATE TRIGGER e03_370_23_tr BEFORE DELETE ON e01_506_03_tb
+BEGIN SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_506_04_tb WHERE element_name = OLD.element_name UNION ALL SELECT 1 FROM e01_778_02_tb WHERE element_name = OLD.element_name UNION ALL SELECT 1 FROM e01_778_04_tb WHERE element_name = OLD.element_name) THEN RAISE(ABORT, 'ele_stor referenced') END; END;
+CREATE TRIGGER e03_370_24_tr BEFORE DELETE ON e01_506_07_tb
+BEGIN SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_506_08_tb WHERE dim_uid = OLD.dim_uid) THEN RAISE(ABORT, 'dim_stor referenced') END; END;
+CREATE TRIGGER e03_370_25_tr BEFORE DELETE ON e01_506_05_tb
+BEGIN SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_506_05_tb WHERE parent_uid = OLD.question_uid UNION ALL SELECT 1 FROM e01_506_06_tb WHERE question_uid = OLD.question_uid) THEN RAISE(ABORT, 'que_gram referenced') END; END;
+CREATE TRIGGER e03_370_26_tr BEFORE DELETE ON e01_330_01_tb
+BEGIN SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_330_01_tb WHERE supersedes_id = OLD.vers_id UNION ALL SELECT 1 FROM e01_330_02_tb WHERE vers_id = OLD.vers_id) THEN RAISE(ABORT, 'ent_vers referenced; use status=deprecated') END; END;
+CREATE TRIGGER e03_310_03_tr BEFORE INSERT ON e01_201_02_tb
+BEGIN SELECT CASE WHEN NEW.enum_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_201_01_tb WHERE val_id = NEW.enum_id) THEN RAISE(ABORT, 'enum value does not exist') END; END;
+CREATE TRIGGER e03_310_04_tr BEFORE UPDATE OF enum_id ON e01_201_02_tb
+BEGIN SELECT CASE WHEN NEW.enum_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_201_01_tb WHERE val_id = NEW.enum_id) THEN RAISE(ABORT, 'enum value does not exist (upd)') END; END;
+CREATE TRIGGER e03_310_05_tr BEFORE INSERT ON e01_201_03_tb
+BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_201_02_tb WHERE val_id = NEW.parent_id) THEN RAISE(ABORT, 'val_memb: parent does not exist') END; SELECT CASE WHEN NEW.member_val_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_201_02_tb WHERE val_id = NEW.member_val_id) THEN RAISE(ABORT, 'val_memb: member_val does not exist') END; SELECT CASE WHEN NEW.member_ent_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_200_03_tb WHERE ent_id = NEW.member_ent_id) THEN RAISE(ABORT, 'val_memb: member_ent does not exist') END; END;
+CREATE TRIGGER e03_310_06_tr BEFORE UPDATE OF parent_id, member_val_id, member_ent_id ON e01_201_03_tb
+BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM e01_201_02_tb WHERE val_id = NEW.parent_id) THEN RAISE(ABORT, 'val_memb.upd: parent does not exist') END; SELECT CASE WHEN NEW.member_val_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_201_02_tb WHERE val_id = NEW.member_val_id) THEN RAISE(ABORT, 'val_memb.upd: member_val does not exist') END; SELECT CASE WHEN NEW.member_ent_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_200_03_tb WHERE ent_id = NEW.member_ent_id) THEN RAISE(ABORT, 'val_memb.upd: member_ent does not exist') END; END;
+CREATE TRIGGER e03_328_01_tr BEFORE UPDATE OF need_uid ON e01_506_01_tb WHEN OLD.need_uid <> NEW.need_uid BEGIN SELECT RAISE(ABORT, 'e01_506_01_tb.need_uid is immutable'); END;
+CREATE TRIGGER e03_328_02_tr BEFORE UPDATE OF atom_uid ON e01_506_02_tb WHEN OLD.atom_uid <> NEW.atom_uid BEGIN SELECT RAISE(ABORT, 'e01_506_02_tb.atom_uid is immutable'); END;
+CREATE TRIGGER e03_328_04_tr BEFORE UPDATE OF element_name ON e01_506_03_tb WHEN OLD.element_name <> NEW.element_name BEGIN SELECT RAISE(ABORT, 'e01_506_03_tb.element_name is immutable'); END;
+CREATE TRIGGER e03_328_05_tr BEFORE UPDATE OF trace_id ON e01_506_04_tb WHEN OLD.trace_id <> NEW.trace_id BEGIN SELECT RAISE(ABORT, 'e01_506_04_tb.trace_id is immutable'); END;
+CREATE TRIGGER e03_328_06_tr BEFORE UPDATE OF question_uid ON e01_506_05_tb WHEN OLD.question_uid <> NEW.question_uid BEGIN SELECT RAISE(ABORT, 'e01_506_05_tb.question_uid is immutable'); END;
+CREATE TRIGGER e03_328_07_tr BEFORE UPDATE OF node_id ON e01_506_06_tb WHEN OLD.node_id <> NEW.node_id BEGIN SELECT RAISE(ABORT, 'e01_506_06_tb.node_id is immutable'); END;
+CREATE TRIGGER e03_328_08_tr BEFORE UPDATE OF migration_uid ON e01_676_01_tb WHEN OLD.migration_uid <> NEW.migration_uid BEGIN SELECT RAISE(ABORT, 'e01_676_01_tb.migration_uid is immutable'); END;
+CREATE TRIGGER e03_328_09_tr BEFORE UPDATE OF id ON e01_676_02_tb WHEN OLD.id <> NEW.id BEGIN SELECT RAISE(ABORT, 'e01_676_02_tb.id is immutable'); END;
+CREATE TRIGGER e03_328_10_tr BEFORE UPDATE OF ref_id ON e01_378_01_tb WHEN OLD.ref_id <> NEW.ref_id BEGIN SELECT RAISE(ABORT, 'e01_378_01_tb.ref_id is immutable'); END;
+CREATE TRIGGER e03_328_11_tr BEFORE UPDATE OF dim_uid ON e01_506_07_tb WHEN OLD.dim_uid <> NEW.dim_uid BEGIN SELECT RAISE(ABORT, 'e01_506_07_tb.dim_uid is immutable'); END;
+CREATE TRIGGER e03_328_12_tr BEFORE UPDATE OF value_id ON e01_506_08_tb WHEN OLD.value_id <> NEW.value_id BEGIN SELECT RAISE(ABORT, 'e01_506_08_tb.value_id is immutable'); END;
+CREATE TRIGGER e03_328_13_tr BEFORE UPDATE OF type_id ON e01_200_01_tb WHEN OLD.type_id <> NEW.type_id BEGIN SELECT RAISE(ABORT, 'e01_200_01_tb.type_id is immutable'); END;
+CREATE TRIGGER e03_328_14_tr BEFORE UPDATE OF desc_id, anc_id ON e01_120_01_tb WHEN OLD.desc_id <> NEW.desc_id OR OLD.anc_id <> NEW.anc_id BEGIN SELECT RAISE(ABORT, 'e01_120_01_tb PK is immutable'); END;
+CREATE TRIGGER e03_328_15_tr BEFORE UPDATE OF reltype_id ON e01_202_01_tb WHEN OLD.reltype_id <> NEW.reltype_id BEGIN SELECT RAISE(ABORT, 'e01_202_01_tb.reltype_id is immutable'); END;
+CREATE TRIGGER e03_328_16_tr BEFORE UPDATE OF cons_id ON e01_112_01_tb WHEN OLD.cons_id <> NEW.cons_id BEGIN SELECT RAISE(ABORT, 'e01_112_01_tb.cons_id is immutable'); END;
+CREATE TRIGGER e03_328_17_tr BEFORE UPDATE OF dom_id ON e01_200_02_tb WHEN OLD.dom_id <> NEW.dom_id BEGIN SELECT RAISE(ABORT, 'e01_200_02_tb.dom_id is immutable'); END;
+CREATE TRIGGER e03_328_18_tr BEFORE UPDATE OF val_id ON e01_201_01_tb WHEN OLD.val_id <> NEW.val_id BEGIN SELECT RAISE(ABORT, 'e01_201_01_tb.val_id is immutable'); END;
+CREATE TRIGGER e03_328_19_tr BEFORE UPDATE OF prv_id ON e01_303_01_tb WHEN OLD.prv_id <> NEW.prv_id BEGIN SELECT RAISE(ABORT, 'e01_303_01_tb.prv_id is immutable'); END;
+CREATE TRIGGER e03_328_20_tr BEFORE UPDATE OF ent_id ON e01_200_03_tb WHEN OLD.ent_id <> NEW.ent_id BEGIN SELECT RAISE(ABORT, 'e01_200_03_tb.ent_id is immutable'); END;
+CREATE TRIGGER e03_328_21_tr BEFORE UPDATE OF val_id ON e01_201_02_tb WHEN OLD.val_id <> NEW.val_id BEGIN SELECT RAISE(ABORT, 'e01_201_02_tb.val_id is immutable'); END;
+CREATE TRIGGER e03_328_22_tr BEFORE UPDATE OF memb_id ON e01_201_03_tb WHEN OLD.memb_id <> NEW.memb_id BEGIN SELECT RAISE(ABORT, 'e01_201_03_tb.memb_id is immutable'); END;
+CREATE TRIGGER e03_328_23_tr BEFORE UPDATE OF lin_id ON e01_302_01_tb WHEN OLD.lin_id <> NEW.lin_id BEGIN SELECT RAISE(ABORT, 'e01_302_01_tb.lin_id is immutable'); END;
+CREATE TRIGGER e03_328_24_tr BEFORE UPDATE OF rel_id ON e01_222_01_tb WHEN OLD.rel_id <> NEW.rel_id BEGIN SELECT RAISE(ABORT, 'e01_222_01_tb.rel_id is immutable'); END;
+CREATE TRIGGER e03_328_25_tr BEFORE UPDATE OF ctx_id ON e01_305_01_tb WHEN OLD.ctx_id <> NEW.ctx_id BEGIN SELECT RAISE(ABORT, 'e01_305_01_tb.ctx_id is immutable'); END;
+CREATE TRIGGER e03_328_26_tr BEFORE UPDATE OF ctx_id ON e01_305_02_tb WHEN OLD.ctx_id <> NEW.ctx_id BEGIN SELECT RAISE(ABORT, 'e01_305_02_tb.ctx_id is immutable'); END;
+CREATE TRIGGER e03_328_27_tr BEFORE UPDATE OF ctx_id ON e01_305_03_tb WHEN OLD.ctx_id <> NEW.ctx_id BEGIN SELECT RAISE(ABORT, 'e01_305_03_tb.ctx_id is immutable'); END;
+CREATE TRIGGER e03_328_28_tr BEFORE UPDATE OF clm_id ON e01_300_01_tb WHEN OLD.clm_id <> NEW.clm_id BEGIN SELECT RAISE(ABORT, 'e01_300_01_tb.clm_id is immutable'); END;
+CREATE TRIGGER e03_328_29_tr BEFORE UPDATE OF vers_id ON e01_330_01_tb WHEN OLD.vers_id <> NEW.vers_id BEGIN SELECT RAISE(ABORT, 'e01_330_01_tb.vers_id is immutable'); END;
+CREATE TRIGGER e03_328_30_tr BEFORE UPDATE OF snap_id ON e01_330_02_tb WHEN OLD.snap_id <> NEW.snap_id BEGIN SELECT RAISE(ABORT, 'e01_330_02_tb.snap_id is immutable'); END;
+CREATE TRIGGER e03_328_31_tr BEFORE UPDATE OF source_type, source_ref ON e01_303_01_tb WHEN OLD.source_type = 'unknown' AND OLD.source_ref = 'system:unknown' AND (NEW.source_type <> 'unknown' OR NEW.source_ref <> 'system:unknown') BEGIN SELECT RAISE(ABORT, 'fallback provenance identity is immutable'); END;
+CREATE TRIGGER e03_328_32_tr BEFORE DELETE ON e01_676_02_tb BEGIN SELECT RAISE(ABORT, 'schema state row cannot be deleted'); END;
+CREATE TRIGGER e03_328_33_tr BEFORE UPDATE OF verb_code ON e01_506_09_tb WHEN OLD.verb_code <> NEW.verb_code BEGIN SELECT RAISE(ABORT, 'e01_506_09_tb.verb_code is immutable'); END;
+CREATE TRIGGER e03_328_34_tr BEFORE UPDATE OF entity_code ON e01_506_10_tb WHEN OLD.entity_code <> NEW.entity_code BEGIN SELECT RAISE(ABORT, 'e01_506_10_tb.entity_code is immutable'); END;
+CREATE TRIGGER e03_328_35_tr BEFORE UPDATE OF constraint_code ON e01_506_11_tb WHEN OLD.constraint_code <> NEW.constraint_code BEGIN SELECT RAISE(ABORT, 'e01_506_11_tb.constraint_code is immutable'); END;
+CREATE TRIGGER e03_328_36_tr BEFORE UPDATE OF schema_ver ON e01_676_02_tb WHEN NEW.schema_ver < OLD.schema_ver BEGIN SELECT RAISE(ABORT, 'schema_ver cannot decrease'); END;
+CREATE TRIGGER e03_328_37_tr BEFORE UPDATE OF param_uid ON e01_676_03_tb WHEN OLD.param_uid <> NEW.param_uid BEGIN SELECT RAISE(ABORT, 'e01_676_03_tb.param_uid is immutable'); END;
+CREATE VIEW e04_200_01_vw AS SELECT 'entity_type' AS node_kind, type_id AS node_id, type_uid, label, description FROM e01_200_01_tb UNION ALL SELECT 'relation_type', reltype_id, type_uid, label, description FROM e01_202_01_tb UNION ALL SELECT 'enum_domain', dom_id, dom_uid, label, description FROM e01_200_02_tb;
+CREATE VIEW e04_230_01_vw AS SELECT ent_id, ent_uid, type_id, label, description, status FROM e01_200_03_tb WHERE nature = 'concept';
+CREATE VIEW e04_230_02_vw AS SELECT ent_id, ent_uid, type_id, label, description, status FROM e01_200_03_tb WHERE nature = 'instance';
+CREATE VIEW e04_340_01_vw AS SELECT * FROM e01_222_01_tb WHERE superseded_at IS NULL;
+CREATE VIEW e04_340_02_vw AS SELECT * FROM e01_222_01_tb WHERE superseded_at IS NULL AND status = 'asserted';
+CREATE VIEW e04_340_04_vw AS SELECT r.lin_id, r.rel_uid, r.subj_ent_id, r.reltype_id, r.valid_from, r.valid_to, r.recorded_at, r.superseded_at, r.status, CASE WHEN r.superseded_at IS NULL THEN 1 ELSE 0 END AS is_current FROM e01_222_01_tb r;
+CREATE VIEW e04_325_01_vw AS SELECT 'entity' AS tgt_kind, ctx_id AS qual_id, ent_id AS tgt_id, ctx_ent_id, ctx_val_id, role, valid_from, valid_to, prv_id FROM e01_305_01_tb UNION ALL SELECT 'value', ctx_id, val_id, ctx_ent_id, ctx_val_id, role, valid_from, valid_to, prv_id FROM e01_305_02_tb UNION ALL SELECT 'relation', ctx_id, rel_id, ctx_ent_id, ctx_val_id, role, valid_from, valid_to, prv_id FROM e01_305_03_tb;
+CREATE VIEW e04_310_01_vw AS SELECT DISTINCT a.ent_a_id, a.ent_b_id FROM e01_300_01_tb a JOIN e01_300_01_tb b ON a.ent_a_id = b.ent_a_id AND a.ent_b_id = b.ent_b_id AND a.clm_type = 'same_as' AND b.clm_type = 'distinct_from' WHERE a.status = 'asserted' AND b.status = 'asserted';
+CREATE VIEW e04_311_01_vw AS SELECT v.val_id, v.value_kind, 'absence_kind_with_payload' AS violation_kind FROM e01_201_02_tb v WHERE v.value_kind IN ('unknown','not_observed','not_recorded','not_applicable') AND (v.num_val IS NOT NULL OR v.text_val IS NOT NULL OR v.text_norm IS NOT NULL OR v.bool_val IS NOT NULL OR v.dt_start IS NOT NULL OR v.dt_end IS NOT NULL OR v.num_min IS NOT NULL OR v.num_max IS NOT NULL OR v.enum_id IS NOT NULL OR v.json_val IS NOT NULL);
+CREATE VIEW e04_122_01_vw AS WITH RECURSIVE cl(sub_id, anc_id) AS (SELECT r.subj_ent_id, r.obj_ent_id FROM e01_222_01_tb r JOIN e01_202_01_tb rt ON rt.reltype_id = r.reltype_id WHERE rt.type_uid = 'is_a' AND r.superseded_at IS NULL AND r.status = 'asserted' UNION SELECT c.sub_id, r.obj_ent_id FROM cl c JOIN e01_222_01_tb r ON r.subj_ent_id = c.anc_id JOIN e01_202_01_tb rt ON rt.reltype_id = r.reltype_id WHERE rt.type_uid = 'is_a' AND r.superseded_at IS NULL AND r.status = 'asserted') SELECT * FROM cl;
+CREATE VIEW e04_267_01_vw AS SELECT v.ent_id AS vehicle_entity_id, v.ent_uid, v.label AS vehicle_label, (SELECT vs.text_val FROM e01_222_01_tb r JOIN e01_202_01_tb rt ON rt.reltype_id = r.reltype_id JOIN e01_201_02_tb vs ON vs.val_id = r.obj_val_id WHERE r.subj_ent_id = v.ent_id AND rt.type_uid = 'has_vin' AND r.superseded_at IS NULL AND r.status = 'asserted' ORDER BY r.recorded_at DESC, r.rel_id DESC LIMIT 1) AS vin, (SELECT oe.label FROM e01_222_01_tb r JOIN e01_202_01_tb rt ON rt.reltype_id = r.reltype_id JOIN e01_200_03_tb oe ON oe.ent_id = r.obj_ent_id WHERE r.subj_ent_id = v.ent_id AND rt.type_uid = 'instance_of' AND r.superseded_at IS NULL AND r.status = 'asserted' ORDER BY r.recorded_at DESC, r.rel_id DESC LIMIT 1) AS model_label FROM e01_200_03_tb v JOIN e01_200_01_tb et ON et.type_id = v.type_id AND et.type_uid = 'Vehicle' WHERE v.nature = 'instance' AND v.status = 'active';
+CREATE VIEW e04_267_02_vw AS SELECT r.obj_ent_id AS vehicle_entity_id, r.subj_ent_id AS unit_entity_id, et.type_uid AS unit_type_uid, CASE WHEN et.type_uid = 'ECU' THEN 1 ELSE 0 END AS is_ecu FROM e01_222_01_tb r JOIN e01_202_01_tb rt ON rt.reltype_id = r.reltype_id AND rt.type_uid = 'installed_on' JOIN e01_200_03_tb u ON u.ent_id = r.subj_ent_id JOIN e01_200_01_tb et ON et.type_id = u.type_id WHERE r.superseded_at IS NULL AND r.status = 'asserted';
+CREATE VIEW e04_260_01_vw AS SELECT e.ent_id AS ecu_entity_id, e.ent_uid AS ecu_uid, e.label AS ecu_label, e.description AS ecu_description, e.status FROM e01_200_03_tb e JOIN e01_200_01_tb et ON et.type_id = e.type_id AND et.type_uid = 'ECU';
+CREATE VIEW e04_260_02_vw AS SELECT c.ent_id AS case_entity_id FROM e01_200_03_tb c JOIN e01_200_01_tb et ON et.type_id = c.type_id WHERE et.type_uid = 'Case';
+CREATE VIEW e04_260_03_vw AS SELECT t.ent_id AS tech_entity_id, t.label AS tech_label, 0 AS cases_count FROM e01_200_03_tb t JOIN e01_200_01_tb et_t ON et_t.type_id = t.type_id AND et_t.type_uid = 'Technician' WHERE t.status = 'active';
+CREATE VIEW e04_110_01_vw AS WITH RECURSIVE expected(desc_id, anc_id, depth, path, cycle) AS (SELECT t.type_id, t.type_id, 0, ',' || CAST(t.type_id AS TEXT) || ',', 0 FROM e01_200_01_tb t UNION ALL SELECT e.desc_id, p.parent_id, e.depth + 1, e.path || CAST(p.parent_id AS TEXT) || ',', CASE WHEN instr(e.path, ',' || CAST(p.parent_id AS TEXT) || ',') > 0 THEN 1 ELSE 0 END FROM expected e JOIN e01_200_01_tb p ON p.type_id = e.anc_id WHERE e.cycle = 0 AND p.parent_id IS NOT NULL AND e.depth < 100), expected_rows AS (SELECT desc_id, anc_id, depth FROM expected WHERE cycle = 0), actual AS (SELECT desc_id, anc_id, depth, COUNT(*) AS n FROM e01_120_01_tb GROUP BY desc_id, anc_id, depth) SELECT 'missing_expected_row', e.desc_id FROM expected_rows e WHERE NOT EXISTS (SELECT 1 FROM actual a WHERE a.desc_id = e.desc_id AND a.anc_id = e.anc_id AND a.depth = e.depth) UNION ALL SELECT 'orphan_closure_row', cl.desc_id FROM e01_120_01_tb cl WHERE NOT EXISTS (SELECT 1 FROM e01_200_01_tb t WHERE t.type_id = cl.desc_id) OR NOT EXISTS (SELECT 1 FROM e01_200_01_tb t WHERE t.type_id = cl.anc_id) UNION ALL SELECT 'closure_cycle', cl.desc_id FROM e01_120_01_tb cl WHERE cl.desc_id = cl.anc_id AND cl.depth > 0;
+CREATE VIEW e04_110_02_vw AS SELECT 'T' AS layer, 'parent_self' AS violation_kind, t.type_id AS object_id, t.type_uid AS detail FROM e01_200_01_tb t WHERE t.parent_id = t.type_id UNION ALL SELECT 'T', 'parent_orphan', t.type_id, CAST(t.parent_id AS TEXT) FROM e01_200_01_tb t WHERE t.parent_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_200_01_tb p WHERE p.type_id = t.parent_id) UNION ALL SELECT 'T', 'inverse_orphan', r.reltype_id, r.inverse_uid FROM e01_202_01_tb r WHERE r.inverse_uid IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_202_01_tb x WHERE x.type_uid = r.inverse_uid);
+CREATE VIEW e04_310_02_vw AS SELECT 'rel_subject' AS violation_kind, r.rel_id AS id, r.rel_uid AS uid FROM e01_222_01_tb r WHERE NOT EXISTS (SELECT 1 FROM e01_200_03_tb e WHERE e.ent_id = r.subj_ent_id) UNION ALL SELECT 'rel_object_ent', r.rel_id, r.rel_uid FROM e01_222_01_tb r WHERE r.obj_ent_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM e01_200_03_tb e WHERE e.ent_id = r.obj_ent_id) UNION ALL SELECT 'ent_type', e.ent_id, e.ent_uid FROM e01_200_03_tb e WHERE NOT EXISTS (SELECT 1 FROM e01_200_01_tb t WHERE t.type_id = e.type_id);
+CREATE TRIGGER e03_778_13_tr BEFORE DELETE ON e01_778_05_tb
+WHEN OLD.is_mandatory = 1
+BEGIN
+    SELECT CASE WHEN EXISTS (SELECT 1 FROM e01_778_02_tb m WHERE m.element_name = OLD.element_name AND m.need_uid = OLD.need_uid AND m.is_primary = 1 AND m.is_driving = 1)
+        THEN RAISE(ABORT, 'policy: cannot delete mandatory policy of driving element') END;
+END;
+CREATE TRIGGER e03_778_10_tr BEFORE UPDATE OF policy_id ON e01_778_05_tb WHEN OLD.policy_id <> NEW.policy_id BEGIN SELECT RAISE(ABORT, 'policy_id immutable'); END;
+CREATE TRIGGER e03_120_01_tr
+BEFORE UPDATE OF parent_id ON e01_200_01_tb
+WHEN NEW.parent_id IS NOT NULL AND NEW.parent_id <> NEW.type_id
+BEGIN
+    SELECT CASE WHEN EXISTS (
+        SELECT 1 FROM e01_120_01_tb
+        WHERE desc_id = NEW.parent_id AND anc_id = NEW.type_id
+    ) THEN RAISE(ABORT, 'type hierarchy: cycle detected') END;
+END;
+CREATE TRIGGER e03_120_04_tr
+BEFORE INSERT ON e01_200_03_tb
+BEGIN
+    SELECT CASE WHEN (SELECT type_id FROM e01_200_01_tb WHERE type_id=NEW.type_id) IS NULL
+        THEN RAISE(ABORT, 'entity type does not exist') END;
+    SELECT CASE WHEN NEW.nature = 'instance'
+             AND (SELECT is_abstract FROM e01_200_01_tb WHERE type_id = NEW.type_id) = 1
+        THEN RAISE(ABORT, 'cannot instantiate abstract type') END;
+END;
+CREATE TRIGGER e03_120_05_tr
+BEFORE UPDATE OF type_id, nature ON e01_200_03_tb
+BEGIN
+    SELECT CASE WHEN (SELECT type_id FROM e01_200_01_tb WHERE type_id=NEW.type_id) IS NULL
+        THEN RAISE(ABORT, 'entity type does not exist (upd)') END;
+    SELECT CASE WHEN NEW.nature = 'instance'
+             AND (SELECT is_abstract FROM e01_200_01_tb WHERE type_id = NEW.type_id) = 1
+        THEN RAISE(ABORT, 'cannot reassign to abstract type') END;
+END;
+CREATE TRIGGER e03_122_01_tr
+BEFORE INSERT ON e01_222_01_tb
+WHEN NEW.reltype_id = (SELECT reltype_id FROM e01_202_01_tb WHERE type_uid='is_a')
+ AND NEW.superseded_at IS NULL AND NEW.status = 'asserted'
+BEGIN
+    SELECT CASE WHEN NEW.subj_ent_id = NEW.obj_ent_id
+        THEN RAISE(ABORT, 'is_a: self-reference not allowed') END;
+    SELECT CASE WHEN EXISTS (
+        WITH RECURSIVE anc(id, depth) AS (
+            SELECT NEW.obj_ent_id, 0
+            UNION ALL
+            SELECT r.obj_ent_id, anc.depth + 1
+            FROM e01_222_01_tb r
+            JOIN e01_202_01_tb rt ON rt.reltype_id = r.reltype_id
+            JOIN anc ON r.subj_ent_id = anc.id
+            WHERE rt.type_uid = 'is_a'
+              AND r.superseded_at IS NULL AND r.status = 'asserted'
+              AND anc.depth < 50
+        )
+        SELECT 1 FROM anc WHERE id = NEW.subj_ent_id
+    ) THEN RAISE(ABORT, 'is_a: cycle detected') END;
+END;
+CREATE TRIGGER e03_122_02_tr
+BEFORE UPDATE OF subj_ent_id, obj_ent_id, reltype_id, status, superseded_at
+ON e01_222_01_tb
+WHEN NEW.reltype_id = (SELECT reltype_id FROM e01_202_01_tb WHERE type_uid='is_a')
+ AND NEW.superseded_at IS NULL AND NEW.status = 'asserted'
+BEGIN
+    SELECT CASE WHEN NEW.subj_ent_id = NEW.obj_ent_id
+        THEN RAISE(ABORT, 'is_a: self-reference (upd)') END;
+    SELECT CASE WHEN EXISTS (
+        WITH RECURSIVE anc(id, depth) AS (
+            SELECT NEW.obj_ent_id, 0
+            UNION ALL
+            SELECT r.obj_ent_id, anc.depth + 1
+            FROM e01_222_01_tb r
+            JOIN e01_202_01_tb rt ON rt.reltype_id = r.reltype_id
+            JOIN anc ON r.subj_ent_id = anc.id
+            WHERE rt.type_uid = 'is_a'
+              AND r.superseded_at IS NULL AND r.status = 'asserted'
+              AND r.rel_id <> NEW.rel_id
+              AND anc.depth < 50
+        )
+        SELECT 1 FROM anc WHERE id = NEW.subj_ent_id
+    ) THEN RAISE(ABORT, 'is_a: cycle detected (upd)') END;
+END;
+CREATE VIEW e04_978_01_vw AS
+SELECT 'M_fk' AS check_name, 0 AS has_violation, 'healthy' AS expectation
+UNION ALL SELECT 'T_semantic', CASE WHEN EXISTS(SELECT 1 FROM e04_110_02_vw) THEN 1 ELSE 0 END, 'healthy'
+UNION ALL SELECT 'C_orphan', CASE WHEN EXISTS(SELECT 1 FROM e04_310_02_vw) THEN 1 ELSE 0 END, 'healthy'
+UNION ALL SELECT 'M_primary_unguarded',
+  CASE WHEN EXISTS(
+    SELECT 1 FROM e01_778_02_tb m
+    WHERE m.is_primary = 1
+      AND NOT EXISTS (SELECT 1 FROM e01_778_05_tb p
+                      WHERE p.element_name = m.element_name
+                        AND p.need_uid = m.need_uid
+                        AND p.is_mandatory = 1)
+  ) THEN 1 ELSE 0 END,
+  'healthy'
+UNION ALL SELECT 'M_fk_unanchored',
+  CASE WHEN EXISTS(
+    SELECT 1 FROM e01_378_01_tb f
+    WHERE NOT EXISTS (SELECT 1 FROM e01_778_05_tb p
+                      WHERE p.fk_ref_id = f.ref_id AND p.policy_kind = 'fk')
+  ) THEN 1 ELSE 0 END,
+  'healthy'
+UNION ALL SELECT 'M_trigger_unanchored',
+  CASE WHEN EXISTS(
+    SELECT 1 FROM sqlite_master sm
+    WHERE sm.type = 'trigger' AND sm.name LIKE 'e03\_%' ESCAPE '\'
+      AND sm.name NOT LIKE 'e03\_778\_%' ESCAPE '\'
+      AND NOT EXISTS (SELECT 1 FROM e01_778_05_tb p WHERE p.exec_name = sm.name)
+  ) THEN 1 ELSE 0 END,
+  'healthy'
+UNION ALL SELECT 'M_policy_orphan',
+  CASE WHEN EXISTS(
+    SELECT 1 FROM e01_778_05_tb p
+    WHERE NOT EXISTS (SELECT 1 FROM e01_778_02_tb m
+                      WHERE m.element_name = p.element_name AND m.need_uid = p.need_uid)
+  ) THEN 1 ELSE 0 END,
+  'healthy'
+UNION ALL SELECT 'M_ver',
+  CASE WHEN (SELECT schema_ver FROM e01_676_02_tb WHERE id=1) >= 32 THEN 0 ELSE 1 END,
+  'ver>=32'
+UNION ALL SELECT 'M_policy_count',
+  CASE WHEN (SELECT COUNT(*) FROM e01_778_05_tb) >= 170 THEN 0 ELSE 1 END,
+  'count>=170';
+CREATE TRIGGER e03_120_02_tr AFTER INSERT ON e01_200_01_tb
+BEGIN
+    INSERT INTO e01_120_01_tb (desc_id, anc_id, depth)
+    VALUES (NEW.type_id, NEW.type_id, 0);
+    INSERT INTO e01_120_01_tb (desc_id, anc_id, depth)
+    SELECT NEW.type_id, anc_id, depth + 1
+    FROM e01_120_01_tb
+    WHERE desc_id = NEW.parent_id
+      AND NEW.parent_id IS NOT NULL
+      AND depth < (SELECT int_value FROM e01_676_03_tb WHERE param_uid='max_depth');
+END;
+CREATE TRIGGER e03_120_03_tr AFTER UPDATE OF parent_id ON e01_200_01_tb
+WHEN OLD.parent_id IS NOT NEW.parent_id
+BEGIN
+    DELETE FROM e01_120_01_tb;
+    INSERT INTO e01_120_01_tb (desc_id, anc_id, depth)
+    WITH RECURSIVE walk(desc_id, anc_id, depth) AS (
+        SELECT t.type_id, t.type_id, 0 FROM e01_200_01_tb t
+        UNION
+        SELECT w.desc_id, p.parent_id, w.depth + 1
+        FROM walk w
+        JOIN e01_200_01_tb p ON p.type_id = w.anc_id
+        WHERE p.parent_id IS NOT NULL
+          AND w.depth < (SELECT int_value FROM e01_676_03_tb WHERE param_uid='max_depth')
+    )
+    SELECT desc_id, anc_id, depth FROM walk;
+END;
+CREATE TRIGGER e03_434_01_tr AFTER INSERT ON e01_200_03_tb
+BEGIN
+    INSERT INTO e02_404_01_ft(rowid, label_norm, desc_norm)
+    VALUES (NEW.ent_id, COALESCE(NEW.label_norm, lower(trim(NEW.label))), COALESCE(NEW.desc_norm, ''));
+END;
+CREATE TRIGGER e03_434_02_tr AFTER DELETE ON e01_200_03_tb
+BEGIN
+    INSERT INTO e02_404_01_ft(e02_404_01_ft, rowid, label_norm, desc_norm)
+    VALUES ('delete', OLD.ent_id, COALESCE(OLD.label_norm, lower(trim(OLD.label))), COALESCE(OLD.desc_norm, ''));
+END;
+CREATE TRIGGER e03_434_03_tr AFTER UPDATE OF label_norm, desc_norm, label ON e01_200_03_tb
+WHEN NEW.label_norm IS NOT OLD.label_norm
+  OR NEW.desc_norm IS NOT OLD.desc_norm
+  OR NEW.label IS NOT OLD.label
+BEGIN
+    INSERT INTO e02_404_01_ft(e02_404_01_ft, rowid, label_norm, desc_norm)
+    VALUES ('delete', OLD.ent_id, COALESCE(OLD.label_norm, lower(trim(OLD.label))), COALESCE(OLD.desc_norm, ''));
+    INSERT INTO e02_404_01_ft(rowid, label_norm, desc_norm)
+    VALUES (NEW.ent_id, COALESCE(NEW.label_norm, lower(trim(NEW.label))), COALESCE(NEW.desc_norm, ''));
+END;
+CREATE TRIGGER e03_434_04_tr AFTER INSERT ON e01_200_03_tb
+WHEN NEW.label_norm IS NULL
+BEGIN
+    UPDATE e01_200_03_tb SET label_norm = lower(trim(NEW.label))
+    WHERE ent_id = NEW.ent_id;
+END;
+CREATE TRIGGER e03_434_05_tr AFTER UPDATE OF label ON e01_200_03_tb
+WHEN NEW.label IS NOT OLD.label AND NEW.label_norm IS NULL
+BEGIN
+    UPDATE e01_200_03_tb SET label_norm = lower(trim(NEW.label))
+    WHERE ent_id = NEW.ent_id;
+END;
+CREATE TRIGGER e03_778_10b_tr
+BEFORE UPDATE OF element_name, policy_kind ON e01_778_05_tb
+WHEN OLD.element_name <> NEW.element_name
+  OR OLD.policy_kind <> NEW.policy_kind
+BEGIN SELECT RAISE(ABORT, 'policy identity immutable'); END;
+CREATE TRIGGER e03_778_11_tr BEFORE INSERT ON e01_778_05_tb
+BEGIN
+    SELECT CASE WHEN NOT EXISTS (
+        SELECT 1 FROM e01_506_03_tb WHERE element_name = NEW.element_name)
+    THEN RAISE(ABORT, 'policy: element not registered') END;
+    SELECT CASE WHEN NOT EXISTS (
+        SELECT 1 FROM e01_506_01_tb
+        WHERE need_uid = NEW.need_uid AND status IN ('active','deferred'))
+    THEN RAISE(ABORT, 'policy: need not active or deferred') END;
+END;
+CREATE VIEW e04_900_01_vw AS
+SELECT domain, declared, realized,
+  CASE WHEN declared > 0 THEN ROUND(100.0 * realized / declared, 1) ELSE 100.0 END AS coverage_pct,
+  missing, orphan, severity_class,
+  CASE
+    WHEN declared = 0 THEN 'na'
+    WHEN realized >= declared AND missing = 0 AND orphan = 0 THEN 'healthy'
+    WHEN severity_class = 'expected' THEN 'info'
+    WHEN 100.0 * realized / declared >= 80 THEN 'watch'
+    ELSE 'critical'
+  END AS status
+FROM (
+  SELECT 'needs_to_policy' AS domain,
+    (SELECT COUNT(*) FROM e01_506_01_tb) AS declared,
+    (SELECT COUNT(DISTINCT need_uid) FROM e01_778_05_tb) AS realized,
+    (SELECT COUNT(*) FROM e01_506_01_tb n WHERE NOT EXISTS (SELECT 1 FROM e01_778_05_tb p WHERE p.need_uid = n.need_uid)) AS missing,
+    0 AS orphan, 'real_issue' AS severity_class
+  UNION ALL SELECT 'atoms_to_link',
+    (SELECT COUNT(*) FROM e01_506_02_tb),
+    (SELECT COUNT(DISTINCT atom_uid) FROM e01_516_01_tb),
+    (SELECT COUNT(*) FROM e01_506_02_tb a WHERE NOT EXISTS (SELECT 1 FROM e01_516_01_tb l WHERE l.atom_uid = a.atom_uid)),
+    0, 'real_issue'
+  UNION ALL SELECT 'atoms_to_trace',
+    (SELECT COUNT(*) FROM e01_506_02_tb),
+    (SELECT COUNT(DISTINCT atom_uid) FROM e01_506_04_tb),
+    (SELECT COUNT(*) FROM e01_506_02_tb a WHERE NOT EXISTS (SELECT 1 FROM e01_506_04_tb t WHERE t.atom_uid = a.atom_uid)),
+    0, 'real_issue'
+  UNION ALL SELECT 'elements_to_schema',
+    (SELECT COUNT(*) FROM e01_506_03_tb WHERE element_kind IN ('tb','tr','vw','ft') AND element_name NOT LIKE 'POLICY:%'),
+    (SELECT COUNT(*) FROM e01_506_03_tb e WHERE e.element_kind IN ('tb','tr','vw','ft') AND e.element_name NOT LIKE 'POLICY:%' AND EXISTS (SELECT 1 FROM sqlite_master sm WHERE sm.name = e.element_name)),
+    (SELECT COUNT(*) FROM e01_506_03_tb e WHERE e.element_kind IN ('tb','tr','vw','ft') AND e.element_name NOT LIKE 'POLICY:%' AND NOT EXISTS (SELECT 1 FROM sqlite_master sm WHERE sm.name = e.element_name)),
+    (SELECT COUNT(*) FROM sqlite_master sm WHERE sm.type IN ('table','trigger','view') AND sm.name LIKE 'e0%' AND sm.name NOT LIKE 'e02\_404\_01\_ft%' ESCAPE '\' AND NOT EXISTS (SELECT 1 FROM e01_506_03_tb e WHERE e.element_name = sm.name)),
+    'real_issue'
+  UNION ALL SELECT 'elements_to_matrix',
+    (SELECT COUNT(*) FROM e01_506_03_tb WHERE element_kind IN ('tb','tr','vw','ft') AND element_name NOT LIKE 'POLICY:%'),
+    (SELECT COUNT(*) FROM e01_506_03_tb e WHERE e.element_kind IN ('tb','tr','vw','ft') AND e.element_name NOT LIKE 'POLICY:%' AND EXISTS (SELECT 1 FROM e01_778_02_tb m WHERE m.element_name = e.element_name)),
+    (SELECT COUNT(*) FROM e01_506_03_tb e WHERE e.element_kind IN ('tb','tr','vw','ft') AND e.element_name NOT LIKE 'POLICY:%' AND NOT EXISTS (SELECT 1 FROM e01_778_02_tb m WHERE m.element_name = e.element_name)),
+    0, 'real_issue'
+  UNION ALL SELECT 'entity_types_to_instances',
+    (SELECT COUNT(*) FROM e01_200_01_tb),
+    (SELECT COUNT(DISTINCT type_id) FROM e01_200_03_tb),
+    (SELECT COUNT(*) FROM e01_200_01_tb t WHERE NOT EXISTS (SELECT 1 FROM e01_200_03_tb e WHERE e.type_id = t.type_id)),
+    0, 'expected'
+  UNION ALL SELECT 'relation_types_to_relations',
+    (SELECT COUNT(*) FROM e01_202_01_tb),
+    (SELECT COUNT(DISTINCT reltype_id) FROM e01_222_01_tb),
+    (SELECT COUNT(*) FROM e01_202_01_tb t WHERE NOT EXISTS (SELECT 1 FROM e01_222_01_tb r WHERE r.reltype_id = t.reltype_id)),
+    0, 'expected'
+  UNION ALL SELECT 'policies_to_elements',
+    (SELECT COUNT(*) FROM e01_778_05_tb),
+    (SELECT COUNT(*) FROM e01_778_05_tb p WHERE EXISTS (SELECT 1 FROM e01_506_03_tb e WHERE e.element_name = p.element_name)),
+    (SELECT COUNT(*) FROM e01_778_05_tb p WHERE NOT EXISTS (SELECT 1 FROM e01_506_03_tb e WHERE e.element_name = p.element_name)),
+    0, 'real_issue'
+  UNION ALL SELECT 'triggers_to_registry',
+    (SELECT COUNT(*) FROM sqlite_master WHERE type='trigger' AND name LIKE 'e03%'),
+    (SELECT COUNT(*) FROM sqlite_master sm WHERE sm.type='trigger' AND sm.name LIKE 'e03%' AND EXISTS (SELECT 1 FROM e01_506_03_tb e WHERE e.element_name = sm.name)),
+    (SELECT COUNT(*) FROM sqlite_master sm WHERE sm.type='trigger' AND sm.name LIKE 'e03%' AND NOT EXISTS (SELECT 1 FROM e01_506_03_tb e WHERE e.element_name = sm.name)),
+    0, 'real_issue'
+  UNION ALL SELECT 'triggers_to_anchor',
+    (SELECT COUNT(*) FROM sqlite_master WHERE type='trigger' AND name LIKE 'e03%'),
+    (SELECT COUNT(*) FROM sqlite_master sm WHERE sm.type='trigger' AND sm.name LIKE 'e03%' AND EXISTS (SELECT 1 FROM e01_778_05_tb p WHERE p.exec_name = sm.name)),
+    (SELECT COUNT(*) FROM sqlite_master sm WHERE sm.type='trigger' AND sm.name LIKE 'e03%' AND NOT EXISTS (SELECT 1 FROM e01_778_05_tb p WHERE p.exec_name = sm.name)),
+    0, 'real_issue'
+  UNION ALL SELECT 'fk_to_anchor',
+    (SELECT COUNT(*) FROM e01_378_01_tb),
+    (SELECT COUNT(*) FROM e01_378_01_tb f WHERE EXISTS (SELECT 1 FROM e01_778_05_tb p WHERE p.fk_ref_id = f.ref_id AND p.policy_kind='fk')),
+    (SELECT COUNT(*) FROM e01_378_01_tb f WHERE NOT EXISTS (SELECT 1 FROM e01_778_05_tb p WHERE p.fk_ref_id = f.ref_id AND p.policy_kind='fk')),
+    0, 'real_issue'
+  UNION ALL SELECT 'matrix_to_needs',
+    (SELECT COUNT(*) FROM e01_778_02_tb),
+    (SELECT COUNT(*) FROM e01_778_02_tb m WHERE EXISTS (SELECT 1 FROM e01_506_01_tb n WHERE n.need_uid = m.need_uid)),
+    (SELECT COUNT(*) FROM e01_778_02_tb m WHERE NOT EXISTS (SELECT 1 FROM e01_506_01_tb n WHERE n.need_uid = m.need_uid)),
+    0, 'real_issue'
+) t;
+CREATE TRIGGER e03_370_01_tr BEFORE INSERT ON e01_516_01_tb
+BEGIN
+    SELECT CASE WHEN NOT EXISTS (
+        SELECT 1 FROM e01_506_01_tb WHERE need_uid = NEW.need_uid)
+    THEN RAISE(ABORT, 'nee_atom: need does not exist') END;
+    SELECT CASE WHEN NOT EXISTS (
+        SELECT 1 FROM e01_506_02_tb WHERE atom_uid = NEW.atom_uid)
+    THEN RAISE(ABORT, 'nee_atom: atom does not exist') END;
+END;
+CREATE TRIGGER e03_370_11_tr BEFORE UPDATE OF need_uid, atom_uid ON e01_516_01_tb
+BEGIN
+    SELECT CASE WHEN NOT EXISTS (
+        SELECT 1 FROM e01_506_01_tb WHERE need_uid = NEW.need_uid)
+    THEN RAISE(ABORT, 'nee_atom.upd: need does not exist') END;
+    SELECT CASE WHEN NOT EXISTS (
+        SELECT 1 FROM e01_506_02_tb WHERE atom_uid = NEW.atom_uid)
+    THEN RAISE(ABORT, 'nee_atom.upd: atom does not exist') END;
+END;
+CREATE TRIGGER e03_370_33_tr 
+BEFORE UPDATE OF element_name, need_uid, role ON e01_778_02_tb
+WHEN OLD.element_name <> NEW.element_name 
+  OR OLD.need_uid <> NEW.need_uid
+  OR OLD.role <> NEW.role
+BEGIN SELECT RAISE(ABORT, 'e01_778_02_tb PK is immutable'); END;
+CREATE TRIGGER e03_370_14_tr
+BEFORE UPDATE OF dim_uid ON e01_506_08_tb
+BEGIN
+    SELECT CASE WHEN NOT EXISTS (
+        SELECT 1 FROM e01_506_07_tb WHERE dim_uid = NEW.dim_uid)
+    THEN RAISE(ABORT, 'dim_val.upd: dim does not exist') END;
+END;
+CREATE TRIGGER e03_328_03_tr
+BEFORE UPDATE OF need_uid, atom_uid, kind ON e01_516_01_tb
+WHEN OLD.need_uid <> NEW.need_uid 
+  OR OLD.atom_uid <> NEW.atom_uid
+  OR OLD.kind <> NEW.kind
+BEGIN SELECT RAISE(ABORT, 'e01_516_01_tb PK is immutable'); END;
+CREATE TRIGGER e03_778_14_tr
+BEFORE DELETE ON e01_778_02_tb
+BEGIN
+    SELECT CASE WHEN EXISTS (
+        SELECT 1 FROM e01_778_05_tb p
+        WHERE p.element_name = OLD.element_name
+          AND p.need_uid = OLD.need_uid
+          AND p.is_mandatory = 1)
+    THEN RAISE(ABORT, 'matrix: cannot delete row with mandatory policies') END;
+END;
+CREATE TRIGGER e03_778_02_ins_tr
+BEFORE INSERT ON e01_778_02_tb
+BEGIN
+    SELECT CASE WHEN NOT EXISTS (
+        SELECT 1 FROM e01_506_03_tb WHERE element_name = NEW.element_name)
+    THEN RAISE(ABORT, 'matrix: element not registered') END;
+    SELECT CASE WHEN NOT EXISTS (
+        SELECT 1 FROM e01_506_01_tb WHERE need_uid = NEW.need_uid)
+    THEN RAISE(ABORT, 'matrix: need does not exist') END;
+END;
+PRAGMA writable_schema=OFF;
+COMMIT;

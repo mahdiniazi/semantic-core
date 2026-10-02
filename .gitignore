@@ -54,3 +54,15 @@ v34/
 # ─── فایل‌های مانیتورینگ
 *.sha256
 .mcp.json
+
+# ─── Workspace products (بکاپ و db از محصولات)
+products/*/backups/
+products/*/snapshots/
+products/*/db/*.db
+
+# ─── پنل وب (اگر دیتابیس موقت بسازد)
+factory/web/*.db
+factory/web/*.log
+
+# ─── MCP config (شامل پسورد)
+.mcp.json
