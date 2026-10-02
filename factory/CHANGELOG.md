@@ -121,3 +121,23 @@
 ### Changed
 - تعداد relations از ۲۱۵۹ به ۲۱۶۰ (افزودن has_direct_part برای engine)
 
+
+## [v1.0.0] — 2026-10-02
+
+### Added (all phases complete)
+- Phase 1-5: all 63 atomic tasks verified
+- `verify.sh` — per-task verification runner
+- `check_task.sh` — verification rules per task code
+- `dashboard.sh` — factory overview
+- `report.sh` — customer-facing knowledge-base report
+- API server: `products/semantic_core/api/server.py` (localhost:8888)
+- Webhook: `products/semantic_core/api/webhook.py` (localhost:8889)
+- SQLPage dashboard: `factory/web/dashboard.sql`
+
+### Migrations
+- v159: Claim instances + subtypes (3 entities, 3 types)
+- v160: Diagnostic engine types (Episode, Verification, Decision + 5 reltypes)
+
+### Task Completion
+- 5 phases: زیرساخت، مدل دامنه، حاکمیت دانش، موتور تشخیص، بنیان کسب‌وکار
+- 63/63 atomic + 24/24 non-atomic cascade
