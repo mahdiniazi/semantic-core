@@ -1,0 +1,18 @@
+═══ v1.3.1 Release ═══
+تاریخ: 2026-10-02 13:52
+— FK orphans: 0
+— Law 12 (integrity) enforced
+— Law 13 (reuse) enforced
+— 13 SQLPage pages
+— Phase 6 verified
+═══ DOCTOR v4 — 2026-10-02 13:52 ═══
+SC integrity: ok
+SC FK orphans: 0
+WM integrity: ok
+PG projects: 2
+PG verified tasks: 134
+Feedback pending: 0
+Feedback applied: 4
+SC size: 2.4M | WM size: 68K
+Git HEAD: 8f4b9de
+═══════════════════════════════════════════
