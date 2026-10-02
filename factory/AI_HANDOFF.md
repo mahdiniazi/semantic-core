@@ -365,3 +365,9 @@ task، README مربوطه در پوشه‌ی سطح خودش به‌روزرس�
 - widget_registry: ویجت/شورت‌کات‌ها
 - auto_doc_state: وضعیت تولید اسناد
 - doc_relations: ارتباط بین اسناد
+
+### ویجت‌ها (برای AI بعدی)
+- ابتدای هر گفتگو: `bash ~/semantic_core/factory/scripts/welcome.sh`
+- ویجت‌های فعال: `bash ~/semantic_core/factory/scripts/widgets.sh`
+- صفحه نسک‌ها: http://localhost:8080/clues.sql
+- فهرست ویجت‌ها: http://localhost:8080/widgets.sql

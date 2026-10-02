@@ -1,6 +1,8 @@
-SELECT 'shell' AS component, 'کارخانه معنایی v1.3.1' AS title, 'fa' AS lang, 'rtl' AS direction;
+SELECT 'shell' AS component, 'کارخانه معنایی v1.4.0' AS title, 'fa' AS lang, 'rtl' AS direction;
 SELECT 'button' AS component;
-SELECT 'پروژه‌ها' AS title, '/projects.sql' AS link
+SELECT '🪧 نسک‌ها' AS title, '/clues.sql' AS link
+UNION ALL SELECT '📋 ویجت‌ها', '/widgets.sql'
+UNION ALL SELECT 'پروژه‌ها', '/projects.sql'
 UNION ALL SELECT 'داشبورد', '/dashboard.sql'
 UNION ALL SELECT 'متریک', '/metrics.sql'
 UNION ALL SELECT 'یکپارچگی', '/integrity.sql'
