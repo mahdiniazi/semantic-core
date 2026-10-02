@@ -56,3 +56,13 @@ bash ~/semantic_core/factory/scripts/mcp_tools_list.sh
 علت اصلی: VS Code قبل از نصب اجرا شده بود
 راه‌حل: pkill -9 -f code && code ~/semantic_core
 جایگزین: Continue.continue (نصب است) — docs_auto/CONTINUE_SETUP.md
+
+## Final — Continue.continue به‌عنوان client اصلی
+- Cline: ناپایدار (شبکه)
+- Continue: آماده (فقط API key)
+- Scripts:
+  - set_openrouter.sh
+  - set_anthropic.sh
+  - interactive_api_setup.sh
+  - launch_continue.sh
+  - final_mcp_check.sh

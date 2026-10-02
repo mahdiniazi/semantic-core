@@ -22,3 +22,8 @@ bash ~/semantic_core/factory/scripts/doctor.sh
 ## در صورت ابهام
 - bash ~/semantic_core/factory/scripts/widgets.sh  (فهرست ویجت‌ها)
 - http://localhost:8080/clues.sql  (نسک‌های باز)
+
+## MCP فعال — Continue
+1. API key: docs_auto/GET_API_KEY.md
+2. Config: bash factory/scripts/setup_continue.sh
+3. VS Code: F1 → Continue: Focus on Continue View

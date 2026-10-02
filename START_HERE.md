@@ -21,3 +21,9 @@
 2. `code ~/semantic_core`
 3. Cline sidebar → MCP Servers → project-monitor
 4. docs_auto/VSCODE_SETUP.md برای جزئیات
+
+## 🚀 MCP Client — Continue (توصیه‌شده)
+1. API key بگیر: cat docs_auto/GET_API_KEY.md
+2. راه‌اندازی: bash factory/scripts/setup_continue.sh
+3. در VS Code: F1 → Continue: Focus on Continue View
+4. رفع مشکل: docs_auto/CONTINUE_FINAL_SETUP.md

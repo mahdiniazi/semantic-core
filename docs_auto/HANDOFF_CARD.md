@@ -52,3 +52,9 @@ get_tasks, get_widgets, get_roadmap, get_propositions, run_safe_query
 - ✅ Continue.continue کار می‌کند
 - config: ~/.continue/config.json
 - startup: F1 → Continue: Focus on Continue View
+
+## MCP Client نهایی — Continue
+1. bash factory/scripts/show_continue_steps.sh
+2. bash factory/scripts/set_openrouter.sh sk-or-v1-XXX
+3. F1 → Developer: Reload Window
+4. F1 → Continue: Focus on Continue View
