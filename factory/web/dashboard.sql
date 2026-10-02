@@ -1,13 +1,9 @@
--- dashboard.sql — نمای کلی پایگاه دانش خودرو
-SELECT 'shell' AS component,
-       'پایگاه دانش برق خودرو — داشبورد' AS title,
-       'fa' AS lang,
-       'rtl' AS direction;
-
-SELECT 'table' AS component, 'آمار کلی' AS title;
-SELECT 'انواع (Type)' AS متریک, COUNT(*) AS مقدار FROM e01_200_01_tb
-UNION ALL SELECT 'موجودیت (Entity)', COUNT(*) FROM e01_200_03_tb
-UNION ALL SELECT 'رابطه (Relation)', COUNT(*) FROM e01_222_01_tb
-UNION ALL SELECT 'Context entity', COUNT(*) FROM e01_305_01_tb
-UNION ALL SELECT 'Claim', COUNT(*) FROM e01_200_03_tb WHERE ent_uid LIKE 'claim:%'
-UNION ALL SELECT 'Evidence', COUNT(*) FROM e01_200_03_tb WHERE ent_uid LIKE 'evidence:%';
+SELECT 'shell' AS component, 'کارخانه — داشبورد' AS title, 'fa' AS lang, 'rtl' AS direction;
+SELECT 'table' AS component, 'وضعیت پروژه‌ها' AS title;
+SELECT p.project_id AS شناسه, p.display_name AS نام,
+       (SELECT COUNT(*) FROM atomic_propositions WHERE project_id=p.project_id) AS گزاره,
+       (SELECT COUNT(*) FROM wbs_tasks WHERE project_id=p.project_id) AS تسک,
+       (SELECT COUNT(*) FROM wbs_tasks t JOIN statuses s ON t.status_id=s.status_id WHERE t.project_id=p.project_id AND s.is_terminal=true) AS تمام
+FROM projects p WHERE p.enabled=true ORDER BY p.project_id;
+SELECT 'table' AS component, 'تغییرات اخیر' AS title;
+SELECT entity_type, entity_id, field_changed, new_value, changed_at FROM change_log ORDER BY changed_at DESC LIMIT 10;

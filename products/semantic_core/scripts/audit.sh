@@ -8,7 +8,7 @@ export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
 export LESSCHARSET=utf-8
 
-DB="$HOME/semantic_core/semantic_core.db"
+DB="$HOME/semantic_core/products/semantic_core/db/semantic_core.db"
 STAMP=$(date +%Y%m%d_%H%M)
 OUT="$HOME/semantic_core/audit_${STAMP}.txt"
 
