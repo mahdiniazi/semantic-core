@@ -15,3 +15,9 @@
 - 10 ابزار خودکار: docs_auto/MCP_TOOLS.md
 - وضعیت: docs_auto/MCP_STATUS.md
 - تست: bash ~/semantic_core/factory/scripts/test_mcp.sh
+
+## 🖥️ راه‌اندازی MCP در VS Code
+1. `code --install-extension saoudrizwan.claude-dev --force`
+2. `code ~/semantic_core`
+3. Cline sidebar → MCP Servers → project-monitor
+4. docs_auto/VSCODE_SETUP.md برای جزئیات

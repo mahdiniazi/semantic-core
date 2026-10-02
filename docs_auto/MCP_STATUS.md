@@ -34,3 +34,13 @@
 ## تست
 bash ~/semantic_core/factory/scripts/test_mcp.sh
 bash ~/semantic_core/factory/scripts/mcp_tools_list.sh
+
+## Client Options
+- ✅ VS Code + Cline (installed: see VSCODE_SETUP.md)
+- 🟡 Claude Desktop (not installed on this machine)
+- 🟡 Cursor (not installed on this machine)
+
+## Setup for VS Code
+1. code --install-extension saoudrizwan.claude-dev
+2. code ~/semantic_core
+3. Cline sidebar → MCP → project-monitor

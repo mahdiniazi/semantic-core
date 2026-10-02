@@ -40,3 +40,9 @@ bash ~/semantic_core/factory/scripts/handoff.sh
 ## 10 ابزار MCP
 get_project_status, get_clues, get_feedback, get_handoff, get_integrity,
 get_tasks, get_widgets, get_roadmap, get_propositions, run_safe_query
+
+## راه‌اندازی MCP در VS Code
+1. code --install-extension saoudrizwan.claude-dev --force
+2. code ~/semantic_core
+3. Cline → MCP → project-monitor
+4. Config: ~/.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
