@@ -26,3 +26,14 @@
 - v1.1.0 — systemd + cron + workshop scripts
 - v1.2.0 — feedback subsystem
 - v1.3.0 — قانون ۱۲+۱۳ + view یکپارچه + FK رفع
+
+## 📖 شروع سریع برای AI بعدی
+- `docs_auto/HANDOFF_FOR_NEXT_AI.md` — سند اصلی
+- `docs_auto/QUICK_START.md` — 5 گام
+- `docs_auto/OPEN_QUESTIONS.md` — پرسش‌های باز
+- `docs_auto/NEXT_STEPS.md` — گام‌های بعدی
+
+## 🎨 ویجت‌ها (localhost:8080)
+`/clues.sql` `/widgets.sql` `/projects.sql` `/feedback.sql` `/integrity.sql`
+
+## 🔧 اسکریپت‌های کلیدی
