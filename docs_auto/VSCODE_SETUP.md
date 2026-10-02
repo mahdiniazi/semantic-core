@@ -1,25 +1,32 @@
-# VS Code + Cline MCP Setup
+# VS Code MCP Setup — راهنمای قطعی
 
-## 3 گام
-1. نصب افزونه:
-   code --install-extension saoudrizwan.claude-dev --force
+## گام ۱: بستن کامل VS Code
+pkill -9 -f code
+sleep 3
+pgrep -f code | wc -l    # باید 0 باشد
 
-2. باز کردن VS Code:
-   code ~/semantic_core
+## گام ۲: باز کردن مجدد
+code ~/semantic_core
 
-3. کلیک روی آیکن Cline در sidebar → MCP Servers → should show "project-monitor"
+## گام ۳: صبر (10 ثانیه)
+Extension host باید Cline را لود کند
 
-## Config file
-~/.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+## گام ۴: نگاه به sidebar
+- آیکن Cline: شکل ربات یا حرف C
+- اگر نبود: Ctrl+Shift+P → "Cline"
 
-## 10 ابزار
-- get_project_status
-- get_clues
-- get_feedback
-- get_handoff
-- get_integrity
-- get_tasks(project_id, only_pending)
-- get_widgets
-- get_roadmap
-- get_propositions(project_id, limit)
-- run_safe_query(sql)
+## گام ۵: اگر باز هم نبود — Continue
+- Ctrl+Shift+P → "Continue"
+- یا: آیکن Continue در sidebar
+
+## گام ۶: تنظیم API
+- Cline یا Continue → Settings
+- API key بگذار (Anthropic, OpenRouter, Ollama)
+
+## گام ۷: تأیید MCP
+- MCP Servers tab
+- project-monitor باید سبز باشد
+
+## تست
+از AI داخل Cline/Continue بپرس:
+"get_project_status را صدا بزن"

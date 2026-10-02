@@ -50,3 +50,9 @@ bash ~/semantic_core/factory/scripts/mcp_tools_list.sh
 - Continue.continue
 - GitHub.copilot-chat
 - بررسی: code --list-extensions
+
+## Cline Troubleshooting
+راهنما: docs_auto/CLINE_TROUBLESHOOT.md
+علت اصلی: VS Code قبل از نصب اجرا شده بود
+راه‌حل: pkill -9 -f code && code ~/semantic_core
+جایگزین: Continue.continue (نصب است) — docs_auto/CONTINUE_SETUP.md
