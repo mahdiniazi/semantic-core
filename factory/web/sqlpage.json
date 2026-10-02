@@ -1,0 +1,7 @@
+{
+  "database_url": "postgres://monitor_ai:monitor_secure_1405@localhost:5432/project_monitor",
+  "listen_on": "0.0.0.0:8080",
+  "environment": "development",
+  "allow_exec": false,
+  "max_database_pool_connections": 5
+}
