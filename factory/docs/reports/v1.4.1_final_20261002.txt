@@ -1,0 +1,31 @@
+═══════════════════════════════════════════
+  گزارش نهایی v1.4.1 — 2026-10-02 16:21
+═══════════════════════════════════════════
+═══ DOCTOR v4 — 2026-10-02 16:21 ═══
+SC integrity: ok
+SC FK orphans: 0
+WM integrity: ok
+PG projects: 2
+PG verified tasks: 134
+Feedback pending: 0
+Feedback applied: 4
+SC size: 2.4M | WM size: 68K
+Git HEAD: 2266a65
+═══════════════════════════════════════════
+
+─── پروژه‌ها ───
+project_id | display_name | total_tasks | done_tasks | pct | fb_events
+semantic-core | هسته معنایی برق خودرو | 66 | 66 | 100.0 | 14
+workshop-manager | سامانه مدیریت تعمیرگاه هوشمند | 26 | 25 | 96.2 | 2
+(2 rows)
+
+─── نسک‌ها ───
+open_clues
+12
+(1 row)
+
+─── فیدبک ───
+project_id | events | patterns | applied | pending | reviews
+semantic-core | 14 | 5 | 3 | 0 | 0
+workshop-manager | 2 | 1 | 1 | 0 | 3
+(2 rows)

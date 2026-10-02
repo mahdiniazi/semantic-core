@@ -1,0 +1,8 @@
+=== v1.4.1 snapshot 2026-10-02 16:19 ===
+project_id|display_name|total_tasks|done_tasks|pct|fb_events
+semantic-core|هسته معنایی برق خودرو|66|66|100.0|14
+workshop-manager|سامانه مدیریت تعمیرگاه هوشمند|26|25|96.2|2
+(2 rows)
+clues
+11
+(1 row)
