@@ -1,0 +1,17 @@
+#!/bin/bash
+echo "=== Continue Status Check ==="
+echo ""
+echo "1. Extension installed:"
+code --list-extensions 2>/dev/null | grep -i continue || echo "  NOT installed"
+echo ""
+echo "2. Version:"
+code --list-extensions --show-versions 2>/dev/null | grep -i continue || echo "  no version"
+echo ""
+echo "3. Config:"
+[ -f ~/.continue/config.json ] && echo "  ✓ ~/.continue/config.json" || echo "  ✗ missing"
+echo ""
+echo "4. Config content:"
+cat ~/.continue/config.json 2>/dev/null | node -e "let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const j=JSON.parse(d);console.log('  Provider:',j.models?.[0]?.provider||'none');console.log('  Model:',j.models?.[0]?.model||'none');console.log('  API Key set:',j.models?.[0]?.apiKey && j.models[0].apiKey !== 'YOUR_ANTHROPIC_KEY_HERE' ? 'YES' : 'NO');console.log('  MCP servers:',Object.keys(j.mcpServers||{}).join(', '))}catch(e){console.log('  error:',e.message)}})"
+echo ""
+echo "5. VS Code running:"
+pgrep -f "code" | wc -l

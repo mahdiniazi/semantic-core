@@ -46,3 +46,9 @@ get_tasks, get_widgets, get_roadmap, get_propositions, run_safe_query
 2. code ~/semantic_core
 3. Cline → MCP → project-monitor
 4. Config: ~/.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+
+## MCP Client — استفاده از Continue
+- ❌ Cline روی این لپ‌تاپ کار نمی‌کند (شبکه)
+- ✅ Continue.continue کار می‌کند
+- config: ~/.continue/config.json
+- startup: F1 → Continue: Focus on Continue View
